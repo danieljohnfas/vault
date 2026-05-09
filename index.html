@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HentaiVault | The Ultimate Anime & Hentai Directory</title>
     <meta name="description" content="Discover, filter, and sort the best anime and hentai websites across the internet. The ultimate directory for otakus.">
-    
+    <link rel="canonical" href="https://hentaivault.me/">
+
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hentaivault.me/">
+    <meta property="og:title" content="HentaiVault | The Ultimate Anime & Hentai Directory">
+    <meta property="og:description" content="Discover, filter, and sort the best anime and hentai websites across the internet.">
+    <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HentaiVault | The Ultimate Anime & Hentai Directory">
+    <meta name="twitter:description" content="The ultimate anime & hentai site directory.">
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -22,6 +33,21 @@
 </head>
 <body>
 
+    <!-- Age Gate Overlay -->
+    <div class="age-gate" id="ageGate">
+        <div class="age-gate-box">
+            <div class="age-gate-icon">🔞</div>
+            <h2>Adults Only</h2>
+            <p>This website contains adult content including explicit anime and hentai material.</p>
+            <p class="age-gate-sub">You must be <strong>18 years of age or older</strong> to enter.</p>
+            <div class="age-gate-buttons">
+                <button class="btn-enter" id="btnEnter">I am 18+ — Enter</button>
+                <a href="https://www.google.com" class="btn-leave">I am under 18 — Leave</a>
+            </div>
+            <p class="age-gate-legal">By entering, you confirm you are of legal age in your jurisdiction and consent to viewing adult content.</p>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -31,6 +57,7 @@
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search websites, tags, or categories...">
             </div>
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
             <a href="#" class="btn-submit" id="btnSubmitSite">Submit a Site</a>
         </div>
     </nav>
@@ -108,9 +135,9 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-links">
-                <a href="#">About</a>
-                <a href="#">Disclaimer</a>
-                <a href="#">DMCA</a>
+                <a href="/about.html">About</a>
+                <a href="/disclaimer.html">Disclaimer</a>
+                <a href="/dmca.html">DMCA</a>
                 <a href="#" id="btnSubmitFooter">Submit Site</a>
             </div>
             <p>&copy; 2026 HentaiVault.me. All rights reserved.</p>
@@ -136,12 +163,14 @@
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category" required>
-                        <option value="Hentai Streaming">Hentai Streaming</option>
                         <option value="Anime Streaming">Anime Streaming</option>
+                        <option value="Hentai Streaming">Hentai Streaming</option>
                         <option value="Manga/Doujin">Manga/Doujin</option>
                         <option value="Images/Boorus">Images/Boorus</option>
                         <option value="Games">Games</option>
                         <option value="Communities">Communities</option>
+                        <option value="Downloads">Downloads</option>
+                        <option value="Visual Novels">Visual Novels</option>
                     </select>
                 </div>
                 <div class="form-group">

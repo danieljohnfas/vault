@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const resultsCount = document.getElementById('resultsCount');
+    const loadMoreBtn = document.getElementById('loadMore');
     
     const gridViewBtn = document.getElementById('gridView');
     const listViewBtn = document.getElementById('listView');
@@ -18,12 +19,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmitFooter = document.getElementById('btnSubmitFooter');
     const closeBtns = document.getElementsByClassName('close-modal');
 
+    const ageGate = document.getElementById('ageGate');
+    const btnEnter = document.getElementById('btnEnter');
+    const btnSearchMobile = document.getElementById('btnSearchMobile');
+    const searchBar = document.querySelector('.search-bar');
+
+    // --- Constants ---
+    const ITEMS_PER_PAGE = 24;
+
     // --- State ---
     let currentSites = [...sitesData];
     let activeCategories = [];
     let activeTags = [];
     let searchQuery = "";
-    let currentSort = "popular"; // default
+    let currentSort = "popular";
+    let currentPage = 1;
+
+    // --- Age Gate ---
+    if (localStorage.getItem('hv_age_verified') === 'true') {
+        ageGate.classList.add('hidden');
+    }
+    btnEnter.addEventListener('click', () => {
+        localStorage.setItem('hv_age_verified', 'true');
+        ageGate.classList.add('hidden');
+    });
+
+    // --- Mobile Search Toggle ---
+    btnSearchMobile.addEventListener('click', () => {
+        searchBar.classList.toggle('mobile-open');
+        if (searchBar.classList.contains('mobile-open')) {
+            searchInput.focus();
+        }
+    });
 
     // --- Initialization ---
     initFilters();
@@ -121,38 +148,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sort
         currentSites.sort((a, b) => {
-            if (currentSort === 'popular' || currentSort === 'rating') {
-                return b.rating - a.rating; // Highest rating first
+            if (currentSort === 'popular') {
+                // Weighted score: rating * 2 + recency bonus
+                const scoreA = a.rating * 2 + (new Date(a.addedAt) / 1e11);
+                const scoreB = b.rating * 2 + (new Date(b.addedAt) / 1e11);
+                return scoreB - scoreA;
+            } else if (currentSort === 'rating') {
+                return b.rating - a.rating;
             } else if (currentSort === 'alpha') {
-                return a.name.localeCompare(b.name); // A-Z
+                return a.name.localeCompare(b.name);
             } else if (currentSort === 'newest') {
-                return new Date(b.addedAt) - new Date(a.addedAt); // Newest first
+                return new Date(b.addedAt) - new Date(a.addedAt);
             }
             return 0;
         });
 
+        currentPage = 1;
         renderSites();
     }
 
     function renderSites() {
         siteGrid.innerHTML = '';
-        
-        resultsCount.innerText = `Showing ${currentSites.length} Sites`;
 
-        if (currentSites.length === 0) {
+        const total = currentSites.length;
+        const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
+
+        resultsCount.innerText = `Showing ${visible.length} of ${total} Sites`;
+
+        if (total === 0) {
             siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No sites found matching your filters.</p>`;
+            loadMoreBtn.style.display = 'none';
             return;
         }
 
-        currentSites.forEach(site => {
-            // Get domain to use google's favicon service
+        visible.forEach(site => {
             const urlObj = new URL(site.url);
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
             const tagsHtml = site.tags.map(t => `<span class="tag">${t}</span>`).join('');
             
-            // Create Stars
             const fullStars = Math.floor(site.rating);
             const halfStar = site.rating % 1 !== 0;
             let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - Math.ceil(site.rating));
@@ -177,7 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             siteGrid.appendChild(card);
         });
+
+        // Show/hide Load More button
+        loadMoreBtn.style.display = (visible.length < total) ? 'inline-block' : 'none';
     }
+
+    // Load More
+    loadMoreBtn.addEventListener('click', () => {
+        currentPage++;
+        renderSites();
+    });
 
     // Modal Form submission handling (Optional: Prevent default for demo, or let it post to Formspree)
     document.getElementById('submitForm').addEventListener('submit', (e) => {

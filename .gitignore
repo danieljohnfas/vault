@@ -4,3 +4,16 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Scraper / dev tools
+scraper.py
+*.py
+__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
