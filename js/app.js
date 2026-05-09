@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitModal = document.getElementById('submitModal');
     const btnSubmitSite = document.getElementById('btnSubmitSite');
-    const btnSubmitFooter = document.getElementById('btnSubmitFooter');
     const closeBtns = document.getElementsByClassName('close-modal');
 
     const ageGate = document.getElementById('ageGate');
@@ -132,8 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const openModal = (e) => { e.preventDefault(); submitModal.classList.add('active'); };
         const closeModal = () => { submitModal.classList.remove('active'); };
         
-        btnSubmitSite.addEventListener('click', openModal);
-        btnSubmitFooter.addEventListener('click', openModal);
+        if (btnSubmitSite) btnSubmitSite.addEventListener('click', openModal);
         
         Array.from(closeBtns).forEach(btn => btn.addEventListener('click', closeModal));
         
