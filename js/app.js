@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-header">
-                    <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'48\\' height=\\'48\\'><rect width=\\'48\\' height=\\'48\\' fill=\\'%233f3f46\\'/></svg>'">
+                    <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
                         <div class="card-title">${site.name}</div>
                         <div class="card-category">${site.category}</div>
@@ -212,17 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             siteGrid.appendChild(card);
-
-            // Inject in-content ad after card 12 (mid-grid)
-            if (index === 11 && total > 12) {
-                const adDiv = document.createElement('div');
-                adDiv.className = 'card ad-inline-grid';
-                adDiv.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 8px 0; background: transparent; border: none; box-shadow: none;';
-                adDiv.innerHTML = `<ins class="eas6a97888e17" data-zoneid="5923038" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>`;
-                siteGrid.appendChild(adDiv);
-                // Trigger MagSrv to serve this zone
-                (window.AdProvider = window.AdProvider || []).push({ serve: {} });
-            }
         });
 
         // Show/hide Load More button
