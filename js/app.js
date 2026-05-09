@@ -28,11 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const ITEMS_PER_PAGE = 24;
 
     // --- State ---
+    // Assign a random order to each site on page load for consistent shuffling
+    sitesData.forEach(site => { site.randomOrder = Math.random(); });
+    
     let currentSites = [...sitesData];
     let activeCategories = [];
     let activeTags = [];
     let searchQuery = "";
-    let currentSort = "popular";
+    let currentSort = "random";
     let currentPage = 1;
 
     // --- Age Gate ---
@@ -161,7 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sort
         currentSites.sort((a, b) => {
-            if (currentSort === 'popular') {
+            if (currentSort === 'random') {
+                return a.randomOrder - b.randomOrder;
+            } else if (currentSort === 'popular') {
                 // Weighted score: rating * 2 + recency bonus
                 const scoreA = a.rating * 2 + (new Date(a.addedAt) / 1e11);
                 const scoreB = b.rating * 2 + (new Date(b.addedAt) / 1e11);
