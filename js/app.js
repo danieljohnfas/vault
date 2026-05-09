@@ -223,11 +223,62 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSites();
     });
 
-    // Modal Form submission handling (Optional: Prevent default for demo, or let it post to Formspree)
-    document.getElementById('submitForm').addEventListener('submit', (e) => {
-        // e.preventDefault(); // Uncomment this to test without actually submitting
-        // alert("Site submitted for review!");
-        // submitModal.classList.remove('active');
+    // ── Form Submission → /api/submit (Cloudflare Pages Function) ────────────
+    const submitForm   = document.getElementById('submitForm');
+    const submitBtn    = document.getElementById('submitBtn');
+    const submitStatus = document.getElementById('submitStatus');
+
+    submitForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name        = submitForm.site_name.value.trim();
+        const url         = submitForm.url.value.trim();
+        const category    = submitForm.category.value;
+        const description = submitForm.description.value.trim();
+
+        // Loading state
+        submitBtn.disabled    = true;
+        submitBtn.textContent = 'Submitting…';
+        submitStatus.style.display = 'none';
+
+        try {
+            const res = await fetch('/api/submit', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ name, url, category, description }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                showStatus('success', `✅ ${data.message}`);
+                submitForm.reset();
+                // Auto-close modal after 3 seconds
+                setTimeout(() => {
+                    submitModal.classList.remove('active');
+                    submitStatus.style.display = 'none';
+                }, 3000);
+            } else {
+                showStatus('error', `❌ ${data.error || 'Something went wrong.'}`);
+            }
+        } catch (err) {
+            showStatus('error', '❌ Network error. Please check your connection.');
+        } finally {
+            submitBtn.disabled    = false;
+            submitBtn.textContent = 'Submit to Vault';
+        }
     });
+
+    function showStatus(type, message) {
+        submitStatus.textContent     = message;
+        submitStatus.style.display   = 'block';
+        submitStatus.style.color     = type === 'success' ? '#22c55e' : '#ff2a5f';
+        submitStatus.style.padding   = '12px';
+        submitStatus.style.borderRadius = '8px';
+        submitStatus.style.background = type === 'success'
+            ? 'rgba(34,197,94,0.1)' : 'rgba(255,42,95,0.1)';
+        submitStatus.style.marginBottom = '12px';
+        submitStatus.style.fontSize  = '0.9rem';
+    }
 
 });

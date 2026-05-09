@@ -150,15 +150,15 @@
             <span class="close-modal">&times;</span>
             <h2>Submit a New Site</h2>
             <p>Help us grow the vault! Submitted sites are reviewed before publishing.</p>
-            <!-- Formspree Endpoint Placeholder -->
-            <form id="submitForm" action="https://formspree.io/f/your_form_id" method="POST">
+            <!-- Submit Form → /api/submit (Cloudflare Pages Function) -->
+            <form id="submitForm">
                 <div class="form-group">
                     <label>Website Name</label>
-                    <input type="text" name="site_name" required>
+                    <input type="text" name="site_name" placeholder="e.g. AnimeSite.tv" required>
                 </div>
                 <div class="form-group">
                     <label>URL</label>
-                    <input type="url" name="url" required>
+                    <input type="url" name="url" placeholder="https://..." required>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -175,9 +175,10 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="description" rows="3" required></textarea>
+                    <textarea name="description" rows="3" placeholder="Briefly describe the site (at least 20 characters)..." required></textarea>
                 </div>
-                <button type="submit" class="btn-submit">Submit to Vault</button>
+                <div id="submitStatus" class="submit-status" style="display:none;"></div>
+                <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
             </form>
         </div>
     </div>
