@@ -242,5 +242,13 @@
         popMagic.init(adConfig);
     })();
     </script>
+
+    <!-- Unique Visitor Hit Tracker -->
+    <script>
+        if (!localStorage.getItem("hv_counted")) {
+            localStorage.setItem("hv_counted", "true");
+            new Image().src = "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23002d72&style=flat-square&tz=UTC";
+        }
+    </script>
 </body>
 </html>
