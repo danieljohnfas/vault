@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://hentaivault.me/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://hentaivault.me/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://hentaivault.me/disclaimer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://hentaivault.me/dmca</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
+  <url><loc>https://hentaivault.me/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://hentaivault.me/category/anime-streaming</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hentaivault.me/category/hentai-streaming</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hentaivault.me/category/manga-doujin</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hentaivault.me/category/images-boorus</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hentaivault.me/category/games</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hentaivault.me/category/communities</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hentaivault.me/category/downloads</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hentaivault.me/category/visual-novels</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hentaivault.me/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://hentaivault.me/disclaimer</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://hentaivault.me/dmca</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>

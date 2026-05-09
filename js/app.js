@@ -54,6 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initialization ---
     initFilters();
+
+    // Pre-filter from category page (window.FILTER_CATEGORY) or URL ?q= param
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlQ = urlParams.get('q');
+    if (urlQ) { searchInput.value = urlQ; searchQuery = urlQ.toLowerCase(); }
+    if (window.FILTER_CATEGORY) {
+        activeCategories = [window.FILTER_CATEGORY];
+        document.querySelectorAll('.cat-cb').forEach(cb => {
+            if (cb.value === window.FILTER_CATEGORY) cb.checked = true;
+        });
+    }
+
     applyFiltersAndSort();
 
     // --- Functions ---

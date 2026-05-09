@@ -26,8 +26,15 @@ const CORS = {
 };
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // ── Route: IndexNow key verification ────────────────────────────────────
+    if (env.INDEXNOW_KEY && url.pathname === `/${env.INDEXNOW_KEY}.txt`) {
+      return new Response(env.INDEXNOW_KEY, {
+        headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'public, max-age=86400' },
+      });
+    }
 
     // ── Route: /api/submit ──────────────────────────────────────────────────
     if (url.pathname === '/api/submit') {
@@ -35,7 +42,7 @@ export default {
         return new Response(null, { status: 204, headers: CORS });
       }
       if (request.method === 'POST') {
-        return handleSubmit(request, env);
+        return handleSubmit(request, env, ctx);
       }
       return jsonError('Method not allowed.', 405);
     }
@@ -47,7 +54,7 @@ export default {
 
 // ─── Submit Handler ───────────────────────────────────────────────────────────
 
-async function handleSubmit(request, env) {
+async function handleSubmit(request, env, ctx) {
   try {
     const body = await request.json().catch(() => null);
     if (!body) return jsonError('Invalid request body.', 400);
@@ -127,6 +134,9 @@ async function handleSubmit(request, env) {
       { status: 200, headers: CORS }
     );
 
+    // Ping Bing IndexNow in the background (non-blocking)
+    ctx.waitUntil(pingIndexNow(env));
+
   } catch (err) {
     console.error('Unexpected error:', err);
     return jsonError('An unexpected error occurred.', 500);
@@ -166,4 +176,36 @@ function encodeB64(str) {
 
 function jsonError(message, status) {
   return new Response(JSON.stringify({ error: message }), { status, headers: CORS });
+}
+
+async function pingIndexNow(env) {
+  if (!env.INDEXNOW_KEY) return;
+  try {
+    const url = 'https://api.indexnow.org/indexnow';
+    const payload = {
+      host: 'hentaivault.me',
+      key: env.INDEXNOW_KEY,
+      keyLocation: `https://hentaivault.me/${env.INDEXNOW_KEY}.txt`,
+      urlList: [
+        'https://hentaivault.me/',
+        'https://hentaivault.me/category/anime-streaming',
+        'https://hentaivault.me/category/hentai-streaming',
+        'https://hentaivault.me/category/manga-doujin',
+        'https://hentaivault.me/category/images-boorus',
+        'https://hentaivault.me/category/games',
+        'https://hentaivault.me/category/communities',
+        'https://hentaivault.me/category/downloads',
+        'https://hentaivault.me/category/visual-novels'
+      ]
+    };
+
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    console.log('Successfully pinged IndexNow API');
+  } catch (err) {
+    console.error('IndexNow ping failed:', err);
+  }
 }
