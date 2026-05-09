@@ -190,7 +190,7 @@ const sitesData = [
     // Manga / Doujin
     { id: "mangakakalot", name: "MangaKakalot", url: "https://mangakakalot.com", category: "Manga/Doujin", description: "Large manga reading site with fast image loading.", tags: ["Free", "Subbed"], rating: 4.4, addedAt: "2026-05-09" },
     { id: "manganato", name: "MangaNato", url: "https://manganato.com", category: "Manga/Doujin", description: "Mirror of MangaKakalot with daily update tracking.", tags: ["Free"], rating: 4.3, addedAt: "2026-05-09" },
-    { id: "mangaplus", name: "MANGA Plus", url: "https://mangaplus.shueisha.co.jp", category: "Manga/Doujin", description: "Official Shueisha platform — read One Piece, Naruto, and more free.", tags: ["Official", "Free", "Safe for Work"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "mangaplus", name: "MANGA Plus", url: "https://mangaplus.shueisha.co.jp", category: "Manga/Doujin", description: "Official Shueisha platform â read One Piece, Naruto, and more free.", tags: ["Official", "Free", "Safe for Work"], rating: 4.8, addedAt: "2026-05-09" },
     { id: "webtoons", name: "Webtoons", url: "https://www.webtoons.com", category: "Manga/Doujin", description: "Official platform for Korean webtoons with millions of free episodes.", tags: ["Official", "Free", "Safe for Work"], rating: 4.7, addedAt: "2026-05-09" },
     { id: "batoto", name: "Bato.to", url: "https://bato.to", category: "Manga/Doujin", description: "Community manga reader with wide multilingual support.", tags: ["Free", "Community"], rating: 4.5, addedAt: "2026-05-09" },
     { id: "comick", name: "Comick.io", url: "https://comick.io", category: "Manga/Doujin", description: "Fast manga reader with chapter tracking and clean interface.", tags: ["Free"], rating: 4.6, addedAt: "2026-05-09" },
@@ -265,7 +265,7 @@ const sitesData = [
     { id: "lolibooru", name: "ATFBooru", url: "https://booru.allthefallen.moe", category: "Images/Boorus", description: "Community image board for anime artwork and fan art.", tags: ["Free", "Images", "Community"], rating: 4.0, addedAt: "2026-05-09" },
 
     // Games (continued)
-    { id: "vndb", name: "VNDB", url: "https://vndb.org", category: "Games", description: "The Visual Novel Database — comprehensive catalog and reviews.", tags: ["Free", "Database", "Safe for Work"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "vndb", name: "VNDB", url: "https://vndb.org", category: "Games", description: "The Visual Novel Database â comprehensive catalog and reviews.", tags: ["Free", "Database", "Safe for Work"], rating: 4.9, addedAt: "2026-05-09" },
     { id: "kagura", name: "Kagura Games", url: "https://www.kagura-games.com", category: "Games", description: "Publisher of translated Japanese indie adult games.", tags: ["Paid", "Adult (18+)", "Official"], rating: 4.2, addedAt: "2026-05-09" },
     { id: "jlist", name: "J-List", url: "https://www.jlist.com", category: "Games", description: "Japanese import store selling games, figures, and adult content.", tags: ["Paid", "Official", "Adult (18+)"], rating: 4.3, addedAt: "2026-05-09" },
     { id: "erogames", name: "EroGames", url: "https://erogames.com", category: "Games", description: "Storefront for adult anime games with free-to-play and paid titles.", tags: ["Free", "Paid", "Adult (18+)"], rating: 4.0, addedAt: "2026-05-09" },
@@ -295,7 +295,8 @@ const sitesData = [
     { id: "vntls", name: "VN Translation Status", url: "https://vntls.org", category: "Visual Novels", description: "Tracks the translation progress of fan-translated visual novels.", tags: ["Free", "Community", "Safe for Work"], rating: 4.4, addedAt: "2026-05-09" },
     { id: "typemoon", name: "Type-Moon", url: "https://typemoon.com", category: "Visual Novels", description: "Official site of the creators of Fate, Tsukihime, and more.", tags: ["Official", "Japanese", "Safe for Work"], rating: 4.7, addedAt: "2026-05-09" },
     { id: "keyvisual", name: "Key Visual Arts", url: "https://key.visualarts.gr.jp", category: "Visual Novels", description: "Official site of Key, makers of Clannad, Kanon, and Angel Beats VNs.", tags: ["Official", "Japanese", "Safe for Work"], rating: 4.6, addedAt: "2026-05-09" },
-    { id: "steamvn", name: "Steam Visual Novels", url: "https://store.steampowered.com/tags/en/Visual+Novel/", category: "Visual Novels", description: "Steam's visual novel catalog with thousands of titles.", tags: ["Free", "Paid", "Official", "Safe for Work"], rating: 4.5, addedAt: "2026-05-09" }
+    { id: "steamvn", name: "Steam Visual Novels", url: "https://store.steampowered.com/tags/en/Visual+Novel/", category: "Visual Novels", description: "Steam's visual novel catalog with thousands of titles.", tags: ["Free", "Paid", "Official", "Safe for Work"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "fuskator_moysq0a3", name: "fuskator", url: "http://fuskator.com", category: "Downloads", description: "none none none none none none", tags: ["Community Submitted"], rating: 4.0, addedAt: "2026-05-09" }
 ];
 
 // Extract unique categories and tags for the UI filters
