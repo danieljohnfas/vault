@@ -186,7 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = currentSites.length;
         const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
 
-        resultsCount.innerText = `Showing ${visible.length} of ${total} Sites`;
+        const startIdx = total === 0 ? 0 : 1;
+        resultsCount.innerText = `Showing ${startIdx} - ${visible.length} of ${total} Sites`;
 
         if (total === 0) {
             siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No sites found matching your filters.</p>`;
