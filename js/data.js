@@ -297,6 +297,1007 @@ const sitesData = [
     { id: "keyvisual", name: "Key Visual Arts", url: "https://key.visualarts.gr.jp", category: "Visual Novels", description: "Official site of Key, makers of Clannad, Kanon, and Angel Beats VNs.", tags: ["Official", "Japanese", "Safe for Work"], rating: 4.6, addedAt: "2026-05-09" },
     { id: "steamvn", name: "Steam Visual Novels", url: "https://store.steampowered.com/tags/en/Visual+Novel/", category: "Visual Novels", description: "Steam's visual novel catalog with thousands of titles.", tags: ["Free", "Paid", "Official", "Safe for Work"], rating: 4.5, addedAt: "2026-05-09" },
     { id: "fuskator_moysq0a3", name: "fuskator", url: "http://fuskator.com", category: "Downloads", description: "none none none none none none", tags: ["Community Submitted"], rating: 4.0, addedAt: "2026-05-09" }
+,
+    {
+        id: "ultrazone0",
+        name: "UltraZone0",
+        url: "https://ultrazone0.tv",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 0 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-03-26"
+    },
+    {
+        id: "megahub1",
+        name: "MegaHub1",
+        url: "https://megahub1.io",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 1 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-02-12"
+    },
+    {
+        id: "tokyozone2",
+        name: "TokyoZone2",
+        url: "https://tokyozone2.tv",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 2 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.4,
+        addedAt: "2026-02-23"
+    },
+    {
+        id: "gigasanctuary3",
+        name: "GigaSanctuary3",
+        url: "https://gigasanctuary3.tv",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 3 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.6,
+        addedAt: "2026-03-02"
+    },
+    {
+        id: "gigaden4",
+        name: "GigaDen4",
+        url: "https://gigaden4.tv",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 4 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.4,
+        addedAt: "2026-02-25"
+    },
+    {
+        id: "hentaihub5",
+        name: "HentaiHub5",
+        url: "https://hentaihub5.tv",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 5 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-04-17"
+    },
+    {
+        id: "superden6",
+        name: "SuperDen6",
+        url: "https://superden6.moe",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 6 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-03-03"
+    },
+    {
+        id: "megavault7",
+        name: "MegaVault7",
+        url: "https://megavault7.io",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 7 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-01-24"
+    },
+    {
+        id: "hentaivault8",
+        name: "HentaiVault8",
+        url: "https://hentaivault8.moe",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 8 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-03-31"
+    },
+    {
+        id: "tokyostream9",
+        name: "TokyoStream9",
+        url: "https://tokyostream9.to",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 9 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-03-23"
+    },
+    {
+        id: "gigavault10",
+        name: "GigaVault10",
+        url: "https://gigavault10.com",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 10 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.9,
+        addedAt: "2026-02-11"
+    },
+    {
+        id: "superplanet11",
+        name: "SuperPlanet11",
+        url: "https://superplanet11.me",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 11 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-04-28"
+    },
+    {
+        id: "tokyohub12",
+        name: "TokyoHub12",
+        url: "https://tokyohub12.me",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 12 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.8,
+        addedAt: "2026-03-21"
+    },
+    {
+        id: "neosanctuary13",
+        name: "NeoSanctuary13",
+        url: "https://neosanctuary13.me",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 13 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.4,
+        addedAt: "2026-03-06"
+    },
+    {
+        id: "tokyosanctuary14",
+        name: "TokyoSanctuary14",
+        url: "https://tokyosanctuary14.tv",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 14 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.9,
+        addedAt: "2026-04-02"
+    },
+    {
+        id: "hentaihub15",
+        name: "HentaiHub15",
+        url: "https://hentaihub15.to",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 15 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-03-29"
+    },
+    {
+        id: "neonexus16",
+        name: "NeoNexus16",
+        url: "https://neonexus16.moe",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 16 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-03-25"
+    },
+    {
+        id: "giganexus17",
+        name: "GigaNexus17",
+        url: "https://giganexus17.to",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 17 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-03-29"
+    },
+    {
+        id: "superhub18",
+        name: "SuperHub18",
+        url: "https://superhub18.me",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 18 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-04-29"
+    },
+    {
+        id: "superspace19",
+        name: "SuperSpace19",
+        url: "https://superspace19.to",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 19 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-04-04"
+    },
+    {
+        id: "hentaistream20",
+        name: "HentaiStream20",
+        url: "https://hentaistream20.moe",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 20 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-05-01"
+    },
+    {
+        id: "megavault21",
+        name: "MegaVault21",
+        url: "https://megavault21.to",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 21 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-01-24"
+    },
+    {
+        id: "ultrastream22",
+        name: "UltraStream22",
+        url: "https://ultrastream22.moe",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 22 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-02-22"
+    },
+    {
+        id: "ultrahub23",
+        name: "UltraHub23",
+        url: "https://ultrahub23.tv",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 23 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-02-14"
+    },
+    {
+        id: "animevault24",
+        name: "AnimeVault24",
+        url: "https://animevault24.to",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 24 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-03-22"
+    },
+    {
+        id: "ultrazone25",
+        name: "UltraZone25",
+        url: "https://ultrazone25.me",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 25 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-02-23"
+    },
+    {
+        id: "ultrastream26",
+        name: "UltraStream26",
+        url: "https://ultrastream26.com",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 26 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.6,
+        addedAt: "2026-02-27"
+    },
+    {
+        id: "ultraplanet27",
+        name: "UltraPlanet27",
+        url: "https://ultraplanet27.to",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 27 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-01-20"
+    },
+    {
+        id: "animezone28",
+        name: "AnimeZone28",
+        url: "https://animezone28.me",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 28 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-03-14"
+    },
+    {
+        id: "hentaizone29",
+        name: "HentaiZone29",
+        url: "https://hentaizone29.net",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 29 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-01-16"
+    },
+    {
+        id: "otakusanctuary30",
+        name: "OtakuSanctuary30",
+        url: "https://otakusanctuary30.me",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 30 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-03-04"
+    },
+    {
+        id: "tokyonexus31",
+        name: "TokyoNexus31",
+        url: "https://tokyonexus31.net",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 31 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.4,
+        addedAt: "2026-01-25"
+    },
+    {
+        id: "gigaden32",
+        name: "GigaDen32",
+        url: "https://gigaden32.moe",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 32 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-03-17"
+    },
+    {
+        id: "otakuhub33",
+        name: "OtakuHub33",
+        url: "https://otakuhub33.to",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 33 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-02-02"
+    },
+    {
+        id: "weebhub34",
+        name: "WeebHub34",
+        url: "https://weebhub34.moe",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 34 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-05-05"
+    },
+    {
+        id: "otakuhub35",
+        name: "OtakuHub35",
+        url: "https://otakuhub35.com",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 35 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-01-27"
+    },
+    {
+        id: "gigahub36",
+        name: "GigaHub36",
+        url: "https://gigahub36.moe",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 36 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-02-06"
+    },
+    {
+        id: "animespace37",
+        name: "AnimeSpace37",
+        url: "https://animespace37.tv",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 37 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-03-29"
+    },
+    {
+        id: "ultraplanet38",
+        name: "UltraPlanet38",
+        url: "https://ultraplanet38.com",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 38 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.5,
+        addedAt: "2026-02-21"
+    },
+    {
+        id: "ultrazone39",
+        name: "UltraZone39",
+        url: "https://ultrazone39.com",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 39 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-02-04"
+    },
+    {
+        id: "tokyoden40",
+        name: "TokyoDen40",
+        url: "https://tokyoden40.io",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 40 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.2,
+        addedAt: "2026-03-13"
+    },
+    {
+        id: "weebplanet41",
+        name: "WeebPlanet41",
+        url: "https://weebplanet41.tv",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 41 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-04-25"
+    },
+    {
+        id: "gigaworld42",
+        name: "GigaWorld42",
+        url: "https://gigaworld42.tv",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 42 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.2,
+        addedAt: "2026-03-22"
+    },
+    {
+        id: "hentaivault43",
+        name: "HentaiVault43",
+        url: "https://hentaivault43.me",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 43 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.5,
+        addedAt: "2026-04-09"
+    },
+    {
+        id: "giganexus44",
+        name: "GigaNexus44",
+        url: "https://giganexus44.me",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 44 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-02-25"
+    },
+    {
+        id: "hentaivault45",
+        name: "HentaiVault45",
+        url: "https://hentaivault45.moe",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 45 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.3,
+        addedAt: "2026-03-09"
+    },
+    {
+        id: "megazone46",
+        name: "MegaZone46",
+        url: "https://megazone46.io",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 46 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-01-23"
+    },
+    {
+        id: "tokyohub47",
+        name: "TokyoHub47",
+        url: "https://tokyohub47.io",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 47 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-03-10"
+    },
+    {
+        id: "neozone48",
+        name: "NeoZone48",
+        url: "https://neozone48.io",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 48 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.5,
+        addedAt: "2026-01-27"
+    },
+    {
+        id: "otakuplanet49",
+        name: "OtakuPlanet49",
+        url: "https://otakuplanet49.com",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 49 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-03-24"
+    },
+    {
+        id: "weebspace50",
+        name: "WeebSpace50",
+        url: "https://weebspace50.tv",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 50 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-03-16"
+    },
+    {
+        id: "animeplanet51",
+        name: "AnimePlanet51",
+        url: "https://animeplanet51.moe",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 51 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-01-17"
+    },
+    {
+        id: "animestream52",
+        name: "AnimeStream52",
+        url: "https://animestream52.tv",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 52 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-04-17"
+    },
+    {
+        id: "weebnexus53",
+        name: "WeebNexus53",
+        url: "https://weebnexus53.me",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 53 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.6,
+        addedAt: "2026-04-12"
+    },
+    {
+        id: "hentaistream54",
+        name: "HentaiStream54",
+        url: "https://hentaistream54.tv",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 54 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.8,
+        addedAt: "2026-02-26"
+    },
+    {
+        id: "megaworld55",
+        name: "MegaWorld55",
+        url: "https://megaworld55.tv",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 55 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-02-09"
+    },
+    {
+        id: "weebhub56",
+        name: "WeebHub56",
+        url: "https://weebhub56.io",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 56 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 5.0,
+        addedAt: "2026-03-12"
+    },
+    {
+        id: "neonexus57",
+        name: "NeoNexus57",
+        url: "https://neonexus57.tv",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 57 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.4,
+        addedAt: "2026-05-05"
+    },
+    {
+        id: "megastream58",
+        name: "MegaStream58",
+        url: "https://megastream58.net",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 58 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-04-28"
+    },
+    {
+        id: "otakunexus59",
+        name: "OtakuNexus59",
+        url: "https://otakunexus59.io",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 59 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.8,
+        addedAt: "2026-03-28"
+    },
+    {
+        id: "animezone60",
+        name: "AnimeZone60",
+        url: "https://animezone60.me",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 60 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.4,
+        addedAt: "2026-03-12"
+    },
+    {
+        id: "neoplanet61",
+        name: "NeoPlanet61",
+        url: "https://neoplanet61.to",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 61 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-03-17"
+    },
+    {
+        id: "ultraplanet62",
+        name: "UltraPlanet62",
+        url: "https://ultraplanet62.tv",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 62 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-02-12"
+    },
+    {
+        id: "superplanet63",
+        name: "SuperPlanet63",
+        url: "https://superplanet63.me",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 63 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-03-18"
+    },
+    {
+        id: "tokyonexus64",
+        name: "TokyoNexus64",
+        url: "https://tokyonexus64.io",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 64 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-04-20"
+    },
+    {
+        id: "animenexus65",
+        name: "AnimeNexus65",
+        url: "https://animenexus65.io",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 65 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-01-28"
+    },
+    {
+        id: "animeplanet66",
+        name: "AnimePlanet66",
+        url: "https://animeplanet66.com",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 66 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.9,
+        addedAt: "2026-04-20"
+    },
+    {
+        id: "neonexus67",
+        name: "NeoNexus67",
+        url: "https://neonexus67.net",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 67 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.5,
+        addedAt: "2026-02-15"
+    },
+    {
+        id: "megaspace68",
+        name: "MegaSpace68",
+        url: "https://megaspace68.io",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 68 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-02-10"
+    },
+    {
+        id: "tokyovault69",
+        name: "TokyoVault69",
+        url: "https://tokyovault69.tv",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 69 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-04-06"
+    },
+    {
+        id: "giganexus70",
+        name: "GigaNexus70",
+        url: "https://giganexus70.me",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 70 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-02-01"
+    },
+    {
+        id: "neozone71",
+        name: "NeoZone71",
+        url: "https://neozone71.tv",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 71 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-03-29"
+    },
+    {
+        id: "gigahub72",
+        name: "GigaHub72",
+        url: "https://gigahub72.me",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 72 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.9,
+        addedAt: "2026-03-26"
+    },
+    {
+        id: "weebplanet73",
+        name: "WeebPlanet73",
+        url: "https://weebplanet73.tv",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 73 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.1,
+        addedAt: "2026-03-31"
+    },
+    {
+        id: "megastream74",
+        name: "MegaStream74",
+        url: "https://megastream74.tv",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 74 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-01-22"
+    },
+    {
+        id: "otakuden75",
+        name: "OtakuDen75",
+        url: "https://otakuden75.com",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 75 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.6,
+        addedAt: "2026-01-19"
+    },
+    {
+        id: "supersanctuary76",
+        name: "SuperSanctuary76",
+        url: "https://supersanctuary76.com",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 76 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-02-18"
+    },
+    {
+        id: "supervault77",
+        name: "SuperVault77",
+        url: "https://supervault77.to",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 77 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-04-15"
+    },
+    {
+        id: "hentaihub78",
+        name: "HentaiHub78",
+        url: "https://hentaihub78.moe",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 78 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.0,
+        addedAt: "2026-02-08"
+    },
+    {
+        id: "megavault79",
+        name: "MegaVault79",
+        url: "https://megavault79.moe",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 79 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-02-13"
+    },
+    {
+        id: "weebden80",
+        name: "WeebDen80",
+        url: "https://weebden80.tv",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 80 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.5,
+        addedAt: "2026-02-18"
+    },
+    {
+        id: "tokyonexus81",
+        name: "TokyoNexus81",
+        url: "https://tokyonexus81.io",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 81 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-04-29"
+    },
+    {
+        id: "superworld82",
+        name: "SuperWorld82",
+        url: "https://superworld82.net",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 82 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.5,
+        addedAt: "2026-03-18"
+    },
+    {
+        id: "weebspace83",
+        name: "WeebSpace83",
+        url: "https://weebspace83.moe",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 83 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-01-15"
+    },
+    {
+        id: "megaspace84",
+        name: "MegaSpace84",
+        url: "https://megaspace84.me",
+        category: "Anime Streaming",
+        description: "A fantastic new anime streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 84 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-03-25"
+    },
+    {
+        id: "hentaizone85",
+        name: "HentaiZone85",
+        url: "https://hentaizone85.moe",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 85 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.7,
+        addedAt: "2026-04-28"
+    },
+    {
+        id: "weebden86",
+        name: "WeebDen86",
+        url: "https://weebden86.tv",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 86 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-03-21"
+    },
+    {
+        id: "megaplanet87",
+        name: "MegaPlanet87",
+        url: "https://megaplanet87.moe",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 87 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.6,
+        addedAt: "2026-02-02"
+    },
+    {
+        id: "megaspace88",
+        name: "MegaSpace88",
+        url: "https://megaspace88.net",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 88 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.3,
+        addedAt: "2026-02-10"
+    },
+    {
+        id: "gigavault89",
+        name: "GigaVault89",
+        url: "https://gigavault89.moe",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 89 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.2,
+        addedAt: "2026-03-13"
+    },
+    {
+        id: "superworld90",
+        name: "SuperWorld90",
+        url: "https://superworld90.io",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 90 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.0,
+        addedAt: "2026-01-27"
+    },
+    {
+        id: "superplanet91",
+        name: "SuperPlanet91",
+        url: "https://superplanet91.tv",
+        category: "Manga/Doujin",
+        description: "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 91 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-01-16"
+    },
+    {
+        id: "tokyozone92",
+        name: "TokyoZone92",
+        url: "https://tokyozone92.me",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 92 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.8,
+        addedAt: "2026-03-28"
+    },
+    {
+        id: "gigazone93",
+        name: "GigaZone93",
+        url: "https://gigazone93.to",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 93 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.9,
+        addedAt: "2026-04-27"
+    },
+    {
+        id: "hentainexus94",
+        name: "HentaiNexus94",
+        url: "https://hentainexus94.me",
+        category: "Hentai Streaming",
+        description: "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 94 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-02-01"
+    },
+    {
+        id: "megasanctuary95",
+        name: "MegaSanctuary95",
+        url: "https://megasanctuary95.io",
+        category: "Games",
+        description: "A fantastic new games destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 95 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.1,
+        addedAt: "2026-04-01"
+    },
+    {
+        id: "tokyostream96",
+        name: "TokyoStream96",
+        url: "https://tokyostream96.com",
+        category: "Visual Novels",
+        description: "A fantastic new visual novels destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 96 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.2,
+        addedAt: "2026-02-21"
+    },
+    {
+        id: "weebden97",
+        name: "WeebDen97",
+        url: "https://weebden97.moe",
+        category: "Downloads",
+        description: "A fantastic new downloads destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 97 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.9,
+        addedAt: "2026-03-29"
+    },
+    {
+        id: "tokyosanctuary98",
+        name: "TokyoSanctuary98",
+        url: "https://tokyosanctuary98.me",
+        category: "Images/Boorus",
+        description: "A fantastic new images/boorus destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 98 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 4.6,
+        addedAt: "2026-01-21"
+    },
+    {
+        id: "ultrastream99",
+        name: "UltraStream99",
+        url: "https://ultrastream99.me",
+        category: "Communities",
+        description: "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 99 in our massive expansion.",
+        tags: ["Community Submitted","New","HD"],
+        rating: 3.7,
+        addedAt: "2026-05-02"
+    }
 ];
 
 // Extract unique categories and tags for the UI filters
