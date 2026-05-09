@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Search filter
             const matchesSearch = site.name.toLowerCase().includes(searchQuery) || 
                                   site.description.toLowerCase().includes(searchQuery) ||
+                                  site.category.toLowerCase().includes(searchQuery) ||
                                   site.tags.some(t => t.toLowerCase().includes(searchQuery));
             
             // Category filter
@@ -181,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        visible.forEach(site => {
+        visible.forEach((site, index) => {
             const urlObj = new URL(site.url);
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
@@ -211,6 +212,17 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             siteGrid.appendChild(card);
+
+            // Inject in-content ad after card 12 (mid-grid)
+            if (index === 11 && total > 12) {
+                const adDiv = document.createElement('div');
+                adDiv.className = 'card ad-inline-grid';
+                adDiv.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 8px 0; background: transparent; border: none; box-shadow: none;';
+                adDiv.innerHTML = `<ins class="eas6a97888e17" data-zoneid="5923038" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>`;
+                siteGrid.appendChild(adDiv);
+                // Trigger MagSrv to serve this zone
+                (window.AdProvider = window.AdProvider || []).push({ serve: {} });
+            }
         });
 
         // Show/hide Load More button
