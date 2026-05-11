@@ -1,6 +1,8 @@
-// app.js
+﻿// app.js
 
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initTheme();
     
     // --- DOM Elements ---
     const siteGrid = document.getElementById('siteGrid');
@@ -89,6 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyFiltersAndSort();
     syncMobileChips();
+    initAutocomplete();
+    initThemeToggle();
+    initAutocomplete();
+    initThemeToggle();
 
     // --- Functions ---
 
@@ -323,6 +329,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Sort
         currentSites.sort((a, b) => {
+            // Priority 0: Promoted sites always first
+            if (a.promoted && !b.promoted) return -1;
+            if (!a.promoted && b.promoted) return 1;
+
             if (currentSort === 'random') {
                 return a.randomOrder - b.randomOrder;
             } else if (currentSort === 'popular') {
@@ -392,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const localCat  = (t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category;
 
             const card = document.createElement('div');
-            card.className = 'card';
+            card.className = `card ${site.promoted ? 'promoted' : ''}`;
             card.innerHTML = `
                 ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
                 <div class="card-header">
@@ -521,4 +531,56 @@ document.addEventListener('DOMContentLoaded', () => {
         submitStatus.style.fontSize  = '0.9rem';
     }
 
+}
+    // === PROFESSIONAL FEATURES ===
+    function initTheme() {
+        const savedTheme = localStorage.getItem("hv_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+    function initThemeToggle() {
+        const toggle = document.getElementById("themeToggle");
+        if (!toggle) return;
+        toggle.onclick = () => {
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("hv_theme", next);
+        };
+    }
+    function initAutocomplete() {
+        const input = document.getElementById("searchInput");
+        const tray = document.getElementById("searchAutocomplete");
+        if (!input || !tray) return;
+        input.oninput = (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            if (val.length < 2) {
+                tray.classList.remove("active");
+                return;
+            }
+            const matches = sitesData.filter(s => 
+                s.name.toLowerCase().includes(val) || 
+                s.category.toLowerCase().includes(val)
+            ).slice(0, 6);
+            if (matches.length > 0) {
+                tray.innerHTML = matches.map(s => `
+                    <div class="autocomplete-item" onclick="window.location.href='site.html?id=${s.id}'">
+                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
+                        <div class="autocomplete-info">
+                            <div class="autocomplete-name">${s.name}</div>
+                            <div class="autocomplete-cat">${s.category}</div>
+                        </div>
+                    </div>
+                `).join("");
+                tray.classList.add("active");
+            } else {
+                tray.classList.remove("active");
+            }
+        };
+        document.addEventListener("click", (e) => {
+            if (!input.contains(e.target) && !tray.contains(e.target)) {
+                tray.classList.remove("active");
+            }
+        });
+    }
 });
+

@@ -147,8 +147,45 @@
                         <p style="margin-bottom:20px;">Visit the official site below.</p>
                         <a href="${site.url}" target="_blank" class="btn-visit" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">Visit ${localName} &rarr;</a>
                     </div>
+
+                    <div class="related-sites" style="margin-top: 60px;">
+                        <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
+                            <span>🔗</span> Similar Sites You May Like
+                        </h2>
+                        <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                            <!-- Related sites injected here -->
+                        </div>
+                    </div>
                 </div>
             `;
+
+            // Inject Related Sites
+            const related = sitesData
+                .filter(s => s.category === site.category && s.id !== site.id)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+            
+            const relatedGrid = document.getElementById('relatedGrid');
+            related.forEach(s => {
+                const sUrl = new URL(s.url);
+                const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=64`;
+                const sLocalName = s[`name_${currentLang}`] || s.name;
+                const sLocalCat = (t.categories && t.categories[s.category]) ? t.categories[s.category] : s.category;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img src="${sFavicon}" alt="" class="card-icon">
+                        <div>
+                            <div class="card-title"><a href="site.html?id=${s.id}" style="color:inherit;">${sLocalName}</a></div>
+                            <div class="card-category">${sLocalCat}</div>
+                        </div>
+                    </div>
+                    <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${s[`description_${currentLang}`] || s.description}</div>
+                `;
+                relatedGrid.appendChild(card);
+            });
         });
     </script>
 </body>
