@@ -249,7 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
         loadMoreBtn.style.display = (visible.length < total) ? 'inline-block' : 'none';
     }
 
-    // Load More
+    // Infinite Scroll (Load Automatically)
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
+            currentPage++;
+            renderSites();
+        }
+    }, { rootMargin: '300px' }); // Load before they hit the bottom
+
+    observer.observe(loadMoreBtn);
+
+    // Keep click event as a fallback
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
         renderSites();
