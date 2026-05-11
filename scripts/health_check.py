@@ -44,9 +44,8 @@ def run_health_check():
         print("Error: Could not parse sitesData from data.js")
         return
 
-    # To avoid complex JS parsing, we'll extract individual site objects
-    # This is a bit fragile but works for the current format
-    site_blocks = re.findall(r'\{\s+id:.*?\s+\}', match.group(1), re.DOTALL)
+    # Extract individual site objects more robustly
+    site_blocks = re.findall(r'\{\s*id:.*?\s*\}', match.group(1), re.DOTALL)
     
     sites = []
     for block in site_blocks:

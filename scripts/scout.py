@@ -163,7 +163,7 @@ def main():
     try:
         with open(DATA_FILE, 'r', encoding='utf-8') as f:
             content = f.read()
-            existing_urls = re.findall(r'"url":\s*"([^"]+)"', content)
+            existing_urls = re.findall(r'url:\s*"([^"]+)"', content)
     except: existing_urls = []
     links = scout_links()
     new_sites = validate_and_enrich(links, existing_urls)
