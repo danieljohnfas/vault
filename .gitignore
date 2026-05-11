@@ -8,7 +8,7 @@
 # Scraper / dev tools
 scraper.py
 *.py
-!scripts/scout.py
+!scripts/*.py
 __pycache__/
 
 # OS

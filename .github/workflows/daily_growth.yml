@@ -1,12 +1,12 @@
-name: Daily Growth Scout
+name: Master Automation Suite
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Every day at midnight UTC
-  workflow_dispatch: # Allow manual trigger
+    - cron: '0 0 * * *' # Midnight UTC
+  workflow_dispatch:
 
 jobs:
-  scout:
+  automate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,13 +25,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r scripts/requirements.txt
 
-    - name: Run HV Scout
+    - name: 1. Scout & Translate
       run: python scripts/scout.py
 
-    - name: Commit and Push Changes
+    - name: 2. Health Check
+      run: python scripts/health_check.py
+
+    - name: 3. SEO & Sitemap Generation
+      run: python scripts/seo_gen.py
+
+    - name: Commit Changes
       run: |
-        git config --global user.name 'HV-Scout-Bot'
-        git config --global user.email 'scout-bot@hentaivault.me'
-        git add js/data.js
-        git commit -m "chore: automated daily growth - added 100 new sites [skip ci]" || echo "No changes to commit"
+        git config --global user.name 'HV-Master-Bot'
+        git config --global user.email 'bot@hentaivault.me'
+        git add js/data.js sitemap.xml
+        git commit -m "chore: master automation update [skip ci]" || echo "No changes"
         git push
+
+    - name: 4. Telegram Broadcast
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      run: python scripts/broadcast.py
