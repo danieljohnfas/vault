@@ -30,6 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ITEMS_PER_PAGE = 24;
 
     // --- State ---
+    let currentSites = [];
+    let activeCategories = [];
+    let activeTags = [];
+    let searchQuery = "";
+    let currentSort = "random";
+    let currentPage = 1;
+
     try {
         // Assign a random order to each site on page load for consistent shuffling
         if (typeof sitesData !== 'undefined' && Array.isArray(sitesData)) {
@@ -39,14 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("sitesData is not defined or not an array");
         }
     } catch (e) { console.error("State init failed", e); }
-    let activeCategories = [];
-    let activeTags = [];
-    let searchQuery = "";
-    let currentSort = "random";
-    let currentPage = 1;
 
     // --- Favorites Logic ---
-    let favorites = JSON.parse(localStorage.getItem('hv_favorites') || '[]');
+    let favorites = [];
+    try {
+        favorites = JSON.parse(localStorage.getItem('hv_favorites') || '[]');
+    } catch (e) { console.error("Favorites parse failed", e); }
     let showFavoritesOnly = false;
 
     // --- Age Gate ---
@@ -136,19 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
 
         // Render Categories
-        ALL_CATEGORIES.forEach(cat => {
-            const label = document.createElement('label');
-            const displayLabel = t.categories && t.categories[cat] ? t.categories[cat] : cat;
-            label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-cb"> ${displayLabel}`;
-            categoryFiltersContainer.appendChild(label);
-        });
+        if (typeof ALL_CATEGORIES !== 'undefined') {
+            ALL_CATEGORIES.forEach(cat => {
+                const label = document.createElement('label');
+                const displayLabel = t.categories && t.categories[cat] ? t.categories[cat] : cat;
+                label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-cb"> ${displayLabel}`;
+                categoryFiltersContainer.appendChild(label);
+            });
+        }
 
         // Render Tags
-        ALL_TAGS.forEach(tag => {
-            const label = document.createElement('label');
-            label.innerHTML = `<input type="checkbox" value="${tag}" class="tag-cb"> ${tag}`;
-            tagFiltersContainer.appendChild(label);
-        });
+        if (typeof ALL_TAGS !== 'undefined') {
+            ALL_TAGS.forEach(tag => {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="checkbox" value="${tag}" class="tag-cb"> ${tag}`;
+                tagFiltersContainer.appendChild(label);
+            });
+        }
 
         // Add Listeners
         document.querySelectorAll('.cat-cb').forEach(cb => {
