@@ -22,7 +22,7 @@ def broadcast_updates():
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     # Find sites added today
-    added_today = re.findall(f'"addedAt":\s*"{today}"', content)
+    added_today = re.findall(rf'"addedAt":\s*"{today}"', content)
     count = len(added_today)
 
     if count == 0:
