@@ -552,7 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitStatus.style.fontSize  = '0.9rem';
     }
 
-}
     // === PROFESSIONAL FEATURES ===
     function initTheme() {
         const savedTheme = localStorage.getItem("hv_theme") || "dark";
@@ -604,4 +603,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 
