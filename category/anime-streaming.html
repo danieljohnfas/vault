@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -53,7 +53,7 @@
 
 </head>
 <body>
-    <div class="age-gate hidden" id="ageGate"><div class="age-gate-box"><div class="age-gate-icon">🔞</div><h2>Adults Only</h2><p>This website contains adult content.</p><p class="age-gate-sub">You must be <strong>18 years of age or older</strong> to enter.</p><div class="age-gate-buttons"><button class="btn-enter" id="btnEnter">I am 18+ — Enter</button><a href="https://www.google.com" class="btn-leave">I am under 18 — Leave</a></div><p class="age-gate-legal">By entering, you confirm you are of legal age in your jurisdiction.</p></div></div>
+    <div class="age-gate hidden" id="ageGate"><div class="age-gate-box"><div class="age-gate-icon">🔞</div><h2>Adults Only</h2><p>This website contains adult content.</p><p class="age-gate-sub">You must be <strong>18 years of age or older</strong> to enter.</p><div class="age-gate-buttons"><button class="btn-enter" id="btnEnter" onclick="localStorage.setItem('hv_age_verified','true'); document.getElementById('ageGate').classList.add('hidden');">I am 18+ — Enter</button><a href="https://www.google.com" class="btn-leave">I am under 18 — Leave</a></div><p class="age-gate-legal">By entering, you confirm you are of legal age in your jurisdiction.</p></div></div>
     
     <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
     <div class="skyscraper skyscraper-left">
@@ -264,6 +264,7 @@
     </style>
 </body>
 </html>
+
 
 
 

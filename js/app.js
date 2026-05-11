@@ -1,8 +1,9 @@
-﻿// app.js
+// app.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    initTheme();
+    try {
+        initTheme();
+    } catch (e) { console.error("Theme init failed", e); }
     
     // --- DOM Elements ---
     const siteGrid = document.getElementById('siteGrid');
@@ -29,10 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const ITEMS_PER_PAGE = 24;
 
     // --- State ---
-    // Assign a random order to each site on page load for consistent shuffling
-    sitesData.forEach(site => { site.randomOrder = Math.random(); });
-    
-    let currentSites = [...sitesData];
+    try {
+        // Assign a random order to each site on page load for consistent shuffling
+        if (typeof sitesData !== 'undefined' && Array.isArray(sitesData)) {
+            sitesData.forEach(site => { site.randomOrder = Math.random(); });
+            currentSites = [...sitesData];
+        } else {
+            console.error("sitesData is not defined or not an array");
+        }
+    } catch (e) { console.error("State init failed", e); }
     let activeCategories = [];
     let activeTags = [];
     let searchQuery = "";
@@ -44,13 +50,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let showFavoritesOnly = false;
 
     // --- Age Gate ---
-    if (localStorage.getItem('hv_age_verified') === 'true') {
-        ageGate.classList.add('hidden');
-    }
-    btnEnter.addEventListener('click', () => {
-        localStorage.setItem('hv_age_verified', 'true');
-        ageGate.classList.add('hidden');
-    });
+    try {
+        if (localStorage.getItem('hv_age_verified') === 'true') {
+            if (ageGate) ageGate.classList.add('hidden');
+        }
+        if (btnEnter) {
+            btnEnter.addEventListener('click', () => {
+                try {
+                    localStorage.setItem('hv_age_verified', 'true');
+                } catch (e) {}
+                if (ageGate) ageGate.classList.add('hidden');
+            });
+        }
+    } catch (e) { console.error("Age gate init failed", e); }
 
     // --- Mobile Search Toggle ---
     btnSearchMobile.addEventListener('click', () => {
@@ -89,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    applyFiltersAndSort();
-    syncMobileChips();
-    initAutocomplete();
-    initThemeToggle();
-    initAutocomplete();
-    initThemeToggle();
+    try {
+        applyFiltersAndSort();
+        syncMobileChips();
+        initAutocomplete();
+        initThemeToggle();
+    } catch (e) { console.error("Initialization failed", e); }
 
     // --- Functions ---
 
