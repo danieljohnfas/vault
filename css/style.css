@@ -832,17 +832,16 @@ select {
     right: 20px;
 }
 
-/* Only show the side skyscrapers if the screen is wider than 1760px
-   (1400px layout + 2*160px ads + 40px margins) */
-@media (min-width: 1760px) {
+/* Show both skyscrapers on screens 1550px and wider */
+@media (min-width: 1550px) {
     .skyscraper {
         display: block;
     }
 }
 
-/* Show only the right skyscraper if screen is between 1500px and 1759px */
+/* On screens where both ads are visible but space is tight, compress the main layout */
 @media (min-width: 1550px) and (max-width: 1759px) {
-    .skyscraper-right {
-        display: block;
+    .main-layout {
+        max-width: 1150px;
     }
 }
