@@ -46,8 +46,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    <!-- MagSrv Ad Network -->
-    <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+    <!-- MagSrv Ad Network (ExoClick dependency — keep for when ExoClick approves) -->
+    <!-- <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> -->
+
+    <!-- Adsterra SocialBar (loads globally) -->
+    <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+
+    <!-- Adsterra Popunder (fires once per session on first click) -->
+    <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
@@ -97,10 +103,19 @@
         </div>
     </header>
 
-    <!-- Ad Leaderboard -->
+    <!-- Ad Leaderboard — Adsterra 728x90 -->
     <div class="ad-container leaderboard">
-        <ins class="eas6a97888e2" data-zoneid="5923022" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>
-        <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        <!-- ExoClick (re-enable when approved): <ins class="eas6a97888e2" data-zoneid="5923022" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins><script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script> -->
+        <script>
+          atOptions = {
+            'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
     </div>
 
     <!-- Main Layout -->
@@ -133,10 +148,19 @@
                 </div>
             </div>
 
-            <!-- Ad Sidebar -->
+            <!-- Ad Sidebar — Adsterra 300x250 -->
             <div class="ad-container sidebar-ad">
-                <ins class="eas6a97888e2" data-zoneid="5923024" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>
-                <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+                <!-- ExoClick (re-enable when approved): <ins class="eas6a97888e2" data-zoneid="5923024" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins><script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script> -->
+                <script>
+                  atOptions = {
+                    'key' : '384264be4aaafb8eb28962829e409253',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script src="https://www.highperformanceformat.com/384264be4aaafb8eb28962829e409253/invoke.js"></script>
             </div>
         </aside>
 
@@ -154,6 +178,12 @@
                 <!-- Site Cards injected via JS -->
             </div>
             
+            <!-- Adsterra NativeBanner — in-feed between listings -->
+            <div class="ad-container native-banner" style="margin: 20px 0;">
+                <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
+                <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
+            </div>
+
             <div class="pagination">
                 <button id="loadMore" class="btn-outline">Load More</button>
             </div>
@@ -222,11 +252,12 @@
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
 
-    <!-- ExoClick Sticky Banner (zone 5923038) — auto-sticks to bottom of screen -->
-    <ins class="eas6a97888e17" data-zoneid="5923038" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>
-    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+    <!-- ExoClick Sticky Banner — commented out until ExoClick approves -->
+    <!-- <ins class="eas6a97888e17" data-zoneid="5923038" data-keywords="anime hentai" data-sub="123450000" data-block-ad-types="0" data-ex_av="name"></ins>
+    <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script> -->
 
-    <!-- ExoClick Popunder (zone 5923034) — fires once per session on first click -->
+    <!-- ExoClick Popunder — commented out (Adsterra popunder active in <head> instead) -->
+    <!--
     <script type="application/javascript">
     (function() {
         function randStr(e,t){for(var n="",r=t||"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",o=0;o<e;o++)n+=r.charAt(Math.floor(Math.random()*r.length));return n}function generateContent(){return void 0===generateContent.val&&(generateContent.val="document.dispatchEvent("+randStr(4*Math.random()+3)+");"),generateContent.val}try{Object.defineProperty(document.currentScript,"innerHTML",{get:generateContent}),Object.defineProperty(document.currentScript,"textContent",{get:generateContent})}catch(e){};
@@ -235,6 +266,7 @@
         popMagic.init(adConfig);
     })();
     </script>
+    -->
 
     <!-- Unique Visitor Hit Tracker -->
     <script>
