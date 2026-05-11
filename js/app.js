@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSort = "random";
     let currentPage = 1;
 
+    // --- Favorites Logic ---
+    let favorites = JSON.parse(localStorage.getItem('hv_favorites') || '[]');
+    let showFavoritesOnly = false;
+
     // --- Age Gate ---
     if (localStorage.getItem('hv_age_verified') === 'true') {
         ageGate.classList.add('hidden');
@@ -84,10 +88,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     applyFiltersAndSort();
+    syncMobileChips();
 
     // --- Functions ---
 
     function initFilters() {
+        // Inject Favorites Toggle into Sidebar
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            const favToggle = document.createElement('div');
+            favToggle.className = 'fav-toggle-group';
+            favToggle.innerHTML = `
+                <label class="fav-toggle-label">
+                    <span>❤️ My Favorites</span>
+                    <label class="switch">
+                        <input type="checkbox" id="favToggle">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            `;
+            sidebar.prepend(favToggle);
+            
+            document.getElementById('favToggle').addEventListener('change', (e) => {
+                showFavoritesOnly = e.target.checked;
+                applyFiltersAndSort();
+            });
+        }
+
         // Render Categories
         ALL_CATEGORIES.forEach(cat => {
             const label = document.createElement('label');
@@ -107,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cb.addEventListener('change', (e) => {
                 if(e.target.checked) activeCategories.push(e.target.value);
                 else activeCategories = activeCategories.filter(c => c !== e.target.value);
+                syncMobileChips();
                 applyFiltersAndSort();
             });
         });
@@ -155,21 +183,134 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeModal();
             }
         });
+
+        // --- Mobile Specific UI Injection ---
+        const sidebarMain = document.querySelector('.sidebar');
+        if (sidebarMain && window.innerWidth <= 900) {
+            initMobileFilters(sidebarMain);
+        }
+    }
+
+    function initMobileFilters(sidebar) {
+        // Create Sidebar Overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+
+        // Add Close Button to Sidebar
+        const closeBtn = document.createElement('div');
+        closeBtn.className = 'sidebar-close';
+        closeBtn.innerHTML = '✕';
+        sidebar.prepend(closeBtn);
+
+        // Create Mobile Filter Bar
+        const mobileFilterBar = document.createElement('div');
+        mobileFilterBar.className = 'mobile-filter-bar';
+
+        // 1. Category Chips
+        const chipContainer = document.createElement('div');
+        chipContainer.className = 'chip-container';
+        
+        // "All" Chip
+        const allChip = document.createElement('div');
+        allChip.className = 'filter-chip active';
+        allChip.innerText = 'All';
+        allChip.onclick = () => {
+            activeCategories = [];
+            document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
+            syncMobileChips();
+            applyFiltersAndSort();
+        };
+        chipContainer.appendChild(allChip);
+
+        ALL_CATEGORIES.forEach(cat => {
+            const chip = document.createElement('div');
+            chip.className = 'filter-chip';
+            if (activeCategories.includes(cat)) chip.classList.add('active');
+            chip.innerText = cat;
+            chip.onclick = () => {
+                const checkbox = Array.from(document.querySelectorAll('.cat-cb')).find(cb => cb.value === cat);
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            };
+            chipContainer.appendChild(chip);
+        });
+
+        // 2. Control Row (Filters Toggle & Results)
+        const ctrlRow = document.createElement('div');
+        ctrlRow.className = 'mobile-ctrl-row';
+        
+        const filterToggle = document.createElement('button');
+        filterToggle.className = 'btn-mobile-filter';
+        filterToggle.innerHTML = '<span>⚙️</span> Sort & Tags';
+        filterToggle.onclick = () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const mobileResults = document.createElement('div');
+        mobileResults.id = 'mobileResultsCount';
+        mobileResults.style.fontSize = '0.85rem';
+        mobileResults.style.color = 'var(--text-muted)';
+
+        ctrlRow.appendChild(filterToggle);
+        ctrlRow.appendChild(mobileResults);
+
+        mobileFilterBar.appendChild(chipContainer);
+        mobileFilterBar.appendChild(ctrlRow);
+
+        // Inject before the grid
+        const listings = document.querySelector('.listings');
+        if (listings) {
+            listings.insertBefore(mobileFilterBar, siteGrid);
+        }
+
+        // Sidebar logic
+        const closeSidebar = () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        closeBtn.onclick = closeSidebar;
+        overlay.onclick = closeSidebar;
+    }
+
+    function syncMobileChips() {
+        const chips = document.querySelectorAll('.filter-chip');
+        if (chips.length === 0) return;
+
+        chips.forEach(chip => {
+            if (chip.innerText === 'All') {
+                if (activeCategories.length === 0) chip.classList.add('active');
+                else chip.classList.remove('active');
+            } else {
+                if (activeCategories.includes(chip.innerText)) chip.classList.add('active');
+                else chip.classList.remove('active');
+            }
+        });
     }
 
     function applyFiltersAndSort() {
         // Filter
         currentSites = sitesData.filter(site => {
+            // Favorites filter
+            if (showFavoritesOnly && !favorites.includes(site.id)) return false;
+
             // Search filter
-            const matchesSearch = site.name.toLowerCase().includes(searchQuery) || 
+            const matchesSearch = searchQuery === "" || 
+                                  site.name.toLowerCase().includes(searchQuery) || 
                                   site.description.toLowerCase().includes(searchQuery) ||
                                   site.category.toLowerCase().includes(searchQuery) ||
                                   site.tags.some(t => t.toLowerCase().includes(searchQuery));
             
-            // Category filter
+            // Category filter (Match Any - OR logic for categories makes sense for UX)
             const matchesCategory = activeCategories.length === 0 || activeCategories.includes(site.category);
             
-            // Tags filter (MUST have all active tags)
+            // Tags filter (Match ALL - AND logic for power users)
             const matchesTags = activeTags.length === 0 || activeTags.every(t => site.tags.includes(t));
 
             return matchesSearch && matchesCategory && matchesTags;
@@ -180,7 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentSort === 'random') {
                 return a.randomOrder - b.randomOrder;
             } else if (currentSort === 'popular') {
-                // Weighted score: rating * 2 + recency bonus
                 const scoreA = a.rating * 2 + (new Date(a.addedAt) / 1e11);
                 const scoreB = b.rating * 2 + (new Date(b.addedAt) / 1e11);
                 return scoreB - scoreA;
@@ -205,15 +345,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
 
         const startIdx = total === 0 ? 0 : 1;
-        resultsCount.innerText = `Showing ${startIdx} - ${visible.length} of ${total} Sites`;
+        const countText = `Showing ${startIdx} - ${visible.length} of ${total} Sites`;
+        resultsCount.innerText = countText;
+
+        const mobileCount = document.getElementById('mobileResultsCount');
+        if (mobileCount) mobileCount.innerText = countText;
 
         if (total === 0) {
-            siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No sites found matching your filters.</p>`;
+            const emptyMsg = showFavoritesOnly 
+                ? "You haven't saved any favorites yet! Click the ❤️ icon on any site to save it."
+                : "No sites found matching your filters.";
+            siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px; line-height: 1.6;">${emptyMsg}</p>`;
             loadMoreBtn.style.display = 'none';
             return;
         }
 
-        visible.forEach((site, index) => {
+        visible.forEach((site) => {
+            const isNew = (new Date() - new Date(site.addedAt)) < (30 * 24 * 60 * 60 * 1000); // 30 days
+            const isTrending = site.rating >= 4.8 || (isNew && site.rating >= 4.5);
+            
             const urlObj = new URL(site.url);
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
@@ -224,13 +374,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const halfStar = site.rating % 1 !== 0;
             let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - Math.ceil(site.rating));
 
+            const isFav = favorites.includes(site.id);
+
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
+                ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
                 <div class="card-header">
                     <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
-                        <div class="card-title">${site.name}</div>
+                        <a href="site.html?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
+                            <div class="card-title">${site.name}</div>
+                        </a>
                         <div class="card-category">${site.category}</div>
                     </div>
                 </div>
@@ -238,15 +393,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-tags">${tagsHtml}</div>
                 <div class="card-footer">
                     <div class="rating" title="Rating: ${site.rating}/5">${starsHtml}</div>
-                    <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Visit &rarr;</a>
+                    <div class="card-actions">
+                        <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
+                            ${isFav ? '❤️' : '🤍'}
+                        </button>
+                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Visit &rarr;</a>
+                    </div>
                 </div>
             `;
             
+            // Add Favorite Listener
+            const favBtn = card.querySelector('.btn-favorite');
+            favBtn.onclick = (e) => {
+                e.preventDefault();
+                toggleFavorite(site.id, favBtn);
+            };
+
             siteGrid.appendChild(card);
         });
 
-        // Show/hide Load More button
         loadMoreBtn.style.display = (visible.length < total) ? 'inline-block' : 'none';
+    }
+
+    function toggleFavorite(id, btn) {
+        if (favorites.includes(id)) {
+            favorites = favorites.filter(favId => favId !== id);
+            btn.classList.remove('active');
+            btn.innerHTML = '🤍';
+        } else {
+            favorites.push(id);
+            btn.classList.add('active');
+            btn.innerHTML = '❤️';
+        }
+        localStorage.setItem('hv_favorites', JSON.stringify(favorites));
+        
+        // If we are in "Favorites Only" mode, re-filter immediately
+        if (showFavoritesOnly) {
+            applyFiltersAndSort();
+        }
     }
 
     // Infinite Scroll (Load Automatically)
@@ -255,11 +439,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPage++;
             renderSites();
         }
-    }, { rootMargin: '300px' }); // Load before they hit the bottom
+    }, { rootMargin: '300px' });
 
     observer.observe(loadMoreBtn);
 
-    // Keep click event as a fallback
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
         renderSites();

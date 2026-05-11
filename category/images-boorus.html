@@ -72,7 +72,14 @@
         </script>
         <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
-<nav class="navbar"><div class="nav-container"><a href="/" class="logo"><span class="logo-icon">🔞</span> HentaiVault</a><div class="search-bar"><input type="text" id="searchInput" placeholder="Search..."></div><button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button><a href="#" class="btn-submit" id="btnSubmitSite">Submit a Site</a></div></nav>
+<nav class="navbar"><div class="nav-container"><a href="/" class="logo"><span class="logo-icon">🔞</span> HentaiVault</a><div class="search-bar"><input type="text" id="searchInput" placeholder="Search..."></div><button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+<div class="lang-switcher" style="margin-right: 15px;">
+    <select onchange="setLanguage(this.value)" style="background: var(--bg-surface-elevated); color: var(--text-main); border: 1px solid var(--border); border-radius: 4px; padding: 2px 5px; cursor: pointer;">
+        <option value="en">🇺🇸 EN</option>
+        <option value="es">🇪🇸 ES</option>
+        <option value="jp">🇯🇵 JP</option>
+    </select>
+</div><a href='#' class='btn-submit' id="btnSubmitSite">Submit a Site</a></div></nav>
     <header class="hero"><div class="hero-content"><h1>Best Anime Image & Booru Sites</h1><p>Explore the top imageboards and boorus for anime art and hentai — millions of tagged images.</p></div></header>
     <!-- Ad Leaderboard - Adsterra 728x90 -->
     <div class="ad-container leaderboard">
@@ -93,6 +100,12 @@
         <section class="listings">
             <div class="listings-header"><h2 id="resultsCount">Loading...</h2><div class="view-toggles"><button class="active" id="gridView">Grid</button><button id="listView">List</button></div></div>
             <noscript><p style="text-align:center;padding:60px;color:#a1a1aa;font-family:Inter,sans-serif">Please enable JavaScript to browse HentaiVault.</p></noscript><div class="grid-container" id="siteGrid"></div>
+                        <!-- Adsterra NativeBanner — in-feed between listings -->
+            <div class="ad-container native-banner" style="margin: 20px 0;">
+                <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
+                <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
+            </div>
+
             <div class="pagination"><button id="loadMore" class="btn-outline">Load More</button></div>
         </section>
     </main>
@@ -100,7 +113,7 @@
         <div class="footer-content">
             <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
             <div class="footer-links">
-                <a href="/about">About Us</a>
+                <a href="/blog" style="color: var(--primary);">Blog / Guides</a><a href="/about">About Us</a>
                 <a href="/disclaimer">Disclaimer</a>
                 <a href="/terms">Terms of Service</a>
                 <a href="/privacy">Privacy Policy</a>
@@ -140,7 +153,7 @@
             window.open(_hvsl, '_blank', 'noopener');
         }, { passive: true });
     })();
-    </script><script src="../js/data.js"></script><script src="../js/app.js"></script>
+    </script><script src="../js/data.js"></script><script src="../js/i18n.js"></script><script src="../js/app.js"></script>
     <!-- ExoClick Sticky Banner - commented out until ExoClick approves -->
 
     <!-- Unique Visitor Hit Tracker -->
@@ -150,5 +163,98 @@
             new Image().src = "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23002d72&style=flat-square&tz=UTC";
         }
     </script>
+    <!-- ── QR Code Widget ─────────────────────────────────────────────────── -->
+    <div id="qr-widget" title="Scan to visit on mobile">
+        <div id="qr-label">📱 Scan Me</div>
+        <img id="qr-img"
+             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
+             alt="QR Code — HentaiVault.me"
+             width="160" height="160">
+        <p id="qr-caption">hentaivault.me</p>
+    </div>
+
+    <style>
+    #qr-widget {
+        position: fixed;
+        top: 85px;
+        right: 28px;
+        z-index: 999;
+        background: rgba(24,24,27,0.85);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,42,95,0.4);
+        border-radius: 24px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 0 24px rgba(255,42,95,0.25);
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        overflow: hidden;
+        width: 130px;
+        height: 44px;
+        animation: pulse-qr 2.5s infinite;
+    }
+    @keyframes pulse-qr {
+        0% { box-shadow: 0 0 0 0 rgba(255,42,95,0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(255,42,95,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,42,95,0); }
+    }
+    #qr-widget:hover {
+        width: 188px;
+        height: 230px;
+        padding: 16px;
+        border-radius: 16px;
+        border-color: rgba(255,42,95,0.7);
+        box-shadow: 0 0 36px rgba(255,42,95,0.4);
+        animation: none;
+    }
+    #qr-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ff2a5f;
+        white-space: nowrap;
+        opacity: 1;
+        letter-spacing: 0.03em;
+        margin-top: 0;
+        transition: font-size 0.2s;
+    }
+    #qr-widget:hover #qr-label {
+        font-size: 0.75rem;
+        margin-top: 4px;
+    }
+    #qr-img {
+        border-radius: 10px;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.25s ease 0.15s;
+        display: block;
+    }
+    #qr-widget:hover #qr-img { opacity: 1; height: 160px; }
+    #qr-caption {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.72rem;
+        color: #a1a1aa;
+        margin: 0;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.2s ease 0.2s;
+        letter-spacing: 0.04em;
+    }
+    #qr-widget:hover #qr-caption { opacity: 1; height: auto; margin-top: 6px; }
+    @media (max-width: 600px) {
+        #qr-widget { bottom: 16px; right: 16px; top: auto; width: 48px; height: 48px; border-radius: 16px; }
+        #qr-widget #qr-label { display: none; }
+        #qr-widget::before { content: '▦'; font-size: 1.6rem; color: #ff2a5f; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); line-height: 1; }
+        #qr-widget:hover::before { display: none; }
+    }
+    </style>
 </body>
 </html>
+
+
+
