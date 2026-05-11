@@ -103,19 +103,26 @@
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
+            // Localization lookup
+            const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+            const localName = site[`name_${currentLang}`] || site.name;
+            const localDesc = site[`description_${currentLang}`] || site.description;
+            const localCat  = (t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category;
+            const localReview = site[`longReview_${currentLang}`] || site.longReview;
+
             document.getElementById('reviewContainer').innerHTML = `
                 <div class="review-header">
-                    <img src="${faviconUrl}" alt="${site.name}" class="review-icon">
+                    <img src="${faviconUrl}" alt="${localName}" class="review-icon">
                     <div class="review-meta">
-                        <div class="review-badge">${site.category}</div>
-                        <h1>${site.name}</h1>
+                        <div class="review-badge">${localCat}</div>
+                        <h1>${localName}</h1>
                         <div class="rating">Rating: ${'★'.repeat(Math.floor(site.rating))}☆</div>
                     </div>
                 </div>
 
                 <div class="review-content">
                     <h2>Expert Review</h2>
-                    <p>${site.longReview || site.description + ' ' + site.name + ' has established itself as a premier destination for ' + site.category.toLowerCase() + ' enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.'}</p>
+                    <p>${localReview || localDesc + ' ' + localName + ' has established itself as a premier destination for ' + localCat.toLowerCase() + ' enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.'}</p>
                     
                     <div class="pros-cons">
                         <div class="pc-box pros">
@@ -133,12 +140,12 @@
                     </div>
 
                     <h2>Conclusion</h2>
-                    <p>If you are looking for a reliable source for ${site.category}, ${site.name} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.</p>
+                    <p>If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.</p>
 
                     <div class="cta-box">
                         <h3>Ready to explore?</h3>
                         <p style="margin-bottom:20px;">Visit the official site below.</p>
-                        <a href="${site.url}" target="_blank" class="btn-visit" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">Visit ${site.name} &rarr;</a>
+                        <a href="${site.url}" target="_blank" class="btn-visit" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">Visit ${localName} &rarr;</a>
                     </div>
                 </div>
             `;

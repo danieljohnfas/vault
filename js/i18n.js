@@ -16,7 +16,20 @@ const TRANSLATIONS = {
         of: "of",
         sites: "Sites",
         load_more: "Load More Sites",
-        visit: "Visit"
+        visit: "Visit",
+        categories: {
+            "Anime Streaming": "Anime Streaming",
+            "Hentai Streaming": "Hentai Streaming",
+            "Manga/Doujin": "Manga & Doujin",
+            "Images/Boorus": "Images & Boorus",
+            "Games": "Adult Games",
+            "Communities": "Communities",
+            "Downloads": "Downloads",
+            "Visual Novels": "Visual Novels",
+            "Adult Studios": "Adult Studios",
+            "Adult VR": "Adult VR",
+            "Premium Creators": "Premium Creators"
+        }
     },
     es: {
         vault: "Bóveda",
@@ -35,7 +48,20 @@ const TRANSLATIONS = {
         of: "de",
         sites: "Sitios",
         load_more: "Cargar más sitios",
-        visit: "Visitar"
+        visit: "Visitar",
+        categories: {
+            "Anime Streaming": "Streaming de Anime",
+            "Hentai Streaming": "Streaming de Hentai",
+            "Manga/Doujin": "Manga y Doujin",
+            "Images/Boorus": "Imágenes y Boorus",
+            "Games": "Juegos Adultos",
+            "Communities": "Comunidades",
+            "Downloads": "Descargas",
+            "Visual Novels": "Novelas Visuales",
+            "Adult Studios": "Estudios Adultos",
+            "Adult VR": "VR Adulto",
+            "Premium Creators": "Creadores Premium"
+        }
     },
     jp: {
         vault: "ボルト",
@@ -54,7 +80,20 @@ const TRANSLATIONS = {
         of: "/",
         sites: "サイト",
         load_more: "もっと見る",
-        visit: "訪問する"
+        visit: "訪問する",
+        categories: {
+            "Anime Streaming": "アニメ配信",
+            "Hentai Streaming": "変態アニメ配信",
+            "Manga/Doujin": "漫画・同人",
+            "Images/Boorus": "画像・ブール",
+            "Games": "アダルトゲーム",
+            "Communities": "コミュニティ",
+            "Downloads": "ダウンロード",
+            "Visual Novels": "ビジュアルノベル",
+            "Adult Studios": "アダルトスタジオ",
+            "Adult VR": "アダルトVR",
+            "Premium Creators": "プレミアムクリエイター"
+        }
     }
 };
 

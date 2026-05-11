@@ -115,10 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+
         // Render Categories
         ALL_CATEGORIES.forEach(cat => {
             const label = document.createElement('label');
-            label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-cb"> ${cat}`;
+            const displayLabel = t.categories && t.categories[cat] ? t.categories[cat] : cat;
+            label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-cb"> ${displayLabel}`;
             categoryFiltersContainer.appendChild(label);
         });
 
@@ -223,11 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         chipContainer.appendChild(allChip);
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+
         ALL_CATEGORIES.forEach(cat => {
             const chip = document.createElement('div');
             chip.className = 'filter-chip';
             if (activeCategories.includes(cat)) chip.classList.add('active');
-            chip.innerText = cat;
+            chip.innerText = t.categories && t.categories[cat] ? t.categories[cat] : cat;
             chip.onclick = () => {
                 const checkbox = Array.from(document.querySelectorAll('.cat-cb')).find(cb => cb.value === cat);
                 if (checkbox) {
@@ -381,20 +386,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isFav = favorites.includes(site.id);
 
+            // Localization lookup
+            const localName = site[`name_${currentLang}`] || site.name;
+            const localDesc = site[`description_${currentLang}`] || site.description;
+            const localCat  = (t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category;
+
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
                 ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
                 <div class="card-header">
-                    <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                    <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
                         <a href="site.html?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
-                            <div class="card-title">${site.name}</div>
+                            <div class="card-title">${localName}</div>
                         </a>
-                        <div class="card-category">${site.category}</div>
+                        <div class="card-category">${localCat}</div>
                     </div>
                 </div>
-                <div class="card-desc">${site.description}</div>
+                <div class="card-desc">${localDesc}</div>
                 <div class="card-tags">${tagsHtml}</div>
                 <div class="card-footer">
                     <div class="rating" title="Rating: ${site.rating}/5">${starsHtml}</div>
