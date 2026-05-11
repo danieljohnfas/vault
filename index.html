@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -53,6 +53,7 @@
     <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
 
     <!-- Adsterra Popunder (fires once per session on first click) -->
+    <!-- Adsterra Smartlink (fallback revenue when display ads are disabled) -->
     <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
 
 <!-- Google Analytics -->
@@ -249,7 +250,23 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/data.js"></script>
+    
+    <!-- Adsterra Smartlink â€” fires on first click per session -->
+    <script>
+    (function(){
+        var _hvsl = 'https://www.profitablecpmratenetwork.com/iqvagsa61?key=c59eb4b7a34ac2c7b56283172ccf635f';
+        if (sessionStorage.getItem('hv_sl_fired')) return;
+        document.addEventListener('click', function _slHandler(e) {
+            if (sessionStorage.getItem('hv_sl_fired')) { document.removeEventListener('click', _slHandler); return; }
+            var tag = e.target ? (e.target.tagName || '').toUpperCase() : '';
+            // Only fire on real user clicks (not on age gate buttons or nav submit)
+            if (tag === 'BUTTON' && (e.target.id === 'btnEnter' || e.target.id === 'submitBtn')) return;
+            sessionStorage.setItem('hv_sl_fired', '1');
+            document.removeEventListener('click', _slHandler);
+            window.open(_hvsl, '_blank', 'noopener');
+        }, { passive: true });
+    })();
+    </script><script src="js/data.js"></script>
     <script src="js/app.js"></script>
 
     <!-- ExoClick Sticky Banner — commented out until ExoClick approves -->

@@ -71,7 +71,23 @@
         </div>
     </footer>
     <div class="modal" id="submitModal"><div class="modal-content"><span class="close-modal">&times;</span><h2>Submit a New Site</h2><p>Sites are <strong>automatically published</strong> after validation.</p><form id="submitForm"><div class="form-group"><label>Website Name</label><input type="text" name="site_name" required></div><div class="form-group"><label>URL</label><input type="url" name="url" placeholder="https://..." required></div><div class="form-group"><label>Category</label><select name="category" required><option value="Anime Streaming">Anime Streaming</option><option value="Hentai Streaming">Hentai Streaming</option><option value="Manga/Doujin" selected>Manga/Doujin</option><option value="Images/Boorus">Images/Boorus</option><option value="Games">Games</option><option value="Communities">Communities</option><option value="Visual Novels">Visual Novels</option></select></div><div class="form-group"><label>Description</label><textarea name="description" rows="3" required></textarea></div><div id="submitStatus" class="submit-status" style="display:none;"></div><button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button></form></div></div>
-    <script src="../js/data.js"></script><script src="../js/app.js"></script>
+    
+    <!-- Adsterra Smartlink â€” fires on first click per session -->
+    <script>
+    (function(){
+        var _hvsl = 'https://www.profitablecpmratenetwork.com/iqvagsa61?key=c59eb4b7a34ac2c7b56283172ccf635f';
+        if (sessionStorage.getItem('hv_sl_fired')) return;
+        document.addEventListener('click', function _slHandler(e) {
+            if (sessionStorage.getItem('hv_sl_fired')) { document.removeEventListener('click', _slHandler); return; }
+            var tag = e.target ? (e.target.tagName || '').toUpperCase() : '';
+            // Only fire on real user clicks (not on age gate buttons or nav submit)
+            if (tag === 'BUTTON' && (e.target.id === 'btnEnter' || e.target.id === 'submitBtn')) return;
+            sessionStorage.setItem('hv_sl_fired', '1');
+            document.removeEventListener('click', _slHandler);
+            window.open(_hvsl, '_blank', 'noopener');
+        }, { passive: true });
+    })();
+    </script><script src="../js/data.js"></script><script src="../js/app.js"></script>
     <!-- ExoClick Sticky Banner - commented out until ExoClick approves -->
 
     <!-- Unique Visitor Hit Tracker -->
