@@ -344,8 +344,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = currentSites.length;
         const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
 
+        const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         const startIdx = total === 0 ? 0 : 1;
-        const countText = `Showing ${startIdx} - ${visible.length} of ${total} Sites`;
+        const countText = `${t.showing} ${startIdx} - ${visible.length} ${t.of} ${total} ${t.sites}`;
         resultsCount.innerText = countText;
 
         const mobileCount = document.getElementById('mobileResultsCount');
@@ -353,8 +354,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (total === 0) {
             const emptyMsg = showFavoritesOnly 
-                ? "You haven't saved any favorites yet! Click the ❤️ icon on any site to save it."
-                : "No sites found matching your filters.";
+                ? (currentLang === 'es' ? "¡Aún no has guardado favoritos! Haz clic en el icono ❤️ para guardar." : 
+                   currentLang === 'jp' ? "お気に入りはまだありません。❤️アイコンをクリックして保存してください。" :
+                   "You haven't saved any favorites yet! Click the ❤️ icon on any site to save it.")
+                : (currentLang === 'es' ? "No se encontraron sitios con estos filtros." :
+                   currentLang === 'jp' ? "フィルターに一致するサイトが見つかりませんでした。" :
+                   "No sites found matching your filters.");
             siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px; line-height: 1.6;">${emptyMsg}</p>`;
             loadMoreBtn.style.display = 'none';
             return;
@@ -397,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
-                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Visit &rarr;</a>
+                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;
