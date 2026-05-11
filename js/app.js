@@ -54,6 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Surprise Me Button ---
+    const btnSurpriseMe = document.getElementById('btnSurpriseMe');
+    if (btnSurpriseMe) {
+        btnSurpriseMe.addEventListener('click', () => {
+            const randomSite = sitesData[Math.floor(Math.random() * sitesData.length)];
+            // Visual feedback
+            const originalText = btnSurpriseMe.innerHTML;
+            btnSurpriseMe.innerHTML = '<span style="font-size: 1.2rem;">✨</span> Opening...';
+            setTimeout(() => { btnSurpriseMe.innerHTML = originalText; }, 1000);
+            
+            // Open random site
+            window.open(randomSite.url, '_blank', 'noopener');
+        });
+    }
+
     // --- Initialization ---
     initFilters();
 

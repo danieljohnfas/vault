@@ -101,6 +101,12 @@
         <div class="hero-content">
             <h1>The Internet's #1 Anime & Hentai Directory</h1>
             <p>Explore thousands of curated, categorized, and rated sites.</p>
+            <div style="margin-top: 25px; display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <button id="btnSurpriseMe" style="font-family: Inter, sans-serif; font-size: 1rem; font-weight: 700; padding: 12px 28px; background: linear-gradient(135deg, #ff2a5f, #ff7e5f); color: #fff; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(255,42,95,0.4); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2rem;">🎲</span> Surprise Me
+                </button>
+                <a href="#resultsCount" style="font-family: Inter, sans-serif; font-size: 0.95rem; font-weight: 600; padding: 11px 24px; background: transparent; color: #fff; border: 2px solid rgba(255,42,95,0.5); border-radius: 8px; cursor: pointer; text-decoration: none; transition: background 0.2s ease;">Browse Vault</a>
+            </div>
         </div>
     </header>
 
@@ -306,76 +312,81 @@
     <style>
     #qr-widget {
         position: fixed;
-        bottom: 28px;
+        top: 85px;
         right: 28px;
         z-index: 999;
         background: rgba(24,24,27,0.85);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255,42,95,0.35);
-        border-radius: 16px;
-        padding: 10px;
+        border: 1px solid rgba(255,42,95,0.4);
+        border-radius: 24px;
+        padding: 0;
         cursor: pointer;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        box-shadow: 0 0 24px rgba(255,42,95,0.18);
+        box-shadow: 0 0 24px rgba(255,42,95,0.25);
         transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
         overflow: hidden;
-        width: 48px;
-        height: 48px;
+        width: 130px;
+        height: 44px;
+        animation: pulse-qr 2.5s infinite;
+    }
+    @keyframes pulse-qr {
+        0% { box-shadow: 0 0 0 0 rgba(255,42,95,0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(255,42,95,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,42,95,0); }
     }
     #qr-widget:hover {
         width: 188px;
         height: 230px;
         padding: 16px;
+        border-radius: 16px;
         border-color: rgba(255,42,95,0.7);
-        box-shadow: 0 0 36px rgba(255,42,95,0.35);
+        box-shadow: 0 0 36px rgba(255,42,95,0.4);
+        animation: none;
     }
     #qr-label {
         font-family: 'Inter', sans-serif;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         font-weight: 700;
         color: #ff2a5f;
         white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s ease 0.1s;
+        opacity: 1;
         letter-spacing: 0.03em;
+        margin-top: 0;
+        transition: font-size 0.2s;
     }
-    #qr-widget:hover #qr-label { opacity: 1; }
+    #qr-widget:hover #qr-label {
+        font-size: 0.75rem;
+        margin-top: 4px;
+    }
     #qr-img {
         border-radius: 10px;
         opacity: 0;
+        height: 0;
         transition: opacity 0.25s ease 0.15s;
         display: block;
     }
-    #qr-widget:hover #qr-img { opacity: 1; }
+    #qr-widget:hover #qr-img { opacity: 1; height: 160px; }
     #qr-caption {
         font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         color: #a1a1aa;
         margin: 0;
         opacity: 0;
+        height: 0;
         transition: opacity 0.2s ease 0.2s;
         letter-spacing: 0.04em;
     }
-    #qr-widget:hover #qr-caption { opacity: 1; }
-    /* The collapsed state shows just a small QR icon */
-    #qr-widget::before {
-        content: '▦';
-        font-size: 1.6rem;
-        color: #ff2a5f;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        transition: opacity 0.2s ease;
-        line-height: 1;
-    }
-    #qr-widget:hover::before { opacity: 0; pointer-events: none; }
+    #qr-widget:hover #qr-caption { opacity: 1; height: auto; margin-top: 6px; }
     @media (max-width: 600px) {
-        #qr-widget { bottom: 16px; right: 16px; }
+        #qr-widget { bottom: 16px; right: 16px; top: auto; width: 48px; height: 48px; border-radius: 16px; }
+        #qr-widget #qr-label { display: none; }
+        #qr-widget::before { content: '▦'; font-size: 1.6rem; color: #ff2a5f; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); line-height: 1; }
+        #qr-widget:hover::before { display: none; }
     }
     </style>
 </body>
