@@ -291,12 +291,7 @@ const sitesData = [
     { id: "perfectgonzo", name: "PerfectGonzo", url: "https://perfectgonzo.com", category: "Adult Studios", description: "Major studio network focusing entirely on the gonzo genre.", tags: ["Paid","Official","Network"], rating: 4.6, addedAt: "2026-05-09" },
     { id: "gammaentertainment", name: "Gamma Entertainment", url: "https://www.gammaentertainment.com", category: "Adult Studios", description: "Massive corporate umbrella managing dozens of premium adult brands.", tags: ["Paid","Official","Corporate"], rating: 4.8, addedAt: "2026-05-09" },
     { id: "pornstarplatinum", name: "Pornstar Platinum", url: "https://www.pornstarplatinum.com", category: "Adult Studios", description: "A network of official, performer-owned and directed studios.", tags: ["Paid","Official","Creators"], rating: 4.7, addedAt: "2026-05-09" }
-];
-
-// Extract unique categories and tags for the UI filters
-const ALL_CATEGORIES = [...new Set(sitesData.map(site => site.category))].sort();
-
-const allTagsRaw = [,
+,
     // === HENTAI STREAMING (15) ===
     { id: "nhentai", name: "nHentai", url: "https://nhentai.net", category: "Hentai Streaming", description: "The most famous doujinshi archive with millions of works in dozens of languages.", tags: ["Free","Doujin","Manga"], rating: 4.9, addedAt: "2026-01-10" },
     { id: "hanime", name: "Hanime.tv", url: "https://hanime.tv", category: "Hentai Streaming", description: "Premium hentai streaming with HD quality, huge catalog, and uncensored content.", tags: ["Free","Paid","HD"], rating: 4.8, addedAt: "2026-02-14" },
@@ -338,7 +333,7 @@ const allTagsRaw = [,
     { id: "konachan", name: "Konachan", url: "https://konachan.com", category: "Images/Boorus", description: "High-quality anime wallpapers sourced and tagged by a dedicated community.", tags: ["Free","Wallpapers","Curated"], rating: 4.7, addedAt: "2026-02-01" },
     { id: "yandere", name: "Yande.re", url: "https://yande.re", category: "Images/Boorus", description: "High-resolution anime image repository focused on scan quality.", tags: ["Free","HD","Scans"], rating: 4.8, addedAt: "2026-02-01" },
     { id: "e621", name: "E621", url: "https://e621.net", category: "Images/Boorus", description: "The largest and most comprehensive furry and anthropomorphic art database.", tags: ["Free","Furry","Tagged"], rating: 4.7, addedAt: "2026-03-01" },
-    { id: "rule34xxx", name: "Rule34.xxx", url: "https://rule34.xxx", category: "Images/Boorus", description: "Massive rule 34 image database â€” if it exists, it is here.", tags: ["Free","Rule34","Adult"], rating: 4.8, addedAt: "2026-01-12" },
+    { id: "rule34xxx", name: "Rule34.xxx", url: "https://rule34.xxx", category: "Images/Boorus", description: "Massive rule 34 image database — if it exists, it is here.", tags: ["Free","Rule34","Adult"], rating: 4.8, addedAt: "2026-01-12" },
     { id: "sankakuchan", name: "Sankaku Channel", url: "https://chan.sankakucomplex.com", category: "Images/Boorus", description: "Japanese-focused anime and cosplay imageboard with millions of tagged images.", tags: ["Free","Japanese","Cosplay"], rating: 4.6, addedAt: "2026-02-20" },
     { id: "pixiv", name: "Pixiv", url: "https://www.pixiv.net", category: "Images/Boorus", description: "Japan's largest art sharing platform with millions of anime and doujin artists.", tags: ["Free","Official","Artists"], rating: 4.9, addedAt: "2026-01-15" },
     { id: "zerochan", name: "Zerochan", url: "https://www.zerochan.net", category: "Images/Boorus", description: "Clean, curated anime artwork database with high-resolution images.", tags: ["Free","Curated","HD"], rating: 4.6, addedAt: "2026-03-10" },
@@ -390,6 +385,14 @@ const allTagsRaw = [,
     { id: "hentaifoundry", name: "Hentai Foundry", url: "https://www.hentai-foundry.com", category: "Communities", description: "Large artist community dedicated to anime-style adult artwork and stories.", tags: ["Free","Artists","Community"], rating: 4.7, addedAt: "2026-01-11" },
     { id: "deviantart", name: "DeviantArt", url: "https://www.deviantart.com", category: "Communities", description: "The world's largest online art community, home to millions of anime artists.", tags: ["Free","Artists","Mainstream"], rating: 4.7, addedAt: "2026-02-04" },
     { id: "newgrounds", name: "Newgrounds", url: "https://www.newgrounds.com", category: "Communities", description: "Pioneer entertainment portal hosting animations, games, and adult art.", tags: ["Free","Art","Games"], rating: 4.8, addedAt: "2026-03-06" },
-    { id: "twitter", name: "X (Twitter) â€” Anime", url: "https://twitter.com/search?q=%23anime", category: "Communities", description: "The primary social media platform for real-time anime news and artist discovery.", tags: ["Free","Social","News"], rating: 4.6, addedAt: "2026-01-16" },
-    { id: "discord", name: "Discord â€” Anime Servers", url: "https://disboard.org/servers/tag/anime", category: "Communities", description: "Directory of public anime Discord servers for fans and communities.", tags: ["Free","Community","Chat"], rating: 4.7, addedAt: "2026-02-23" }
+    { id: "twitter", name: "X (Twitter) — Anime", url: "https://twitter.com/search?q=%23anime", category: "Communities", description: "The primary social media platform for real-time anime news and artist discovery.", tags: ["Free","Social","News"], rating: 4.6, addedAt: "2026-01-16" },
+    { id: "discord", name: "Discord — Anime Servers", url: "https://disboard.org/servers/tag/anime", category: "Communities", description: "Directory of public anime Discord servers for fans and communities.", tags: ["Free","Community","Chat"], rating: 4.7, addedAt: "2026-02-23" }
+
 ];
+
+// Extract unique categories and tags for the UI filters
+const ALL_CATEGORIES = [...new Set(sitesData.map(site => site.category))].sort();
+
+const allTagsRaw = [];
+sitesData.forEach(site => site.tags.forEach(tag => allTagsRaw.push(tag)));
+const ALL_TAGS = [...new Set(allTagsRaw)].sort();
