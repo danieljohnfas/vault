@@ -843,5 +843,10 @@ select {
 @media (min-width: 1550px) and (max-width: 1759px) {
     .main-layout {
         max-width: 1150px;
+        grid-template-columns: 230px 1fr;
+        gap: 24px;
+    }
+    .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
 }
