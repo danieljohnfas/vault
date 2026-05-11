@@ -813,3 +813,36 @@ select {
 .legal-content li {
     margin-bottom: 10px;
 }
+
+/* ==========================================================================
+   Sticky Skyscraper Ads
+   ========================================================================== */
+.skyscraper {
+    position: fixed;
+    top: 110px;
+    width: 160px;
+    height: 600px;
+    display: none; /* Hidden by default to prevent overlapping */
+    z-index: 10;
+}
+.skyscraper-left {
+    left: 20px;
+}
+.skyscraper-right {
+    right: 20px;
+}
+
+/* Only show the side skyscrapers if the screen is wider than 1760px
+   (1400px layout + 2*160px ads + 40px margins) */
+@media (min-width: 1760px) {
+    .skyscraper {
+        display: block;
+    }
+}
+
+/* Show only the right skyscraper if screen is between 1500px and 1759px */
+@media (min-width: 1550px) and (max-width: 1759px) {
+    .skyscraper-right {
+        display: block;
+    }
+}
