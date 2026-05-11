@@ -1,23 +1,23 @@
 /* ==========================================================================
    Base Styles & Variables
    ========================================================================== */
-   :root {
+:root {
     /* Brand Colors - Vibrant Cyberpunk/Synthwave feel */
     --primary: #ff2a5f;
     --primary-hover: #ff003c;
     --secondary: #00e5ff;
     --accent: #b026ff;
-    
+
     /* Dark Theme Surfaces */
     --bg-base: #09090b;
     --bg-surface: #18181b;
     --bg-surface-elevated: #27272a;
     --bg-glass: rgba(24, 24, 27, 0.7);
-    
+
     /* Text */
     --text-main: #f4f4f5;
     --text-muted: #a1a1aa;
-    
+
     /* Utility */
     --border: #3f3f46;
     --border-glass: rgba(255, 255, 255, 0.1);
@@ -25,11 +25,11 @@
     --radius-md: 12px;
     --radius-lg: 20px;
     --radius-pill: 999px;
-    
+
     /* Shadows */
     --shadow-neon: 0 0 15px rgba(255, 42, 95, 0.3);
     --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    
+
     /* Transitions */
     --transition-fast: 0.15s ease-out;
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -219,6 +219,7 @@ a:hover {
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }
+
 .sidebar::-webkit-scrollbar-thumb {
     background: var(--border);
     border-radius: var(--radius-pill);
@@ -305,11 +306,13 @@ select {
 .grid-container.list-view {
     grid-template-columns: 1fr;
 }
+
 .grid-container.list-view .card {
     display: flex;
     align-items: center;
     text-align: left;
 }
+
 .grid-container.list-view .card-header {
     margin-bottom: 0;
     margin-right: 20px;
@@ -409,7 +412,8 @@ select {
 }
 
 .rating {
-    color: #fbbf24; /* Star gold */
+    color: #fbbf24;
+    /* Star gold */
     font-size: 0.9rem;
 }
 
@@ -483,7 +487,7 @@ select {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
@@ -506,8 +510,15 @@ select {
 }
 
 @keyframes modalSlideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .close-modal {
@@ -545,7 +556,9 @@ select {
     color: var(--text-muted);
 }
 
-.form-group input, .form-group select, .form-group textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 12px;
     background: var(--bg-base);
@@ -555,7 +568,9 @@ select {
     font-family: inherit;
 }
 
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
 }
@@ -577,13 +592,16 @@ select {
     .main-layout {
         grid-template-columns: 1fr;
     }
+
     .sidebar {
         position: static;
         height: auto;
     }
+
     .search-bar {
         display: none;
     }
+
     .search-bar.mobile-open {
         display: block;
         position: absolute;
@@ -595,9 +613,11 @@ select {
         border-bottom: 1px solid var(--border);
         z-index: 999;
     }
+
     .search-bar.mobile-open input {
         border-radius: var(--radius-md);
     }
+
     .btn-search-mobile {
         display: flex;
     }
@@ -785,7 +805,7 @@ select {
     -webkit-text-fill-color: transparent;
 }
 
-.legal-content > p:first-of-type {
+.legal-content>p:first-of-type {
     color: var(--text-muted);
     margin-bottom: 40px;
     font-size: 0.9rem;
@@ -800,7 +820,8 @@ select {
     padding-bottom: 8px;
 }
 
-.legal-content p, .legal-content ul {
+.legal-content p,
+.legal-content ul {
     color: #d4d4d8;
     line-height: 1.7;
     margin-bottom: 20px;
@@ -822,12 +843,15 @@ select {
     top: 110px;
     width: 160px;
     height: 600px;
-    display: none; /* Hidden by default to prevent overlapping */
+    display: none;
+    /* Hidden by default to prevent overlapping */
     z-index: 10;
 }
+
 .skyscraper-left {
     left: 20px;
 }
+
 .skyscraper-right {
     right: 20px;
 }
@@ -846,6 +870,7 @@ select {
         grid-template-columns: 230px 1fr;
         gap: 24px;
     }
+
     .grid-container {
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
