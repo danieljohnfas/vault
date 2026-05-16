@@ -15,7 +15,18 @@ CATEGORIES = [
     "games",
     "communities",
     "downloads",
-    "visual-novels"
+    "visual-novels",
+    "adult-studios",
+    "adult-vr",
+    "premium-creators",
+    "adult-dating",
+    "adult-stores",
+    "adult-tubes",
+    "audio-asmr",
+    "creator-platforms",
+    "erotica-reading",
+    "news-info",
+    "live-cams"
 ]
 
 def generate_sitemap():
@@ -55,7 +66,7 @@ def generate_sitemap():
 
     # Individual Site Detail Pages (If you had them as separate HTMLs, but you likely don't)
     # If your site uses site.html?id=XXX, we should list them here
-    ids = re.findall(r'id:\s*"([^"]+)"', content)
+    ids = re.findall(r'"id":\s*"([^"]+)"', content)
     for site_id in ids:
         sitemap += f'  <url>\n    <loc>{BASE_URL}/site.html?id={site_id}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n'
 

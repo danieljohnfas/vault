@@ -371,14 +371,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         currentPage = 1;
-        renderSites();
+        renderSites(false);
     }
 
-    function renderSites() {
-        siteGrid.innerHTML = '';
+    function renderSites(append = false) {
+        if (!append) siteGrid.innerHTML = '';
 
         const total = currentSites.length;
-        const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
+        const visible = append 
+            ? currentSites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+            : currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
 
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         const startIdx = total === 0 ? 0 : 1;
@@ -402,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         visible.forEach((site) => {
+            const isRecentlyAdded = (new Date() - new Date(site.addedAt)) < (7 * 24 * 60 * 60 * 1000); // 7 days
             const isNew = (new Date() - new Date(site.addedAt)) < (30 * 24 * 60 * 60 * 1000); // 30 days
             const isTrending = site.rating >= 4.8 || (isNew && site.rating >= 4.5);
             
@@ -422,10 +425,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const localDesc = site[`description_${currentLang}`] || site.description;
             const localCat  = (t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category;
 
+            // Format date
+            const addedDate = new Date(site.addedAt).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
+            const lastAddedLabel = `${t.added}: ${addedDate}`;
+
             const card = document.createElement('div');
             card.className = `card ${site.promoted ? 'promoted' : ''}`;
+            // Tracking & Linkbacks
+            const trackedUrl = (() => {
+                try {
+                    const u = new URL(site.url);
+                    u.searchParams.set('utm_source', 'hentaivault.me');
+                    u.searchParams.set('utm_medium', 'directory');
+                    u.searchParams.set('ref', 'hentaivault.me');
+                    return u.toString();
+                } catch (e) { return site.url; }
+            })();
+
             card.innerHTML = `
-                ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
+                <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
+                    ${isRecentlyAdded ? '<div class="new-badge">New</div>' : ''}
+                    ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
+                </div>
                 <div class="card-header">
                     <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
@@ -437,13 +458,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="card-desc">${localDesc}</div>
                 <div class="card-tags">${tagsHtml}</div>
+                <div class="last-added-label">${lastAddedLabel}</div>
                 <div class="card-footer">
                     <div class="rating" title="Rating: ${site.rating}/5">${starsHtml}</div>
                     <div class="card-actions">
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
-                        <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">${t.visit} &rarr;</a>
+                        <a href="${trackedUrl}" target="_blank" rel="noopener noreferrer" class="btn-visit">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;
@@ -483,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
             currentPage++;
-            renderSites();
+            renderSites(true);
         }
     }, { rootMargin: '300px' });
 
@@ -491,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
-        renderSites();
+        renderSites(true);
     });
 
     // ── Form Submission → /api/submit (Cloudflare Pages Function) ────────────

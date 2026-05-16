@@ -17,6 +17,7 @@ const TRANSLATIONS = {
         sites: "Sites",
         load_more: "Load More Sites",
         visit: "Visit",
+        added: "Added",
         categories: {
             "Anime Streaming": "Anime Streaming",
             "Hentai Streaming": "Hentai Streaming",
@@ -49,6 +50,7 @@ const TRANSLATIONS = {
         sites: "Sitios",
         load_more: "Cargar más sitios",
         visit: "Visitar",
+        added: "Agregado",
         categories: {
             "Anime Streaming": "Streaming de Anime",
             "Hentai Streaming": "Streaming de Hentai",
@@ -81,6 +83,7 @@ const TRANSLATIONS = {
         sites: "サイト",
         load_more: "もっと見る",
         visit: "訪問する",
+        added: "追加日",
         categories: {
             "Anime Streaming": "アニメ配信",
             "Hentai Streaming": "変態アニメ配信",
