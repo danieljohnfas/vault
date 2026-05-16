@@ -13,7 +13,7 @@ from urllib3.util.retry import Retry
 
 # --- Configuration ---
 DATA_FILE = "js/data.js"
-TARGET_COUNT = 100
+TARGET_COUNT = 200
 BLACKLIST = [
     "scam", "phishing", "malware", "virus", "hack", "crack", "free-money",
     "casino", "betting", "gambling", "crypto-giveaway", "survey-vortex",
