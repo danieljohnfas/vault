@@ -2,2076 +2,497 @@
 // Safe mode for compliance review - 100% Legal entities only.
 
 const sitesData = [
-    {
-            "id": "crunchyroll",
-            "name": "Crunchyroll",
-            "url": "https://www.crunchyroll.com",
-            "category": "Anime Streaming",
-            "description": "The world's largest collection of legal anime streaming.",
-            "description_es": "La colección más grande del mundo de streaming de anime legal.",
-            "description_jp": "世界最大級の公式アニメ配信サービスコレクション。",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Freemium"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "promoted": true
-    },
-    {
-            "id": "hidive",
-            "name": "HIDIVE",
-            "url": "https://www.hidive.com",
-            "category": "Anime Streaming",
-            "description": "Premium streaming known for uncut anime and exclusive dubs.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Uncensored"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "retrocrush",
-            "name": "RetroCrush",
-            "url": "https://www.retrocrush.tv",
-            "category": "Anime Streaming",
-            "description": "Dedicated exclusively to classic and retro anime titles.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Retro"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "asiancrush",
-            "name": "AsianCrush",
-            "url": "https://www.asiancrush.com",
-            "category": "Anime Streaming",
-            "description": "Asian cinema and anime streaming platform.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Ads"
-            ],
-            "rating": 3.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "rokuchannel",
-            "name": "Roku Channel",
-            "url": "https://therokuchannel.roku.com",
-            "category": "Anime Streaming",
-            "description": "Free ad-supported anime channels on Roku.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Ads"
-            ],
-            "rating": 3.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "plutotvanime",
-            "name": "Pluto TV Anime",
-            "url": "https://pluto.tv/en/live-tv/anime-all-day",
-            "category": "Anime Streaming",
-            "description": "Free live TV channels streaming anime 24/7.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Live TV"
-            ],
-            "rating": 4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "museasiayoutube",
-            "name": "Muse Asia (YouTube)",
-            "url": "https://www.youtube.com/c/MuseAsia",
-            "category": "Anime Streaming",
-            "description": "Official YouTube channel streaming free legal anime.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gundaminfoyoutube",
-            "name": "GundamInfo (YouTube)",
-            "url": "https://www.youtube.com/user/GundamInfo",
-            "category": "Anime Streaming",
-            "description": "The official portal for Gundam streaming worldwide.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "anioneyoutube",
-            "name": "Ani-One (YouTube)",
-            "url": "https://www.youtube.com/c/AniOneAsia",
-            "category": "Anime Streaming",
-            "description": "Official distributor streaming anime legally on YouTube.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "tubianime",
-            "name": "Tubi Anime",
-            "url": "https://tubitv.com/category/anime",
-            "category": "Anime Streaming",
-            "description": "Free ad-supported official anime streaming platform.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Ads"
-            ],
-            "rating": 4.1,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "iqiyi",
-            "name": "iQIYI",
-            "url": "https://www.iq.com",
-            "category": "Anime Streaming",
-            "description": "Official streaming service with a huge anime selection.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Mainstream"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "bilibili",
-            "name": "Bilibili",
-            "url": "https://www.bilibili.tv",
-            "category": "Anime Streaming",
-            "description": "Official Asian streaming platform with massive anime catalog.",
-            "tags": [
-                    "Official",
-                    "Freemium",
-                    "Mainstream"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "kanopy",
-            "name": "Kanopy",
-            "url": "https://www.kanopy.com",
-            "category": "Anime Streaming",
-            "description": "Educational and independent streaming including classic anime.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Library"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "hoopla",
-            "name": "Hoopla",
-            "url": "https://www.hoopladigital.com",
-            "category": "Anime Streaming",
-            "description": "Free streaming with a library card, includes anime.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Library"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "vizmedia",
-            "name": "Viz Media",
-            "url": "https://www.viz.com",
-            "category": "Manga/Doujin",
-            "description": "The largest English manga publisher. Read Shonen Jump online.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Mainstream"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "netflixanime",
-            "name": "Netflix Anime",
-            "url": "https://www.netflix.com/browse/genre/7424",
-            "category": "Anime Streaming",
-            "description": "Massive library of exclusive Netflix Original anime.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Mainstream"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "kodanshacomics",
-            "name": "Kodansha Comics",
-            "url": "https://kodansha.us",
-            "category": "Manga/Doujin",
-            "description": "Official digital and print manga publisher.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Manga"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "mangaplus",
-            "name": "Manga Plus",
-            "url": "https://mangaplus.shueisha.co.jp",
-            "category": "Manga/Doujin",
-            "description": "Official Shueisha manga reader. Free new chapters.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Shonen Jump"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "vuduanime",
-            "name": "Vudu Anime",
-            "url": "https://www.vudu.com",
-            "category": "Anime Streaming",
-            "description": "Purchase and stream official digital anime movies.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Movies"
-            ],
-            "rating": 4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "irodoricomics",
-            "name": "Irodori Comics",
-            "url": "https://irodoricomics.com",
-            "category": "Manga/Doujin",
-            "description": "Official localizer of doujinshi and adult manga.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Adult"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "contv",
-            "name": "CONtv",
-            "url": "https://www.contv.com",
-            "category": "Anime Streaming",
-            "description": "Geek culture network featuring a large anime catalog.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Ads"
-            ],
-            "rating": 3.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "sevenseas",
-            "name": "Seven Seas",
-            "url": "https://sevenseasentertainment.com",
-            "category": "Manga/Doujin",
-            "description": "Major publisher of manga and light novels.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Manga"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "yenpress",
-            "name": "Yen Press",
-            "url": "https://yenpress.com",
-            "category": "Manga/Doujin",
-            "description": "Leading publisher of manga and light novels.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Manga"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "jnovelclub",
-            "name": "J-Novel Club",
-            "url": "https://j-novel.club",
-            "category": "Manga/Doujin",
-            "description": "Official publisher of digital light novels and manga.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Light Novels"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "coolmic",
-            "name": "Coolmic",
-            "url": "https://coolmic.me",
-            "category": "Manga/Doujin",
-            "description": "Official digital comics and manga for smartphones.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Mobile"
-            ],
-            "rating": 4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "renta",
-            "name": "Renta!",
-            "url": "https://www.ebookrenta.com",
-            "category": "Manga/Doujin",
-            "description": "Official digital manga rental and purchasing service.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Store"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "inkrcomics",
-            "name": "INKR Comics",
-            "url": "https://inkr.com",
-            "category": "Manga/Doujin",
-            "description": "Official platform for manga, webtoons, and comics.",
-            "tags": [
-                    "Official",
-                    "Freemium",
-                    "Digital"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "tapas",
-            "name": "Tapas",
-            "url": "https://tapas.io",
-            "category": "Manga/Doujin",
-            "description": "Massive official platform for webcomics and novels.",
-            "tags": [
-                    "Official",
-                    "Freemium",
-                    "Webtoons"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "bookwalker",
-            "name": "BookWalker",
-            "url": "https://global.bookwalker.jp",
-            "category": "Manga/Doujin",
-            "description": "Kadokawa's official digital manga and light novel store.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Store"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "azuki",
-            "name": "Azuki",
-            "url": "https://www.azuki.co",
-            "category": "Manga/Doujin",
-            "description": "Official digital manga subscription service.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Digital"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "lezhin",
-            "name": "Lezhin",
-            "url": "https://www.lezhinus.com",
-            "category": "Manga/Doujin",
-            "description": "Premium webtoon and manhwa official publisher.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Webtoons"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "webtoon",
-            "name": "Webtoon",
-            "url": "https://www.webtoons.com",
-            "category": "Manga/Doujin",
-            "description": "The largest digital comic platform in the world.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Webtoons"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "steamvisualnovels",
-            "name": "Steam Visual Novels",
-            "url": "https://store.steampowered.com/tags/en/Visual+Novel/",
-            "category": "Visual Novels",
-            "description": "Steam's official visual novel catalog with thousands of titles.",
-            "tags": [
-                    "Free",
-                    "Paid",
-                    "Official"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "comixology",
-            "name": "Comixology",
-            "url": "https://www.amazon.com/comixology",
-            "category": "Manga/Doujin",
-            "description": "Amazon's official digital comic and manga platform.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Store"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "tappytoon",
-            "name": "Tappytoon",
-            "url": "https://www.tappytoon.com",
-            "category": "Manga/Doujin",
-            "description": "Official source for hit manhwa and webcomics.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Webtoons"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "itchio",
-            "name": "Itch.io",
-            "url": "https://itch.io/games/nsfw",
-            "category": "Games",
-            "description": "Indie game marketplace with a thriving official adult section.",
-            "tags": [
-                    "Free",
-                    "Paid",
-                    "Indie"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "denpasoft",
-            "name": "Denpasoft",
-            "url": "https://denpasoft.com",
-            "category": "Visual Novels",
-            "description": "Sekai Project's 18+ official storefront.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Eroge"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gogcom",
-            "name": "GOG.com",
-            "url": "https://www.gog.com",
-            "category": "Games",
-            "description": "DRM-free digital game store including visual novels.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "DRM-Free"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "shiravune",
-            "name": "Shiravune",
-            "url": "https://shiravune.com",
-            "category": "Visual Novels",
-            "description": "Official localizer of Japanese adult games.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "mangagamer",
-            "name": "MangaGamer",
-            "url": "https://www.mangagamer.com",
-            "category": "Visual Novels",
-            "description": "Official English localizer and distributor of Japanese eroge.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Eroge"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "nekonyan",
-            "name": "NekoNyan",
-            "url": "https://nekonyansoft.com",
-            "category": "Visual Novels",
-            "description": "High-quality visual novel localization company.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "johren",
-            "name": "Johren",
-            "url": "https://www.johren.net",
-            "category": "Games",
-            "description": "Official platform for anime RPGs and adult browser games.",
-            "tags": [
-                    "Free",
-                    "Freemium",
-                    "Browser Games"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "kaguragames",
-            "name": "Kagura Games",
-            "url": "https://kaguragames.com",
-            "category": "Visual Novels",
-            "description": "Publisher focusing on officially localized adult RPG Maker titles.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "RPG"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "sekaiproject",
-            "name": "Sekai Project",
-            "url": "https://sekaiproject.com",
-            "category": "Visual Novels",
-            "description": "Major localizer of all-ages visual novels.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "spikechunsoft",
-            "name": "Spike Chunsoft",
-            "url": "https://www.spike-chunsoft.com",
-            "category": "Games",
-            "description": "Creators of Danganronpa and Steins;Gate.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Developer"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "dmmgames",
-            "name": "DMM Games",
-            "url": "https://games.dmm.com",
-            "category": "Games",
-            "description": "Major Japanese publisher of browser and gacha games.",
-            "tags": [
-                    "Paid",
-                    "Freemium",
-                    "Japanese"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "aksysgames",
-            "name": "Aksys Games",
-            "url": "https://www.aksysgames.com",
-            "category": "Games",
-            "description": "Localizer famous for Zero Escape series.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "playism",
-            "name": "Playism",
-            "url": "https://playism.com",
-            "category": "Games",
-            "description": "Publisher bringing Japanese indie games to the West.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Indie"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "xseedgames",
-            "name": "XSEED Games",
-            "url": "https://www.xseedgames.com",
-            "category": "Games",
-            "description": "Major publisher of niche Japanese titles.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Publisher"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "nisa",
-            "name": "NISA",
-            "url": "https://nisamerica.com",
-            "category": "Games",
-            "description": "Publisher of Disgaea and Trails series.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Publisher"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "anilist",
-            "name": "AniList",
-            "url": "https://anilist.co",
-            "category": "Communities",
-            "description": "Modern anime and manga tracker with a sleek interface.",
-            "tags": [
-                    "Database",
-                    "Modern",
-                    "Social"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "animeplanet",
-            "name": "Anime-Planet",
-            "url": "https://www.anime-planet.com",
-            "category": "Communities",
-            "description": "Track anime, read manga legally, and engage in the community.",
-            "tags": [
-                    "Database",
-                    "Reviews",
-                    "Legal"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "kitsu",
-            "name": "Kitsu",
-            "url": "https://kitsu.io",
-            "category": "Communities",
-            "description": "A social media-style anime tracker and discovery engine.",
-            "tags": [
-                    "Database",
-                    "Social",
-                    "Discovery"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "myanimelist",
-            "name": "MyAnimeList",
-            "url": "https://myanimelist.net",
-            "category": "Communities",
-            "description": "The world's most active online anime and manga database.",
-            "tags": [
-                    "Database",
-                    "Community",
-                    "Reviews"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "marvelous",
-            "name": "Marvelous",
-            "url": "https://www.marvelousgames.com",
-            "category": "Games",
-            "description": "Publisher of Senran Kagura and Story of Seasons.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Publisher"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "kofi",
-            "name": "Ko-fi",
-            "url": "https://ko-fi.com",
-            "category": "Communities",
-            "description": "Support creators and artists directly.",
-            "tags": [
-                    "Paid",
-                    "Support",
-                    "Artists"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "vndb",
-            "name": "VNDB",
-            "url": "https://vndb.org",
-            "category": "Communities",
-            "description": "The Visual Novel Database. Comprehensive info on all VNs.",
-            "tags": [
-                    "Database",
-                    "Visual Novels",
-                    "Wiki"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "rmanga",
-            "name": "r/Manga",
-            "url": "https://www.reddit.com/r/manga",
-            "category": "Communities",
-            "description": "Reddit's primary hub for manga discussion.",
-            "tags": [
-                    "Community",
-                    "Discussion",
-                    "Manga"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "ranime",
-            "name": "r/Anime",
-            "url": "https://www.reddit.com/r/anime",
-            "category": "Communities",
-            "description": "The largest anime discussion board on Reddit.",
-            "tags": [
-                    "Community",
-                    "Discussion",
-                    "News"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "rvisualnovels",
-            "name": "r/VisualNovels",
-            "url": "https://www.reddit.com/r/visualnovels",
-            "category": "Communities",
-            "description": "Reddit's hub for visual novel fans and reviews.",
-            "tags": [
-                    "Community",
-                    "Discussion",
-                    "Visual Novels"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "crunchyrollstore",
-            "name": "Crunchyroll Store",
-            "url": "https://store.crunchyroll.com",
-            "category": "Communities",
-            "description": "Formerly RightStuf. The premier anime merchandise shop.",
-            "tags": [
-                    "Paid",
-                    "Merchandise",
-                    "Official"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "tokyootakumode",
-            "name": "Tokyo Otaku Mode",
-            "url": "https://otakumode.com",
-            "category": "Communities",
-            "description": "Official retailer for anime merchandise and figures.",
-            "tags": [
-                    "Paid",
-                    "Merchandise",
-                    "Official"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "goodsmile",
-            "name": "Good Smile",
-            "url": "https://www.goodsmile.info",
-            "category": "Communities",
-            "description": "Official creators of Nendoroids and Figma.",
-            "tags": [
-                    "Paid",
-                    "Merchandise",
-                    "Official"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "fanbox",
-            "name": "Fanbox",
-            "url": "https://www.fanbox.cc",
-            "category": "Communities",
-            "description": "Pixiv's official creator support platform.",
-            "tags": [
-                    "Paid",
-                    "Japanese",
-                    "Artists"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "siliconera",
-            "name": "Siliconera",
-            "url": "https://www.siliconera.com",
-            "category": "Communities",
-            "description": "News covering niche Japanese games and anime.",
-            "tags": [
-                    "News",
-                    "Games",
-                    "Journalism"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gematsu",
-            "name": "Gematsu",
-            "url": "https://www.gematsu.com",
-            "category": "Communities",
-            "description": "The fastest and most reliable Japanese gaming news.",
-            "tags": [
-                    "News",
-                    "Games",
-                    "Journalism"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "cdjapan",
-            "name": "CDJapan",
-            "url": "https://www.cdjapan.co.jp",
-            "category": "Communities",
-            "description": "Best place to legally import Japanese CDs and Blurays.",
-            "tags": [
-                    "Paid",
-                    "Imports",
-                    "Music"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "crunchyrollnews",
-            "name": "Crunchyroll News",
-            "url": "https://www.crunchyroll.com/news",
-            "category": "Communities",
-            "description": "Official news direct from the industry.",
-            "tags": [
-                    "News",
-                    "Official",
-                    "Updates"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "mandarake",
-            "name": "Mandarake",
-            "url": "https://order.mandarake.co.jp",
-            "category": "Communities",
-            "description": "Legendary second-hand anime goods retailer.",
-            "tags": [
-                    "Paid",
-                    "Merchandise",
-                    "Used"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "fantia",
-            "name": "Fantia",
-            "url": "https://fantia.jp",
-            "category": "Communities",
-            "description": "Toranoana's creator support network.",
-            "tags": [
-                    "Paid",
-                    "Japanese",
-                    "Artists"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "animecorner",
-            "name": "Anime Corner",
-            "url": "https://animecorner.me",
-            "category": "Communities",
-            "description": "Fast growing anime news and community polling site.",
-            "tags": [
-                    "News",
-                    "Community",
-                    "Updates"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "otakuusa",
-            "name": "Otaku USA",
-            "url": "https://otakuusamagazine.com",
-            "category": "Communities",
-            "description": "The premier print and digital anime magazine.",
-            "tags": [
-                    "News",
-                    "Magazine",
-                    "Official"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "qooapp",
-            "name": "QooApp",
-            "url": "https://www.qoo-app.com",
-            "category": "Communities",
-            "description": "News and downloads for Asian mobile games.",
-            "tags": [
-                    "News",
-                    "Mobile",
-                    "Games"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "slushy",
-            "name": "Slushy",
-            "url": "https://www.slushy.com",
-            "category": "Creator Platforms",
-            "description": "TikTok-style adult creator platform focusing on short-form vertical video.",
-            "tags": [
-                    "Official",
-                    "Freemium",
-                    "Mobile"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "loyalfans",
-            "name": "LoyalFans",
-            "url": "https://www.loyalfans.com",
-            "category": "Creator Platforms",
-            "description": "Creator-first platform allowing subscriptions, messaging, and live streaming.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Creators"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gumroad",
-            "name": "Gumroad",
-            "url": "https://gumroad.com",
-            "category": "Communities",
-            "description": "Digital marketplace used by many indie creators.",
-            "tags": [
-                    "Paid",
-                    "Marketplace",
-                    "Indie"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "animetrending",
-            "name": "Anime Trending",
-            "url": "https://anitrendz.net",
-            "category": "Communities",
-            "description": "Weekly anime charts and news voted by fans.",
-            "tags": [
-                    "News",
-                    "Charts",
-                    "Community"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "erome",
-            "name": "EroMe",
-            "url": "https://www.erome.com",
-            "category": "Adult Tubes",
-            "description": "User-submitted media sharing platform with verified takedown processes.",
-            "tags": [
-                    "Free",
-                    "Images",
-                    "Videos"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "blacked",
-            "name": "Blacked",
-            "url": "https://www.blacked.com",
-            "category": "Adult Studios",
-            "description": "Ultra-premium cinematic studio known for high production value.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Premium"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "teamskeet",
-            "name": "TeamSkeet",
-            "url": "https://www.teamskeet.com",
-            "category": "Adult Studios",
-            "description": "Massive network of smaller, high-energy studios.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Network"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "fancentro",
-            "name": "Fancentro",
-            "url": "https://fancentro.com",
-            "category": "Creator Platforms",
-            "description": "Major subscription platform for adult influencers and models.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Creators"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "sospoilt",
-            "name": "SoSpoilt",
-            "url": "https://sospoilt.com",
-            "category": "Creator Platforms",
-            "description": "Subscription and tipping platform for creators.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Creators"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "dogfartnetwork",
-            "name": "Dogfart Network",
-            "url": "https://www.dogfartnetwork.com",
-            "category": "Adult Studios",
-            "description": "One of the longest-running adult studio networks.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Studio"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "fleshlight",
-            "name": "Fleshlight",
-            "url": "https://www.fleshlight.com",
-            "category": "Adult Stores",
-            "description": "Official store for the famous male masturbation toy.",
-            "tags": [
-                    "Official",
-                    "Store",
-                    "Toys"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "pinkcherry",
-            "name": "PinkCherry",
-            "url": "https://www.pinkcherry.com",
-            "category": "Adult Stores",
-            "description": "Massive online retailer for adult novelties.",
-            "tags": [
-                    "Official",
-                    "Store",
-                    "Retail"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "zerotolerance",
-            "name": "Zero Tolerance",
-            "url": "https://zerotolerance.com",
-            "category": "Adult Studios",
-            "description": "Long-standing adult studio focusing on diverse genres.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Studio"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "hardx",
-            "name": "HardX",
-            "url": "https://www.hardx.com",
-            "category": "Adult Studios",
-            "description": "Premium studio focusing on intense gonzo scenes.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Gonzo"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "magmafilm",
-            "name": "Magmafilm",
-            "url": "https://www.magmafilm.com",
-            "category": "Adult Studios",
-            "description": "Classic German adult film production company.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "European"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "eroticax",
-            "name": "EroticaX",
-            "url": "https://www.eroticax.com",
-            "category": "Adult Studios",
-            "description": "High-end European erotica and sensual films.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "European"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "alua",
-            "name": "Alua",
-            "url": "https://alua.com",
-            "category": "Creator Platforms",
-            "description": "Messaging and content platform for influencers and models.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Creators"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "frisk",
-            "name": "Frisk",
-            "url": "https://frisk.chat",
-            "category": "Creator Platforms",
-            "description": "UK-based adult creator and social platform.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Creators"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "admireme",
-            "name": "AdmireMe",
-            "url": "https://admireme.vip",
-            "category": "Creator Platforms",
-            "description": "Subscription platform tailored for British models.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Creators"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "komiflo",
-            "name": "Komiflo",
-            "url": "https://komiflo.com",
-            "category": "Manga/Doujin",
-            "description": "Subscription service for officially licensed Japanese adult manga.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Japanese"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "toranoana",
-            "name": "Toranoana",
-            "url": "https://www.toranoana.jp",
-            "category": "Manga/Doujin",
-            "description": "Massive retailer for doujinshi and anime goods.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Store"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "nextdoorstudios",
-            "name": "NextDoorStudios",
-            "url": "https://www.nextdoorstudios.com",
-            "category": "Adult Studios",
-            "description": "Studio producing extremely popular high-definition gay content.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "LGBTQ+"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "ahme",
-            "name": "Ah-Me",
-            "url": "https://www.ah-me.com",
-            "category": "Adult Tubes",
-            "description": "Premium-quality tube site featuring verified content.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "HD"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "slixa",
-            "name": "Slixa",
-            "url": "https://www.slixa.com",
-            "category": "Adult Dating",
-            "description": "High-end adult entertainer directory.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Directory"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "dipsea",
-            "name": "Dipsea",
-            "url": "https://www.dipseastories.com",
-            "category": "Audio/ASMR",
-            "description": "Venture-backed premium audio erotica app designed for women.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Audio"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "smashwordserotica",
-            "name": "Smashwords Erotica",
-            "url": "https://www.smashwords.com",
-            "category": "Erotica/Reading",
-            "description": "Massive legal eBook retailer with a dedicated, uncensored erotica section.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Reading"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "itchionsfw",
-            "name": "Itch.io (NSFW)",
-            "url": "https://itch.io/games/nsfw",
-            "category": "Games",
-            "description": "The world's largest indie game storefront, featuring a massive, legal NSFW section.",
-            "tags": [
-                    "Paid",
-                    "Free",
-                    "Indie"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "steamadultonly",
-            "name": "Steam (Adult Only)",
-            "url": "https://store.steampowered.com",
-            "category": "Games",
-            "description": "Valve's storefront allows legally compliant, uncensored adult games.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Mainstream"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gog",
-            "name": "GOG",
-            "url": "https://www.gog.com",
-            "category": "Games",
-            "description": "DRM-free PC game storefront that legally hosts classic adult and leisure suit games.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Store"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "gammaentertainment",
-            "name": "Gamma Entertainment",
-            "url": "https://www.gammaentertainment.com",
-            "category": "Adult Studios",
-            "description": "Massive corporate umbrella managing dozens of premium adult brands.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Corporate"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09"
-    },
-    {
-            "id": "hentaihaven",
-            "name": "HentaiHaven",
-            "url": "https://hentaihaven.org",
-            "category": "Hentai Streaming",
-            "description": "One of the most popular dedicated hentai streaming platforms with a huge library.",
-            "description_es": "Una de las plataformas de streaming de hentai más populares con una biblioteca enorme.",
-            "description_jp": "膨大なライブラリを持つ、最も人気のある専用の変態アニメ配信プラットフォームの一つ。",
-            "tags": [
-                    "Free",
-                    "Streaming",
-                    "Community"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-03-01",
-            "longReview": "HentaiHaven is a cultural icon. After its recent 2026 overhaul, the site features a sleek new design and improved player performance, making it a must-visit for any fan of the medium.",
-            "pros": [
-                    "Iconic status",
-                    "Great discovery tools",
-                    "Uncensored catalog"
-            ],
-            "cons": [
-                    "Frequent domain changes",
-                    "Loading delays"
-            ]
-    },
-    {
-            "id": "hentai20",
-            "name": "Hentai20",
-            "url": "https://hentai20.io",
-            "category": "Hentai Streaming",
-            "description": "Modern hentai streaming site with high quality video and regular updates.",
-            "tags": [
-                    "Free",
-                    "HD",
-                    "Modern"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-01-25"
-    },
-    {
-            "id": "hentai2w",
-            "name": "Hentai2W",
-            "url": "https://hentai2.com",
-            "category": "Hentai Streaming",
-            "description": "Fast-loading hentai streaming portal with minimal ads.",
-            "tags": [
-                    "Free",
-                    "Fast",
-                    "Low-Ads"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-03-10"
-    },
-    {
-            "id": "hentaicomic",
-            "name": "HentaiComic",
-            "url": "https://hentaicomic.com",
-            "category": "Hentai Streaming",
-            "description": "Adult manga and doujinshi reading platform with clean navigation.",
-            "tags": [
-                    "Free",
-                    "Manga",
-                    "Doujin"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-03-05"
-    },
-    {
-            "id": "nyaa",
-            "name": "Nyaa",
-            "url": "https://nyaa.si",
-            "category": "Downloads",
-            "description": "The premier public anime, manga, and Japanese media torrent indexer.",
-            "tags": [
-                    "Free",
-                    "Torrents",
-                    "Anime"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-01-05"
-    },
-    {
-            "id": "animetosho",
-            "name": "AnimeTosho",
-            "url": "https://animetosho.org",
-            "category": "Downloads",
-            "description": "Mirrors Nyaa torrents and adds direct download and XDCC bot options.",
-            "tags": [
-                    "Free",
-                    "Direct Download",
-                    "Mirror"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-01-15"
-    },
-    {
-            "id": "anidl",
-            "name": "AniDL",
-            "url": "https://anidl.org",
-            "category": "Downloads",
-            "description": "Direct download links for popular anime series in various qualities.",
-            "tags": [
-                    "Free",
-                    "Direct Download",
-                    "Anime"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-01-20"
-    },
-    {
-            "id": "rawkuma",
-            "name": "RawKuma",
-            "url": "https://rawkuma.com",
-            "category": "Downloads",
-            "description": "High quality raw Japanese manga scan downloads.",
-            "tags": [
-                    "Free",
-                    "Manga",
-                    "Japanese"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-04-01"
-    },
-    {
-            "id": "dlraw",
-            "name": "DLRaw",
-            "url": "https://dlraw.to",
-            "category": "Downloads",
-            "description": "Download raw Japanese manga, light novels, and magazines.",
-            "tags": [
-                    "Free",
-                    "Manga",
-                    "Raw"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-02-08"
-    },
-    {
-            "id": "rawsenmanga",
-            "name": "SenManga Raw",
-            "url": "https://raw.senmanga.com",
-            "category": "Downloads",
-            "description": "Large collection of raw Japanese manga for reading and download.",
-            "tags": [
-                    "Free",
-                    "Manga",
-                    "Raw"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-01-28"
-    },
-    {
-            "id": "tokyotosho",
-            "name": "TokyoTosho",
-            "url": "https://www.tokyotosho.info",
-            "category": "Downloads",
-            "description": "One of the oldest Japanese media torrent trackers still active.",
-            "tags": [
-                    "Free",
-                    "Torrents",
-                    "Classic"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-03-05"
-    },
-    {
-            "id": "pixiv",
-            "name": "Pixiv",
-            "url": "https://www.pixiv.net",
-            "category": "Images/Boorus",
-            "description": "Japan's largest art sharing platform with millions of anime and doujin artists.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Artists"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-01-15"
-    },
-    {
-            "id": "gogoanime",
-            "name": "GogoAnime",
-            "url": "https://gogoanime3.co",
-            "category": "Anime Streaming",
-            "description": "One of the most popular free anime streaming portals with a massive library.",
-            "tags": [
-                    "Free",
-                    "Dubbed",
-                    "Subbed"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-01-18"
-    },
-    {
-            "id": "atfbooru",
-            "name": "ATFBooru",
-            "url": "https://booru.allthefallen.moe",
-            "category": "Images/Boorus",
-            "description": "Community-run imageboard for anime art with extensive tags.",
-            "tags": [
-                    "Free",
-                    "Community",
-                    "Tagged"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-03-25"
-    },
-    {
-            "id": "zoro",
-            "name": "Aniwave (Zoro)",
-            "url": "https://aniwave.to",
-            "category": "Anime Streaming",
-            "description": "Popular anime streaming site with no ads, multiple servers, and fast loading.",
-            "tags": [
-                    "Free",
-                    "No-Ads",
-                    "Fast"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-02-09"
-    },
-    {
-            "id": "animepahe",
-            "name": "AnimePahe",
-            "url": "https://animepahe.ru",
-            "category": "Anime Streaming",
-            "description": "Known for compressed, high-quality releases that load fast on slow connections.",
-            "tags": [
-                    "Free",
-                    "Compressed",
-                    "Fast"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-03-03"
-    },
-    {
-            "id": "animixplay",
-            "name": "AniMixPlay",
-            "url": "https://animixplay.to",
-            "category": "Anime Streaming",
-            "description": "Aggregator pulling streams from multiple sources for maximum reliability.",
-            "tags": [
-                    "Free",
-                    "Aggregator",
-                    "Reliable"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-03-18"
-    },
-    {
-            "id": "9anime",
-            "name": "9Anime",
-            "url": "https://9anime.pl",
-            "category": "Anime Streaming",
-            "description": "Long-running fan-operated anime streaming site with extensive catalog.",
-            "tags": [
-                    "Free",
-                    "Subbed",
-                    "Dubbed"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-01-22"
-    },
-    {
-            "id": "kickassanime",
-            "name": "KickAssAnime",
-            "url": "https://kickassanime.am",
-            "category": "Anime Streaming",
-            "description": "Fast-loading anime streaming site with proxy support and reliable servers.",
-            "tags": [
-                    "Free",
-                    "Fast",
-                    "Proxy"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-02-22"
-    },
-    {
-            "id": "animeowl",
-            "name": "AnimeOwl",
-            "url": "https://animeowl.me",
-            "category": "Anime Streaming",
-            "description": "Clean and fast anime streaming site with a large seasonal catalog.",
-            "tags": [
-                    "Free",
-                    "Seasonal",
-                    "Clean UI"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-04-08"
-    },
-    {
-            "id": "mangadex",
-            "name": "MangaDex",
-            "url": "https://mangadex.org",
-            "category": "Manga/Doujin",
-            "description": "Community-built manga reading platform with the widest selection and best translations.",
-            "description_es": "Plataforma de lectura de manga construida por la comunidad con la selección más amplia y mejores traducciones.",
-            "description_jp": "コミュニティによって構築された、幅広いセレクションと最高の翻訳を備えた漫画閲覧プラットフォーム。",
-            "tags": [
-                    "Free",
-                    "Community",
-                    "Multi-language"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-01-06",
-            "longReview": "MangaDex is the premier site for high-quality manga scanlations. Its lack of ads and commitment to the community have made it the gold standard for reading non-adult and borderline content in 2026.",
-            "pros": [
-                    "Zero intrusive ads",
-                    "High quality scans",
-                    "Active community"
-            ],
-            "cons": [
-                    "Legal pressure risks",
-                    "Occasional slow loading"
-            ],
-            "promoted": true
-    },
-    {
-            "id": "wcofun",
-            "name": "WCOFun",
-            "url": "https://www.wcofun.net",
-            "category": "Anime Streaming",
-            "description": "Anime and cartoon streaming portal popular for dubbed content.",
-            "tags": [
-                    "Free",
-                    "Dubbed",
-                    "Cartoons"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-03-22"
-    },
-    {
-            "id": "mangaowl",
-            "name": "MangaOwl",
-            "url": "https://mangaowl.net",
-            "category": "Manga/Doujin",
-            "description": "Clean manga reading interface with notifications for new chapter releases.",
-            "tags": [
-                    "Free",
-                    "Clean UI",
-                    "Notifications"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-03-12"
-    },
-    {
-            "id": "mangahub",
-            "name": "MangaHub",
-            "url": "https://mangahub.io",
-            "category": "Manga/Doujin",
-            "description": "Aggregator manga reader with a sleek UI and large catalog.",
-            "tags": [
-                    "Free",
-                    "Aggregator",
-                    "Modern"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-02-18"
-    },
-    {
-            "id": "copymanga",
-            "name": "CopyManga",
-            "url": "https://copymanga.site",
-            "category": "Manga/Doujin",
-            "description": "Massive Chinese manga aggregator with a huge selection of titles.",
-            "tags": [
-                    "Free",
-                    "Chinese",
-                    "Large Library"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-03-28"
-    },
-    {
-            "id": "toomics",
-            "name": "Toomics",
-            "url": "https://toomics.com",
-            "category": "Manga/Doujin",
-            "description": "Premium webtoon platform with exclusive adult romance and action series.",
-            "tags": [
-                    "Paid",
-                    "Webtoons",
-                    "Adult"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-02-26"
-    },
-    {
-            "id": "vntls",
-            "name": "VN TLS",
-            "url": "https://vntls.org",
-            "category": "Visual Novels",
-            "description": "Resource for fan-translated visual novels with translation patches.",
-            "tags": [
-                    "Free",
-                    "Translations",
-                    "Patches"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-01-23"
-    },
-    {
-            "id": "ryuugames",
-            "name": "Ryuu Games",
-            "url": "https://ryuugames.com",
-            "category": "Visual Novels",
-            "description": "Popular source for adult VN and RPG downloads with active community.",
-            "tags": [
-                    "Free",
-                    "RPG",
-                    "Community"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-04-16"
-    },
-    {
-            "id": "fancentro",
-            "name": "FanCentro",
-            "url": "https://fancentro.com",
-            "category": "Premium Creators",
-            "description": "Platform connecting fans with premium social media creators.",
-            "tags": [
-                    "Paid",
-                    "Creators",
-                    "Subscriptions"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-04-29"
-    },
-    {
-            "id": "frisk",
-            "name": "Frisk",
-            "url": "https://frisk.chat",
-            "category": "Premium Creators",
-            "description": "Platform focusing on adult social networking and subscriptions.",
-            "tags": [
-                    "Paid",
-                    "Social",
-                    "Creators"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-04-18"
-    },
-    {
-            "id": "loyalfans",
-            "name": "LoyalFans",
-            "url": "https://loyalfans.com",
-            "category": "Premium Creators",
-            "description": "Creator-first platform offering subscriptions, messaging, and live streams.",
-            "tags": [
-                    "Paid",
-                    "Creators",
-                    "Live"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-04-16"
-    },
-    {
-            "id": "slushy",
-            "name": "Slushy",
-            "url": "https://slushy.com",
-            "category": "Premium Creators",
-            "description": "TikTok-style swipeable feed for adult creators and subscriptions.",
-            "tags": [
-                    "Paid",
-                    "Mobile",
-                    "Swipe"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-02"
-    },
-    {
-            "id": "amateurcams",
-            "name": "AmateurCams",
-            "url": "https://amateurcams.com",
-            "category": "Live Cams",
-            "description": "Focuses strictly on amateur performers streaming from home.",
-            "tags": [
-                    "Free",
-                    "Amateur",
-                    "Live Cams"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-04"
-    },
-    {
-            "id": "blacked",
-            "name": "Blacked",
-            "url": "https://blacked.com",
-            "category": "Adult Studios",
-            "description": "High-end studio focusing exclusively on interracial scenes.",
-            "tags": [
-                    "Paid",
-                    "Interracial",
-                    "High-End"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-04-24"
-    },
-    {
-            "id": "zerotolerance",
-            "name": "Zero Tolerance",
-            "url": "https://zerotolerance.com",
-            "category": "Adult Studios",
-            "description": "Network focusing on fast-paced, high-energy gonzo scenes.",
-            "tags": [
-                    "Paid",
-                    "Gonzo",
-                    "Network"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-04-26"
-    },
-    {
-            "id": "manuelferrara",
-            "name": "Manuel Ferrara",
-            "url": "https://manuelferrara.com",
-            "category": "Adult Studios",
-            "description": "Official site for the legendary performer and director's content.",
-            "tags": [
-                    "Paid",
-                    "Director",
-                    "Gonzo"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-02"
-    },
-    {
-            "id": "passionhd",
-            "name": "Passion HD",
-            "url": "https://passion-hd.com",
-            "category": "Adult Studios",
-            "description": "Studio focusing on passionate, high-definition hardcore scenes.",
-            "tags": [
-                    "Paid",
-                    "HD",
-                    "Hardcore"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-06"
-    },
-    {
-            "id": "familystrokes",
-            "name": "Family Strokes",
-            "url": "https://familystrokes.com",
-            "category": "Adult Studios",
-            "description": "Brand specializing entirely in step-family roleplay themes.",
-            "tags": [
-                    "Paid",
-                    "Roleplay",
-                    "Fantasy"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-04-30"
-    },
-    {
-            "id": "peter-north",
-            "name": "Peter North",
-            "url": "https://peternorth.com",
-            "category": "Adult Studios",
-            "description": "Classic network from the legendary performer and director.",
-            "tags": [
-                    "Paid",
-                    "Classic",
-                    "Director"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-04-26"
-    },
-    {
-            "id": "danni",
-            "name": "Danni",
-            "url": "https://danni.com",
-            "category": "Premium Creators",
-            "description": "One of the original premium adult sites, featuring vast archives of models.",
-            "tags": [
-                    "Paid",
-                    "Archives",
-                    "Classic"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-04-19"
-    },
-    {
-            "id": "motherless",
-            "name": "Motherless",
-            "url": "https://motherless.com",
-            "category": "Communities",
-            "description": "Uncensored community platform focusing on extreme, bizarre, and amateur uploads.",
-            "tags": [
-                    "Free",
-                    "Amateur",
-                    "Uncensored"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-04-23"
-    },
-    {
-            "id": "boundhub",
-            "name": "BoundHub",
-            "url": "https://boundhub.com",
-            "category": "Communities",
-            "description": "Tube site and community specifically dedicated to BDSM content.",
-            "tags": [
-                    "Free",
-                    "BDSM",
-                    "Tube"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-04-25"
-    },
-    {
-            "id": "babesdirectory",
-            "name": "Babes Directory",
-            "url": "https://babesdirectory.online",
-            "category": "Communities",
-            "description": "Database and link hub for discovering premium models and studios.",
-            "tags": [
-                    "Free",
-                    "Directory",
-                    "Links"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-04-18"
-    }
+    { id: "crunchyroll", name: "Crunchyroll", url: "https://www.crunchyroll.com", category: "Anime Streaming", description: "The world's largest collection of legal anime streaming.", description_es: "La colección más grande del mundo de streaming de anime legal.", description_jp: "世界最大級の公式アニメ配信サービスコレクション。", tags: ["Official","Paid","Freemium"], rating: 4.8, addedAt: "2026-05-09", promoted: true },
+    { id: "hidive", name: "HIDIVE", url: "https://www.hidive.com", category: "Anime Streaming", description: "Premium streaming known for uncut anime and exclusive dubs.", tags: ["Paid","Official","Uncensored"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "netflixanime", name: "Netflix Anime", url: "https://www.netflix.com/browse/genre/7424", category: "Anime Streaming", description: "Massive library of exclusive Netflix Original anime.", tags: ["Paid","Official","Mainstream"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "huluanime", name: "Hulu Anime", url: "https://www.hulu.com/hub/anime", category: "Anime Streaming", description: "Great selection of licensed anime shows and movies.", tags: ["Paid","Official","Mainstream"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "amazonprimevideo", name: "Amazon Prime Video", url: "https://www.amazon.com/primevideo", category: "Anime Streaming", description: "Home to several exclusive legal anime broadcasts.", tags: ["Paid","Official","Mainstream"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "tubianime", name: "Tubi Anime", url: "https://tubitv.com/category/anime", category: "Anime Streaming", description: "Free ad-supported official anime streaming platform.", tags: ["Free","Official","Ads"], rating: 4.1, addedAt: "2026-05-09" },
+    { id: "retrocrush", name: "RetroCrush", url: "https://www.retrocrush.tv", category: "Anime Streaming", description: "Dedicated exclusively to classic and retro anime titles.", tags: ["Free","Official","Retro"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "asiancrush", name: "AsianCrush", url: "https://www.asiancrush.com", category: "Anime Streaming", description: "Asian cinema and anime streaming platform.", tags: ["Free","Official","Ads"], rating: 3.9, addedAt: "2026-05-09" },
+    { id: "plutotvanime", name: "Pluto TV Anime", url: "https://pluto.tv/en/live-tv/anime-all-day", category: "Anime Streaming", description: "Free live TV channels streaming anime 24/7.", tags: ["Free","Official","Live TV"], rating: 4, addedAt: "2026-05-09" },
+    { id: "rokuchannel", name: "Roku Channel", url: "https://therokuchannel.roku.com", category: "Anime Streaming", description: "Free ad-supported anime channels on Roku.", tags: ["Free","Official","Ads"], rating: 3.8, addedAt: "2026-05-09" },
+    { id: "museasiayoutube", name: "Muse Asia (YouTube)", url: "https://www.youtube.com/c/MuseAsia", category: "Anime Streaming", description: "Official YouTube channel streaming free legal anime.", tags: ["Free","Official","YouTube"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "anioneyoutube", name: "Ani-One (YouTube)", url: "https://www.youtube.com/c/AniOneAsia", category: "Anime Streaming", description: "Official distributor streaming anime legally on YouTube.", tags: ["Free","Official","YouTube"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "gundaminfoyoutube", name: "GundamInfo (YouTube)", url: "https://www.youtube.com/user/GundamInfo", category: "Anime Streaming", description: "The official portal for Gundam streaming worldwide.", tags: ["Free","Official","YouTube"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "bilibili", name: "Bilibili", url: "https://www.bilibili.tv", category: "Anime Streaming", description: "Official Asian streaming platform with massive anime catalog.", tags: ["Official","Freemium","Mainstream"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "iqiyi", name: "iQIYI", url: "https://www.iq.com", category: "Anime Streaming", description: "Official streaming service with a huge anime selection.", tags: ["Official","Paid","Mainstream"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "disney", name: "Disney+", url: "https://www.disneyplus.com", category: "Anime Streaming", description: "Home to massive exclusive anime titles like Bleach and Tokyo Revengers.", tags: ["Official","Paid","Mainstream"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "contv", name: "CONtv", url: "https://www.contv.com", category: "Anime Streaming", description: "Geek culture network featuring a large anime catalog.", tags: ["Official","Free","Ads"], rating: 3.7, addedAt: "2026-05-09" },
+    { id: "vuduanime", name: "Vudu Anime", url: "https://www.vudu.com", category: "Anime Streaming", description: "Purchase and stream official digital anime movies.", tags: ["Official","Paid","Movies"], rating: 4, addedAt: "2026-05-09" },
+    { id: "hoopla", name: "Hoopla", url: "https://www.hoopladigital.com", category: "Anime Streaming", description: "Free streaming with a library card, includes anime.", tags: ["Official","Free","Library"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "kanopy", name: "Kanopy", url: "https://www.kanopy.com", category: "Anime Streaming", description: "Educational and independent streaming including classic anime.", tags: ["Official","Free","Library"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "mangaplus", name: "Manga Plus", url: "https://mangaplus.shueisha.co.jp", category: "Manga/Doujin", description: "Official Shueisha manga reader. Free new chapters.", tags: ["Official","Free","Shonen Jump"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "vizmedia", name: "Viz Media", url: "https://www.viz.com", category: "Manga/Doujin", description: "The largest English manga publisher. Read Shonen Jump online.", tags: ["Official","Paid","Mainstream"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "fakku", name: "FAKKU!", url: "https://www.fakku.net", category: "Manga/Doujin", description: "The premier official publisher of English translated adult manga.", tags: ["Official","Paid","Adult"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "irodoricomics", name: "Irodori Comics", url: "https://irodoricomics.com", category: "Manga/Doujin", description: "Official localizer of doujinshi and adult manga.", tags: ["Official","Paid","Adult"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "denpa", name: "Denpa", url: "https://denpa.pub", category: "Manga/Doujin", description: "Boutique official English manga publisher.", tags: ["Official","Paid","Manga"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "sevenseas", name: "Seven Seas", url: "https://sevenseasentertainment.com", category: "Manga/Doujin", description: "Major publisher of manga and light novels.", tags: ["Official","Paid","Manga"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "yenpress", name: "Yen Press", url: "https://yenpress.com", category: "Manga/Doujin", description: "Leading publisher of manga and light novels.", tags: ["Official","Paid","Manga"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "kodanshacomics", name: "Kodansha Comics", url: "https://kodansha.us", category: "Manga/Doujin", description: "Official digital and print manga publisher.", tags: ["Official","Paid","Manga"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "azuki", name: "Azuki", url: "https://www.azuki.co", category: "Manga/Doujin", description: "Official digital manga subscription service.", tags: ["Official","Paid","Digital"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "jnovelclub", name: "J-Novel Club", url: "https://j-novel.club", category: "Manga/Doujin", description: "Official publisher of digital light novels and manga.", tags: ["Official","Paid","Light Novels"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "bookwalker", name: "BookWalker", url: "https://global.bookwalker.jp", category: "Manga/Doujin", description: "Kadokawa's official digital manga and light novel store.", tags: ["Official","Paid","Store"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "renta", name: "Renta!", url: "https://www.ebookrenta.com", category: "Manga/Doujin", description: "Official digital manga rental and purchasing service.", tags: ["Official","Paid","Store"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "coolmic", name: "Coolmic", url: "https://coolmic.me", category: "Manga/Doujin", description: "Official digital comics and manga for smartphones.", tags: ["Official","Paid","Mobile"], rating: 4, addedAt: "2026-05-09" },
+    { id: "inkrcomics", name: "INKR Comics", url: "https://inkr.com", category: "Manga/Doujin", description: "Official platform for manga, webtoons, and comics.", tags: ["Official","Freemium","Digital"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "lezhin", name: "Lezhin", url: "https://www.lezhinus.com", category: "Manga/Doujin", description: "Premium webtoon and manhwa official publisher.", tags: ["Official","Paid","Webtoons"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "tapas", name: "Tapas", url: "https://tapas.io", category: "Manga/Doujin", description: "Massive official platform for webcomics and novels.", tags: ["Official","Freemium","Webtoons"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "webtoon", name: "Webtoon", url: "https://www.webtoons.com", category: "Manga/Doujin", description: "The largest digital comic platform in the world.", tags: ["Official","Free","Webtoons"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "tappytoon", name: "Tappytoon", url: "https://www.tappytoon.com", category: "Manga/Doujin", description: "Official source for hit manhwa and webcomics.", tags: ["Official","Paid","Webtoons"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "pocketcomics", name: "Pocket Comics", url: "https://www.pocketcomics.com", category: "Manga/Doujin", description: "Official daily webtoon reading app.", tags: ["Official","Freemium","App"], rating: 4.1, addedAt: "2026-05-09" },
+    { id: "comixology", name: "Comixology", url: "https://www.amazon.com/comixology", category: "Manga/Doujin", description: "Amazon's official digital comic and manga platform.", tags: ["Official","Paid","Store"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "steamvisualnovels", name: "Steam Visual Novels", url: "https://store.steampowered.com/tags/en/Visual+Novel/", category: "Visual Novels", description: "Steam's official visual novel catalog with thousands of titles.", tags: ["Free","Paid","Official"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "gogcom", name: "GOG.com", url: "https://www.gog.com", category: "Games", description: "DRM-free digital game store including visual novels.", tags: ["Official","Paid","DRM-Free"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "epicgamesstore", name: "Epic Games Store", url: "https://store.epicgames.com", category: "Games", description: "Major digital game storefront.", tags: ["Official","Paid","Mainstream"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "itchio", name: "Itch.io", url: "https://itch.io/games/nsfw", category: "Games", description: "Indie game marketplace with a thriving official adult section.", tags: ["Free","Paid","Indie"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "dlsite", name: "DLsite", url: "https://www.dlsite.com/eng", category: "Games", description: "The largest official marketplace for Japanese indie games and audio.", tags: ["Paid","Official","Indie"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "jastusa", name: "JAST USA", url: "https://jastusa.com", category: "Visual Novels", description: "Official publisher of classic Japanese visual novels and eroge.", tags: ["Paid","Official","Eroge"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "mangagamer", name: "MangaGamer", url: "https://www.mangagamer.com", category: "Visual Novels", description: "Official English localizer and distributor of Japanese eroge.", tags: ["Paid","Official","Eroge"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "shiravune", name: "Shiravune", url: "https://shiravune.com", category: "Visual Novels", description: "Official localizer of Japanese adult games.", tags: ["Paid","Official","Localizer"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "kaguragames", name: "Kagura Games", url: "https://kaguragames.com", category: "Visual Novels", description: "Publisher focusing on officially localized adult RPG Maker titles.", tags: ["Paid","Official","RPG"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "denpasoft", name: "Denpasoft", url: "https://denpasoft.com", category: "Visual Novels", description: "Sekai Project's 18+ official storefront.", tags: ["Paid","Official","Eroge"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "sekaiproject", name: "Sekai Project", url: "https://sekaiproject.com", category: "Visual Novels", description: "Major localizer of all-ages visual novels.", tags: ["Paid","Official","Localizer"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "frontwing", name: "Frontwing", url: "https://en.frontwing.jp", category: "Visual Novels", description: "Official studio behind the Grisaia series.", tags: ["Paid","Official","Developer"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "nekonyan", name: "NekoNyan", url: "https://nekonyansoft.com", category: "Visual Novels", description: "High-quality visual novel localization company.", tags: ["Paid","Official","Localizer"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "johren", name: "Johren", url: "https://www.johren.net", category: "Games", description: "Official platform for anime RPGs and adult browser games.", tags: ["Free","Freemium","Browser Games"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "nutaku", name: "Nutaku", url: "https://www.nutaku.net", category: "Games", description: "The largest portal for official adult browser and mobile games.", tags: ["Free","Freemium","Browser Games"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "fanzagames", name: "Fanza Games", url: "https://games.dmm.co.jp", category: "Games", description: "Japan's official adult gaming platform.", tags: ["Paid","Official","Japanese"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "dmmgames", name: "DMM Games", url: "https://games.dmm.com", category: "Games", description: "Major Japanese publisher of browser and gacha games.", tags: ["Paid","Freemium","Japanese"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "playism", name: "Playism", url: "https://playism.com", category: "Games", description: "Publisher bringing Japanese indie games to the West.", tags: ["Paid","Official","Indie"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "spikechunsoft", name: "Spike Chunsoft", url: "https://www.spike-chunsoft.com", category: "Games", description: "Creators of Danganronpa and Steins;Gate.", tags: ["Paid","Official","Developer"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "ideafactory", name: "Idea Factory", url: "https://ideafintl.com", category: "Games", description: "Publishers of Neptunia and Otome games.", tags: ["Paid","Official","Developer"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "aksysgames", name: "Aksys Games", url: "https://www.aksysgames.com", category: "Games", description: "Localizer famous for Zero Escape series.", tags: ["Paid","Official","Localizer"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "xseedgames", name: "XSEED Games", url: "https://www.xseedgames.com", category: "Games", description: "Major publisher of niche Japanese titles.", tags: ["Paid","Official","Publisher"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "nisa", name: "NISA", url: "https://nisamerica.com", category: "Games", description: "Publisher of Disgaea and Trails series.", tags: ["Paid","Official","Publisher"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "marvelous", name: "Marvelous", url: "https://www.marvelousgames.com", category: "Games", description: "Publisher of Senran Kagura and Story of Seasons.", tags: ["Paid","Official","Publisher"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "myanimelist", name: "MyAnimeList", url: "https://myanimelist.net", category: "Communities", description: "The world's most active online anime and manga database.", tags: ["Database","Community","Reviews"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "anilist", name: "AniList", url: "https://anilist.co", category: "Communities", description: "Modern anime and manga tracker with a sleek interface.", tags: ["Database","Modern","Social"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "animeplanet", name: "Anime-Planet", url: "https://www.anime-planet.com", category: "Communities", description: "Track anime, read manga legally, and engage in the community.", tags: ["Database","Reviews","Legal"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "kitsu", name: "Kitsu", url: "https://kitsu.io", category: "Communities", description: "A social media-style anime tracker and discovery engine.", tags: ["Database","Social","Discovery"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "anidb", name: "AniDB", url: "https://anidb.net", category: "Communities", description: "Massive, highly detailed anime database.", tags: ["Database","Technical","Classic"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "bakaupdates", name: "Baka-Updates", url: "https://www.mangaupdates.com", category: "Communities", description: "The definitive manga release tracking database.", tags: ["Database","Manga","Tracking"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "vndb", name: "VNDB", url: "https://vndb.org", category: "Communities", description: "The Visual Novel Database. Comprehensive info on all VNs.", tags: ["Database","Visual Novels","Wiki"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "ranime", name: "r/Anime", url: "https://www.reddit.com/r/anime", category: "Communities", description: "The largest anime discussion board on Reddit.", tags: ["Community","Discussion","News"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "rmanga", name: "r/Manga", url: "https://www.reddit.com/r/manga", category: "Communities", description: "Reddit's primary hub for manga discussion.", tags: ["Community","Discussion","Manga"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "rvisualnovels", name: "r/VisualNovels", url: "https://www.reddit.com/r/visualnovels", category: "Communities", description: "Reddit's hub for visual novel fans and reviews.", tags: ["Community","Discussion","Visual Novels"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "patreon", name: "Patreon", url: "https://www.patreon.com", category: "Communities", description: "The main funding hub for thousands of indie creators.", tags: ["Paid","Indie","Crowdfunding"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "kofi", name: "Ko-fi", url: "https://ko-fi.com", category: "Communities", description: "Support creators and artists directly.", tags: ["Paid","Support","Artists"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "fanbox", name: "Fanbox", url: "https://www.fanbox.cc", category: "Communities", description: "Pixiv's official creator support platform.", tags: ["Paid","Japanese","Artists"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "fantia", name: "Fantia", url: "https://fantia.jp", category: "Communities", description: "Toranoana's creator support network.", tags: ["Paid","Japanese","Artists"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "gumroad", name: "Gumroad", url: "https://gumroad.com", category: "Communities", description: "Digital marketplace used by many indie creators.", tags: ["Paid","Marketplace","Indie"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "boothpm", name: "Booth.pm", url: "https://booth.pm", category: "Communities", description: "Pixiv's indie marketplace for physical and digital goods.", tags: ["Paid","Marketplace","Japanese"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "tokyootakumode", name: "Tokyo Otaku Mode", url: "https://otakumode.com", category: "Communities", description: "Official retailer for anime merchandise and figures.", tags: ["Paid","Merchandise","Official"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "crunchyrollstore", name: "Crunchyroll Store", url: "https://store.crunchyroll.com", category: "Communities", description: "Formerly RightStuf. The premier anime merchandise shop.", tags: ["Paid","Merchandise","Official"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "amiami", name: "AmiAmi", url: "https://www.amiami.com", category: "Communities", description: "The definitive shop for Japanese figures and merch.", tags: ["Paid","Merchandise","Japanese"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "goodsmile", name: "Good Smile", url: "https://www.goodsmile.info", category: "Communities", description: "Official creators of Nendoroids and Figma.", tags: ["Paid","Merchandise","Official"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "mandarake", name: "Mandarake", url: "https://order.mandarake.co.jp", category: "Communities", description: "Legendary second-hand anime goods retailer.", tags: ["Paid","Merchandise","Used"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "cdjapan", name: "CDJapan", url: "https://www.cdjapan.co.jp", category: "Communities", description: "Best place to legally import Japanese CDs and Blurays.", tags: ["Paid","Imports","Music"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "playasia", name: "Play-Asia", url: "https://www.play-asia.com", category: "Communities", description: "Major importer of Asian games and merchandise.", tags: ["Paid","Imports","Games"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "animenewsnetwork", name: "Anime News Network", url: "https://www.animenewsnetwork.com", category: "Communities", description: "The premier source for official anime industry news.", tags: ["News","Journalism","Official"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "crunchyrollnews", name: "Crunchyroll News", url: "https://www.crunchyroll.com/news", category: "Communities", description: "Official news direct from the industry.", tags: ["News","Official","Updates"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "siliconera", name: "Siliconera", url: "https://www.siliconera.com", category: "Communities", description: "News covering niche Japanese games and anime.", tags: ["News","Games","Journalism"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "gematsu", name: "Gematsu", url: "https://www.gematsu.com", category: "Communities", description: "The fastest and most reliable Japanese gaming news.", tags: ["News","Games","Journalism"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "qooapp", name: "QooApp", url: "https://www.qoo-app.com", category: "Communities", description: "News and downloads for Asian mobile games.", tags: ["News","Mobile","Games"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "otakuusa", name: "Otaku USA", url: "https://otakuusamagazine.com", category: "Communities", description: "The premier print and digital anime magazine.", tags: ["News","Magazine","Official"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "animetrending", name: "Anime Trending", url: "https://anitrendz.net", category: "Communities", description: "Weekly anime charts and news voted by fans.", tags: ["News","Charts","Community"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "animecorner", name: "Anime Corner", url: "https://animecorner.me", category: "Communities", description: "Fast growing anime news and community polling site.", tags: ["News","Community","Updates"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "onlyfans", name: "OnlyFans", url: "https://onlyfans.com", category: "Creator Platforms", description: "The world's largest subscription platform for adult creators and models.", tags: ["Official","Paid","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "fansly", name: "Fansly", url: "https://fansly.com", category: "Creator Platforms", description: "A major OnlyFans alternative with robust tier and media features.", tags: ["Official","Paid","Creators"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "manyvids", name: "ManyVids", url: "https://www.manyvids.com", category: "Creator Platforms", description: "Platform for creators to sell custom videos, items, and subscriptions.", tags: ["Official","Paid","Store"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "loyalfans", name: "LoyalFans", url: "https://www.loyalfans.com", category: "Creator Platforms", description: "Creator-first platform allowing subscriptions, messaging, and live streaming.", tags: ["Official","Paid","Creators"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "slushy", name: "Slushy", url: "https://www.slushy.com", category: "Creator Platforms", description: "TikTok-style adult creator platform focusing on short-form vertical video.", tags: ["Official","Freemium","Mobile"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "chaturbate", name: "Chaturbate", url: "https://chaturbate.com", category: "Live Cams", description: "The largest free live adult webcam platform in the world.", tags: ["Official","Free","Live"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "stripchat", name: "Stripchat", url: "https://stripchat.com", category: "Live Cams", description: "Massive webcam platform with VR and interactive toy support.", tags: ["Official","Free","VR"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "myfreecams", name: "MyFreeCams", url: "https://myfreecams.com", category: "Live Cams", description: "Long-standing premium webcam community.", tags: ["Official","Free","Live"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "camsoda", name: "CamSoda", url: "https://www.camsoda.com", category: "Live Cams", description: "Innovative live cam site known for interactive teledildonics.", tags: ["Official","Free","Live"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "livejasmin", name: "LiveJasmin", url: "https://www.livejasmin.com", category: "Live Cams", description: "High-end, premium private webcam modeling platform.", tags: ["Official","Paid","Premium"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "bongacams", name: "BongaCams", url: "https://bongacams.com", category: "Live Cams", description: "Highly popular international live webcam community.", tags: ["Official","Free","Live"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "pornhub", name: "Pornhub", url: "https://www.pornhub.com", category: "Adult Tubes", description: "The most visited adult tube site, featuring strictly verified models and studios.", tags: ["Official","Free","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "xvideos", name: "XVideos", url: "https://www.xvideos.com", category: "Adult Tubes", description: "Massive international adult streaming portal.", tags: ["Official","Free","Mainstream"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "xnxx", name: "XNXX", url: "https://www.xnxx.com", category: "Adult Tubes", description: "One of the oldest and largest free adult video search engines.", tags: ["Official","Free","Mainstream"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "spankbang", name: "SpankBang", url: "https://spankbang.com", category: "Adult Tubes", description: "High-quality tube site known for 4K and 60fps verified content.", tags: ["Official","Free","High-Res"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "xhamster", name: "xHamster", url: "https://xhamster.com", category: "Adult Tubes", description: "Major adult tube and webcam portal with verified creator programs.", tags: ["Official","Free","Mainstream"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "redtube", name: "RedTube", url: "https://www.redtube.com", category: "Adult Tubes", description: "Classic adult streaming site owned by the MindGeek network.", tags: ["Official","Free","Mainstream"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "youporn", name: "YouPorn", url: "https://www.youporn.com", category: "Adult Tubes", description: "Popular free adult streaming site focused on user experience.", tags: ["Official","Free","Mainstream"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "adulttime", name: "Adult Time", url: "https://www.adulttime.com", category: "Adult Studios", description: "The Netflix of Porn offering unlimited streaming from hundreds of studios.", tags: ["Paid","Official","Premium"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "brazzers", name: "Brazzers", url: "https://www.brazzers.com", category: "Adult Studios", description: "One of the most famous and prolific adult production studios.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "realitykings", name: "RealityKings", url: "https://www.realitykings.com", category: "Adult Studios", description: "Major studio network focusing on gonzo and reality-style content.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "bangbros", name: "BangBros", url: "https://bangbros.com", category: "Adult Studios", description: "Legendary adult studio network producing content since 2000.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "vixenmediagroup", name: "Vixen Media Group", url: "https://www.vixen.com", category: "Adult Studios", description: "Ultra-premium, cinematic adult studio network.", tags: ["Paid","Official","Premium"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "naughtyamerica", name: "Naughty America", url: "https://www.naughtyamerica.com", category: "Adult Studios", description: "Pioneer in VR porn and high-end 4K adult video production.", tags: ["Paid","Official","VR"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "evilangel", name: "Evil Angel", url: "https://www.evilangel.com", category: "Adult Studios", description: "Director-owned studio known for high-quality niche and gonzo content.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "sexlikereal", name: "SexLikeReal", url: "https://www.sexlikereal.com", category: "Adult VR", description: "The largest hub and app for streaming officially licensed VR porn.", tags: ["Paid","Official","VR"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "vrbangers", name: "VRBangers", url: "https://vrbangers.com", category: "Adult VR", description: "High-end exclusive virtual reality porn studio.", tags: ["Paid","Official","VR"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "eporner", name: "Eporner", url: "https://www.eporner.com", category: "Adult Tubes", description: "Renowned for high quality HD and 4K video streams.", tags: ["Free","HD","Official"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "tube8", name: "Tube8", url: "https://www.tube8.com", category: "Adult Tubes", description: "Part of the MindGeek network, offering verified amateur and professional content.", tags: ["Free","Official","MindGeek"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "keezmovies", name: "KeezMovies", url: "https://www.keezmovies.com", category: "Adult Tubes", description: "Major MindGeek property with millions of verified videos.", tags: ["Free","Official","Mainstream"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "hclips", name: "Hclips", url: "https://www.hclips.com", category: "Adult Tubes", description: "Fast-loading tube site with a massive verified library.", tags: ["Free","Official","Mainstream"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "daftsex", name: "DaftSex", url: "https://daftsex.com", category: "Adult Tubes", description: "Sleek, ad-light search engine and tube for verified adult content.", tags: ["Free","Official","Clean UI"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "erome", name: "EroMe", url: "https://www.erome.com", category: "Adult Tubes", description: "User-submitted media sharing platform with verified takedown processes.", tags: ["Free","Images","Videos"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "beeg", name: "Beeg", url: "https://beeg.com", category: "Adult Tubes", description: "Minimalist tube site focusing entirely on video quality.", tags: ["Free","Clean UI","Official"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "hqporner", name: "HQporner", url: "https://hqporner.com", category: "Adult Tubes", description: "Curates exclusively HD and 4K videos from official studios.", tags: ["Free","HD","Curated"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "porntrex", name: "PornTrex", url: "https://www.porntrex.com", category: "Adult Tubes", description: "Independent tube site offering high-quality streaming.", tags: ["Free","Official","Mainstream"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "sxyprn", name: "SxyPrn", url: "https://sxyprn.com", category: "Adult Tubes", description: "Fast and lightweight tube focusing on mobile performance.", tags: ["Free","Mobile","Official"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "blacked", name: "Blacked", url: "https://www.blacked.com", category: "Adult Studios", description: "Ultra-premium cinematic studio known for high production value.", tags: ["Paid","Official","Premium"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "tushy", name: "Tushy", url: "https://www.tushy.com", category: "Adult Studios", description: "High-end studio focusing on specific genres with cinematic quality.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "deeper", name: "Deeper", url: "https://www.deeper.com", category: "Adult Studios", description: "Award-winning studio with artistic and cinematic direction.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "julesjordan", name: "Jules Jordan", url: "https://www.julesjordan.com", category: "Adult Studios", description: "Legendary long-standing adult production studio.", tags: ["Paid","Official","Studio"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "digitalplayground", name: "Digital Playground", url: "https://www.digitalplayground.com", category: "Adult Studios", description: "Pioneer in blockbuster-budget adult feature films.", tags: ["Paid","Official","MindGeek"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "hustler", name: "Hustler", url: "https://www.hustler.com", category: "Adult Studios", description: "The digital arm of Larry Flynt's iconic Hustler brand.", tags: ["Paid","Official","Magazine"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "girlsway", name: "Girlsway", url: "https://www.girlsway.com", category: "Adult Studios", description: "Premium studio focusing exclusively on women-centric content.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "teamskeet", name: "TeamSkeet", url: "https://www.teamskeet.com", category: "Adult Studios", description: "Massive network of smaller, high-energy studios.", tags: ["Paid","Official","Network"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "mofos", name: "Mofos", url: "https://www.mofos.com", category: "Adult Studios", description: "Popular studio network focusing on amateur-style reality content.", tags: ["Paid","Official","Network"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "twistys", name: "Twistys", url: "https://www.twistys.com", category: "Adult Studios", description: "Glamour photography and video studio network.", tags: ["Paid","Official","MindGeek"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "puretaboo", name: "Pure Taboo", url: "https://www.puretaboo.com", category: "Adult Studios", description: "Studio producing story-driven, taboo-themed cinematic movies.", tags: ["Paid","Official","Cinematic"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "brattysis", name: "Bratty Sis", url: "https://brattysis.com", category: "Adult Studios", description: "Highly popular studio focusing on roleplay genres.", tags: ["Paid","Official","Roleplay"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "nubilefilms", name: "Nubile Films", url: "https://nubilefilms.com", category: "Adult Studios", description: "Studio network known for romantic and softcore aesthetics.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "dorcel", name: "Dorcel", url: "https://www.dorcel.com", category: "Adult Studios", description: "France's leading luxury adult entertainment studio.", tags: ["Paid","Official","European"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "private", name: "Private", url: "https://www.private.com", category: "Adult Studios", description: "One of the oldest and largest European adult producers.", tags: ["Paid","Official","European"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "babes", name: "Babes", url: "https://www.babes.com", category: "Adult Studios", description: "High-end European studio focusing on glamour and beauty.", tags: ["Paid","Official","European"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "ddfnetwork", name: "DDF Network", url: "https://ddfnetwork.com", category: "Adult Studios", description: "Massive Hungarian studio network with thousands of models.", tags: ["Paid","Official","European"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "roccosiffredi", name: "Rocco Siffredi", url: "https://www.roccosiffredi.com", category: "Adult Studios", description: "The official studio of the legendary Italian director.", tags: ["Paid","Official","European"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "21sextury", name: "21Sextury", url: "https://www.21sextury.com", category: "Adult Studios", description: "Major European studio producing high-quality network content.", tags: ["Paid","Official","European"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "legalporno", name: "LegalPorno", url: "https://legalporno.com", category: "Adult Studios", description: "European studio known for extreme gonzo content.", tags: ["Paid","Official","Gonzo"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "fanzadmm", name: "Fanza (DMM)", url: "https://www.dmm.co.jp/litevideo/", category: "Adult Studios", description: "Japan's absolute largest legal portal for digital AV (Adult Video).", tags: ["Paid","Official","Japanese"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "caribbeancom", name: "Caribbeancom", url: "https://www.caribbeancom.com", category: "Adult Studios", description: "The premier uncensored adult video studio from Japan.", tags: ["Paid","Official","Uncensored"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "tokyohot", name: "Tokyo-Hot", url: "https://www.tokyo-hot.com", category: "Adult Studios", description: "Pioneering uncensored Japanese adult studio.", tags: ["Paid","Official","Uncensored"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "1pondo", name: "1Pondo", url: "https://www.1pondo.tv", category: "Adult Studios", description: "Major producer of premium uncensored Japanese AV.", tags: ["Paid","Official","Uncensored"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "heydouga", name: "Heydouga", url: "https://www.heydouga.com", category: "Adult Studios", description: "Massive Japanese amateur and professional video marketplace.", tags: ["Paid","Official","Japanese"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "fc2adult", name: "FC2 Adult", url: "https://video.fc2.com/adult/", category: "Creator Platforms", description: "Japan's equivalent to OnlyFans, massive user-generated marketplace.", tags: ["Paid","Official","Japanese"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "scute", name: "S-Cute", url: "https://www.s-cute.com", category: "Adult Studios", description: "Boutique Japanese studio focusing on cute amateur models.", tags: ["Paid","Official","Japanese"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "prestigemgs", name: "Prestige (MGS)", url: "https://www.mgstage.com", category: "Adult Studios", description: "Massive legal streaming portal for Japanese AV studios.", tags: ["Paid","Official","Japanese"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "unextadult", name: "U-NEXT Adult", url: "https://video.unext.jp/genre/adult", category: "Adult Tubes", description: "Japan's Netflix equivalent offers a fully legal adult AV streaming section.", tags: ["Paid","Official","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "camscom", name: "Cams.com", url: "https://www.cams.com", category: "Live Cams", description: "Premium FriendFinder-owned live webcam portal.", tags: ["Official","Paid","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "flirt4free", name: "Flirt4Free", url: "https://www.flirt4free.com", category: "Live Cams", description: "High-end webcam site known for high definition streams.", tags: ["Official","Paid","Live"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "jerkmate", name: "Jerkmate", url: "https://jerkmate.com", category: "Live Cams", description: "Interactive cam directory connecting users to private shows.", tags: ["Official","Freemium","Live"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "imlive", name: "ImLive", url: "https://www.imlive.com", category: "Live Cams", description: "One of the longest-running premium cam sites.", tags: ["Official","Paid","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "faphouse", name: "FapHouse", url: "https://faphouse.com", category: "Adult Tubes", description: "Premium tube and cam hybrid with high-quality models.", tags: ["Official","Freemium","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "camster", name: "Camster", url: "https://www.camster.com", category: "Live Cams", description: "Live cam platform focusing on private and exclusive shows.", tags: ["Official","Paid","Live"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "streamate", name: "Streamate", url: "https://www.streamate.com", category: "Live Cams", description: "Massive cam network focusing purely on paid private shows.", tags: ["Official","Paid","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "fancentro", name: "Fancentro", url: "https://fancentro.com", category: "Creator Platforms", description: "Major subscription platform for adult influencers and models.", tags: ["Official","Paid","Creators"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "ifans", name: "iFans", url: "https://ifans.com", category: "Creator Platforms", description: "Creator platform with robust affiliate and networking tools.", tags: ["Official","Paid","Creators"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "adultnode", name: "AdultNode", url: "https://adultnode.com", category: "Creator Platforms", description: "Adult-friendly social network resembling classic Twitter.", tags: ["Official","Free","Social"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "sospoilt", name: "SoSpoilt", url: "https://sospoilt.com", category: "Creator Platforms", description: "Subscription and tipping platform for creators.", tags: ["Official","Paid","Creators"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "justforfans", name: "JustFor.Fans", url: "https://justfor.fans", category: "Creator Platforms", description: "Popular subscription platform created by the adult industry.", tags: ["Official","Paid","Creators"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "pocketstars", name: "PocketStars", url: "https://pocketstars.com", category: "Creator Platforms", description: "Modern creator platform built specifically for adult content.", tags: ["Official","Paid","Creators"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "kinkcom", name: "Kink.com", url: "https://www.kink.com", category: "Adult Studios", description: "The world's largest legal and regulated BDSM studio.", tags: ["Paid","Official","Fetish"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "bdsmcom", name: "BDSM.com", url: "https://bdsm.com", category: "Adult Tubes", description: "Premium curated portal for BDSM and fetish content.", tags: ["Paid","Official","Fetish"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "inthecrack", name: "InTheCrack", url: "https://inthecrack.com", category: "Adult Studios", description: "Boutique studio known for high-quality glamour photography.", tags: ["Paid","Official","Studio"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "hentaipros", name: "HentaiPros", url: "https://hentaipros.com", category: "Adult Studios", description: "Unique studio creating live-action cosplay and anime-themed adult videos.", tags: ["Paid","Official","Cosplay"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "mylf", name: "Mylf", url: "https://www.mylf.com", category: "Adult Studios", description: "Major studio network focusing on the mature genre.", tags: ["Paid","Official","Studio"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "dogfartnetwork", name: "Dogfart Network", url: "https://www.dogfartnetwork.com", category: "Adult Studios", description: "One of the longest-running adult studio networks.", tags: ["Paid","Official","Studio"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "wankzvr", name: "WankzVR", url: "https://www.wankzvr.com", category: "Adult VR", description: "Premium VR studio with highly immersive 180 and 360 degree videos.", tags: ["Paid","Official","VR"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "badoinkvr", name: "BadoinkVR", url: "https://badoinkvr.com", category: "Adult VR", description: "Pioneering VR adult studio with interactive toy support.", tags: ["Paid","Official","VR"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "czechvr", name: "CzechVR", url: "https://www.czechvr.com", category: "Adult VR", description: "European VR studio known for extreme clarity and technical quality.", tags: ["Paid","Official","VR"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "adultfriendfinder", name: "AdultFriendFinder", url: "https://adultfriendfinder.com", category: "Adult Dating", description: "The world's largest dating and social network for adults.", tags: ["Official","Paid","Dating"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "ashleymadison", name: "Ashley Madison", url: "https://www.ashleymadison.com", category: "Adult Dating", description: "Discreet dating service for adults.", tags: ["Official","Paid","Dating"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "fetlife", name: "FetLife", url: "https://fetlife.com", category: "Adult Dating", description: "The social network for the BDSM, Fetish & Kinky Community.", tags: ["Official","Free","Social"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "feeld", name: "Feeld", url: "https://feeld.co", category: "Adult Dating", description: "Dating app for couples and singles interested in alternative dating.", tags: ["Official","Freemium","App"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "altcom", name: "Alt.com", url: "https://alt.com", category: "Adult Dating", description: "Dating and community site focused on BDSM and alternative lifestyles.", tags: ["Official","Paid","Dating"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "adameve", name: "Adam & Eve", url: "https://www.adameve.com", category: "Adult Stores", description: "The largest and most trusted adult toy and lingerie store in the US.", tags: ["Official","Store","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "lovehoney", name: "Lovehoney", url: "https://www.lovehoney.com", category: "Adult Stores", description: "Global retailer of adult toys and lingerie.", tags: ["Official","Store","Global"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "fleshlight", name: "Fleshlight", url: "https://www.fleshlight.com", category: "Adult Stores", description: "Official store for the famous male masturbation toy.", tags: ["Official","Store","Toys"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "baddragon", name: "Bad Dragon", url: "https://bad-dragon.com", category: "Adult Stores", description: "Unique boutique store for fantasy-themed adult toys.", tags: ["Official","Store","Niche"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "pinkcherry", name: "PinkCherry", url: "https://www.pinkcherry.com", category: "Adult Stores", description: "Massive online retailer for adult novelties.", tags: ["Official","Store","Retail"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "goodvibrations", name: "Good Vibrations", url: "https://www.goodvibes.com", category: "Adult Stores", description: "Sex-positive and educational adult toy retailer.", tags: ["Official","Store","Educational"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "elegantangel", name: "Elegant Angel", url: "https://www.elegantangel.com", category: "Adult Studios", description: "Award-winning studio known for prolific gonzo releases.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "zerotolerance", name: "Zero Tolerance", url: "https://zerotolerance.com", category: "Adult Studios", description: "Long-standing adult studio focusing on diverse genres.", tags: ["Paid","Official","Studio"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "girlfriendsfilms", name: "Girlfriends Films", url: "https://www.girlfriendsfilms.com", category: "Adult Studios", description: "The premier studio for female-centric and lesbian content.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "hardx", name: "HardX", url: "https://www.hardx.com", category: "Adult Studios", description: "Premium studio focusing on intense gonzo scenes.", tags: ["Paid","Official","Gonzo"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "milehighmedia", name: "MileHigh Media", url: "https://www.milehighmedia.com", category: "Adult Studios", description: "Network of studios producing high-end parody and taboo content.", tags: ["Paid","Official","Network"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "cherrypimps", name: "Cherry Pimps", url: "https://www.cherrypimps.com", category: "Adult Studios", description: "Major network producing exclusive live shows and premium video.", tags: ["Paid","Official","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "sexart", name: "SexArt", url: "https://www.sexart.com", category: "Adult Studios", description: "Highly artistic and cinematic premium erotica.", tags: ["Paid","Official","Artistic"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "playboy", name: "Playboy", url: "https://www.playboy.com", category: "Adult Studios", description: "The iconic men's lifestyle and glamour brand.", tags: ["Paid","Official","Mainstream"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "penthouse", name: "Penthouse", url: "https://penthouse.com", category: "Adult Studios", description: "Legendary adult magazine and media network.", tags: ["Paid","Official","Magazine"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "xart", name: "X-Art", url: "https://www.x-art.com", category: "Adult Studios", description: "Cinematic, romantic, and high-gloss erotica studio.", tags: ["Paid","Official","Premium"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "magmafilm", name: "Magmafilm", url: "https://www.magmafilm.com", category: "Adult Studios", description: "Classic German adult film production company.", tags: ["Paid","Official","European"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "eroticax", name: "EroticaX", url: "https://www.eroticax.com", category: "Adult Studios", description: "High-end European erotica and sensual films.", tags: ["Paid","Official","European"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "euroteenerotica", name: "EuroTeenErotica", url: "https://www.euroteenerotica.com", category: "Adult Studios", description: "Long-running European studio focusing on young adult models.", tags: ["Paid","Official","European"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "metart", name: "MetArt", url: "https://www.metart.com", category: "Adult Studios", description: "The world's most famous artistic nude photography network.", tags: ["Paid","Official","Photography"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "vivthomas", name: "VivThomas", url: "https://www.vivthomas.com", category: "Adult Studios", description: "UK-based studio focusing on high-quality glamour.", tags: ["Paid","Official","European"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "tnaflix", name: "TNAFlix", url: "https://www.tnaflix.com", category: "Adult Tubes", description: "One of the oldest adult tube sites with a huge verified library.", tags: ["Free","Official","Mainstream"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "nuvid", name: "NuVid", url: "https://www.nuvid.com", category: "Adult Tubes", description: "High-speed adult tube site.", tags: ["Free","Official","Tubes"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "4tube", name: "4Tube", url: "https://www.4tube.com", category: "Adult Tubes", description: "Major tube site offering HD verified content.", tags: ["Free","Official","Tubes"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "slutload", name: "SlutLoad", url: "https://www.slutload.com", category: "Adult Tubes", description: "Classic amateur-focused adult tube site.", tags: ["Free","Official","Amateur"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "fux", name: "Fux", url: "https://www.fux.com", category: "Adult Tubes", description: "Modern, ad-light adult streaming portal.", tags: ["Free","Official","Tubes"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "tubev", name: "TubeV", url: "https://www.tubev.sex", category: "Adult Tubes", description: "Fast-loading mobile-friendly tube.", tags: ["Free","Official","Mobile"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "pornhd", name: "PornHD", url: "https://www.pornhd.com", category: "Adult Tubes", description: "Focuses strictly on 1080p and 4K resolution streams.", tags: ["Free","Official","HD"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "empflix", name: "EmpFlix", url: "https://www.empflix.com", category: "Adult Tubes", description: "Large database of verified adult videos.", tags: ["Free","Official","Mainstream"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "modelhub", name: "Modelhub", url: "https://modelhub.com", category: "Creator Platforms", description: "Pornhub's premium platform for verified creators to sell directly.", tags: ["Paid","Official","Creators"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "alua", name: "Alua", url: "https://alua.com", category: "Creator Platforms", description: "Messaging and content platform for influencers and models.", tags: ["Paid","Official","Creators"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "frisk", name: "Frisk", url: "https://frisk.chat", category: "Creator Platforms", description: "UK-based adult creator and social platform.", tags: ["Paid","Official","Creators"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "admireme", name: "AdmireMe", url: "https://admireme.vip", category: "Creator Platforms", description: "Subscription platform tailored for British models.", tags: ["Paid","Official","Creators"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "adultwork", name: "AdultWork", url: "https://www.adultwork.com", category: "Live Cams", description: "Massive UK-based cam and escort directory.", tags: ["Paid","Official","European"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "cherrytv", name: "CherryTV", url: "https://cherry.tv", category: "Live Cams", description: "Modern, high-definition webcam platform.", tags: ["Free","Official","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "amateurtv", name: "AmateurTV", url: "https://amateurtv.com", category: "Live Cams", description: "European-focused amateur cam platform.", tags: ["Free","Official","European"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "fanzadoujin", name: "Fanza Doujin", url: "https://www.dmm.co.jp/dc/doujin/", category: "Manga/Doujin", description: "The official DMM portal for digital doujinshi.", tags: ["Paid","Official","Japanese"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "dlsiteenglish", name: "DLsite English", url: "https://www.dlsite.com/eng/", category: "Games", description: "English-translated Japanese indie games and audio.", tags: ["Paid","Official","Japanese"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "melonbooks", name: "Melonbooks", url: "https://www.melonbooks.co.jp", category: "Manga/Doujin", description: "Japan's largest doujinshi retailer.", tags: ["Paid","Official","Store"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "toranoana", name: "Toranoana", url: "https://www.toranoana.jp", category: "Manga/Doujin", description: "Massive retailer for doujinshi and anime goods.", tags: ["Paid","Official","Store"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "komiflo", name: "Komiflo", url: "https://komiflo.com", category: "Manga/Doujin", description: "Subscription service for officially licensed Japanese adult manga.", tags: ["Paid","Official","Japanese"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "adultempire", name: "Adult Empire", url: "https://www.adultempire.com", category: "Adult Stores", description: "The largest VOD and DVD adult movie retailer on the internet.", tags: ["Store","Official","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "avn", name: "AVN", url: "https://avn.com", category: "News & Info", description: "Adult Video News - the premier trade journal for the adult video industry.", tags: ["News","Official","Industry"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "xbiz", name: "XBIZ", url: "https://www.xbiz.com", category: "News & Info", description: "Leading source of adult industry news and business information.", tags: ["News","Official","Industry"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "vodempire", name: "VOD Empire", url: "https://www.vodempire.com", category: "Adult Stores", description: "Premium Video-On-Demand service for legal adult content.", tags: ["Store","Official","VOD"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "mencom", name: "Men.com", url: "https://www.men.com", category: "Adult Studios", description: "The largest and most famous gay adult production studio.", tags: ["Paid","Official","LGBTQ+"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "seancody", name: "Sean Cody", url: "https://www.seancody.com", category: "Adult Studios", description: "Premium, highly popular gay adult studio.", tags: ["Paid","Official","LGBTQ+"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "falconstudios", name: "Falcon Studios", url: "https://www.falconstudios.com", category: "Adult Studios", description: "Legendary, long-running gay adult film studio.", tags: ["Paid","Official","LGBTQ+"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "corbinfisher", name: "Corbin Fisher", url: "https://www.corbinfisher.com", category: "Adult Studios", description: "Premium studio focusing on high-end amateur aesthetics.", tags: ["Paid","Official","LGBTQ+"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "helixstudios", name: "Helix Studios", url: "https://www.helixstudios.com", category: "Adult Studios", description: "High-definition studio known for exclusive young-adult models.", tags: ["Paid","Official","LGBTQ+"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "nextdoorstudios", name: "NextDoorStudios", url: "https://www.nextdoorstudios.com", category: "Adult Studios", description: "Studio producing extremely popular high-definition gay content.", tags: ["Paid","Official","LGBTQ+"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "belami", name: "BelAmi", url: "https://www.belamionline.com", category: "Adult Studios", description: "Iconic European gay adult studio.", tags: ["Paid","Official","LGBTQ+"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "treasureislandmedia", name: "Treasure Island Media", url: "https://www.treasureislandmedia.com", category: "Adult Studios", description: "Boundary-pushing, raw gay adult studio.", tags: ["Paid","Official","LGBTQ+"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "blackedraw", name: "Blacked Raw", url: "https://www.blackedraw.com", category: "Adult Studios", description: "The raw, unscripted spin-off of the premium Blacked studio.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "tushyraw", name: "Tushy Raw", url: "https://www.tushyraw.com", category: "Adult Studios", description: "Unscripted spin-off of the high-end Tushy studio.", tags: ["Paid","Official","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "slayed", name: "Slayed", url: "https://www.slayed.com", category: "Adult Studios", description: "Ultra-premium studio focusing on intense cinematic scenes.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "swallowed", name: "Swallowed", url: "https://www.swallowed.com", category: "Adult Studios", description: "High-end studio produced by the Vixen Media Group.", tags: ["Paid","Official","Premium"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "mofosnetwork", name: "Mofos Network", url: "https://www.mofos.com", category: "Adult Studios", description: "Massive reality-porn network with dozens of sub-sites.", tags: ["Paid","Official","Network"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "brazzersnetwork", name: "Brazzers Network", url: "https://www.brazzers.com", category: "Adult Studios", description: "The global leader in high-definition adult entertainment.", tags: ["Paid","Official","Network"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "realitykingsnetwork", name: "Reality Kings Network", url: "https://www.realitykings.com", category: "Adult Studios", description: "Massive network known for gonzo and reality-based series.", tags: ["Paid","Official","Network"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "hegreart", name: "Hegre Art", url: "https://www.hegre.com", category: "Adult Studios", description: "World-renowned artistic nude photography and massage films.", tags: ["Paid","Official","Artistic"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "watch4beauty", name: "Watch4Beauty", url: "https://www.watch4beauty.com", category: "Adult Studios", description: "High-class European glamour photography and erotica.", tags: ["Paid","Official","European"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "femjoy", name: "Femjoy", url: "https://www.femjoy.com", category: "Adult Studios", description: "Premium European softcore and glamour network.", tags: ["Paid","Official","European"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "joymii", name: "Joymii", url: "https://joymii.com", category: "Adult Studios", description: "Romantic and sensual adult studio focusing on authentic chemistry.", tags: ["Paid","Official","European"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "eroticbeauty", name: "Erotic Beauty", url: "https://www.eroticbeauty.com", category: "Adult Studios", description: "High-end artistic nude photography from top European photographers.", tags: ["Paid","Official","Artistic"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "thumbzilla", name: "Thumbzilla", url: "https://www.thumbzilla.com", category: "Adult Tubes", description: "Mobile-first, lightning-fast adult tube site.", tags: ["Free","Official","Mobile"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "porndoe", name: "PornDoe", url: "https://www.porndoe.com", category: "Adult Tubes", description: "Modern adult tube and search engine.", tags: ["Free","Official","Search"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "tubegalore", name: "TubeGalore", url: "https://www.tubegalore.com", category: "Adult Tubes", description: "Massive indexer and search engine of adult videos.", tags: ["Free","Official","Search"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "ahme", name: "Ah-Me", url: "https://www.ah-me.com", category: "Adult Tubes", description: "Premium-quality tube site featuring verified content.", tags: ["Free","Official","HD"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "xxxbunker", name: "XXXbunker", url: "https://xxxbunker.com", category: "Adult Tubes", description: "Fast-loading video aggregator.", tags: ["Free","Official","Tubes"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "sunporno", name: "SunPorno", url: "https://www.sunporno.com", category: "Adult Tubes", description: "Large database of adult video content.", tags: ["Free","Official","Tubes"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "drtuber", name: "DrTuber", url: "https://www.drtuber.com", category: "Adult Tubes", description: "Medical-themed domain but features standard adult tube content.", tags: ["Free","Official","Tubes"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "porngo", name: "PornGo", url: "https://www.porngo.com", category: "Adult Tubes", description: "Clean and straightforward adult streaming platform.", tags: ["Free","Official","Tubes"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "eros", name: "Eros", url: "https://www.eros.com", category: "Adult Dating", description: "The premier global directory for adult entertainers and escorts.", tags: ["Paid","Official","Directory"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "slixa", name: "Slixa", url: "https://www.slixa.com", category: "Adult Dating", description: "High-end adult entertainer directory.", tags: ["Paid","Official","Directory"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "tryst", name: "Tryst", url: "https://tryst.link", category: "Adult Dating", description: "Modern, creator-first directory for adult independent providers.", tags: ["Paid","Official","Directory"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "subscribestaradult", name: "SubscribeStar Adult", url: "https://www.subscribestar.adult", category: "Creator Platforms", description: "Patreon alternative known for being extremely friendly to adult creators.", tags: ["Paid","Official","Creators"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "cam4", name: "Cam4", url: "https://www.cam4.com", category: "Live Cams", description: "Massive international live broadcasting network.", tags: ["Free","Official","Live"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "sexcamvideo", name: "SexCamVideo", url: "https://www.sexcamvideo.com", category: "Live Cams", description: "Live cam shows and recorded model videos.", tags: ["Free","Official","Live"], rating: 4.4, addedAt: "2026-05-09" },
+    { id: "slutroulette", name: "SlutRoulette", url: "https://www.slutroulette.com", category: "Live Cams", description: "Randomized cam-to-cam chat platform.", tags: ["Free","Official","Live"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "dipsea", name: "Dipsea", url: "https://www.dipseastories.com", category: "Audio/ASMR", description: "Venture-backed premium audio erotica app designed for women.", tags: ["Paid","Official","Audio"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "quinn", name: "Quinn", url: "https://www.tryquinn.com", category: "Audio/ASMR", description: "High-end audio erotica and romantic stories app.", tags: ["Paid","Official","Audio"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "literotica", name: "Literotica", url: "https://www.literotica.com", category: "Erotica/Reading", description: "The oldest and largest free archive of user-submitted erotic fiction.", tags: ["Free","Official","Reading"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "lushstories", name: "Lush Stories", url: "https://www.lushstories.com", category: "Erotica/Reading", description: "High-quality, curated erotic stories and audio.", tags: ["Free","Official","Reading"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "smashwordserotica", name: "Smashwords Erotica", url: "https://www.smashwords.com", category: "Erotica/Reading", description: "Massive legal eBook retailer with a dedicated, uncensored erotica section.", tags: ["Paid","Official","Reading"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "bellesa", name: "Bellesa", url: "https://www.bellesa.co", category: "Adult Tubes", description: "Ethical, female-focused adult entertainment and erotica network.", tags: ["Official","Mainstream","Premium"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "iafd", name: "IAFD", url: "https://www.iafd.com", category: "News & Info", description: "The Internet Adult Film Database. The IMDb of the adult industry.", tags: ["Free","Official","Database"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "freeones", name: "Freeones", url: "https://www.freeones.com", category: "News & Info", description: "The ultimate adult model directory and biography database.", tags: ["Free","Official","Database"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "boobpedia", name: "Boobpedia", url: "https://www.boobpedia.com", category: "News & Info", description: "Massive community-driven wiki for adult models and performers.", tags: ["Free","Official","Wiki"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "adultdvdtalk", name: "AdultDVDTalk", url: "https://www.adultdvdtalk.com", category: "Communities", description: "The oldest and most respected review forum for professional adult movies.", tags: ["Free","Official","Forum"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "jastblue", name: "JAST Blue", url: "https://jastblue.com", category: "Visual Novels", description: "The Boys Love (BL) and Yaoi division of the legendary JAST USA publisher.", tags: ["Paid","Official","LGBTQ+"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "itchionsfw", name: "Itch.io (NSFW)", url: "https://itch.io/games/nsfw", category: "Games", description: "The world's largest indie game storefront, featuring a massive, legal NSFW section.", tags: ["Paid","Free","Indie"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "steamadultonly", name: "Steam (Adult Only)", url: "https://store.steampowered.com", category: "Games", description: "Valve's storefront allows legally compliant, uncensored adult games.", tags: ["Paid","Official","Mainstream"], rating: 4.9, addedAt: "2026-05-09" },
+    { id: "gog", name: "GOG", url: "https://www.gog.com", category: "Games", description: "DRM-free PC game storefront that legally hosts classic adult and leisure suit games.", tags: ["Paid","Official","Store"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "realitylovers", name: "Reality Lovers", url: "https://realitylovers.com", category: "Adult VR", description: "Ultra-premium VR adult studio with high production values.", tags: ["Paid","Official","VR"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "virtualrealporn", name: "VirtualRealPorn", url: "https://virtualrealporn.com", category: "Adult VR", description: "One of the earliest and most respected VR adult studios.", tags: ["Paid","Official","VR"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "kinkvr", name: "KinkVR", url: "https://www.kinkvr.com", category: "Adult VR", description: "The official virtual reality division of Kink.com.", tags: ["Paid","Official","VR"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "babevr", name: "BabeVR", url: "https://babevr.com", category: "Adult VR", description: "High-end European virtual reality adult studio.", tags: ["Paid","Official","VR"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "perfectgonzo", name: "PerfectGonzo", url: "https://perfectgonzo.com", category: "Adult Studios", description: "Major studio network focusing entirely on the gonzo genre.", tags: ["Paid","Official","Network"], rating: 4.6, addedAt: "2026-05-09" },
+    { id: "gammaentertainment", name: "Gamma Entertainment", url: "https://www.gammaentertainment.com", category: "Adult Studios", description: "Massive corporate umbrella managing dozens of premium adult brands.", tags: ["Paid","Official","Corporate"], rating: 4.8, addedAt: "2026-05-09" },
+    { id: "pornstarplatinum", name: "Pornstar Platinum", url: "https://www.pornstarplatinum.com", category: "Adult Studios", description: "A network of official, performer-owned and directed studios.", tags: ["Paid","Official","Creators"], rating: 4.7, addedAt: "2026-05-09" }
+,
+    // === HENTAI STREAMING (15) ===
+    { id: "nhentai", name: "nHentai", url: "https://nhentai.net", category: "Hentai Streaming", description: "The most famous doujinshi archive with millions of works in dozens of languages.", description_es: "El archivo de doujinshi más famoso con millones de obras en docenas de idiomas.", description_jp: "数百万の作品を数十の言語で提供する、最も有名な同人誌アーカイブ。", tags: ["Free","Doujin","Manga"], rating: 4.9, addedAt: "2026-01-10", longReview: "nHentai is the undisputed king of doujinshi archives. With its clean interface and incredibly powerful search system (including the famous numeric IDs), it remains the most visited site for manga enthusiasts worldwide.", pros: ["Massive database", "Powerful tagging", "Fast loading"], cons: ["Intrusive popups on mobile", "No official streaming"] },
+    { id: "hanime", name: "Hanime.tv", url: "https://hanime.tv", category: "Hentai Streaming", description: "Premium hentai streaming with HD quality, huge catalog, and uncensored content.", description_es: "Streaming de hentai premium con calidad HD, catálogo enorme y contenido sin censura.", description_jp: "HD品質、膨大なカタログ、無修正コンテンツを備えたプレミアムな変態アニメ配信。", tags: ["Free","Paid","HD"], rating: 4.8, addedAt: "2026-02-14", longReview: "Hanime.tv offers a premium, app-like experience for streaming adult anime. Its servers are among the fastest in the industry, and the library covers almost every genre imaginable with high-definition quality.", pros: ["4K Support", "App-like UI", "Blazing fast servers"], cons: ["Ad-heavy for free users", "Account required for favorites"] },
+    { id: "hentaihaven", name: "HentaiHaven", url: "https://hentaihaven.org", category: "Hentai Streaming", description: "One of the most popular dedicated hentai streaming platforms with a huge library.", description_es: "Una de las plataformas de streaming de hentai más populares con una biblioteca enorme.", description_jp: "膨大なライブラリを持つ、最も人気のある専用の変態アニメ配信プラットフォームの一つ。", tags: ["Free","Streaming","Community"], rating: 4.7, addedAt: "2026-03-01", longReview: "HentaiHaven is a cultural icon. After its recent 2026 overhaul, the site features a sleek new design and improved player performance, making it a must-visit for any fan of the medium.", pros: ["Iconic status", "Great discovery tools", "Uncensored catalog"], cons: ["Frequent domain changes", "Loading delays"] },
+    { id: "hentaifox", name: "HentaiFox", url: "https://hentaifox.com", category: "Hentai Streaming", description: "Doujinshi and manga reader with a massive, regularly-updated library.", tags: ["Free","Doujin","Reader"], rating: 4.6, addedAt: "2026-02-05" },
+    { id: "hentaigasm", name: "Hentaigasm", url: "https://hentaigasm.com", category: "Hentai Streaming", description: "Popular free hentai streaming site with a wide variety of series and OVAs.", tags: ["Free","Streaming","OVA"], rating: 4.5, addedAt: "2026-01-20" },
+    { id: "simplyhentai", name: "Simply Hentai", url: "https://www.simply-hentai.com", category: "Hentai Streaming", description: "Clean interface for hentai streaming and manga reading.", tags: ["Free","Streaming","Clean UI"], rating: 4.4, addedAt: "2026-03-15" },
+    { id: "hentai20", name: "Hentai20", url: "https://hentai20.io", category: "Hentai Streaming", description: "Modern hentai streaming site with high quality video and regular updates.", tags: ["Free","HD","Modern"], rating: 4.5, addedAt: "2026-01-25" },
+    { id: "hentaimama", name: "HentaiMama", url: "https://hentaimama.io", category: "Hentai Streaming", description: "Freemium hentai streaming with both subbed and dubbed content.", tags: ["Free","Freemium","Dubbed"], rating: 4.3, addedAt: "2026-02-28" },
+    { id: "hentaibros", name: "HentaiBros", url: "https://www.hentaibros.com", category: "Hentai Streaming", description: "Streaming platform featuring hentai OVAs and series sorted by genre.", tags: ["Free","Genre","OVA"], rating: 4.2, addedAt: "2026-04-01" },
+    { id: "hentaipure", name: "HentaiPure", url: "https://hentaipure.com", category: "Hentai Streaming", description: "Curated hentai streaming focused on quality over quantity.", tags: ["Free","Curated","HD"], rating: 4.5, addedAt: "2026-04-10" },
+    { id: "hentaistv", name: "Hentais.tv", url: "https://hentais.tv", category: "Hentai Streaming", description: "User-friendly hentai streaming with genre tags and community ratings.", tags: ["Free","Community","Tagged"], rating: 4.4, addedAt: "2026-01-30" },
+    { id: "hentaicloud", name: "Hentai-Cloud", url: "https://hentai-cloud.com", category: "Hentai Streaming", description: "Fast-loading cloud-based hentai streaming site.", tags: ["Free","Fast","Modern"], rating: 4.3, addedAt: "2026-03-20" },
+    { id: "erodoujins", name: "EroDoujins", url: "https://erodoujins.com", category: "Hentai Streaming", description: "Dedicated reader for adult doujinshi with English translations.", tags: ["Free","Doujin","English"], rating: 4.4, addedAt: "2026-02-10" },
+    { id: "hentaicomic", name: "HentaiComic", url: "https://hentaicomic.com", category: "Hentai Streaming", description: "Adult manga and doujinshi reading platform with clean navigation.", tags: ["Free","Manga","Doujin"], rating: 4.3, addedAt: "2026-03-05" },
+    { id: "hentai2w", name: "Hentai2W", url: "https://hentai2.com", category: "Hentai Streaming", description: "Fast-loading hentai streaming portal with minimal ads.", tags: ["Free","Fast","Low-Ads"], rating: 4.4, addedAt: "2026-03-10" },
+
+    // === DOWNLOADS (15) ===
+    { id: "nyaa", name: "Nyaa", url: "https://nyaa.si", category: "Downloads", description: "The premier public anime, manga, and Japanese media torrent indexer.", tags: ["Free","Torrents","Anime"], rating: 4.9, addedAt: "2026-01-05" },
+    { id: "sukebei", name: "Sukebei Nyaa", url: "https://sukebei.nyaa.si", category: "Downloads", description: "Adult-focused section of Nyaa with hentai games, manga, and video torrents.", tags: ["Free","Torrents","Adult"], rating: 4.8, addedAt: "2026-01-05" },
+    { id: "anidex", name: "AniDex", url: "https://anidex.info", category: "Downloads", description: "Modern anime torrent index with a clean UI and multi-language support.", tags: ["Free","Torrents","Multi-language"], rating: 4.6, addedAt: "2026-02-01" },
+    { id: "animetosho", name: "AnimeTosho", url: "https://animetosho.org", category: "Downloads", description: "Mirrors Nyaa torrents and adds direct download and XDCC bot options.", tags: ["Free","Direct Download","Mirror"], rating: 4.7, addedAt: "2026-01-15" },
+    { id: "tokyotosho", name: "TokyoTosho", url: "https://www.tokyotosho.info", category: "Downloads", description: "One of the oldest Japanese media torrent trackers still active.", tags: ["Free","Torrents","Classic"], rating: 4.4, addedAt: "2026-03-05" },
+    { id: "yts", name: "YTS", url: "https://yts.mx", category: "Downloads", description: "High-quality, small-size anime film and movie torrents.", tags: ["Free","Torrents","HD"], rating: 4.7, addedAt: "2026-02-15" },
+    { id: "1337x", name: "1337x", url: "https://1337x.to", category: "Downloads", description: "Major public torrent index with a large and curated anime section.", tags: ["Free","Torrents","Public"], rating: 4.6, addedAt: "2026-03-01" },
+    { id: "dlraw", name: "DLRaw", url: "https://dlraw.to", category: "Downloads", description: "Download raw Japanese manga, light novels, and magazines.", tags: ["Free","Manga","Raw"], rating: 4.5, addedAt: "2026-02-08" },
+    { id: "rawkuma", name: "RawKuma", url: "https://rawkuma.com", category: "Downloads", description: "High quality raw Japanese manga scan downloads.", tags: ["Free","Manga","Japanese"], rating: 4.4, addedAt: "2026-04-01" },
+    { id: "anidl", name: "AniDL", url: "https://anidl.org", category: "Downloads", description: "Direct download links for popular anime series in various qualities.", tags: ["Free","Direct Download","Anime"], rating: 4.3, addedAt: "2026-01-20" },
+    { id: "animeout", name: "AnimeOut", url: "https://www.animeout.xyz", category: "Downloads", description: "Compressed anime downloads with micro-sized files for slow connections.", tags: ["Free","Compressed","Direct Download"], rating: 4.4, addedAt: "2026-04-05" },
+    { id: "itazuraneko", name: "Itazuraneko", url: "https://itazuraneko.neocities.org", category: "Downloads", description: "Legendary Japanese learning and media resource hub with a massive download library.", tags: ["Free","Japanese","Learning"], rating: 4.8, addedAt: "2026-03-10" },
+    { id: "rawsenmanga", name: "SenManga Raw", url: "https://raw.senmanga.com", category: "Downloads", description: "Large collection of raw Japanese manga for reading and download.", tags: ["Free","Manga","Raw"], rating: 4.3, addedAt: "2026-01-28" },
+    { id: "nyaapantsu", name: "NyaaPantsu", url: "https://nyaa.net", category: "Downloads", description: "Open-source alternative anime torrent tracker built on Nyaa's codebase.", tags: ["Free","Torrents","Open Source"], rating: 4.2, addedAt: "2026-03-20" },
+    { id: "animedlorg", name: "AnimeDL", url: "https://animedl.co", category: "Downloads", description: "Direct download portal for anime episodes with Google Drive mirrors.", tags: ["Free","Direct Download","Mirror"], rating: 4.3, addedAt: "2026-02-25" },
+
+    // === IMAGES / BOORUS (15) ===
+    { id: "danbooru", name: "Danbooru", url: "https://danbooru.donmai.us", category: "Images/Boorus", description: "The original curated anime image database with extensive tagging and metadata.", tags: ["Free","Curated","Tagged"], rating: 4.9, addedAt: "2026-01-08", longReview: "Danbooru is the primary source for anime art metadata. Its strict curation and high-quality tagging system make it an essential tool for artists and fans looking for specific characters or art styles.", pros: ["Perfect tagging", "Art community", "High res images"], cons: ["Restrictive for non-members", "Technical interface"] },
+    { id: "gelbooru", name: "Gelbooru", url: "https://gelbooru.com", category: "Images/Boorus", description: "Massive publicly accessible anime image database with millions of posts.", tags: ["Free","Massive","Tagged"], rating: 4.8, addedAt: "2026-01-08", longReview: "Gelbooru is the open-access alternative to Danbooru. It hosts a much larger volume of content with less restrictive curation, making it the best place for a broad search of anime and game art.", pros: ["Massive volume", "Open access", "Fast search"], cons: ["Aggressive ads", "Varying image quality"] },
+    { id: "safebooru", name: "Safebooru", url: "https://safebooru.org", category: "Images/Boorus", description: "SFW-only booru featuring clean anime artwork drawn from Gelbooru's database.", tags: ["Free","SFW","Anime"], rating: 4.7, addedAt: "2026-02-01" },
+    { id: "konachan", name: "Konachan", url: "https://konachan.com", category: "Images/Boorus", description: "High-quality anime wallpapers sourced and tagged by a dedicated community.", tags: ["Free","Wallpapers","Curated"], rating: 4.7, addedAt: "2026-02-01" },
+    { id: "yandere", name: "Yande.re", url: "https://yande.re", category: "Images/Boorus", description: "High-resolution anime image repository focused on scan quality.", tags: ["Free","HD","Scans"], rating: 4.8, addedAt: "2026-02-01" },
+    { id: "e621", name: "E621", url: "https://e621.net", category: "Images/Boorus", description: "The largest and most comprehensive furry and anthropomorphic art database.", tags: ["Free","Furry","Tagged"], rating: 4.7, addedAt: "2026-03-01" },
+    { id: "rule34xxx", name: "Rule34.xxx", url: "https://rule34.xxx", category: "Images/Boorus", description: "Massive rule 34 image database — if it exists, it is here.", tags: ["Free","Rule34","Adult"], rating: 4.8, addedAt: "2026-01-12" },
+    { id: "sankakuchan", name: "Sankaku Channel", url: "https://chan.sankakucomplex.com", category: "Images/Boorus", description: "Japanese-focused anime and cosplay imageboard with millions of tagged images.", tags: ["Free","Japanese","Cosplay"], rating: 4.6, addedAt: "2026-02-20" },
+    { id: "pixiv", name: "Pixiv", url: "https://www.pixiv.net", category: "Images/Boorus", description: "Japan's largest art sharing platform with millions of anime and doujin artists.", tags: ["Free","Official","Artists"], rating: 4.9, addedAt: "2026-01-15" },
+    { id: "zerochan", name: "Zerochan", url: "https://www.zerochan.net", category: "Images/Boorus", description: "Clean, curated anime artwork database with high-resolution images.", tags: ["Free","Curated","HD"], rating: 4.6, addedAt: "2026-03-10" },
+    { id: "animepictures", name: "Anime-Pictures", url: "https://anime-pictures.net", category: "Images/Boorus", description: "High-resolution anime and game CG database with strict quality control.", tags: ["Free","HD","Game CG"], rating: 4.7, addedAt: "2026-02-15" },
+    { id: "paheal", name: "Paheal", url: "https://rule34.paheal.net", category: "Images/Boorus", description: "Classic rule34 image hosting site with millions of tagged posts.", tags: ["Free","Rule34","Classic"], rating: 4.5, addedAt: "2026-03-08" },
+    { id: "rule34hentai", name: "Rule34Hentai", url: "https://rule34hentai.net", category: "Images/Boorus", description: "NSFW anime image aggregator focused on rule34 and hentai art.", tags: ["Free","Rule34","Hentai"], rating: 4.4, addedAt: "2026-04-02" },
+    { id: "booru", name: "Booru.org", url: "https://booru.org", category: "Images/Boorus", description: "Multi-booru viewer and aggregator for browsing across image boards.", tags: ["Free","Multi-Booru","Aggregator"], rating: 4.5, addedAt: "2026-02-12" },
+    { id: "atfbooru", name: "ATFBooru", url: "https://booru.allthefallen.moe", category: "Images/Boorus", description: "Community-run imageboard for anime art with extensive tags.", tags: ["Free","Community","Tagged"], rating: 4.3, addedAt: "2026-03-25" },
+
+    // === ANIME STREAMING (10) ===
+    { id: "gogoanime", name: "GogoAnime", url: "https://gogoanime3.co", category: "Anime Streaming", description: "One of the most popular free anime streaming portals with a massive library.", tags: ["Free","Dubbed","Subbed"], rating: 4.7, addedAt: "2026-01-18" },
+    { id: "zoro", name: "Aniwave (Zoro)", url: "https://aniwave.to", category: "Anime Streaming", description: "Popular anime streaming site with no ads, multiple servers, and fast loading.", tags: ["Free","No-Ads","Fast"], rating: 4.8, addedAt: "2026-02-09" },
+    { id: "9anime", name: "9Anime", url: "https://9anime.pl", category: "Anime Streaming", description: "Long-running fan-operated anime streaming site with extensive catalog.", tags: ["Free","Subbed","Dubbed"], rating: 4.6, addedAt: "2026-01-22" },
+    { id: "animepahe", name: "AnimePahe", url: "https://animepahe.ru", category: "Anime Streaming", description: "Known for compressed, high-quality releases that load fast on slow connections.", tags: ["Free","Compressed","Fast"], rating: 4.7, addedAt: "2026-03-03" },
+    { id: "kickassanime", name: "KickAssAnime", url: "https://kickassanime.am", category: "Anime Streaming", description: "Fast-loading anime streaming site with proxy support and reliable servers.", tags: ["Free","Fast","Proxy"], rating: 4.5, addedAt: "2026-02-22" },
+    { id: "animixplay", name: "AniMixPlay", url: "https://animixplay.to", category: "Anime Streaming", description: "Aggregator pulling streams from multiple sources for maximum reliability.", tags: ["Free","Aggregator","Reliable"], rating: 4.6, addedAt: "2026-03-18" },
+    { id: "animeowl", name: "AnimeOwl", url: "https://animeowl.me", category: "Anime Streaming", description: "Clean and fast anime streaming site with a large seasonal catalog.", tags: ["Free","Seasonal","Clean UI"], rating: 4.4, addedAt: "2026-04-08" },
+    { id: "animesuge", name: "AnimeSuge", url: "https://animesuge.to", category: "Anime Streaming", description: "Direct-stream anime site with a focus on minimal loading time.", tags: ["Free","Fast","Direct"], rating: 4.5, addedAt: "2026-04-12" },
+    { id: "animedao", name: "AnimeDao", url: "https://animedao.to", category: "Anime Streaming", description: "Community-driven anime streaming platform with user ratings and discussions.", tags: ["Free","Community","Discussion"], rating: 4.4, addedAt: "2026-01-30" },
+    { id: "wcofun", name: "WCOFun", url: "https://www.wcofun.net", category: "Anime Streaming", description: "Anime and cartoon streaming portal popular for dubbed content.", tags: ["Free","Dubbed","Cartoons"], rating: 4.3, addedAt: "2026-03-22" },
+
+    // === MANGA / DOUJIN (10) ===
+    { id: "mangadex", name: "MangaDex", url: "https://mangadex.org", category: "Manga/Doujin", description: "Community-built manga reading platform with the widest selection and best translations.", description_es: "Plataforma de lectura de manga construida por la comunidad con la selección más amplia y mejores traducciones.", description_jp: "コミュニティによって構築された、幅広いセレクションと最高の翻訳を備えた漫画閲覧プラットフォーム。", tags: ["Free","Community","Multi-language"], rating: 4.9, addedAt: "2026-01-06", longReview: "MangaDex is the premier site for high-quality manga scanlations. Its lack of ads and commitment to the community have made it the gold standard for reading non-adult and borderline content in 2026.", pros: ["Zero intrusive ads", "High quality scans", "Active community"], cons: ["Legal pressure risks", "Occasional slow loading"], promoted: true },
+    { id: "mangakakalot", name: "MangaKakalot", url: "https://mangakakalot.com", category: "Manga/Doujin", description: "Large unofficial manga reader with a constantly updated library.", tags: ["Free","Large Library","Fast"], rating: 4.5, addedAt: "2026-02-03" },
+    { id: "manganato", name: "MangaNato", url: "https://manganato.com", category: "Manga/Doujin", description: "Fast manga reader with an enormous library and reliable uptime.", tags: ["Free","Fast","Large Library"], rating: 4.6, addedAt: "2026-01-25" },
+    { id: "mangaowl", name: "MangaOwl", url: "https://mangaowl.net", category: "Manga/Doujin", description: "Clean manga reading interface with notifications for new chapter releases.", tags: ["Free","Clean UI","Notifications"], rating: 4.5, addedAt: "2026-03-12" },
+    { id: "mangahub", name: "MangaHub", url: "https://mangahub.io", category: "Manga/Doujin", description: "Aggregator manga reader with a sleek UI and large catalog.", tags: ["Free","Aggregator","Modern"], rating: 4.4, addedAt: "2026-02-18" },
+    { id: "bato", name: "Bato.to", url: "https://bato.to", category: "Manga/Doujin", description: "Community scanlation upload platform with an extensive, fan-driven library.", tags: ["Free","Scanlation","Community"], rating: 4.6, addedAt: "2026-01-14" },
+    { id: "readm", name: "ReadM", url: "https://www.readm.org", category: "Manga/Doujin", description: "Clean manga reader focusing on a smooth mobile reading experience.", tags: ["Free","Mobile","Clean UI"], rating: 4.3, addedAt: "2026-04-04" },
+    { id: "copymanga", name: "CopyManga", url: "https://copymanga.site", category: "Manga/Doujin", description: "Massive Chinese manga aggregator with a huge selection of titles.", tags: ["Free","Chinese","Large Library"], rating: 4.4, addedAt: "2026-03-28" },
+    { id: "toomics", name: "Toomics", url: "https://toomics.com", category: "Manga/Doujin", description: "Premium webtoon platform with exclusive adult romance and action series.", tags: ["Paid","Webtoons","Adult"], rating: 4.5, addedAt: "2026-02-26" },
+    { id: "hentai2read", name: "Hentai2Read", url: "https://hentai2read.com", category: "Manga/Doujin", description: "Large library of officially translated adult manga and doujinshi.", tags: ["Free","Adult","Translated"], rating: 4.6, addedAt: "2026-01-19" },
+
+    // === GAMES (5) ===
+    { id: "f95zone", name: "F95Zone", url: "https://f95zone.to", category: "Games", description: "The largest community for adult game sharing, modding, and discussion.", tags: ["Free","Community","Mods"], rating: 4.9, addedAt: "2026-01-09" },
+    { id: "lewdzone", name: "LewdZone", url: "https://lewdzone.com", category: "Games", description: "Curated database and download hub for adult indie games.", tags: ["Free","Indie","Database"], rating: 4.6, addedAt: "2026-02-06" },
+    { id: "adultgamesworld", name: "Adult Games World", url: "https://adultgames.world", category: "Games", description: "Aggregator listing adult games with reviews, screenshots, and download links.", tags: ["Free","Reviews","Indie"], rating: 4.4, addedAt: "2026-03-14" },
+    { id: "vnplanet", name: "VN Planet", url: "https://vnplanet.net", category: "Games", description: "Community portal for downloading and discussing visual novels and adult games.", tags: ["Free","VN","Community"], rating: 4.5, addedAt: "2026-04-07" },
+    { id: "hgames", name: "HGames", url: "https://hgames.io", category: "Games", description: "Curated hentai game portal featuring the best H-RPG and VN releases.", tags: ["Free","RPG","Hentai"], rating: 4.3, addedAt: "2026-02-13" },
+
+    // === VISUAL NOVELS (5) ===
+    { id: "visualnovelplanet", name: "VN Planet", url: "https://vnplanet.net", category: "Visual Novels", description: "Community hub for discovering, downloading, and discussing visual novels.", tags: ["Free","Community","Database"], rating: 4.6, addedAt: "2026-03-16" },
+    { id: "vntls", name: "VN TLS", url: "https://vntls.org", category: "Visual Novels", description: "Resource for fan-translated visual novels with translation patches.", tags: ["Free","Translations","Patches"], rating: 4.7, addedAt: "2026-01-23" },
+    { id: "insanelygames", name: "Insanely Games", url: "https://insanelygames.net", category: "Visual Novels", description: "Download portal for adult visual novels, H-games, and RPG Maker titles.", tags: ["Free","Download","RPG"], rating: 4.4, addedAt: "2026-02-17" },
+    { id: "erogedownload", name: "Eroge Download", url: "https://erogedownload.com", category: "Visual Novels", description: "Trusted eroge download site with repacks and English patches.", tags: ["Free","Eroge","English"], rating: 4.5, addedAt: "2026-03-29" },
+    { id: "ryuugames", name: "Ryuu Games", url: "https://ryuugames.com", category: "Visual Novels", description: "Popular source for adult VN and RPG downloads with active community.", tags: ["Free","RPG","Community"], rating: 4.6, addedAt: "2026-04-16" },
+
+    // === COMMUNITIES (5) ===
+    { id: "hentaifoundry", name: "Hentai Foundry", url: "https://www.hentai-foundry.com", category: "Communities", description: "Large artist community dedicated to anime-style adult artwork and stories.", tags: ["Free","Artists","Community"], rating: 4.7, addedAt: "2026-01-11" },
+    { id: "deviantart", name: "DeviantArt", url: "https://www.deviantart.com", category: "Communities", description: "The world's largest online art community, home to millions of anime artists.", tags: ["Free","Artists","Mainstream"], rating: 4.7, addedAt: "2026-02-04" },
+    { id: "newgrounds", name: "Newgrounds", url: "https://www.newgrounds.com", category: "Communities", description: "Pioneer entertainment portal hosting animations, games, and adult art.", tags: ["Free","Art","Games"], rating: 4.8, addedAt: "2026-03-06" },
+    { id: "twitter", name: "X (Twitter) — Anime", url: "https://twitter.com/search?q=%23anime", category: "Communities", description: "The primary social media platform for real-time anime news and artist discovery.", tags: ["Free","Social","News"], rating: 4.6, addedAt: "2026-01-16" },
+    { id: "discord", name: "Discord — Anime Servers", url: "https://disboard.org/servers/tag/anime", category: "Communities", description: "Directory of public anime Discord servers for fans and communities.", tags: ["Free","Community","Chat"], rating: 4.7, addedAt: "2026-02-23" }
+
+,
+    { id: "chaturbate", name: "Chaturbate", url: "https://chaturbate.com", category: "Live Cams", description: "One of the largest free live cam sites with tokens and tip goals.", tags: ["Free", "Live Cams", "Tokens"], rating: 4.6, addedAt: "2026-04-17" },
+    { id: "myfreecams", name: "MyFreeCams", url: "https://myfreecams.com", category: "Live Cams", description: "Popular live webcam community focusing on female models.", tags: ["Free", "Live Cams", "Tokens"], rating: 4.3, addedAt: "2026-04-22" },
+    { id: "bongacams", name: "BongaCams", url: "https://bongacams.com", category: "Live Cams", description: "Global webcam site featuring thousands of models streaming live.", tags: ["Free", "Live Cams", "Couples"], rating: 4.5, addedAt: "2026-04-22" },
+    { id: "stripchat", name: "Stripchat", url: "https://stripchat.com", category: "Live Cams", description: "Interactive live cam platform with VR and mobile streaming.", tags: ["Free", "VR", "Interactive"], rating: 4.2, addedAt: "2026-05-07" },
+    { id: "camsoda", name: "CamSoda", url: "https://camsoda.com", category: "Live Cams", description: "Innovative cam site with interactive toys and unique show formats.", tags: ["Free", "Interactive", "Live Cams"], rating: 4.3, addedAt: "2026-05-04" },
+    { id: "livejasmin", name: "LiveJasmin", url: "https://livejasmin.com", category: "Live Cams", description: "Premium HD live cam site known for high-quality private shows.", tags: ["Paid", "Premium", "HD"], rating: 4.5, addedAt: "2026-04-30" },
+    { id: "imlive", name: "ImLive", url: "https://imlive.com", category: "Live Cams", description: "Classic premium cam site offering private and VIP shows.", tags: ["Paid", "Private", "Live Cams"], rating: 4.4, addedAt: "2026-04-18" },
+    { id: "fancentro", name: "FanCentro", url: "https://fancentro.com", category: "Premium Creators", description: "Platform connecting fans with premium social media creators.", tags: ["Paid", "Creators", "Subscriptions"], rating: 4.5, addedAt: "2026-04-29" },
+    { id: "onlyfans", name: "OnlyFans", url: "https://onlyfans.com", category: "Premium Creators", description: "The largest premium creator platform for exclusive content.", tags: ["Paid", "Creators", "Mainstream"], rating: 4.4, addedAt: "2026-04-27" },
+    { id: "fansly", name: "Fansly", url: "https://fansly.com", category: "Premium Creators", description: "Rapidly growing creator platform with tiered subscription options.", tags: ["Paid", "Creators", "Tiers"], rating: 4.7, addedAt: "2026-05-07" },
+    { id: "manyvids", name: "ManyVids", url: "https://manyvids.com", category: "Premium Creators", description: "Marketplace for creators to sell custom videos and subscriptions.", tags: ["Paid", "VOD", "Customs"], rating: 4.3, addedAt: "2026-04-29" },
+    { id: "clips4sale", name: "Clips4Sale", url: "https://clips4sale.com", category: "Premium Creators", description: "Massive niche-focused marketplace for fetish and custom clips.", tags: ["Paid", "Fetish", "VOD"], rating: 4.9, addedAt: "2026-04-22" },
+    { id: "loyalfans", name: "LoyalFans", url: "https://loyalfans.com", category: "Premium Creators", description: "Creator-first platform offering subscriptions, messaging, and live streams.", tags: ["Paid", "Creators", "Live"], rating: 4.2, addedAt: "2026-04-16" },
+    { id: "pocketstars", name: "PocketStars", url: "https://pocketstars.com", category: "Premium Creators", description: "UK-based subscription platform for models and creators.", tags: ["Paid", "Creators", "Subscriptions"], rating: 4.6, addedAt: "2026-05-01" },
+    { id: "justforfans", name: "JustFor.Fans", url: "https://justfor.fans", category: "Premium Creators", description: "Creator platform heavily popular among adult performers.", tags: ["Paid", "Performers", "Creators"], rating: 4.3, addedAt: "2026-04-29" },
+    { id: "frisk", name: "Frisk", url: "https://frisk.chat", category: "Premium Creators", description: "Platform focusing on adult social networking and subscriptions.", tags: ["Paid", "Social", "Creators"], rating: 4.7, addedAt: "2026-04-18" },
+    { id: "adulttime", name: "Adult Time", url: "https://adulttime.com", category: "Adult Studios", description: "Often called the 'Netflix of adult', offering massive studio catalogs.", tags: ["Paid", "Studios", "Network"], rating: 4.6, addedAt: "2026-04-28" },
+    { id: "jerkmate", name: "JerkMate", url: "https://jerkmate.com", category: "Live Cams", description: "Cam directory routing users to active models across networks.", tags: ["Free", "Live Cams", "Directory"], rating: 4.8, addedAt: "2026-05-03" },
+    { id: "camscom", name: "Cams.com", url: "https://cams.com", category: "Live Cams", description: "Long-running premium and freemium live webcam platform.", tags: ["Freemium", "Live Cams", "Private"], rating: 4.5, addedAt: "2026-04-22" },
+    { id: "flirt4free", name: "Flirt4Free", url: "https://flirt4free.com", category: "Live Cams", description: "High-end cam site offering credits for private shows.", tags: ["Paid", "Premium", "Credits"], rating: 4.3, addedAt: "2026-05-02" },
+    { id: "streamate", name: "Streamate", url: "https://streamate.com", category: "Live Cams", description: "Leading private cam show platform where models set per-minute rates.", tags: ["Paid", "Private", "Per-Minute"], rating: 4.3, addedAt: "2026-04-25" },
+    { id: "cam4", name: "Cam4", url: "https://cam4.com", category: "Live Cams", description: "International free cam community with amateur and pro models.", tags: ["Free", "Amateur", "International"], rating: 4.3, addedAt: "2026-05-01" },
+    { id: "xmodels", name: "XModels", url: "https://xmodels.com", category: "Live Cams", description: "Network of premium models offering private shows and cam-to-cam.", tags: ["Paid", "Private", "Cam-to-Cam"], rating: 4.2, addedAt: "2026-04-15" },
+    { id: "babestation", name: "BabeStation", url: "https://babestation.tv", category: "Live Cams", description: "UK-based live TV and cam platform featuring British models.", tags: ["Paid", "UK", "TV"], rating: 4.3, addedAt: "2026-04-23" },
+    { id: "amateurcams", name: "AmateurCams", url: "https://amateurcams.com", category: "Live Cams", description: "Focuses strictly on amateur performers streaming from home.", tags: ["Free", "Amateur", "Live Cams"], rating: 4.5, addedAt: "2026-05-04" },
+    { id: "adultwork", name: "AdultWork", url: "https://adultwork.com", category: "Premium Creators", description: "UK-based directory for escorts, cam models, and content sales.", tags: ["Paid", "Directory", "UK"], rating: 4.6, addedAt: "2026-05-10" },
+    { id: "slushy", name: "Slushy", url: "https://slushy.com", category: "Premium Creators", description: "TikTok-style swipeable feed for adult creators and subscriptions.", tags: ["Paid", "Mobile", "Swipe"], rating: 4.3, addedAt: "2026-05-02" },
+    { id: "modelhub", name: "ModelHub", url: "https://modelhub.com", category: "Premium Creators", description: "Pornhub's official platform for verified models to sell clips.", tags: ["Paid", "VOD", "Verified"], rating: 4.5, addedAt: "2026-04-15" },
+    { id: "iwantclips", name: "IWantClips", url: "https://iwantclips.com", category: "Premium Creators", description: "Marketplace specifically tailored to femdom and fetish clip sales.", tags: ["Paid", "Fetish", "Clips"], rating: 4.7, addedAt: "2026-04-21" },
+    { id: "sextpanther", name: "SextPanther", url: "https://sextpanther.com", category: "Premium Creators", description: "Texting and calling platform connecting fans directly with adult stars.", tags: ["Paid", "Messaging", "Stars"], rating: 4.4, addedAt: "2026-04-18" },
+    { id: "camcontacts", name: "CamContacts", url: "https://camcontacts.com", category: "Live Cams", description: "Long-standing platform for meeting and watching amateur cam models.", tags: ["Paid", "Amateur", "Dating"], rating: 4.3, addedAt: "2026-05-09" },
+    { id: "bravotube", name: "BravoTube", url: "https://bravotube.net", category: "Adult Studios", description: "Tube site featuring full-length scenes and studio promos.", tags: ["Free", "Tube", "Full-Length"], rating: 4.4, addedAt: "2026-04-18" },
+    { id: "bangbros", name: "BangBros", url: "https://bangbros.com", category: "Adult Studios", description: "Massive network of gonzo reality-style adult sites.", tags: ["Paid", "Network", "Gonzo"], rating: 4.8, addedAt: "2026-05-03" },
+    { id: "naughtyamerica", name: "Naughty America", url: "https://naughtyamerica.com", category: "Adult Studios", description: "Industry leader in high-end VR and 4K story-based scenes.", tags: ["Paid", "4K", "VR"], rating: 4.3, addedAt: "2026-04-30" },
+    { id: "realitykings", name: "Reality Kings", url: "https://realitykings.com", category: "Adult Studios", description: "Gonzo and reality porn network with dozens of distinct brands.", tags: ["Paid", "Reality", "Network"], rating: 4.4, addedAt: "2026-05-05" },
+    { id: "kinkcom", name: "Kink.com", url: "https://kink.com", category: "Adult Studios", description: "World-famous studio specializing in professional BDSM and fetish content.", tags: ["Paid", "BDSM", "Fetish"], rating: 4.6, addedAt: "2026-04-19" },
+    { id: "evilangel", name: "Evil Angel", url: "https://evilangel.com", category: "Adult Studios", description: "Director-owned network focusing on hardcore and extreme niches.", tags: ["Paid", "Hardcore", "Network"], rating: 4.9, addedAt: "2026-05-08" },
+    { id: "vixen", name: "Vixen", url: "https://vixen.com", category: "Adult Studios", description: "Award-winning studio known for glamorous, high-end production value.", tags: ["Paid", "Glamour", "High-End"], rating: 4.5, addedAt: "2026-04-17" },
+    { id: "blacked", name: "Blacked", url: "https://blacked.com", category: "Adult Studios", description: "High-end studio focusing exclusively on interracial scenes.", tags: ["Paid", "Interracial", "High-End"], rating: 4.3, addedAt: "2026-04-24" },
+    { id: "tushy", name: "Tushy", url: "https://tushy.com", category: "Adult Studios", description: "Premium network focusing on high-quality anal content.", tags: ["Paid", "Anal", "Premium"], rating: 4.3, addedAt: "2026-04-18" },
+    { id: "deeper", name: "Deeper", url: "https://deeper.com", category: "Adult Studios", description: "Cinematic studio focusing on emotional and intense storytelling.", tags: ["Paid", "Cinematic", "Story"], rating: 4.3, addedAt: "2026-04-24" },
+    { id: "mofos", name: "Mofos", url: "https://mofos.com", category: "Adult Studios", description: "Gonzo network specializing in amateur and step-fantasy scenarios.", tags: ["Paid", "Gonzo", "Fantasy"], rating: 4.3, addedAt: "2026-05-02" },
+    { id: "brazzers", name: "Brazzers", url: "https://brazzers.com", category: "Adult Studios", description: "One of the most recognized networks for parody and reality porn.", tags: ["Paid", "Parody", "Network"], rating: 4.6, addedAt: "2026-05-03" },
+    { id: "digitalplayground", name: "Digital Playground", url: "https://digitalplayground.com", category: "Adult Studios", description: "Classic studio known for blockbuster feature films and VR.", tags: ["Paid", "Features", "VR"], rating: 4.8, addedAt: "2026-04-17" },
+    { id: "hustler", name: "Hustler Video", url: "https://hustler.com", category: "Adult Studios", description: "Iconic adult entertainment brand with a massive historic catalog.", tags: ["Paid", "Classic", "Parody"], rating: 4.5, addedAt: "2026-05-07" },
+    { id: "wicked", name: "Wicked Pictures", url: "https://wicked.com", category: "Adult Studios", description: "Legendary studio known for narrative features and exclusive contract stars.", tags: ["Paid", "Features", "Classic"], rating: 4.3, addedAt: "2026-04-18" },
+    { id: "zerotolerance", name: "Zero Tolerance", url: "https://zerotolerance.com", category: "Adult Studios", description: "Network focusing on fast-paced, high-energy gonzo scenes.", tags: ["Paid", "Gonzo", "Network"], rating: 4.7, addedAt: "2026-04-26" },
+    { id: "julesjordan", name: "Jules Jordan", url: "https://julesjordan.com", category: "Adult Studios", description: "Award-winning director's network focusing on hardcore stars.", tags: ["Paid", "Director", "Hardcore"], rating: 4.7, addedAt: "2026-04-30" },
+    { id: "manuelferrara", name: "Manuel Ferrara", url: "https://manuelferrara.com", category: "Adult Studios", description: "Official site for the legendary performer and director's content.", tags: ["Paid", "Director", "Gonzo"], rating: 4.3, addedAt: "2026-05-02" },
+    { id: "archangel", name: "ArchAngel", url: "https://archangelvideo.com", category: "Adult Studios", description: "Studio focusing on glossy, model-centric scenes.", tags: ["Paid", "Models", "Glossy"], rating: 4.4, addedAt: "2026-04-23" },
+    { id: "scoreland", name: "Scoreland", url: "https://scoreland.com", category: "Adult Studios", description: "The internet's oldest and largest hub for big bust entertainment.", tags: ["Paid", "Niche", "Classic"], rating: 4.5, addedAt: "2026-04-30" },
+    { id: "xempire", name: "XEmpire", url: "https://xempire.com", category: "Adult Studios", description: "Network combining multiple niche and mainstream adult sites.", tags: ["Paid", "Network", "Niche"], rating: 4.6, addedAt: "2026-05-03" },
+    { id: "twistys", name: "Twistys", url: "https://twistys.com", category: "Adult Studios", description: "Network focusing on beautiful girls, solo play, and girl-girl scenes.", tags: ["Paid", "Glamour", "Lesbian"], rating: 4.7, addedAt: "2026-05-10" },
+    { id: "babes", name: "Babes", url: "https://babes.com", category: "Adult Studios", description: "High-definition network focusing strictly on female beauty.", tags: ["Paid", "Glamour", "HD"], rating: 4.7, addedAt: "2026-05-09" },
+    { id: "xart", name: "X-Art", url: "https://x-art.com", category: "Adult Studios", description: "Erotic studio focusing on romantic, artistic, and couples-friendly videos.", tags: ["Paid", "Erotic", "Couples"], rating: 4.5, addedAt: "2026-04-23" },
+    { id: "joymii", name: "Joymii", url: "https://joymii.com", category: "Adult Studios", description: "European studio with a focus on female-friendly, romantic erotica.", tags: ["Paid", "Erotic", "European"], rating: 4.5, addedAt: "2026-04-18" },
+    { id: "hegre", name: "Hegre", url: "https://hegre.com", category: "Adult Studios", description: "Artistic nude photography and massage films from Petter Hegre.", tags: ["Paid", "Artistic", "Massage"], rating: 4.8, addedAt: "2026-04-27" },
+    { id: "metart", name: "MetArt", url: "https://metart.com", category: "Adult Studios", description: "Network offering high-end erotic photography and softcore films.", tags: ["Paid", "Erotic", "Photography"], rating: 4.7, addedAt: "2026-04-21" },
+    { id: "ftvgirls", name: "FTV Girls", url: "https://ftvgirls.com", category: "Adult Studios", description: "Reality network focusing on college girls and amateurs.", tags: ["Paid", "Amateur", "Reality"], rating: 4.4, addedAt: "2026-04-18" },
+    { id: "wowgirls", name: "WowGirls", url: "https://wowgirls.com", category: "Adult Studios", description: "European erotica network focusing on glamorous models and lesbians.", tags: ["Paid", "European", "Glamour"], rating: 4.8, addedAt: "2026-05-03" },
+    { id: "passionhd", name: "Passion HD", url: "https://passion-hd.com", category: "Adult Studios", description: "Studio focusing on passionate, high-definition hardcore scenes.", tags: ["Paid", "HD", "Hardcore"], rating: 4.4, addedAt: "2026-05-06" },
+    { id: "nubiles", name: "Nubiles", url: "https://nubiles.com", category: "Adult Studios", description: "Massive network originally focused on 18+ teens, now featuring various niches.", tags: ["Paid", "Network", "Amateur"], rating: 4.8, addedAt: "2026-05-03" },
+    { id: "cherrypimps", name: "Cherry Pimps", url: "https://cherrypimps.com", category: "Adult Studios", description: "Live broadcasting network that also shoots high-end VOD scenes.", tags: ["Paid", "Live Cams", "VOD"], rating: 4.8, addedAt: "2026-04-22" },
+    { id: "girlsway", name: "Girlsway", url: "https://girlsway.com", category: "Adult Studios", description: "Premium network focused entirely on girl-on-girl erotica and storylines.", tags: ["Paid", "Lesbian", "Premium"], rating: 4.7, addedAt: "2026-04-25" },
+    { id: "puretaboo", name: "Pure Taboo", url: "https://puretaboo.com", category: "Adult Studios", description: "Studio known for intense, dramatic, and taboo family roleplay scenes.", tags: ["Paid", "Taboo", "Roleplay"], rating: 4.6, addedAt: "2026-05-10" },
+    { id: "teamskeet", name: "Team Skeet", url: "https://teamskeet.com", category: "Adult Studios", description: "Highly popular network focusing on amateur and step-family fantasy themes.", tags: ["Paid", "Amateur", "Fantasy"], rating: 4.4, addedAt: "2026-04-25" },
+    { id: "familystrokes", name: "Family Strokes", url: "https://familystrokes.com", category: "Adult Studios", description: "Brand specializing entirely in step-family roleplay themes.", tags: ["Paid", "Roleplay", "Fantasy"], rating: 4.8, addedAt: "2026-04-30" },
+    { id: "spizoo", name: "Spizoo", url: "https://spizoo.com", category: "Adult Studios", description: "Gonzo network shooting high-energy scenes in massive mansions.", tags: ["Paid", "Gonzo", "Mansions"], rating: 4.8, addedAt: "2026-05-07" },
+    { id: "peter-north", name: "Peter North", url: "https://peternorth.com", category: "Adult Studios", description: "Classic network from the legendary performer and director.", tags: ["Paid", "Classic", "Director"], rating: 4.8, addedAt: "2026-04-26" },
+    { id: "rocco-siffredi", name: "Rocco Siffredi", url: "https://roccosiffredi.com", category: "Adult Studios", description: "Official studio of the famous Italian hardcore director and star.", tags: ["Paid", "Hardcore", "European"], rating: 4.9, addedAt: "2026-05-01" },
+    { id: "danni", name: "Danni", url: "https://danni.com", category: "Premium Creators", description: "One of the original premium adult sites, featuring vast archives of models.", tags: ["Paid", "Archives", "Classic"], rating: 4.7, addedAt: "2026-04-19" },
+    { id: "suicidegirls", name: "SuicideGirls", url: "https://suicidegirls.com", category: "Premium Creators", description: "Alternative community and model network featuring tattoos and piercings.", tags: ["Paid", "Alternative", "Community"], rating: 4.4, addedAt: "2026-05-05" },
+    { id: "altporn", name: "AltPorn", url: "https://altporn.net", category: "Communities", description: "News and directory site for alternative adult entertainment and goth models.", tags: ["Free", "Alternative", "News"], rating: 4.2, addedAt: "2026-04-26" },
+    { id: "boundhub", name: "BoundHub", url: "https://boundhub.com", category: "Communities", description: "Tube site and community specifically dedicated to BDSM content.", tags: ["Free", "BDSM", "Tube"], rating: 4.5, addedAt: "2026-04-25" },
+    { id: "motherless", name: "Motherless", url: "https://motherless.com", category: "Communities", description: "Uncensored community platform focusing on extreme, bizarre, and amateur uploads.", tags: ["Free", "Amateur", "Uncensored"], rating: 4.2, addedAt: "2026-04-23" },
+    { id: "heavyr", name: "Heavy-R", url: "https://heavy-r.com", category: "Communities", description: "Tube site known for hosting extreme fetish and hardcore amateur clips.", tags: ["Free", "Extreme", "Fetish"], rating: 4.9, addedAt: "2026-04-28" },
+    { id: "pornhub", name: "Pornhub", url: "https://pornhub.com", category: "Communities", description: "The world's largest porn tube site featuring millions of amateur and pro videos.", tags: ["Free", "Mainstream", "Tube"], rating: 4.7, addedAt: "2026-04-25" },
+    { id: "xvideos", name: "XVideos", url: "https://xvideos.com", category: "Communities", description: "Massive free tube site with one of the largest traffic volumes globally.", tags: ["Free", "Mainstream", "Tube"], rating: 4.3, addedAt: "2026-04-18" },
+    { id: "xnxx", name: "XNXX", url: "https://xnxx.com", category: "Communities", description: "One of the earliest and largest free porn tube sites, heavily focused on amateur content.", tags: ["Free", "Amateur", "Tube"], rating: 4.8, addedAt: "2026-04-28" },
+    { id: "eporner", name: "EPorner", url: "https://eporner.com", category: "Communities", description: "Tube site known for being the first to offer massive libraries of 1080p and 4K free porn.", tags: ["Free", "4K", "HD"], rating: 4.9, addedAt: "2026-04-16" },
+    { id: "spankbang", name: "SpankBang", url: "https://spankbang.com", category: "Communities", description: "Highly popular tube site featuring daily updates of premium and amateur content.", tags: ["Free", "Mainstream", "Tube"], rating: 4.7, addedAt: "2026-05-03" },
+    { id: "youporn", name: "YouPorn", url: "https://youporn.com", category: "Communities", description: "Pioneer tube site offering a massive, curated library of free videos.", tags: ["Free", "Mainstream", "Tube"], rating: 4.5, addedAt: "2026-04-25" },
+    { id: "redtube", name: "RedTube", url: "https://redtube.com", category: "Communities", description: "Iconic free porn tube offering short clips and full-length scenes.", tags: ["Free", "Mainstream", "Tube"], rating: 4.3, addedAt: "2026-04-23" },
+    { id: "hqporner", name: "HQPorner", url: "https://hqporner.com", category: "Communities", description: "Tube site dedicated exclusively to high-quality HD and 4K ripped scenes.", tags: ["Free", "HD", "4K"], rating: 4.6, addedAt: "2026-04-17" },
+    { id: "xhamster", name: "xHamster", url: "https://xhamster.com", category: "Communities", description: "Massive tube network featuring strong social and dating elements.", tags: ["Free", "Social", "Tube"], rating: 4.3, addedAt: "2026-04-16" },
+    { id: "tube8", name: "Tube8", url: "https://tube8.com", category: "Communities", description: "One of the original premium-quality free tube sites, owned by MindGeek.", tags: ["Free", "Mainstream", "Tube"], rating: 4.8, addedAt: "2026-04-25" },
+    { id: "txxx", name: "TXXX", url: "https://txxx.com", category: "Communities", description: "Aggregator tube site that crawls and indexes multiple other platforms.", tags: ["Free", "Aggregator", "Tube"], rating: 4.5, addedAt: "2026-05-09" },
+    { id: "pornmd", name: "PornMD", url: "https://pornmd.com", category: "Communities", description: "Porn search engine that crawls multiple top tube sites for best results.", tags: ["Free", "Search", "Aggregator"], rating: 4.4, addedAt: "2026-05-06" },
+    { id: "nude-gals", name: "Nude-Gals", url: "https://nude-gals.com", category: "Images/Boorus", description: "Massive encyclopedia of softcore and hardcore photo galleries of adult stars.", tags: ["Free", "Galleries", "Encyclopedia"], rating: 4.7, addedAt: "2026-04-25" },
+    { id: "babepedia", name: "Babepedia", url: "https://babepedia.com", category: "Communities", description: "Extensive wiki-style database of adult models and porn stars with photos.", tags: ["Free", "Database", "Wiki"], rating: 4.8, addedAt: "2026-05-07" },
+    { id: "iafd", name: "IAFD", url: "https://iafd.com", category: "Communities", description: "Internet Adult Film Database: The most comprehensive database of adult films and cast.", tags: ["Free", "Database", "Industry"], rating: 4.2, addedAt: "2026-05-09" },
+    { id: "freeones", name: "Freeones", url: "https://freeones.com", category: "Communities", description: "One of the oldest directories and databases for finding adult model sites.", tags: ["Free", "Directory", "Database"], rating: 4.5, addedAt: "2026-05-07" },
+    { id: "babesdirectory", name: "Babes Directory", url: "https://babesdirectory.online", category: "Communities", description: "Database and link hub for discovering premium models and studios.", tags: ["Free", "Directory", "Links"], rating: 4.8, addedAt: "2026-04-18" },
+    { id: "theporndude", name: "The Porn Dude", url: "https://theporndude.com", category: "Communities", description: "Famous curated directory reviewing and ranking thousands of adult sites.", tags: ["Free","Directory","Reviews"], rating: 4.6, addedAt: "2026-05-07", longReview: "The Porn Dude is the definitive authority on adult site reviews. His detailed rankings and humorous but honest commentary have made this directory the single most important resource for safety and quality in the industry.", pros: ["Extremely detailed reviews", "Trusted rankings", "User safety focus"], cons: ["Huge number of links", "Overwhelming for beginners"] },
+    { id: "xbiz", name: "XBIZ", url: "https://xbiz.com", category: "Communities", description: "Business news network covering the global adult entertainment industry.", tags: ["Free","News","Industry"], rating: 4.7, addedAt: "2026-04-28" },
+    { id: "avn", name: "AVN", url: "https://avn.com", category: "Communities", description: "Adult Video News: The leading trade journal and awards host for the adult industry.", tags: ["Free", "News", "Industry"], rating: 4.4, addedAt: "2026-04-15" },
+    { id: "dirty", name: "Dirty.com", url: "https://dirty.com", category: "Premium Creators", description: "Premium brand offering highly exclusive content from top-tier models.", tags: ["Paid", "Exclusive", "Premium"], rating: 4.5, addedAt: "2026-04-17" },
+    { id: "playboy", name: "Playboy", url: "https://playboy.com", category: "Premium Creators", description: "The iconic brand's modern platform featuring creator subscriptions and editorials.", tags: ["Paid", "Classic", "Creators"], rating: 4.2, addedAt: "2026-05-02" },
+    { id: "penthouse", name: "Penthouse", url: "https://penthouse.com", category: "Adult Studios", description: "Legendary adult magazine and film studio focusing on classic erotica.", tags: ["Paid", "Classic", "Magazine"], rating: 4.7, addedAt: "2026-04-18" },
+    { id: "centerfold", name: "Centerfold", url: "https://centerfold.com", category: "Premium Creators", description: "Playboy's premium creator platform designed to compete with OnlyFans.", tags: ["Paid", "Creators", "Subscriptions"], rating: 4.4, addedAt: "2026-05-04" }
 ];
+
+const ALL_CATEGORIES = [...new Set(sitesData.map(site => site.category))].sort();
+
+const allTagsRaw = [];
+sitesData.forEach(site => site.tags.forEach(tag => allTagsRaw.push(tag)));
+const ALL_TAGS = [...new Set(allTagsRaw)].sort();

@@ -31,7 +31,10 @@ jobs:
     - name: 2. Health Check
       run: python scripts/health_check.py
 
-    - name: 3. SEO & Sitemap Generation
+    - name: 3. Enhance SEO Metadata
+      run: python scripts/enhance_seo.py
+
+    - name: 4. Sitemap Generation
       run: python scripts/seo_gen.py
 
     - name: Commit Changes
@@ -42,8 +45,3 @@ jobs:
         git commit -m "chore: master automation update [skip ci]" || echo "No changes"
         git push
 
-    - name: 4. Telegram Broadcast
-      env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-      run: python scripts/broadcast.py
