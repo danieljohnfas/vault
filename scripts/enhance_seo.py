@@ -19,16 +19,12 @@ def enhance_metadata():
 
     array_content = match.group(1)
     site_blocks = re.findall(r'\{\s*"id":.*?\s*\}', array_content, re.DOTALL)
-    if not site_blocks:
-        # Fallback if keys are not quoted
-        site_blocks = re.findall(r'\{\s*id:.*?\s*\}', array_content, re.DOTALL)
     
     sites = []
     for block in site_blocks:
         try:
-            # Safely convert to JSON
-            # Only quote keys that are NOT already quoted
-            clean_block = re.sub(r'([{,]\s*)(?!" )(\w+):', r'\1"\2":', block)
+            # Clean block for JSON parsing (should already be clean but being safe)
+            clean_block = re.sub(r'([{,]\s*)(\w+):', r'\1"\2":', block)
             site = json.loads(clean_block)
             sites.append(site)
         except:
