@@ -56,71 +56,19 @@ const sitesData = [
             "description_jp": "HIDIVEは、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "asiancrush",
-            "name": "AsianCrush",
-            "url": "https://www.asiancrush.com",
-            "category": "Anime Streaming",
-            "description": "AsianCrush is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "kodanshacomics",
+            "name": "Kodansha Comics",
+            "url": "https://kodansha.us",
+            "category": "Manga/Doujin",
+            "description": "Kodansha Comics is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Free",
                     "Official",
-                    "Ads"
-            ],
-            "rating": 3.9,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, AsianCrush emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, AsianCrush provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "AsianCrush es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "AsianCrushは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "plutotvanime",
-            "name": "Pluto TV Anime",
-            "url": "https://pluto.tv/en/live-tv/anime-all-day",
-            "category": "Anime Streaming",
-            "description": "Pluto TV Anime is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Live TV"
-            ],
-            "rating": 4,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Pluto TV Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Pluto TV Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Pluto TV Anime es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Pluto TV Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "anioneyoutube",
-            "name": "Ani-One (YouTube)",
-            "url": "https://www.youtube.com/c/AniOneAsia",
-            "category": "Anime Streaming",
-            "description": "Official distributor streaming anime legally on YouTube.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
+                    "Paid",
+                    "Manga"
             ],
             "rating": 4.6,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Ani-One (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Ani-One (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Kodansha Comics emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Kodansha Comics provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -130,112 +78,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Ani-One (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Ani-One (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "amazonprimevideo",
-            "name": "Amazon Prime Video",
-            "url": "https://www.amazon.com/primevideo",
-            "category": "Anime Streaming",
-            "description": "Amazon Prime Video is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Mainstream"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Amazon Prime Video emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Amazon Prime Video provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Amazon Prime Video es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Amazon Prime Videoは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "gundaminfoyoutube",
-            "name": "GundamInfo (YouTube)",
-            "url": "https://www.youtube.com/user/GundamInfo",
-            "category": "Anime Streaming",
-            "description": "The official portal for Gundam streaming worldwide.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, GundamInfo (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, GundamInfo (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "GundamInfo (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "GundamInfo (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "retrocrush",
-            "name": "RetroCrush",
-            "url": "https://www.retrocrush.tv",
-            "category": "Anime Streaming",
-            "description": "Dedicated exclusively to classic and retro anime titles.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Retro"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, RetroCrush emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, RetroCrush provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "RetroCrush es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "RetroCrushは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "museasiayoutube",
-            "name": "Muse Asia (YouTube)",
-            "url": "https://www.youtube.com/c/MuseAsia",
-            "category": "Anime Streaming",
-            "description": "Official YouTube channel streaming free legal anime.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "YouTube"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Muse Asia (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Muse Asia (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Muse Asia (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Muse Asia (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
+            "description_es": "Kodansha Comics es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Kodansha Comicsは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "kanopy",
@@ -264,32 +108,6 @@ const sitesData = [
             "description_jp": "Kanopyは、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "kodanshacomics",
-            "name": "Kodansha Comics",
-            "url": "https://kodansha.us",
-            "category": "Manga/Doujin",
-            "description": "Kodansha Comics is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Manga"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Kodansha Comics emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Kodansha Comics provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Kodansha Comics es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Kodansha Comicsは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
             "id": "vizmedia",
             "name": "Viz Media",
             "url": "https://www.viz.com",
@@ -316,19 +134,19 @@ const sitesData = [
             "description_jp": "Viz Mediaは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "hoopla",
-            "name": "Hoopla",
-            "url": "https://www.hoopladigital.com",
+            "id": "museasiayoutube",
+            "name": "Muse Asia (YouTube)",
+            "url": "https://www.youtube.com/c/MuseAsia",
             "category": "Anime Streaming",
-            "description": "Free streaming with a library card, includes anime.",
+            "description": "Official YouTube channel streaming free legal anime.",
             "tags": [
-                    "Official",
                     "Free",
-                    "Library"
+                    "Official",
+                    "YouTube"
             ],
-            "rating": 4.2,
+            "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Hoopla emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Hoopla provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Muse Asia (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Muse Asia (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -338,23 +156,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Hoopla es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Hooplaは、Anime Streamingを専門とする高品質なプラットフォームです。"
+            "description_es": "Muse Asia (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Muse Asia (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "bilibili",
-            "name": "Bilibili",
-            "url": "https://www.bilibili.tv",
+            "id": "asiancrush",
+            "name": "AsianCrush",
+            "url": "https://www.asiancrush.com",
             "category": "Anime Streaming",
-            "description": "Official Asian streaming platform with massive anime catalog.",
+            "description": "AsianCrush is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
+                    "Free",
                     "Official",
-                    "Freemium",
-                    "Mainstream"
+                    "Ads"
             ],
-            "rating": 4.5,
+            "rating": 3.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Bilibili emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Bilibili provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, AsianCrush emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, AsianCrush provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -364,23 +182,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Bilibili es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Bilibiliは、Anime Streamingを専門とする高品質なプラットフォームです。"
+            "description_es": "AsianCrush es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "AsianCrushは、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "vuduanime",
-            "name": "Vudu Anime",
-            "url": "https://www.vudu.com",
+            "id": "retrocrush",
+            "name": "RetroCrush",
+            "url": "https://www.retrocrush.tv",
             "category": "Anime Streaming",
-            "description": "Purchase and stream official digital anime movies.",
+            "description": "Dedicated exclusively to classic and retro anime titles.",
             "tags": [
+                    "Free",
                     "Official",
-                    "Paid",
-                    "Movies"
+                    "Retro"
             ],
-            "rating": 4,
+            "rating": 4.4,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Vudu Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Vudu Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, RetroCrush emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, RetroCrush provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -390,8 +208,60 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Vudu Anime es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Vudu Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
+            "description_es": "RetroCrush es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "RetroCrushは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "anioneyoutube",
+            "name": "Ani-One (YouTube)",
+            "url": "https://www.youtube.com/c/AniOneAsia",
+            "category": "Anime Streaming",
+            "description": "Official distributor streaming anime legally on YouTube.",
+            "tags": [
+                    "Free",
+                    "Official",
+                    "YouTube"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Ani-One (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Ani-One (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Ani-One (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Ani-One (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "gundaminfoyoutube",
+            "name": "GundamInfo (YouTube)",
+            "url": "https://www.youtube.com/user/GundamInfo",
+            "category": "Anime Streaming",
+            "description": "The official portal for Gundam streaming worldwide.",
+            "tags": [
+                    "Free",
+                    "Official",
+                    "YouTube"
+            ],
+            "rating": 4.9,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, GundamInfo (YouTube) emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, GundamInfo (YouTube) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "GundamInfo (YouTube) es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "GundamInfo (YouTube)は、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "jnovelclub",
@@ -420,149 +290,19 @@ const sitesData = [
             "description_jp": "J-Novel Clubは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "coolmic",
-            "name": "Coolmic",
-            "url": "https://coolmic.me",
-            "category": "Manga/Doujin",
-            "description": "Official digital comics and manga for smartphones.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Mobile"
-            ],
-            "rating": 4,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Coolmic emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Coolmic provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Coolmic es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Coolmicは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "mangaplus",
-            "name": "Manga Plus",
-            "url": "https://mangaplus.shueisha.co.jp",
-            "category": "Manga/Doujin",
-            "description": "Official Shueisha manga reader. Free new chapters.",
+            "id": "hoopla",
+            "name": "Hoopla",
+            "url": "https://www.hoopladigital.com",
+            "category": "Anime Streaming",
+            "description": "Free streaming with a library card, includes anime.",
             "tags": [
                     "Official",
                     "Free",
-                    "Shonen Jump"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Manga Plus emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Manga Plus provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Manga Plus es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Manga Plusは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "yenpress",
-            "name": "Yen Press",
-            "url": "https://yenpress.com",
-            "category": "Manga/Doujin",
-            "description": "Yen Press is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Manga"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Yen Press emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Yen Press provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Yen Press es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Yen Pressは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "iqiyi",
-            "name": "iQIYI",
-            "url": "https://www.iq.com",
-            "category": "Anime Streaming",
-            "description": "Official streaming service with a huge anime selection.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Mainstream"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, iQIYI emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, iQIYI provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "iQIYI es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "iQIYIは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "contv",
-            "name": "CONtv",
-            "url": "https://www.contv.com",
-            "category": "Anime Streaming",
-            "description": "Geek culture network featuring a large anime catalog.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Ads"
-            ],
-            "rating": 3.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, CONtv emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, CONtv provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "CONtv es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "CONtvは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "inkrcomics",
-            "name": "INKR Comics",
-            "url": "https://inkr.com",
-            "category": "Manga/Doujin",
-            "description": "Official platform for manga, webtoons, and comics.",
-            "tags": [
-                    "Official",
-                    "Freemium",
-                    "Digital"
+                    "Library"
             ],
             "rating": 4.2,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, INKR Comics emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, INKR Comics provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Hoopla emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Hoopla provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -572,8 +312,86 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "INKR Comics es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "INKR Comicsは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+            "description_es": "Hoopla es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Hooplaは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "plutotvanime",
+            "name": "Pluto TV Anime",
+            "url": "https://pluto.tv/en/live-tv/anime-all-day",
+            "category": "Anime Streaming",
+            "description": "Pluto TV Anime is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Free",
+                    "Official",
+                    "Live TV"
+            ],
+            "rating": 4,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Pluto TV Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Pluto TV Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Pluto TV Anime es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Pluto TV Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "vuduanime",
+            "name": "Vudu Anime",
+            "url": "https://www.vudu.com",
+            "category": "Anime Streaming",
+            "description": "Purchase and stream official digital anime movies.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Movies"
+            ],
+            "rating": 4,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Vudu Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Vudu Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Vudu Anime es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Vudu Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "amazonprimevideo",
+            "name": "Amazon Prime Video",
+            "url": "https://www.amazon.com/primevideo",
+            "category": "Anime Streaming",
+            "description": "Amazon Prime Video is a high-authority platform specializing in anime streaming. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Mainstream"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Amazon Prime Video emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Amazon Prime Video provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Amazon Prime Video es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Amazon Prime Videoは、Anime Streamingを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "itchio",
@@ -602,6 +420,32 @@ const sitesData = [
             "description_jp": "Itch.ioは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "coolmic",
+            "name": "Coolmic",
+            "url": "https://coolmic.me",
+            "category": "Manga/Doujin",
+            "description": "Official digital comics and manga for smartphones.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Mobile"
+            ],
+            "rating": 4,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Coolmic emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Coolmic provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Coolmic es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Coolmicは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "tapas",
             "name": "Tapas",
             "url": "https://tapas.io",
@@ -628,45 +472,19 @@ const sitesData = [
             "description_jp": "Tapasは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "netflixanime",
-            "name": "Netflix Anime",
-            "url": "https://www.netflix.com/browse/genre/7424",
-            "category": "Anime Streaming",
-            "description": "Massive library of exclusive Netflix Original anime.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Mainstream"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Netflix Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Netflix Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Netflix Anime es una plataforma de alta autoridad especializada en anime streaming.",
-            "description_jp": "Netflix Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "renta",
-            "name": "Renta!",
-            "url": "https://www.ebookrenta.com",
+            "id": "mangaplus",
+            "name": "Manga Plus",
+            "url": "https://mangaplus.shueisha.co.jp",
             "category": "Manga/Doujin",
-            "description": "Official digital manga rental and purchasing service.",
+            "description": "Official Shueisha manga reader. Free new chapters.",
             "tags": [
                     "Official",
-                    "Paid",
-                    "Store"
+                    "Free",
+                    "Shonen Jump"
             ],
-            "rating": 4.3,
+            "rating": 4.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Renta! emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Renta! provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Manga Plus emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Manga Plus provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -676,8 +494,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Renta! es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Renta!は、Manga/Doujinを専門とする高品質なプラットフォームです。"
+            "description_es": "Manga Plus es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Manga Plusは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "lezhin",
@@ -706,6 +524,110 @@ const sitesData = [
             "description_jp": "Lezhinは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "iqiyi",
+            "name": "iQIYI",
+            "url": "https://www.iq.com",
+            "category": "Anime Streaming",
+            "description": "Official streaming service with a huge anime selection.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Mainstream"
+            ],
+            "rating": 4.3,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, iQIYI emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, iQIYI provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "iQIYI es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "iQIYIは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "bilibili",
+            "name": "Bilibili",
+            "url": "https://www.bilibili.tv",
+            "category": "Anime Streaming",
+            "description": "Official Asian streaming platform with massive anime catalog.",
+            "tags": [
+                    "Official",
+                    "Freemium",
+                    "Mainstream"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Bilibili emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Bilibili provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Bilibili es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Bilibiliは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "inkrcomics",
+            "name": "INKR Comics",
+            "url": "https://inkr.com",
+            "category": "Manga/Doujin",
+            "description": "Official platform for manga, webtoons, and comics.",
+            "tags": [
+                    "Official",
+                    "Freemium",
+                    "Digital"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, INKR Comics emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, INKR Comics provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "INKR Comics es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "INKR Comicsは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "contv",
+            "name": "CONtv",
+            "url": "https://www.contv.com",
+            "category": "Anime Streaming",
+            "description": "Geek culture network featuring a large anime catalog.",
+            "tags": [
+                    "Official",
+                    "Free",
+                    "Ads"
+            ],
+            "rating": 3.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, CONtv emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, CONtv provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "CONtv es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "CONtvは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "steamvisualnovels",
             "name": "Steam Visual Novels",
             "url": "https://store.steampowered.com/tags/en/Visual+Novel/",
@@ -732,19 +654,19 @@ const sitesData = [
             "description_jp": "Steam Visual Novelsは、Visual Novelsを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "comixology",
-            "name": "Comixology",
-            "url": "https://www.amazon.com/comixology",
+            "id": "renta",
+            "name": "Renta!",
+            "url": "https://www.ebookrenta.com",
             "category": "Manga/Doujin",
-            "description": "Amazon's official digital comic and manga platform.",
+            "description": "Official digital manga rental and purchasing service.",
             "tags": [
                     "Official",
                     "Paid",
                     "Store"
             ],
-            "rating": 4.6,
+            "rating": 4.3,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Comixology emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Comixology provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Renta! emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Renta! provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -754,101 +676,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Comixology es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Comixologyは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+            "description_es": "Renta! es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Renta!は、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "tappytoon",
-            "name": "Tappytoon",
-            "url": "https://www.tappytoon.com",
+            "id": "yenpress",
+            "name": "Yen Press",
+            "url": "https://yenpress.com",
             "category": "Manga/Doujin",
-            "description": "Tappytoon is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "description": "Yen Press is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
                     "Official",
                     "Paid",
-                    "Webtoons"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Tappytoon emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Tappytoon provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Tappytoon es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Tappytoonは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "gogcom",
-            "name": "GOG.com",
-            "url": "https://www.gog.com",
-            "category": "Games",
-            "description": "DRM-free digital game store including visual novels.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "DRM-Free"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, GOG.com emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, GOG.com provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "GOG.com es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "GOG.comは、Gamesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "nekonyan",
-            "name": "NekoNyan",
-            "url": "https://nekonyansoft.com",
-            "category": "Visual Novels",
-            "description": "NekoNyan is a high-authority platform specializing in visual novels. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, NekoNyan emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, NekoNyan provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "NekoNyan es una plataforma de alta autoridad especializada en visual novels.",
-            "description_jp": "NekoNyanは、Visual Novelsを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "bookwalker",
-            "name": "BookWalker",
-            "url": "https://global.bookwalker.jp",
-            "category": "Manga/Doujin",
-            "description": "Kadokawa's official digital manga and light novel store.",
-            "tags": [
-                    "Official",
-                    "Paid",
-                    "Store"
+                    "Manga"
             ],
             "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, BookWalker emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, BookWalker provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Yen Press emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Yen Press provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -858,8 +702,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "BookWalker es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "BookWalkerは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+            "description_es": "Yen Press es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Yen Pressは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "spikechunsoft",
@@ -888,45 +732,19 @@ const sitesData = [
             "description_jp": "Spike Chunsoftは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "johren",
-            "name": "Johren",
-            "url": "https://www.johren.net",
-            "category": "Games",
-            "description": "Official platform for anime RPGs and adult browser games.",
+            "id": "tappytoon",
+            "name": "Tappytoon",
+            "url": "https://www.tappytoon.com",
+            "category": "Manga/Doujin",
+            "description": "Tappytoon is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Free",
-                    "Freemium",
-                    "Browser Games"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Johren emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Johren provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Johren es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "Johrenは、Gamesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "kaguragames",
-            "name": "Kagura Games",
-            "url": "https://kaguragames.com",
-            "category": "Visual Novels",
-            "description": "Publisher focusing on officially localized adult RPG Maker titles.",
-            "tags": [
-                    "Paid",
                     "Official",
-                    "RPG"
+                    "Paid",
+                    "Webtoons"
             ],
             "rating": 4.5,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Kagura Games emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, Kagura Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Tappytoon emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Tappytoon provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -936,8 +754,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Kagura Games es una plataforma de alta autoridad especializada en visual novels.",
-            "description_jp": "Kagura Gamesは、Visual Novelsを専門とする高品質なプラットフォームです。"
+            "description_es": "Tappytoon es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Tappytoonは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "nisa",
@@ -966,58 +784,6 @@ const sitesData = [
             "description_jp": "NISAは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "mangagamer",
-            "name": "MangaGamer",
-            "url": "https://www.mangagamer.com",
-            "category": "Visual Novels",
-            "description": "Official English localizer and distributor of Japanese eroge.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Eroge"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, MangaGamer emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, MangaGamer provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "MangaGamer es una plataforma de alta autoridad especializada en visual novels.",
-            "description_jp": "MangaGamerは、Visual Novelsを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "aksysgames",
-            "name": "Aksys Games",
-            "url": "https://www.aksysgames.com",
-            "category": "Games",
-            "description": "Aksys Games is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Localizer"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Aksys Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Aksys Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Aksys Games es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "Aksys Gamesは、Gamesを専門とする高品質なプラットフォームです。"
-    },
-    {
             "id": "anilist",
             "name": "AniList",
             "url": "https://anilist.co",
@@ -1044,19 +810,19 @@ const sitesData = [
             "description_jp": "AniListは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "shiravune",
-            "name": "Shiravune",
-            "url": "https://shiravune.com",
-            "category": "Visual Novels",
-            "description": "Shiravune is a high-authority platform specializing in visual novels. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "netflixanime",
+            "name": "Netflix Anime",
+            "url": "https://www.netflix.com/browse/genre/7424",
+            "category": "Anime Streaming",
+            "description": "Massive library of exclusive Netflix Original anime.",
             "tags": [
                     "Paid",
                     "Official",
-                    "Localizer"
+                    "Mainstream"
             ],
             "rating": 4.5,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Shiravune emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, Shiravune provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Netflix Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Netflix Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1066,8 +832,34 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Shiravune es una plataforma de alta autoridad especializada en visual novels.",
-            "description_jp": "Shiravuneは、Visual Novelsを専門とする高品質なプラットフォームです。"
+            "description_es": "Netflix Anime es una plataforma de alta autoridad especializada en anime streaming.",
+            "description_jp": "Netflix Animeは、Anime Streamingを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "comixology",
+            "name": "Comixology",
+            "url": "https://www.amazon.com/comixology",
+            "category": "Manga/Doujin",
+            "description": "Amazon's official digital comic and manga platform.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Store"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Comixology emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Comixology provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Comixology es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Comixologyは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "kitsu",
@@ -1096,19 +888,71 @@ const sitesData = [
             "description_jp": "Kitsuは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "xseedgames",
-            "name": "XSEED Games",
-            "url": "https://www.xseedgames.com",
+            "id": "nekonyan",
+            "name": "NekoNyan",
+            "url": "https://nekonyansoft.com",
+            "category": "Visual Novels",
+            "description": "NekoNyan is a high-authority platform specializing in visual novels. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Localizer"
+            ],
+            "rating": 4.8,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, NekoNyan emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, NekoNyan provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "NekoNyan es una plataforma de alta autoridad especializada en visual novels.",
+            "description_jp": "NekoNyanは、Visual Novelsを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "johren",
+            "name": "Johren",
+            "url": "https://www.johren.net",
             "category": "Games",
-            "description": "XSEED Games is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "description": "Official platform for anime RPGs and adult browser games.",
+            "tags": [
+                    "Free",
+                    "Freemium",
+                    "Browser Games"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Johren emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Johren provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Johren es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "Johrenは、Gamesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "aksysgames",
+            "name": "Aksys Games",
+            "url": "https://www.aksysgames.com",
+            "category": "Games",
+            "description": "Aksys Games is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
                     "Paid",
                     "Official",
-                    "Publisher"
+                    "Localizer"
             ],
-            "rating": 4.7,
+            "rating": 4.8,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, XSEED Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, XSEED Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Aksys Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Aksys Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1118,49 +962,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "XSEED Games es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "XSEED Gamesは、Gamesを専門とする高品質なプラットフォームです。"
+            "description_es": "Aksys Games es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "Aksys Gamesは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "animeplanet",
-            "name": "Anime-Planet",
-            "url": "https://www.anime-planet.com",
-            "category": "Communities",
-            "description": "Track anime, read manga legally, and engage in the community.",
-            "tags": [
-                    "Database",
-                    "Reviews",
-                    "Legal"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Anime-Planet emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Anime-Planet provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Anime-Planet es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Anime-Planetは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "azuki",
-            "name": "Azuki",
-            "url": "https://www.azuki.co",
-            "category": "Manga/Doujin",
-            "description": "Azuki is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "gogcom",
+            "name": "GOG.com",
+            "url": "https://www.gog.com",
+            "category": "Games",
+            "description": "DRM-free digital game store including visual novels.",
             "tags": [
                     "Official",
                     "Paid",
-                    "Digital"
+                    "DRM-Free"
             ],
-            "rating": 4.4,
+            "rating": 4.8,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Azuki emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Azuki provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, GOG.com emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, GOG.com provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1170,8 +988,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Azuki es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Azukiは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+            "description_es": "GOG.com es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "GOG.comは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "kofi",
@@ -1200,6 +1018,84 @@ const sitesData = [
             "description_jp": "Ko-fiは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "kaguragames",
+            "name": "Kagura Games",
+            "url": "https://kaguragames.com",
+            "category": "Visual Novels",
+            "description": "Publisher focusing on officially localized adult RPG Maker titles.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "RPG"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Kagura Games emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, Kagura Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Kagura Games es una plataforma de alta autoridad especializada en visual novels.",
+            "description_jp": "Kagura Gamesは、Visual Novelsを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "animeplanet",
+            "name": "Anime-Planet",
+            "url": "https://www.anime-planet.com",
+            "category": "Communities",
+            "description": "Track anime, read manga legally, and engage in the community.",
+            "tags": [
+                    "Database",
+                    "Reviews",
+                    "Legal"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Anime-Planet emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Anime-Planet provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Anime-Planet es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Anime-Planetは、Communitiesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "bookwalker",
+            "name": "BookWalker",
+            "url": "https://global.bookwalker.jp",
+            "category": "Manga/Doujin",
+            "description": "Kadokawa's official digital manga and light novel store.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Store"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, BookWalker emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, BookWalker provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "BookWalker es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "BookWalkerは、Manga/Doujinを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "myanimelist",
             "name": "MyAnimeList",
             "url": "https://myanimelist.net",
@@ -1224,58 +1120,6 @@ const sitesData = [
             ],
             "description_es": "MyAnimeList es una plataforma de alta autoridad especializada en communities.",
             "description_jp": "MyAnimeListは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "webtoon",
-            "name": "Webtoon",
-            "url": "https://www.webtoons.com",
-            "category": "Manga/Doujin",
-            "description": "Webtoon is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Official",
-                    "Free",
-                    "Webtoons"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Webtoon emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Webtoon provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Webtoon es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Webtoonは、Manga/Doujinを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "dmmgames",
-            "name": "DMM Games",
-            "url": "https://games.dmm.com",
-            "category": "Games",
-            "description": "Major Japanese publisher of browser and gacha games.",
-            "tags": [
-                    "Paid",
-                    "Freemium",
-                    "Japanese"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, DMM Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, DMM Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "DMM Games es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "DMM Gamesは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "gumroad",
@@ -1304,32 +1148,6 @@ const sitesData = [
             "description_jp": "Gumroadは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "fanbox",
-            "name": "Fanbox",
-            "url": "https://www.fanbox.cc",
-            "category": "Communities",
-            "description": "Fanbox is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Japanese",
-                    "Artists"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Fanbox emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Fanbox provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Fanbox es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Fanboxは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
             "id": "crunchyrollstore",
             "name": "Crunchyroll Store",
             "url": "https://store.crunchyroll.com",
@@ -1356,19 +1174,19 @@ const sitesData = [
             "description_jp": "Crunchyroll Storeは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "vndb",
-            "name": "VNDB",
-            "url": "https://vndb.org",
-            "category": "Communities",
-            "description": "The Visual Novel Database. Comprehensive info on all VNs.",
+            "id": "xseedgames",
+            "name": "XSEED Games",
+            "url": "https://www.xseedgames.com",
+            "category": "Games",
+            "description": "XSEED Games is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Database",
-                    "Visual Novels",
-                    "Wiki"
+                    "Paid",
+                    "Official",
+                    "Publisher"
             ],
-            "rating": 4.9,
+            "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, VNDB emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, VNDB provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, XSEED Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, XSEED Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1378,8 +1196,34 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "VNDB es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "VNDBは、Communitiesを専門とする高品質なプラットフォームです。"
+            "description_es": "XSEED Games es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "XSEED Gamesは、Gamesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "mangagamer",
+            "name": "MangaGamer",
+            "url": "https://www.mangagamer.com",
+            "category": "Visual Novels",
+            "description": "Official English localizer and distributor of Japanese eroge.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Eroge"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, MangaGamer emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, MangaGamer provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "MangaGamer es una plataforma de alta autoridad especializada en visual novels.",
+            "description_jp": "MangaGamerは、Visual Novelsを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "siliconera",
@@ -1408,6 +1252,32 @@ const sitesData = [
             "description_jp": "Siliconeraは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "fanbox",
+            "name": "Fanbox",
+            "url": "https://www.fanbox.cc",
+            "category": "Communities",
+            "description": "Fanbox is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Japanese",
+                    "Artists"
+            ],
+            "rating": 4.8,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Fanbox emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Fanbox provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Fanbox es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Fanboxは、Communitiesを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "goodsmile",
             "name": "Good Smile",
             "url": "https://www.goodsmile.info",
@@ -1432,58 +1302,6 @@ const sitesData = [
             ],
             "description_es": "Good Smile es una plataforma de alta autoridad especializada en communities.",
             "description_jp": "Good Smileは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "fantia",
-            "name": "Fantia",
-            "url": "https://fantia.jp",
-            "category": "Communities",
-            "description": "Fantia is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Japanese",
-                    "Artists"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Fantia emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Fantia provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Fantia es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Fantiaは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "gematsu",
-            "name": "Gematsu",
-            "url": "https://www.gematsu.com",
-            "category": "Communities",
-            "description": "The fastest and most reliable Japanese gaming news.",
-            "tags": [
-                    "News",
-                    "Games",
-                    "Journalism"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Gematsu emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Gematsu provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Gematsu es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Gematsuは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "crunchyrollnews",
@@ -1512,32 +1330,6 @@ const sitesData = [
             "description_jp": "Crunchyroll Newsは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "otakuusa",
-            "name": "Otaku USA",
-            "url": "https://otakuusamagazine.com",
-            "category": "Communities",
-            "description": "Otaku USA is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "News",
-                    "Magazine",
-                    "Official"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Otaku USA emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Otaku USA provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Otaku USA es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Otaku USAは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
             "id": "slushy",
             "name": "Slushy",
             "url": "https://www.slushy.com",
@@ -1562,6 +1354,32 @@ const sitesData = [
             ],
             "description_es": "Slushy es una plataforma de alta autoridad especializada en creator platforms.",
             "description_jp": "Slushyは、Creator Platformsを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "shiravune",
+            "name": "Shiravune",
+            "url": "https://shiravune.com",
+            "category": "Visual Novels",
+            "description": "Shiravune is a high-authority platform specializing in visual novels. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Localizer"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Shiravune emerged as a top-tier destination for visual novels. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to visual novels, Shiravune provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Shiravune es una plataforma de alta autoridad especializada en visual novels.",
+            "description_jp": "Shiravuneは、Visual Novelsを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "animecorner",
@@ -1590,19 +1408,19 @@ const sitesData = [
             "description_jp": "Anime Cornerは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "loyalfans",
-            "name": "LoyalFans",
-            "url": "https://www.loyalfans.com",
-            "category": "Creator Platforms",
-            "description": "Creator-first platform allowing subscriptions, messaging, and live streaming.",
+            "id": "otakuusa",
+            "name": "Otaku USA",
+            "url": "https://otakuusamagazine.com",
+            "category": "Communities",
+            "description": "Otaku USA is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Official",
-                    "Paid",
-                    "Creators"
+                    "News",
+                    "Magazine",
+                    "Official"
             ],
-            "rating": 4.5,
+            "rating": 4.4,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, LoyalFans emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, LoyalFans provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Otaku USA emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Otaku USA provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1612,23 +1430,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "LoyalFans es una plataforma de alta autoridad especializada en creator platforms.",
-            "description_jp": "LoyalFansは、Creator Platformsを専門とする高品質なプラットフォームです。"
+            "description_es": "Otaku USA es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Otaku USAは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "playism",
-            "name": "Playism",
-            "url": "https://playism.com",
-            "category": "Games",
-            "description": "Publisher bringing Japanese indie games to the West.",
+            "id": "vndb",
+            "name": "VNDB",
+            "url": "https://vndb.org",
+            "category": "Communities",
+            "description": "The Visual Novel Database. Comprehensive info on all VNs.",
             "tags": [
-                    "Paid",
-                    "Official",
-                    "Indie"
+                    "Database",
+                    "Visual Novels",
+                    "Wiki"
             ],
-            "rating": 4.5,
+            "rating": 4.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Playism emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Playism provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, VNDB emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, VNDB provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1638,8 +1456,34 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Playism es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "Playismは、Gamesを専門とする高品質なプラットフォームです。"
+            "description_es": "VNDB es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "VNDBは、Communitiesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "fantia",
+            "name": "Fantia",
+            "url": "https://fantia.jp",
+            "category": "Communities",
+            "description": "Fantia is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Japanese",
+                    "Artists"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Fantia emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Fantia provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Fantia es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Fantiaは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "mandarake",
@@ -1668,45 +1512,19 @@ const sitesData = [
             "description_jp": "Mandarakeは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "cdjapan",
-            "name": "CDJapan",
-            "url": "https://www.cdjapan.co.jp",
-            "category": "Communities",
-            "description": "Best place to legally import Japanese CDs and Blurays.",
-            "tags": [
-                    "Paid",
-                    "Imports",
-                    "Music"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, CDJapan emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, CDJapan provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "CDJapan es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "CDJapanは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "marvelous",
-            "name": "Marvelous",
-            "url": "https://www.marvelousgames.com",
+            "id": "dmmgames",
+            "name": "DMM Games",
+            "url": "https://games.dmm.com",
             "category": "Games",
-            "description": "Marvelous is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "description": "Major Japanese publisher of browser and gacha games.",
             "tags": [
                     "Paid",
-                    "Official",
-                    "Publisher"
+                    "Freemium",
+                    "Japanese"
             ],
             "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Marvelous emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Marvelous provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, DMM Games emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, DMM Games provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1716,23 +1534,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Marvelous es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "Marvelousは、Gamesを専門とする高品質なプラットフォームです。"
+            "description_es": "DMM Games es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "DMM Gamesは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "vixenmediagroup",
-            "name": "Vixen Media Group",
-            "url": "https://www.vixen.com",
-            "category": "Adult Studios",
-            "description": "Vixen Media Group is a high-authority platform specializing in adult studios. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "loyalfans",
+            "name": "LoyalFans",
+            "url": "https://www.loyalfans.com",
+            "category": "Creator Platforms",
+            "description": "Creator-first platform allowing subscriptions, messaging, and live streaming.",
             "tags": [
-                    "Paid",
                     "Official",
-                    "Premium"
+                    "Paid",
+                    "Creators"
             ],
-            "rating": 4.9,
+            "rating": 4.5,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Vixen Media Group emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Vixen Media Group provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, LoyalFans emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, LoyalFans provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1742,8 +1560,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Vixen Media Group es una plataforma de alta autoridad especializada en adult studios.",
-            "description_jp": "Vixen Media Groupは、Adult Studiosを専門とする高品質なプラットフォームです。"
+            "description_es": "LoyalFans es una plataforma de alta autoridad especializada en creator platforms.",
+            "description_jp": "LoyalFansは、Creator Platformsを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "baddragon",
@@ -1772,19 +1590,19 @@ const sitesData = [
             "description_jp": "Bad Dragonは、Adult Storesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "evilangel",
-            "name": "Evil Angel",
-            "url": "https://www.evilangel.com",
-            "category": "Adult Studios",
-            "description": "Director-owned studio known for high-quality niche and gonzo content.",
+            "id": "webtoon",
+            "name": "Webtoon",
+            "url": "https://www.webtoons.com",
+            "category": "Manga/Doujin",
+            "description": "Webtoon is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Paid",
                     "Official",
-                    "Premium"
+                    "Free",
+                    "Webtoons"
             ],
-            "rating": 4.7,
+            "rating": 4.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Evil Angel emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Evil Angel provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Webtoon emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Webtoon provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1794,23 +1612,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Evil Angel es una plataforma de alta autoridad especializada en adult studios.",
-            "description_jp": "Evil Angelは、Adult Studiosを専門とする高品質なプラットフォームです。"
+            "description_es": "Webtoon es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Webtoonは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "zerotolerance",
-            "name": "Zero Tolerance",
-            "url": "https://zerotolerance.com",
-            "category": "Adult Studios",
-            "description": "Long-standing adult studio focusing on diverse genres.",
+            "id": "cdjapan",
+            "name": "CDJapan",
+            "url": "https://www.cdjapan.co.jp",
+            "category": "Communities",
+            "description": "Best place to legally import Japanese CDs and Blurays.",
             "tags": [
                     "Paid",
-                    "Official",
-                    "Studio"
+                    "Imports",
+                    "Music"
             ],
-            "rating": 4.6,
+            "rating": 4.8,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Zero Tolerance emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Zero Tolerance provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, CDJapan emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, CDJapan provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1820,34 +1638,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Zero Tolerance es una plataforma de alta autoridad especializada en adult studios.",
-            "description_jp": "Zero Toleranceは、Adult Studiosを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "roccosiffredi",
-            "name": "Rocco Siffredi",
-            "url": "https://www.roccosiffredi.com",
-            "category": "Adult Studios",
-            "description": "The official studio of the legendary Italian director.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "European"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Rocco Siffredi emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Rocco Siffredi provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Rocco Siffredi es una plataforma de alta autoridad especializada en adult studios.",
-            "description_jp": "Rocco Siffrediは、Adult Studiosを専門とする高品質なプラットフォームです。"
+            "description_es": "CDJapan es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "CDJapanは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "pinkcherry",
@@ -1876,19 +1668,19 @@ const sitesData = [
             "description_jp": "PinkCherryは、Adult Storesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "fancentro",
-            "name": "Fancentro",
-            "url": "https://fancentro.com",
-            "category": "Creator Platforms",
-            "description": "Major subscription platform for adult influencers and models.",
+            "id": "vixenmediagroup",
+            "name": "Vixen Media Group",
+            "url": "https://www.vixen.com",
+            "category": "Adult Studios",
+            "description": "Vixen Media Group is a high-authority platform specializing in adult studios. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Official",
                     "Paid",
-                    "Creators"
+                    "Official",
+                    "Premium"
             ],
-            "rating": 4.6,
+            "rating": 4.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Fancentro emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, Fancentro provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Vixen Media Group emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Vixen Media Group provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1898,23 +1690,23 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Fancentro es una plataforma de alta autoridad especializada en creator platforms.",
-            "description_jp": "Fancentroは、Creator Platformsを専門とする高品質なプラットフォームです。"
+            "description_es": "Vixen Media Group es una plataforma de alta autoridad especializada en adult studios.",
+            "description_jp": "Vixen Media Groupは、Adult Studiosを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "magmafilm",
-            "name": "Magmafilm",
-            "url": "https://www.magmafilm.com",
+            "id": "evilangel",
+            "name": "Evil Angel",
+            "url": "https://www.evilangel.com",
             "category": "Adult Studios",
-            "description": "Magmafilm is a high-authority platform specializing in adult studios. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "description": "Director-owned studio known for high-quality niche and gonzo content.",
             "tags": [
                     "Paid",
                     "Official",
-                    "European"
+                    "Premium"
             ],
-            "rating": 4.5,
+            "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Magmafilm emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Magmafilm provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Evil Angel emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Evil Angel provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -1924,8 +1716,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Magmafilm es una plataforma de alta autoridad especializada en adult studios.",
-            "description_jp": "Magmafilmは、Adult Studiosを専門とする高品質なプラットフォームです。"
+            "description_es": "Evil Angel es una plataforma de alta autoridad especializada en adult studios.",
+            "description_jp": "Evil Angelは、Adult Studiosを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "frisk",
@@ -1980,6 +1772,32 @@ const sitesData = [
             "description_jp": "Komifloは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "alua",
+            "name": "Alua",
+            "url": "https://alua.com",
+            "category": "Creator Platforms",
+            "description": "Messaging and content platform for influencers and models.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Creators"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Alua emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, Alua provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Alua es una plataforma de alta autoridad especializada en creator platforms.",
+            "description_jp": "Aluaは、Creator Platformsを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "admireme",
             "name": "AdmireMe",
             "url": "https://admireme.vip",
@@ -2006,19 +1824,19 @@ const sitesData = [
             "description_jp": "AdmireMeは、Creator Platformsを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "alua",
-            "name": "Alua",
-            "url": "https://alua.com",
-            "category": "Creator Platforms",
-            "description": "Messaging and content platform for influencers and models.",
+            "id": "magmafilm",
+            "name": "Magmafilm",
+            "url": "https://www.magmafilm.com",
+            "category": "Adult Studios",
+            "description": "Magmafilm is a high-authority platform specializing in adult studios. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
                     "Paid",
                     "Official",
-                    "Creators"
+                    "European"
             ],
             "rating": 4.5,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Alua emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, Alua provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Magmafilm emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Magmafilm provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -2028,8 +1846,60 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Alua es una plataforma de alta autoridad especializada en creator platforms.",
-            "description_jp": "Aluaは、Creator Platformsを専門とする高品質なプラットフォームです。"
+            "description_es": "Magmafilm es una plataforma de alta autoridad especializada en adult studios.",
+            "description_jp": "Magmafilmは、Adult Studiosを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "roccosiffredi",
+            "name": "Rocco Siffredi",
+            "url": "https://www.roccosiffredi.com",
+            "category": "Adult Studios",
+            "description": "The official studio of the legendary Italian director.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "European"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Rocco Siffredi emerged as a top-tier destination for adult studios. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult studios, Rocco Siffredi provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Rocco Siffredi es una plataforma de alta autoridad especializada en adult studios.",
+            "description_jp": "Rocco Siffrediは、Adult Studiosを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "azuki",
+            "name": "Azuki",
+            "url": "https://www.azuki.co",
+            "category": "Manga/Doujin",
+            "description": "Azuki is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Digital"
+            ],
+            "rating": 4.4,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Azuki emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Azuki provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Azuki es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Azukiは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "fleshlight",
@@ -2058,45 +1928,19 @@ const sitesData = [
             "description_jp": "Fleshlightは、Adult Storesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "animetrending",
-            "name": "Anime Trending",
-            "url": "https://anitrendz.net",
-            "category": "Communities",
-            "description": "Anime Trending is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "News",
-                    "Charts",
-                    "Community"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Anime Trending emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Anime Trending provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Anime Trending es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Anime Trendingは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "smashwordserotica",
-            "name": "Smashwords Erotica",
-            "url": "https://www.smashwords.com",
-            "category": "Erotica/Reading",
-            "description": "Massive legal eBook retailer with a dedicated, uncensored erotica section.",
+            "id": "itchionsfw",
+            "name": "Itch.io (NSFW)",
+            "url": "https://itch.io/games/nsfw",
+            "category": "Games",
+            "description": "The world's largest indie game storefront, featuring a massive, legal NSFW section.",
             "tags": [
                     "Paid",
-                    "Official",
-                    "Reading"
+                    "Free",
+                    "Indie"
             ],
-            "rating": 4.7,
+            "rating": 4.9,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Smashwords Erotica emerged as a top-tier destination for erotica/reading. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to erotica/reading, Smashwords Erotica provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Itch.io (NSFW) emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Itch.io (NSFW) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -2106,8 +1950,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Smashwords Erotica es una plataforma de alta autoridad especializada en erotica/reading.",
-            "description_jp": "Smashwords Eroticaは、Erotica/Readingを専門とする高品質なプラットフォームです。"
+            "description_es": "Itch.io (NSFW) es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "Itch.io (NSFW)は、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "iafd",
@@ -2162,45 +2006,19 @@ const sitesData = [
             "description_jp": "Dipseaは、Audio/ASMRを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "itchionsfw",
-            "name": "Itch.io (NSFW)",
-            "url": "https://itch.io/games/nsfw",
-            "category": "Games",
-            "description": "The world's largest indie game storefront, featuring a massive, legal NSFW section.",
-            "tags": [
-                    "Paid",
-                    "Free",
-                    "Indie"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Itch.io (NSFW) emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Itch.io (NSFW) provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Itch.io (NSFW) es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "Itch.io (NSFW)は、Gamesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "slixa",
-            "name": "Slixa",
-            "url": "https://www.slixa.com",
-            "category": "Adult Dating",
-            "description": "Slixa is a high-authority platform specializing in adult dating. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "smashwordserotica",
+            "name": "Smashwords Erotica",
+            "url": "https://www.smashwords.com",
+            "category": "Erotica/Reading",
+            "description": "Massive legal eBook retailer with a dedicated, uncensored erotica section.",
             "tags": [
                     "Paid",
                     "Official",
-                    "Directory"
+                    "Reading"
             ],
-            "rating": 4.6,
+            "rating": 4.7,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Slixa emerged as a top-tier destination for adult dating. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult dating, Slixa provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Smashwords Erotica emerged as a top-tier destination for erotica/reading. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to erotica/reading, Smashwords Erotica provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -2210,8 +2028,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "Slixa es una plataforma de alta autoridad especializada en adult dating.",
-            "description_jp": "Slixaは、Adult Datingを専門とする高品質なプラットフォームです。"
+            "description_es": "Smashwords Erotica es una plataforma de alta autoridad especializada en erotica/reading.",
+            "description_jp": "Smashwords Eroticaは、Erotica/Readingを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "hentai20",
@@ -2226,6 +2044,84 @@ const sitesData = [
             ],
             "rating": 4.5,
             "addedAt": "2026-01-25"
+    },
+    {
+            "id": "playism",
+            "name": "Playism",
+            "url": "https://playism.com",
+            "category": "Games",
+            "description": "Publisher bringing Japanese indie games to the West.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Indie"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Playism emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Playism provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Playism es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "Playismは、Gamesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "marvelous",
+            "name": "Marvelous",
+            "url": "https://www.marvelousgames.com",
+            "category": "Games",
+            "description": "Marvelous is a high-authority platform specializing in games. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Publisher"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Marvelous emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, Marvelous provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Marvelous es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "Marvelousは、Gamesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "fancentro",
+            "name": "Fancentro",
+            "url": "https://fancentro.com",
+            "category": "Creator Platforms",
+            "description": "Major subscription platform for adult influencers and models.",
+            "tags": [
+                    "Official",
+                    "Paid",
+                    "Creators"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Fancentro emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, Fancentro provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Fancentro es una plataforma de alta autoridad especializada en creator platforms.",
+            "description_jp": "Fancentroは、Creator Platformsを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "gammaentertainment",
@@ -2254,6 +2150,32 @@ const sitesData = [
             "description_jp": "Gamma Entertainmentは、Adult Studiosを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "slixa",
+            "name": "Slixa",
+            "url": "https://www.slixa.com",
+            "category": "Adult Dating",
+            "description": "Slixa is a high-authority platform specializing in adult dating. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "Paid",
+                    "Official",
+                    "Directory"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Slixa emerged as a top-tier destination for adult dating. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to adult dating, Slixa provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Slixa es una plataforma de alta autoridad especializada en adult dating.",
+            "description_jp": "Slixaは、Adult Datingを専門とする高品質なプラットフォームです。"
+    },
+    {
             "id": "steamadultonly",
             "name": "Steam (Adult Only)",
             "url": "https://store.steampowered.com",
@@ -2278,32 +2200,6 @@ const sitesData = [
             ],
             "description_es": "Steam (Adult Only) es una plataforma de alta autoridad especializada en games.",
             "description_jp": "Steam (Adult Only)は、Gamesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "toranoana",
-            "name": "Toranoana",
-            "url": "https://www.toranoana.jp",
-            "category": "Manga/Doujin",
-            "description": "Toranoana is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Store"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, Toranoana emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Toranoana provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Toranoana es una plataforma de alta autoridad especializada en manga/doujin.",
-            "description_jp": "Toranoanaは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "nhentai",
@@ -2332,19 +2228,19 @@ const sitesData = [
             ]
     },
     {
-            "id": "sospoilt",
-            "name": "SoSpoilt",
-            "url": "https://sospoilt.com",
-            "category": "Creator Platforms",
-            "description": "SoSpoilt is a high-authority platform specializing in creator platforms. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "id": "toranoana",
+            "name": "Toranoana",
+            "url": "https://www.toranoana.jp",
+            "category": "Manga/Doujin",
+            "description": "Toranoana is a high-authority platform specializing in manga/doujin. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Official",
                     "Paid",
-                    "Creators"
+                    "Official",
+                    "Store"
             ],
-            "rating": 4.2,
+            "rating": 4.8,
             "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, SoSpoilt emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, SoSpoilt provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "longReview": "In our comprehensive 2026 audit, Toranoana emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Toranoana provides a robust set of features and a massive library that makes it a must-visit in our directory.",
             "pros": [
                     "High resolution content",
                     "Regularly updated library",
@@ -2354,8 +2250,8 @@ const sitesData = [
                     "May contain intrusive ads",
                     "Some regions may require a VPN"
             ],
-            "description_es": "SoSpoilt es una plataforma de alta autoridad especializada en creator platforms.",
-            "description_jp": "SoSpoiltは、Creator Platformsを専門とする高品質なプラットフォームです。"
+            "description_es": "Toranoana es una plataforma de alta autoridad especializada en manga/doujin.",
+            "description_jp": "Toranoanaは、Manga/Doujinを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "hentaicomic",
@@ -2370,6 +2266,88 @@ const sitesData = [
             ],
             "rating": 4.3,
             "addedAt": "2026-03-05"
+    },
+    {
+            "id": "hentai2w",
+            "name": "Hentai2W",
+            "url": "https://hentai2.com",
+            "category": "Hentai Streaming",
+            "description": "Fast-loading hentai streaming portal with minimal ads.",
+            "tags": [
+                    "Free",
+                    "Fast",
+                    "Low-Ads"
+            ],
+            "rating": 4.4,
+            "addedAt": "2026-03-10"
+    },
+    {
+            "id": "animetrending",
+            "name": "Anime Trending",
+            "url": "https://anitrendz.net",
+            "category": "Communities",
+            "description": "Anime Trending is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
+            "tags": [
+                    "News",
+                    "Charts",
+                    "Community"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Anime Trending emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Anime Trending provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Anime Trending es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Anime Trendingは、Communitiesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "rawsenmanga",
+            "name": "SenManga Raw",
+            "url": "https://raw.senmanga.com",
+            "category": "Downloads",
+            "description": "Large collection of raw Japanese manga for reading and download.",
+            "tags": [
+                    "Free",
+                    "Manga",
+                    "Raw"
+            ],
+            "rating": 4.3,
+            "addedAt": "2026-01-28"
+    },
+    {
+            "id": "dlraw",
+            "name": "DLRaw",
+            "url": "https://dlraw.to",
+            "category": "Downloads",
+            "description": "Download raw Japanese manga, light novels, and magazines.",
+            "tags": [
+                    "Free",
+                    "Manga",
+                    "Raw"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-02-08"
+    },
+    {
+            "id": "nyaa",
+            "name": "Nyaa",
+            "url": "https://nyaa.si",
+            "category": "Downloads",
+            "description": "The premier public anime, manga, and Japanese media torrent indexer.",
+            "tags": [
+                    "Free",
+                    "Torrents",
+                    "Anime"
+            ],
+            "rating": 4.9,
+            "addedAt": "2026-01-05"
     },
     {
             "id": "tryst",
@@ -2398,98 +2376,46 @@ const sitesData = [
             "description_jp": "Trystは、Adult Datingを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "qooapp",
-            "name": "QooApp",
-            "url": "https://www.qoo-app.com",
-            "category": "Communities",
-            "description": "QooApp is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
-            "tags": [
-                    "News",
-                    "Mobile",
-                    "Games"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, QooApp emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, QooApp provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "QooApp es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "QooAppは、Communitiesを専門とする高品質なプラットフォームです。"
-    },
-    {
-            "id": "hentai2w",
-            "name": "Hentai2W",
-            "url": "https://hentai2.com",
-            "category": "Hentai Streaming",
-            "description": "Fast-loading hentai streaming portal with minimal ads.",
+            "id": "zoro",
+            "name": "Aniwave (Zoro)",
+            "url": "https://aniwave.to",
+            "category": "Anime Streaming",
+            "description": "Popular anime streaming site with no ads, multiple servers, and fast loading.",
             "tags": [
                     "Free",
-                    "Fast",
-                    "Low-Ads"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-03-10"
-    },
-    {
-            "id": "gog",
-            "name": "GOG",
-            "url": "https://www.gog.com",
-            "category": "Games",
-            "description": "DRM-free PC game storefront that legally hosts classic adult and leisure suit games.",
-            "tags": [
-                    "Paid",
-                    "Official",
-                    "Store"
+                    "No-Ads",
+                    "Fast"
             ],
             "rating": 4.8,
-            "addedAt": "2026-05-09",
-            "longReview": "In our comprehensive 2026 audit, GOG emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, GOG provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "GOG es una plataforma de alta autoridad especializada en games.",
-            "description_jp": "GOGは、Gamesを専門とする高品質なプラットフォームです。"
+            "addedAt": "2026-02-09"
     },
     {
-            "id": "nyaa",
-            "name": "Nyaa",
-            "url": "https://nyaa.si",
+            "id": "rawkuma",
+            "name": "RawKuma",
+            "url": "https://rawkuma.com",
             "category": "Downloads",
-            "description": "The premier public anime, manga, and Japanese media torrent indexer.",
-            "tags": [
-                    "Free",
-                    "Torrents",
-                    "Anime"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-01-05"
-    },
-    {
-            "id": "rawsenmanga",
-            "name": "SenManga Raw",
-            "url": "https://raw.senmanga.com",
-            "category": "Downloads",
-            "description": "Large collection of raw Japanese manga for reading and download.",
+            "description": "High quality raw Japanese manga scan downloads.",
             "tags": [
                     "Free",
                     "Manga",
-                    "Raw"
+                    "Japanese"
             ],
-            "rating": 4.3,
-            "addedAt": "2026-01-28"
+            "rating": 4.4,
+            "addedAt": "2026-04-01"
+    },
+    {
+            "id": "pixiv",
+            "name": "Pixiv",
+            "url": "https://www.pixiv.net",
+            "category": "Images/Boorus",
+            "description": "Japan's largest art sharing platform with millions of anime and doujin artists.",
+            "tags": [
+                    "Free",
+                    "Official",
+                    "Artists"
+            ],
+            "rating": 4.9,
+            "addedAt": "2026-01-15"
     },
     {
             "id": "freeones",
@@ -2518,88 +2444,30 @@ const sitesData = [
             "description_jp": "Freeonesは、News & Infoを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "rawkuma",
-            "name": "RawKuma",
-            "url": "https://rawkuma.com",
-            "category": "Downloads",
-            "description": "High quality raw Japanese manga scan downloads.",
+            "id": "qooapp",
+            "name": "QooApp",
+            "url": "https://www.qoo-app.com",
+            "category": "Communities",
+            "description": "QooApp is a high-authority platform specializing in communities. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Free",
-                    "Manga",
-                    "Japanese"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-04-01"
-    },
-    {
-            "id": "dlraw",
-            "name": "DLRaw",
-            "url": "https://dlraw.to",
-            "category": "Downloads",
-            "description": "Download raw Japanese manga, light novels, and magazines.",
-            "tags": [
-                    "Free",
-                    "Manga",
-                    "Raw"
+                    "News",
+                    "Mobile",
+                    "Games"
             ],
             "rating": 4.5,
-            "addedAt": "2026-02-08"
-    },
-    {
-            "id": "pixiv",
-            "name": "Pixiv",
-            "url": "https://www.pixiv.net",
-            "category": "Images/Boorus",
-            "description": "Japan's largest art sharing platform with millions of anime and doujin artists.",
-            "tags": [
-                    "Free",
-                    "Official",
-                    "Artists"
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, QooApp emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, QooApp provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
             ],
-            "rating": 4.9,
-            "addedAt": "2026-01-15"
-    },
-    {
-            "id": "animetosho",
-            "name": "AnimeTosho",
-            "url": "https://animetosho.org",
-            "category": "Downloads",
-            "description": "Mirrors Nyaa torrents and adds direct download and XDCC bot options.",
-            "tags": [
-                    "Free",
-                    "Direct Download",
-                    "Mirror"
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
             ],
-            "rating": 4.7,
-            "addedAt": "2026-01-15"
-    },
-    {
-            "id": "zoro",
-            "name": "Aniwave (Zoro)",
-            "url": "https://aniwave.to",
-            "category": "Anime Streaming",
-            "description": "Popular anime streaming site with no ads, multiple servers, and fast loading.",
-            "tags": [
-                    "Free",
-                    "No-Ads",
-                    "Fast"
-            ],
-            "rating": 4.8,
-            "addedAt": "2026-02-09"
-    },
-    {
-            "id": "animeowl",
-            "name": "AnimeOwl",
-            "url": "https://animeowl.me",
-            "category": "Anime Streaming",
-            "description": "Clean and fast anime streaming site with a large seasonal catalog.",
-            "tags": [
-                    "Free",
-                    "Seasonal",
-                    "Clean UI"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-04-08"
+            "description_es": "QooApp es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "QooAppは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "9anime",
@@ -2616,18 +2484,30 @@ const sitesData = [
             "addedAt": "2026-01-22"
     },
     {
-            "id": "animixplay",
-            "name": "AniMixPlay",
-            "url": "https://animixplay.to",
-            "category": "Anime Streaming",
-            "description": "Aggregator pulling streams from multiple sources for maximum reliability.",
+            "id": "sospoilt",
+            "name": "SoSpoilt",
+            "url": "https://sospoilt.com",
+            "category": "Creator Platforms",
+            "description": "SoSpoilt is a high-authority platform specializing in creator platforms. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.",
             "tags": [
-                    "Free",
-                    "Aggregator",
-                    "Reliable"
+                    "Official",
+                    "Paid",
+                    "Creators"
             ],
-            "rating": 4.6,
-            "addedAt": "2026-03-18"
+            "rating": 4.2,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, SoSpoilt emerged as a top-tier destination for creator platforms. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to creator platforms, SoSpoilt provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "SoSpoilt es una plataforma de alta autoridad especializada en creator platforms.",
+            "description_jp": "SoSpoiltは、Creator Platformsを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "copymanga",
@@ -2644,6 +2524,20 @@ const sitesData = [
             "addedAt": "2026-03-28"
     },
     {
+            "id": "animixplay",
+            "name": "AniMixPlay",
+            "url": "https://animixplay.to",
+            "category": "Anime Streaming",
+            "description": "Aggregator pulling streams from multiple sources for maximum reliability.",
+            "tags": [
+                    "Free",
+                    "Aggregator",
+                    "Reliable"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-03-18"
+    },
+    {
             "id": "erogedownload",
             "name": "Eroge Download",
             "url": "https://erogedownload.com",
@@ -2656,62 +2550,6 @@ const sitesData = [
             ],
             "rating": 4.5,
             "addedAt": "2026-03-29"
-    },
-    {
-            "id": "wcofun",
-            "name": "WCOFun",
-            "url": "https://www.wcofun.net",
-            "category": "Anime Streaming",
-            "description": "Anime and cartoon streaming portal popular for dubbed content.",
-            "tags": [
-                    "Free",
-                    "Dubbed",
-                    "Cartoons"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-03-22"
-    },
-    {
-            "id": "gogoanime",
-            "name": "GogoAnime",
-            "url": "https://gogoanime3.co",
-            "category": "Anime Streaming",
-            "description": "One of the most popular free anime streaming portals with a massive library.",
-            "tags": [
-                    "Free",
-                    "Dubbed",
-                    "Subbed"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-01-18"
-    },
-    {
-            "id": "f95zone",
-            "name": "F95Zone",
-            "url": "https://f95zone.to",
-            "category": "Games",
-            "description": "The largest community for adult game sharing, modding, and discussion.",
-            "tags": [
-                    "Free",
-                    "Community",
-                    "Mods"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-01-09"
-    },
-    {
-            "id": "mangaowl",
-            "name": "MangaOwl",
-            "url": "https://mangaowl.net",
-            "category": "Manga/Doujin",
-            "description": "Clean manga reading interface with notifications for new chapter releases.",
-            "tags": [
-                    "Free",
-                    "Clean UI",
-                    "Notifications"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-03-12"
     },
     {
             "id": "fansly",
@@ -2740,18 +2578,32 @@ const sitesData = [
             "description_jp": "Fanslyは、Premium Creatorsを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "tokyotosho",
-            "name": "TokyoTosho",
-            "url": "https://www.tokyotosho.info",
+            "id": "animetosho",
+            "name": "AnimeTosho",
+            "url": "https://animetosho.org",
             "category": "Downloads",
-            "description": "One of the oldest Japanese media torrent trackers still active.",
+            "description": "Mirrors Nyaa torrents and adds direct download and XDCC bot options.",
             "tags": [
                     "Free",
-                    "Torrents",
-                    "Classic"
+                    "Direct Download",
+                    "Mirror"
             ],
-            "rating": 4.4,
-            "addedAt": "2026-03-05"
+            "rating": 4.7,
+            "addedAt": "2026-01-15"
+    },
+    {
+            "id": "mangaowl",
+            "name": "MangaOwl",
+            "url": "https://mangaowl.net",
+            "category": "Manga/Doujin",
+            "description": "Clean manga reading interface with notifications for new chapter releases.",
+            "tags": [
+                    "Free",
+                    "Clean UI",
+                    "Notifications"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-03-12"
     },
     {
             "id": "frisk",
@@ -2768,6 +2620,34 @@ const sitesData = [
             "addedAt": "2026-04-18"
     },
     {
+            "id": "f95zone",
+            "name": "F95Zone",
+            "url": "https://f95zone.to",
+            "category": "Games",
+            "description": "The largest community for adult game sharing, modding, and discussion.",
+            "tags": [
+                    "Free",
+                    "Community",
+                    "Mods"
+            ],
+            "rating": 4.9,
+            "addedAt": "2026-01-09"
+    },
+    {
+            "id": "wcofun",
+            "name": "WCOFun",
+            "url": "https://www.wcofun.net",
+            "category": "Anime Streaming",
+            "description": "Anime and cartoon streaming portal popular for dubbed content.",
+            "tags": [
+                    "Free",
+                    "Dubbed",
+                    "Cartoons"
+            ],
+            "rating": 4.3,
+            "addedAt": "2026-03-22"
+    },
+    {
             "id": "toomics",
             "name": "Toomics",
             "url": "https://toomics.com",
@@ -2780,20 +2660,6 @@ const sitesData = [
             ],
             "rating": 4.5,
             "addedAt": "2026-02-26"
-    },
-    {
-            "id": "loyalfans",
-            "name": "LoyalFans",
-            "url": "https://loyalfans.com",
-            "category": "Premium Creators",
-            "description": "Creator-first platform offering subscriptions, messaging, and live streams.",
-            "tags": [
-                    "Paid",
-                    "Creators",
-                    "Live"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-04-16"
     },
     {
             "id": "slushy",
@@ -2822,46 +2688,44 @@ const sitesData = [
             "description_jp": "Slushyは、Premium Creatorsを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "fancentro",
-            "name": "FanCentro",
-            "url": "https://fancentro.com",
+            "id": "loyalfans",
+            "name": "LoyalFans",
+            "url": "https://loyalfans.com",
             "category": "Premium Creators",
-            "description": "Platform connecting fans with premium social media creators.",
+            "description": "Creator-first platform offering subscriptions, messaging, and live streams.",
             "tags": [
                     "Paid",
                     "Creators",
-                    "Subscriptions"
+                    "Live"
             ],
-            "rating": 4.5,
-            "addedAt": "2026-04-29"
+            "rating": 4.2,
+            "addedAt": "2026-04-16"
     },
     {
-            "id": "mangahub",
-            "name": "MangaHub",
-            "url": "https://mangahub.io",
-            "category": "Manga/Doujin",
-            "description": "Aggregator manga reader with a sleek UI and large catalog.",
-            "tags": [
-                    "Free",
-                    "Aggregator",
-                    "Modern"
-            ],
-            "rating": 4.4,
-            "addedAt": "2026-02-18"
-    },
-    {
-            "id": "zerotolerance",
-            "name": "Zero Tolerance",
-            "url": "https://zerotolerance.com",
-            "category": "Adult Studios",
-            "description": "Network focusing on fast-paced, high-energy gonzo scenes.",
+            "id": "gog",
+            "name": "GOG",
+            "url": "https://www.gog.com",
+            "category": "Games",
+            "description": "DRM-free PC game storefront that legally hosts classic adult and leisure suit games.",
             "tags": [
                     "Paid",
-                    "Gonzo",
-                    "Network"
+                    "Official",
+                    "Store"
             ],
-            "rating": 4.7,
-            "addedAt": "2026-04-26"
+            "rating": 4.8,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, GOG emerged as a top-tier destination for games. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to games, GOG provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "GOG es una plataforma de alta autoridad especializada en games.",
+            "description_jp": "GOGは、Gamesを専門とする高品質なプラットフォームです。"
     },
     {
             "id": "manuelferrara",
@@ -2890,6 +2754,88 @@ const sitesData = [
             "description_jp": "Manuel Ferraraは、Adult Studiosを専門とする高品質なプラットフォームです。"
     },
     {
+            "id": "animeowl",
+            "name": "AnimeOwl",
+            "url": "https://animeowl.me",
+            "category": "Anime Streaming",
+            "description": "Clean and fast anime streaming site with a large seasonal catalog.",
+            "tags": [
+                    "Free",
+                    "Seasonal",
+                    "Clean UI"
+            ],
+            "rating": 4.4,
+            "addedAt": "2026-04-08"
+    },
+    {
+            "id": "gematsu",
+            "name": "Gematsu",
+            "url": "https://www.gematsu.com",
+            "category": "Communities",
+            "description": "The fastest and most reliable Japanese gaming news.",
+            "tags": [
+                    "News",
+                    "Games",
+                    "Journalism"
+            ],
+            "rating": 4.8,
+            "addedAt": "2026-05-09",
+            "longReview": "In our comprehensive 2026 audit, Gematsu emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Gematsu provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Gematsu es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Gematsuは、Communitiesを専門とする高品質なプラットフォームです。"
+    },
+    {
+            "id": "fancentro",
+            "name": "FanCentro",
+            "url": "https://fancentro.com",
+            "category": "Premium Creators",
+            "description": "Platform connecting fans with premium social media creators.",
+            "tags": [
+                    "Paid",
+                    "Creators",
+                    "Subscriptions"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-04-29"
+    },
+    {
+            "id": "cherrypimps",
+            "name": "Cherry Pimps",
+            "url": "https://cherrypimps.com",
+            "category": "Adult Studios",
+            "description": "Live broadcasting network that also shoots high-end VOD scenes.",
+            "tags": [
+                    "Paid",
+                    "Live Cams",
+                    "VOD"
+            ],
+            "rating": 4.8,
+            "addedAt": "2026-04-22"
+    },
+    {
+            "id": "mangahub",
+            "name": "MangaHub",
+            "url": "https://mangahub.io",
+            "category": "Manga/Doujin",
+            "description": "Aggregator manga reader with a sleek UI and large catalog.",
+            "tags": [
+                    "Free",
+                    "Aggregator",
+                    "Modern"
+            ],
+            "rating": 4.4,
+            "addedAt": "2026-02-18"
+    },
+    {
             "id": "amateurcams",
             "name": "AmateurCams",
             "url": "https://amateurcams.com",
@@ -2916,18 +2862,36 @@ const sitesData = [
             "description_jp": "AmateurCamsは、Live Camsを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "cherrypimps",
-            "name": "Cherry Pimps",
-            "url": "https://cherrypimps.com",
-            "category": "Adult Studios",
-            "description": "Live broadcasting network that also shoots high-end VOD scenes.",
+            "id": "02d3a424",
+            "name": "Xvidios",
+            "url": "https://xvidio.blog.br",
+            "category": "Uncategorized",
+            "description": "Xvidio 2026 - Todos os melhores filmes de sexo e videos pornos completos no seu XVIDIOS grátis. Sexo amador, putaria e novinhas gostosas.",
+            "description_es": "Xvidio 2026 - Todas las mejores películas de sexo y vídeos porno completos en tus XVIDIOS gratis. Sexo amateur, quejas y adolescentes calientes.",
+            "description_jp": "Xvidio 2026 - 無料の XVIDIOS にあるすべての最高のセックス ムービーと完全なポルノ ビデオ。アマチュアセックス、愚痴、熱い十代の若者たち。",
             "tags": [
-                    "Paid",
-                    "Live Cams",
-                    "VOD"
+                    "Scouted",
+                    "Active",
+                    "New"
             ],
-            "rating": 4.8,
-            "addedAt": "2026-04-22"
+            "rating": 4.5,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "771bd9b2",
+            "name": "Ahegao Porn",
+            "url": "https://www.ahegaoporn.net",
+            "category": "Hentai Streaming",
+            "description": "Discover Ahegao Porn - A high quality portal for your favorite content.",
+            "description_es": "Descubre Ahegao Porn: un portal de alta calidad para tu contenido favorito.",
+            "description_jp": "アヘガオ ポルノを発見 - お気に入りのコンテンツの高品質ポータル。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.1,
+            "addedAt": "2026-05-17"
     },
     {
             "id": "peter-north",
@@ -2970,77 +2934,19 @@ const sitesData = [
             "description_jp": "Rocco Siffrediは、Adult Studiosを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "motherless",
-            "name": "Motherless",
-            "url": "https://motherless.com",
-            "category": "Communities",
-            "description": "Uncensored community platform focusing on extreme, bizarre, and amateur uploads.",
-            "tags": [
-                    "Free",
-                    "Amateur",
-                    "Uncensored"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-04-23"
-    },
-    {
-            "id": "danni",
-            "name": "Danni",
-            "url": "https://danni.com",
-            "category": "Premium Creators",
-            "description": "One of the original premium adult sites, featuring vast archives of models.",
-            "tags": [
-                    "Paid",
-                    "Archives",
-                    "Classic"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-04-19"
-    },
-    {
-            "id": "ryuugames",
-            "name": "Ryuu Games",
-            "url": "https://ryuugames.com",
-            "category": "Visual Novels",
-            "description": "Popular source for adult VN and RPG downloads with active community.",
-            "tags": [
-                    "Free",
-                    "RPG",
-                    "Community"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-04-16"
-    },
-    {
-            "id": "771bd9b2",
-            "name": "Ahegao Porn",
-            "url": "https://www.ahegaoporn.net",
+            "id": "bdf7d54d",
+            "name": "Porno",
+            "url": "https://pornobrasileiro.com.br",
             "category": "Hentai Streaming",
-            "description": "Discover Ahegao Porn - A high quality portal for your favorite content.",
-            "description_es": "Descubre Ahegao Porn: un portal de alta calidad para tu contenido favorito.",
-            "description_jp": "アヘガオ ポルノを発見 - お気に入りのコンテンツの高品質ポータル。",
+            "description": "Porno Brasileiro » Seleção com os melhores vídeos de sexo brasileiro de 2026. A Casa do pornô nacional desde 2007.",
+            "description_es": "Porno Brasileño » Selección de los mejores vídeos de sexo brasileños de 2026. La casa del porno nacional desde 2007.",
+            "description_jp": "ブラジルのポルノ » 2026 年の最高のブラジルのセックス ビデオのセレクション。2007 年以来、全国的なポルノの本拠地。",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.1,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "02d3a424",
-            "name": "Xvidios",
-            "url": "https://xvidio.blog.br",
-            "category": "Uncategorized",
-            "description": "Xvidio 2026 - Todos os melhores filmes de sexo e videos pornos completos no seu XVIDIOS grátis. Sexo amador, putaria e novinhas gostosas.",
-            "description_es": "Xvidio 2026 - Todas las mejores películas de sexo y vídeos porno completos en tus XVIDIOS gratis. Sexo amateur, quejas y adolescentes calientes.",
-            "description_jp": "Xvidio 2026 - 無料の XVIDIOS にあるすべての最高のセックス ムービーと完全なポルノ ビデオ。アマチュアセックス、愚痴、熱い十代の若者たち。",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.5,
+            "rating": 4.3,
             "addedAt": "2026-05-17"
     },
     {
@@ -3070,50 +2976,32 @@ const sitesData = [
             "description_jp": "PornMDは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "10cd29d7",
-            "name": "Xvideos Porno",
-            "url": "https://xvideoporno.com.br/ ",
-            "category": "Hentai Streaming",
-            "description": "Xvideo Porno ✓ Maior e mais completo site pornô para assistir vídeos de sexo amador. Filmes porno, porno grátis, XVIDEOS, XXX videos pornos.",
-            "description_es": "Xvideo Porno ✓ El sitio porno más grande y completo para ver videos de sexo amateur. Peliculas porno, porno gratis, XVIDEOS, vídeos porno XXX.",
-            "description_jp": "Xvideo ポルノ ✓ アマチュア セックス ビデオを見るための最大かつ最も完全なポルノ サイト。ポルノ映画、無料ポルノ、XVIDEOS、XXX ポルノビデオ。",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.7,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "bdf7d54d",
-            "name": "Porno",
-            "url": "https://pornobrasileiro.com.br",
-            "category": "Hentai Streaming",
-            "description": "Porno Brasileiro » Seleção com os melhores vídeos de sexo brasileiro de 2026. A Casa do pornô nacional desde 2007.",
-            "description_es": "Porno Brasileño » Selección de los mejores vídeos de sexo brasileños de 2026. La casa del porno nacional desde 2007.",
-            "description_jp": "ブラジルのポルノ » 2026 年の最高のブラジルのセックス ビデオのセレクション。2007 年以来、全国的なポルノの本拠地。",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.3,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "babesdirectory",
-            "name": "Babes Directory",
-            "url": "https://babesdirectory.online",
+            "id": "motherless",
+            "name": "Motherless",
+            "url": "https://motherless.com",
             "category": "Communities",
-            "description": "Database and link hub for discovering premium models and studios.",
+            "description": "Uncensored community platform focusing on extreme, bizarre, and amateur uploads.",
             "tags": [
                     "Free",
-                    "Directory",
-                    "Links"
+                    "Amateur",
+                    "Uncensored"
             ],
-            "rating": 4.8,
-            "addedAt": "2026-04-18"
+            "rating": 4.2,
+            "addedAt": "2026-04-23"
+    },
+    {
+            "id": "danni",
+            "name": "Danni",
+            "url": "https://danni.com",
+            "category": "Premium Creators",
+            "description": "One of the original premium adult sites, featuring vast archives of models.",
+            "tags": [
+                    "Paid",
+                    "Archives",
+                    "Classic"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-04-19"
     },
     {
             "id": "b06520bb",
@@ -3132,61 +3020,33 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "38085b4a",
-            "name": "HQ Erótico",
-            "url": "https://hqerotico.com",
-            "category": "Uncategorized",
-            "description": "HQ Erótico ✅ HQs pornô brasileiro, o maior contéudo de hentai, quadrinhos pornô, desenhos de sexo só encontra aqui no site HQ Erótico...",
-            "description_es": "Erótica HQ ✅ Cómics porno brasileños, el mayor contenido hentai, cómics porno, dibujos sexuales solo se pueden encontrar aquí en el sitio web de Erótica HQ...",
-            "description_jp": "Erotic HQ ✅ ブラジルのポルノ漫画、最大のエロアニメコンテンツ、ポルノ漫画、セックス描写は、ここ Erotic HQ ウェブサイトでのみ見つかります...",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "freeones",
-            "name": "Freeones",
-            "url": "https://freeones.com",
-            "category": "Communities",
-            "description": "One of the oldest directories and databases for finding adult model sites.",
+            "id": "gogoanime",
+            "name": "GogoAnime",
+            "url": "https://gogoanime3.co",
+            "category": "Anime Streaming",
+            "description": "One of the most popular free anime streaming portals with a massive library.",
             "tags": [
                     "Free",
-                    "Directory",
-                    "Database"
+                    "Dubbed",
+                    "Subbed"
             ],
-            "rating": 4.5,
-            "addedAt": "2026-05-07",
-            "longReview": "In our comprehensive 2026 audit, Freeones emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Freeones provides a robust set of features and a massive library that makes it a must-visit in our directory.",
-            "pros": [
-                    "High resolution content",
-                    "Regularly updated library",
-                    "User-friendly interface"
-            ],
-            "cons": [
-                    "May contain intrusive ads",
-                    "Some regions may require a VPN"
-            ],
-            "description_es": "Freeones es una plataforma de alta autoridad especializada en communities.",
-            "description_jp": "Freeonesは、Communitiesを専門とする高品質なプラットフォームです。"
+            "rating": 4.7,
+            "addedAt": "2026-01-18"
     },
     {
-            "id": "843d37e9",
-            "name": "Filme Porno",
-            "url": "https://filmesporno.net.br/ ",
+            "id": "10cd29d7",
+            "name": "Xvideos Porno",
+            "url": "https://xvideoporno.com.br/ ",
             "category": "Hentai Streaming",
-            "description": "Filmes Porno ✓ O Melhor Site Pornô Brasileiro Da Atualidade! Milhares De Filmes De Sexo E Videos Porno Gratis. Filme Porno É Aqui!",
-            "description_es": "Películas porno ✓ ¡El mejor sitio porno brasileño de la actualidad! Miles de películas de sexo y vídeos porno gratis. ¡La película porno está aquí!",
-            "description_jp": "ポルノ映画 ✓ 今日最高のブラジルのポルノサイト!何千もの無料セックス映画とポルノビデオ。ポルノ映画はここにあります!",
+            "description": "Xvideo Porno ✓ Maior e mais completo site pornô para assistir vídeos de sexo amador. Filmes porno, porno grátis, XVIDEOS, XXX videos pornos.",
+            "description_es": "Xvideo Porno ✓ El sitio porno más grande y completo para ver videos de sexo amateur. Peliculas porno, porno gratis, XVIDEOS, vídeos porno XXX.",
+            "description_jp": "Xvideo ポルノ ✓ アマチュア セックス ビデオを見るための最大かつ最も完全なポルノ サイト。ポルノ映画、無料ポルノ、XVIDEOS、XXX ポルノビデオ。",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.5,
+            "rating": 4.7,
             "addedAt": "2026-05-17"
     },
     {
@@ -3206,19 +3066,33 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "ea2a8f42",
-            "name": "https://discord.gg/GuueaDgKdS",
-            "url": "https://discord.gg/GuueaDgKdS",
-            "category": "Uncategorized",
-            "description": "Otaku sites toplist & reviews | 9327 members",
-            "description_es": "Lista superior y reseñas de sitios otaku | 9327 miembros",
-            "description_jp": "オタク サイトのトップリストとレビュー |会員数9327名",
+            "id": "ryuugames",
+            "name": "Ryuu Games",
+            "url": "https://ryuugames.com",
+            "category": "Visual Novels",
+            "description": "Popular source for adult VN and RPG downloads with active community.",
+            "tags": [
+                    "Free",
+                    "RPG",
+                    "Community"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-04-16"
+    },
+    {
+            "id": "e58a2be4",
+            "name": "The Porn Dude",
+            "url": "https://theporndude.com",
+            "category": "Hentai Streaming",
+            "description": "Porn Dude lists the world's best porn sites of 2026. Watch free porn videos, sex movies and premium HD porn on the most popular porn tubes. All the to",
+            "description_es": "Porn Dude enumera los mejores sitios porno del mundo de 2026. Mira videos porno gratis, películas de sexo y porno HD premium en los tubos porno más populares. todo el para",
+            "description_jp": "Porn Dude は、2026 年の世界最高のポルノ サイトをリストします。最も人気のあるポルノ チューブで無料のポルノ ビデオ、セックス ムービー、プレミアム HD ポルノをご覧ください。すべてのこと",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.0,
+            "rating": 4.7,
             "addedAt": "2026-05-17"
     },
     {
@@ -3238,6 +3112,52 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
+            "id": "38085b4a",
+            "name": "HQ Erótico",
+            "url": "https://hqerotico.com",
+            "category": "Uncategorized",
+            "description": "HQ Erótico ✅ HQs pornô brasileiro, o maior contéudo de hentai, quadrinhos pornô, desenhos de sexo só encontra aqui no site HQ Erótico...",
+            "description_es": "Erótica HQ ✅ Cómics porno brasileños, el mayor contenido hentai, cómics porno, dibujos sexuales solo se pueden encontrar aquí en el sitio web de Erótica HQ...",
+            "description_jp": "Erotic HQ ✅ ブラジルのポルノ漫画、最大のエロアニメコンテンツ、ポルノ漫画、セックス描写は、ここ Erotic HQ ウェブサイトでのみ見つかります...",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "ea2a8f42",
+            "name": "https://discord.gg/GuueaDgKdS",
+            "url": "https://discord.gg/GuueaDgKdS",
+            "category": "Uncategorized",
+            "description": "Otaku sites toplist & reviews | 9327 members",
+            "description_es": "Lista superior y reseñas de sitios otaku | 9327 miembros",
+            "description_jp": "オタク サイトのトップリストとレビュー |会員数9327名",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.0,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "tokyotosho",
+            "name": "TokyoTosho",
+            "url": "https://www.tokyotosho.info",
+            "category": "Downloads",
+            "description": "One of the oldest Japanese media torrent trackers still active.",
+            "tags": [
+                    "Free",
+                    "Torrents",
+                    "Classic"
+            ],
+            "rating": 4.4,
+            "addedAt": "2026-03-05"
+    },
+    {
             "id": "10cadb6b",
             "name": "Fotos Porno",
             "url": "https://www.pornocarioca.com/fotos",
@@ -3254,68 +3174,34 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "e58a2be4",
-            "name": "The Porn Dude",
-            "url": "https://theporndude.com",
+            "id": "843d37e9",
+            "name": "Filme Porno",
+            "url": "https://filmesporno.net.br/ ",
             "category": "Hentai Streaming",
-            "description": "Porn Dude lists the world's best porn sites of 2026. Watch free porn videos, sex movies and premium HD porn on the most popular porn tubes. All the to",
-            "description_es": "Porn Dude enumera los mejores sitios porno del mundo de 2026. Mira videos porno gratis, películas de sexo y porno HD premium en los tubos porno más populares. todo el para",
-            "description_jp": "Porn Dude は、2026 年の世界最高のポルノ サイトをリストします。最も人気のあるポルノ チューブで無料のポルノ ビデオ、セックス ムービー、プレミアム HD ポルノをご覧ください。すべてのこと",
+            "description": "Filmes Porno ✓ O Melhor Site Pornô Brasileiro Da Atualidade! Milhares De Filmes De Sexo E Videos Porno Gratis. Filme Porno É Aqui!",
+            "description_es": "Películas porno ✓ ¡El mejor sitio porno brasileño de la actualidad! Miles de películas de sexo y vídeos porno gratis. ¡La película porno está aquí!",
+            "description_jp": "ポルノ映画 ✓ 今日最高のブラジルのポルノサイト!何千もの無料セックス映画とポルノビデオ。ポルノ映画はここにあります!",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.7,
+            "rating": 4.5,
             "addedAt": "2026-05-17"
     },
     {
-            "id": "51293782",
-            "name": "https://hentaitokyo.net",
-            "url": "https://hentaitokyo.net",
-            "category": "Hentai Streaming",
-            "description": "Hentai ✅ e diversas HQs, Cartoons e Comics Exclusivos! H-Animes, Quadrinhos Eróticos com Paródia Hentai de Naruto, Simpsons e muito mais!",
-            "description_es": "Hentai ✅ y varios HQ, dibujos animados y cómics exclusivos. H-Animes, Cómics Eróticos con Hentai Parodias de Naruto, Los Simpson ¡y mucho más!",
-            "description_jp": "変態 ✅ とさまざまな HQ、漫画、限定コミック!ナルト、シンプソンズなどのエロパロディを含むHアニメ、エロ漫画！",
+            "id": "babesdirectory",
+            "name": "Babes Directory",
+            "url": "https://babesdirectory.online",
+            "category": "Communities",
+            "description": "Database and link hub for discovering premium models and studios.",
             "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
+                    "Free",
+                    "Directory",
+                    "Links"
             ],
-            "rating": 4.1,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "4594dda9",
-            "name": "Bucetas",
-            "url": "https://www.pornomineiro.com/videos/bucetas",
-            "category": "Hentai Streaming",
-            "description": "Ver bucetas é bom de qualquer jeito, seja num vídeo porno ou melhor ainda ao vivo, sabemos que se você está aqui, é porque quer ver bucetas sendo fodi",
-            "description_es": "Ver coños de todos modos está bien, ya sea en un vídeo porno o mejor en directo, sabemos que si estás aquí es porque quieres ver coños siendo follados.",
-            "description_jp": "ポルノビデオであろうと、もっと良いのはライブであろうと、とにかくマンコを見るのは良いことです、あなたがここにいるのは、マンコが犯されているのを見たいからだと私たちは知っています",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.1,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "a2aa2746",
-            "name": "Super Hentai",
-            "url": "https://superhentai.blog",
-            "category": "Hentai Streaming",
-            "description": "Super Hentai ✅ O melhor site de Hentai é HQs Porno do Mundo! Temos quadrinhos com historias de sexo de todos os tipos. Mangá é muita putaria Hentay! S",
-            "description_es": "Super Hentai ✅ ¡El mejor sitio Hentai es Porno Comics del Mundo! Disponemos de cómics con historias de sexo de todo tipo. ¡El manga es un montón de Hentay quejándose! S",
-            "description_jp": "スーパー ヘンタイ ✅ 世界で最高のヘンタイ サイトはポルノ漫画です!あらゆるタイプのセックスストーリーを含む漫画を取り揃えています。漫画はビッチなヘンタイがたくさんあります！ S",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.2,
-            "addedAt": "2026-05-17"
+            "rating": 4.8,
+            "addedAt": "2026-04-18"
     },
     {
             "id": "fdbcd037",
@@ -3350,6 +3236,54 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
+            "id": "51293782",
+            "name": "https://hentaitokyo.net",
+            "url": "https://hentaitokyo.net",
+            "category": "Hentai Streaming",
+            "description": "Hentai ✅ e diversas HQs, Cartoons e Comics Exclusivos! H-Animes, Quadrinhos Eróticos com Paródia Hentai de Naruto, Simpsons e muito mais!",
+            "description_es": "Hentai ✅ y varios HQ, dibujos animados y cómics exclusivos. H-Animes, Cómics Eróticos con Hentai Parodias de Naruto, Los Simpson ¡y mucho más!",
+            "description_jp": "変態 ✅ とさまざまな HQ、漫画、限定コミック!ナルト、シンプソンズなどのエロパロディを含むHアニメ、エロ漫画！",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.1,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "a2aa2746",
+            "name": "Super Hentai",
+            "url": "https://superhentai.blog",
+            "category": "Hentai Streaming",
+            "description": "Super Hentai ✅ O melhor site de Hentai é HQs Porno do Mundo! Temos quadrinhos com historias de sexo de todos os tipos. Mangá é muita putaria Hentay! S",
+            "description_es": "Super Hentai ✅ ¡El mejor sitio Hentai es Porno Comics del Mundo! Disponemos de cómics con historias de sexo de todo tipo. ¡El manga es un montón de Hentay quejándose! S",
+            "description_jp": "スーパー ヘンタイ ✅ 世界で最高のヘンタイ サイトはポルノ漫画です!あらゆるタイプのセックスストーリーを含む漫画を取り揃えています。漫画はビッチなヘンタイがたくさんあります！ S",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "e0036ce5",
+            "name": "Xvideo",
+            "url": "https://xvideosbr.blog",
+            "category": "Uncategorized",
+            "description": "Xvideos BR: ✓ Seleção dos melhores vídeos pornô brasileiro com as mais bundudas e gostosas. Xvídeos amador e novinhas gostosas transando. Xvideo!",
+            "description_es": "Xvideos BR: ✓ Selección de los mejores vídeos porno brasileños con los culos más grandes y calientes. Xvideos amateur y adolescentes calientes teniendo sexo. Xvídeo!",
+            "description_jp": "Xvideos BR: ✓ 最もホットで大きなお尻を備えた最高のブラジル人ポルノビデオのセレクション。アマチュアのxvideosとセックスをしているホットな十代の若者たち。エックスビデオ！",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.5,
+            "addedAt": "2026-05-17"
+    },
+    {
             "id": "b57f3517",
             "name": "Manga Hentai",
             "url": "https://mangahentai.blog",
@@ -3366,51 +3300,45 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "24a6ed7e",
-            "name": "SF Girls",
-            "url": "https://www.nutaku.net/signup/landing/sf-girls/2",
-            "category": "Uncategorized",
-            "description": "Discover SF Girls - A high quality portal for your favorite content.",
-            "description_es": "Descubre SF Girls: un portal de alta calidad para tu contenido favorito.",
-            "description_jp": "Discover SF Girls - お気に入りのコンテンツの高品質ポータル。",
+            "id": "freeones",
+            "name": "Freeones",
+            "url": "https://freeones.com",
+            "category": "Communities",
+            "description": "One of the oldest directories and databases for finding adult model sites.",
             "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
+                    "Free",
+                    "Directory",
+                    "Database"
             ],
-            "rating": 4.1,
-            "addedAt": "2026-05-17"
+            "rating": 4.5,
+            "addedAt": "2026-05-07",
+            "longReview": "In our comprehensive 2026 audit, Freeones emerged as a top-tier destination for communities. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to communities, Freeones provides a robust set of features and a massive library that makes it a must-visit in our directory.",
+            "pros": [
+                    "High resolution content",
+                    "Regularly updated library",
+                    "User-friendly interface"
+            ],
+            "cons": [
+                    "May contain intrusive ads",
+                    "Some regions may require a VPN"
+            ],
+            "description_es": "Freeones es una plataforma de alta autoridad especializada en communities.",
+            "description_jp": "Freeonesは、Communitiesを専門とする高品質なプラットフォームです。"
     },
     {
-            "id": "360ee978",
-            "name": "https://www.nutaku.net/signup/landing/booty-calls/",
-            "url": "https://www.nutaku.net/signup/landing/booty-calls/20",
+            "id": "cd818cc5",
+            "name": "https://www.quadrinhosdesexo.com",
+            "url": "https://www.quadrinhosdesexo.com",
             "category": "Uncategorized",
-            "description": "Discover https://www.nutaku.net/signup/landing/booty-calls/20 - A high quality portal for your favorite content.",
-            "description_es": "Descubra https://www.nutaku.net/signup/landing/booty-calls/20: un portal de alta calidad para su contenido favorito.",
-            "description_jp": "https://www.nutaku.net/signup/landing/booty-calls/20 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
+            "description": "Quadrinhos eróticos e Hentai HQ de todos os tipos, os melhores quadrinhos porno do mundo reunidos aqui no seu site de quadrinhos de sexo preferido!",
+            "description_es": "Cómics eróticos y Hentai HQ de todo tipo, ¡los mejores cómics porno del mundo reunidos aquí en tu sitio web favorito de cómics sexuales!",
+            "description_jp": "あらゆるタイプのエロ漫画と変態本部、世界最高のエロ漫画があなたのお気に入りのセックス漫画サイトにここに集まります!",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.2,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "22a01d16",
-            "name": "Harem Heroes",
-            "url": "https://www.nutaku.net/signup/landing/harem-heroes/22",
-            "category": "Uncategorized",
-            "description": "Discover Harem Heroes - A high quality portal for your favorite content.",
-            "description_es": "Descubre Harem Heroes: un portal de alta calidad para tu contenido favorito.",
-            "description_jp": "ハーレム ヒーローズを発見 - お気に入りのコンテンツの高品質ポータル。",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.2,
+            "rating": 4.5,
             "addedAt": "2026-05-17"
     },
     {
@@ -3421,22 +3349,6 @@ const sitesData = [
             "description": "Watch High Quality Freeuse Porn Videos for free! Thousands of videos available for all freeuse porn categories including: Free Service Porn, Hypno Por",
             "description_es": "¡Mira vídeos porno de Freeuse de alta calidad gratis! Miles de vídeos disponibles para todas las categorías de porno de uso gratuito, entre ellas: Free Service Porn, Hypno Por.",
             "description_jp": "高品質のFreeuseポルノビデオを無料で視聴しましょう！無料サービスポルノ、催眠ポルノなど、すべてのフリーユースポルノカテゴリで何千ものビデオが利用可能",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "e0036ce5",
-            "name": "Xvideo",
-            "url": "https://xvideosbr.blog",
-            "category": "Uncategorized",
-            "description": "Xvideos BR: ✓ Seleção dos melhores vídeos pornô brasileiro com as mais bundudas e gostosas. Xvídeos amador e novinhas gostosas transando. Xvideo!",
-            "description_es": "Xvideos BR: ✓ Selección de los mejores vídeos porno brasileños con los culos más grandes y calientes. Xvideos amateur y adolescentes calientes teniendo sexo. Xvídeo!",
-            "description_jp": "Xvideos BR: ✓ 最もホットで大きなお尻を備えた最高のブラジル人ポルノビデオのセレクション。アマチュアのxvideosとセックスをしているホットな十代の若者たち。エックスビデオ！",
             "tags": [
                     "Scouted",
                     "Active",
@@ -3462,38 +3374,6 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "c82725bf",
-            "name": "Famosas Nuas",
-            "url": "https://www.bucetasebundas.com.br/famosas-nuas",
-            "category": "Uncategorized",
-            "description": "Famosas peladas no carnaval 2019 dando entrevistas. São mais de trinta e cinco minutos com famosas brasileiras peladas mostrando suas fantasias nas en",
-            "description_es": "Famosos desnudos en el Carnaval 2019 dando entrevistas. Son más de treinta y cinco minutos con famosas brasileñas desnudas mostrando sus fantasías en las calles",
-            "description_jp": "カーニバル 2019 でインタビューに応じる裸の有名人。有名な裸のブラジル人女性が路上でファンタジーを披露するシーンが 35 分以上あります",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.9,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "cd818cc5",
-            "name": "https://www.quadrinhosdesexo.com",
-            "url": "https://www.quadrinhosdesexo.com",
-            "category": "Uncategorized",
-            "description": "Quadrinhos eróticos e Hentai HQ de todos os tipos, os melhores quadrinhos porno do mundo reunidos aqui no seu site de quadrinhos de sexo preferido!",
-            "description_es": "Cómics eróticos y Hentai HQ de todo tipo, ¡los mejores cómics porno del mundo reunidos aquí en tu sitio web favorito de cómics sexuales!",
-            "description_jp": "あらゆるタイプのエロ漫画と変態本部、世界最高のエロ漫画があなたのお気に入りのセックス漫画サイトにここに集まります!",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.5,
-            "addedAt": "2026-05-17"
-    },
-    {
             "id": "7d6f407f",
             "name": "https://meuhentai.com",
             "url": "https://meuhentai.com",
@@ -3510,35 +3390,19 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "1a36119d",
-            "name": "HQ Porno",
-            "url": "https://hqporno.com.br",
-            "category": "Hentai Streaming",
-            "description": "HQ Porno: Quadrinhos Eróticos Exclusivos e Cartoons Adultos. Descubra histórias de sexo originais, produzidas pelo estúdio HQPorno.com.br, para maiore",
-            "description_es": "Sede del porno: cómics eróticos exclusivos y dibujos animados para adultos. Descubra historias sexuales originales, producidas por el estudio HQPorno.com.br, para adultos",
-            "description_jp": "ポルノ本社: 独占的なエロ漫画とアダルト漫画。 HQPorno.com.br スタジオが制作した、成人向けのオリジナルのセックス ストーリーをご覧ください",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 3.9,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "f6fab57d",
-            "name": "https://www.nutaku.net/signup/landing/project-qt/1",
-            "url": "https://www.nutaku.net/signup/landing/project-qt/1",
+            "id": "c82725bf",
+            "name": "Famosas Nuas",
+            "url": "https://www.bucetasebundas.com.br/famosas-nuas",
             "category": "Uncategorized",
-            "description": "Discover https://www.nutaku.net/signup/landing/project-qt/1 - A high quality portal for your favorite content.",
-            "description_es": "Descubra https://www.nutaku.net/signup/landing/project-qt/1: un portal de alta calidad para su contenido favorito.",
-            "description_jp": "https://www.nutaku.net/signup/landing/project-qt/1 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
+            "description": "Famosas peladas no carnaval 2019 dando entrevistas. São mais de trinta e cinco minutos com famosas brasileiras peladas mostrando suas fantasias nas en",
+            "description_es": "Famosos desnudos en el Carnaval 2019 dando entrevistas. Son más de treinta y cinco minutos con famosas brasileñas desnudas mostrando sus fantasías en las calles",
+            "description_jp": "カーニバル 2019 でインタビューに応じる裸の有名人。有名な裸のブラジル人女性が路上でファンタジーを披露するシーンが 35 分以上あります",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.7,
+            "rating": 4.9,
             "addedAt": "2026-05-17"
     },
     {
@@ -3558,19 +3422,19 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "2a3be30c",
-            "name": "https://www.nutaku.net/signup/landing/fap-ceo/18",
-            "url": "https://www.nutaku.net/signup/landing/fap-ceo/18",
-            "category": "Uncategorized",
-            "description": "Discover https://www.nutaku.net/signup/landing/fap-ceo/18 - A high quality portal for your favorite content.",
-            "description_es": "Descubra https://www.nutaku.net/signup/landing/fap-ceo/18: un portal de alta calidad para su contenido favorito.",
-            "description_jp": "https://www.nutaku.net/signup/landing/fap-ceo/18 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
+            "id": "1a36119d",
+            "name": "HQ Porno",
+            "url": "https://hqporno.com.br",
+            "category": "Hentai Streaming",
+            "description": "HQ Porno: Quadrinhos Eróticos Exclusivos e Cartoons Adultos. Descubra histórias de sexo originais, produzidas pelo estúdio HQPorno.com.br, para maiore",
+            "description_es": "Sede del porno: cómics eróticos exclusivos y dibujos animados para adultos. Descubra historias sexuales originales, producidas por el estudio HQPorno.com.br, para adultos",
+            "description_jp": "ポルノ本社: 独占的なエロ漫画とアダルト漫画。 HQPorno.com.br スタジオが制作した、成人向けのオリジナルのセックス ストーリーをご覧ください",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.1,
+            "rating": 3.9,
             "addedAt": "2026-05-17"
     },
     {
@@ -3606,19 +3470,83 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "eab64cdf",
-            "name": "Famosos Nus",
-            "url": "https://todosfamososnus.com",
+            "id": "360ee978",
+            "name": "https://www.nutaku.net/signup/landing/booty-calls/",
+            "url": "https://www.nutaku.net/signup/landing/booty-calls/20",
             "category": "Uncategorized",
-            "description": "O melhor portal gay com Todos Famosos Nus mostrando seus pênis grandes, famosos pelados, Xvideos gays, sexo gay e pornô amador.",
-            "description_es": "El mejor portal gay con Todas las Celebridades Desnudas mostrando sus grandes penes, celebridades desnudas, Xvideos gay, sexo gay y porno amateur.",
-            "description_jp": "大きなペニス、裸のセレブ、ゲイ Xvideos、ゲイ セックス、アマチュア ポルノを公開するオール ヌード セレブリティを備えた最高のゲイ ポータル。",
+            "description": "Discover https://www.nutaku.net/signup/landing/booty-calls/20 - A high quality portal for your favorite content.",
+            "description_es": "Descubra https://www.nutaku.net/signup/landing/booty-calls/20: un portal de alta calidad para su contenido favorito.",
+            "description_jp": "https://www.nutaku.net/signup/landing/booty-calls/20 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 3.8,
+            "rating": 4.2,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "2a3be30c",
+            "name": "https://www.nutaku.net/signup/landing/fap-ceo/18",
+            "url": "https://www.nutaku.net/signup/landing/fap-ceo/18",
+            "category": "Uncategorized",
+            "description": "Discover https://www.nutaku.net/signup/landing/fap-ceo/18 - A high quality portal for your favorite content.",
+            "description_es": "Descubra https://www.nutaku.net/signup/landing/fap-ceo/18: un portal de alta calidad para su contenido favorito.",
+            "description_jp": "https://www.nutaku.net/signup/landing/fap-ceo/18 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.1,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "22a01d16",
+            "name": "Harem Heroes",
+            "url": "https://www.nutaku.net/signup/landing/harem-heroes/22",
+            "category": "Uncategorized",
+            "description": "Discover Harem Heroes - A high quality portal for your favorite content.",
+            "description_es": "Descubre Harem Heroes: un portal de alta calidad para tu contenido favorito.",
+            "description_jp": "ハーレム ヒーローズを発見 - お気に入りのコンテンツの高品質ポータル。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.2,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "f6fab57d",
+            "name": "https://www.nutaku.net/signup/landing/project-qt/1",
+            "url": "https://www.nutaku.net/signup/landing/project-qt/1",
+            "category": "Uncategorized",
+            "description": "Discover https://www.nutaku.net/signup/landing/project-qt/1 - A high quality portal for your favorite content.",
+            "description_es": "Descubra https://www.nutaku.net/signup/landing/project-qt/1: un portal de alta calidad para su contenido favorito.",
+            "description_jp": "https://www.nutaku.net/signup/landing/project-qt/1 をご覧ください - お気に入りのコンテンツの高品質ポータル。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.7,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "24a6ed7e",
+            "name": "SF Girls",
+            "url": "https://www.nutaku.net/signup/landing/sf-girls/2",
+            "category": "Uncategorized",
+            "description": "Discover SF Girls - A high quality portal for your favorite content.",
+            "description_es": "Descubre SF Girls: un portal de alta calidad para tu contenido favorito.",
+            "description_jp": "Discover SF Girls - お気に入りのコンテンツの高品質ポータル。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.1,
             "addedAt": "2026-05-17"
     },
     {
@@ -3670,35 +3598,35 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "ecdb9af3",
-            "name": "Quadrinhos Eroticos",
-            "url": "https://www.quadrinhoseroticos.blog",
-            "category": "Uncategorized",
-            "description": "Quadrinhos Eroticos é Hentai ✓ Os melhores quadrinhos pornô é quadrinhos de sexo estão aqui. Hentai HQ, Porno e muitos Cartoons Eróticos.",
-            "description_es": "Los Cómics Eróticos son Hentai ✓ Los mejores cómics porno y cómics sexuales están aquí. Hentai HQ, porno y muchos dibujos animados eróticos.",
-            "description_jp": "エロ漫画は変態 ✓ 最高のエロ漫画とセックス漫画がここにあります。変態本部、ポルノ、そして多くのエロ漫画。",
+            "id": "5e5617ea",
+            "name": "Leauge of Legends Hentai",
+            "url": "http://www.lolhentai.net",
+            "category": "Hentai Streaming",
+            "description": "Home - Sexy League of Legends Champions! Browse through our huge collection of LoLHentai Albums, Videos, Gifs, Games, and Comics | Create & share your",
+            "description_es": "Inicio - ¡Campeones sexys de League of Legends! Explore nuestra gran colección de álbumes, vídeos, gifs, juegos y cómics de LoLHentai | Crea y comparte tu",
+            "description_jp": "ホーム - セクシーなリーグ・オブ・レジェンドのチャンピオン！ LoLHentai アルバム、ビデオ、Gif、ゲーム、コミックの膨大なコレクションを閲覧 |を作成して共有",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.9,
+            "rating": 4.0,
             "addedAt": "2026-05-17"
     },
     {
-            "id": "8c867c5c",
-            "name": "Hentai HQ",
-            "url": "https://superhq.blog",
-            "category": "Hentai Streaming",
-            "description": "Hentai HQ ✓ SuperHQ e quadrinhos pornô de vários tipos. O melhor site de SUPER HENTAI em quadrinhos eróticos, cartoons, putaria em HQ Hentai.",
-            "description_es": "Hentai HQ ✓ SuperHQ y cómics porno de varios tipos. El mejor sitio web SUPER HENTAI para cómics eróticos, dibujos animados y putas en HQ Hentai.",
-            "description_jp": "変態 HQ ✓ SuperHQ とさまざまなタイプのポルノ漫画。 HQ Hentai のエロ漫画、漫画、愚痴を扱う最高の SUPER HENTAI ウェブサイト。",
+            "id": "eab64cdf",
+            "name": "Famosos Nus",
+            "url": "https://todosfamososnus.com",
+            "category": "Uncategorized",
+            "description": "O melhor portal gay com Todos Famosos Nus mostrando seus pênis grandes, famosos pelados, Xvideos gays, sexo gay e pornô amador.",
+            "description_es": "El mejor portal gay con Todas las Celebridades Desnudas mostrando sus grandes penes, celebridades desnudas, Xvideos gay, sexo gay y porno amateur.",
+            "description_jp": "大きなペニス、裸のセレブ、ゲイ Xvideos、ゲイ セックス、アマチュア ポルノを公開するオール ヌード セレブリティを備えた最高のゲイ ポータル。",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.1,
+            "rating": 3.8,
             "addedAt": "2026-05-17"
     },
     {
@@ -3715,6 +3643,54 @@ const sitesData = [
                     "New"
             ],
             "rating": 4.3,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "ecdb9af3",
+            "name": "Quadrinhos Eroticos",
+            "url": "https://www.quadrinhoseroticos.blog",
+            "category": "Uncategorized",
+            "description": "Quadrinhos Eroticos é Hentai ✓ Os melhores quadrinhos pornô é quadrinhos de sexo estão aqui. Hentai HQ, Porno e muitos Cartoons Eróticos.",
+            "description_es": "Los Cómics Eróticos son Hentai ✓ Los mejores cómics porno y cómics sexuales están aquí. Hentai HQ, porno y muchos dibujos animados eróticos.",
+            "description_jp": "エロ漫画は変態 ✓ 最高のエロ漫画とセックス漫画がここにあります。変態本部、ポルノ、そして多くのエロ漫画。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.9,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "873968dd",
+            "name": "Porno Espanol",
+            "url": "https://pornoespanol.blog",
+            "category": "Hentai Streaming",
+            "description": "Ver Videos Porno XXX En Español",
+            "description_es": "Ver Videos Porno XXX En Español",
+            "description_jp": "スペイン語で XXX ポルノビデオを見る",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-05-17"
+    },
+    {
+            "id": "8c867c5c",
+            "name": "Hentai HQ",
+            "url": "https://superhq.blog",
+            "category": "Hentai Streaming",
+            "description": "Hentai HQ ✓ SuperHQ e quadrinhos pornô de vários tipos. O melhor site de SUPER HENTAI em quadrinhos eróticos, cartoons, putaria em HQ Hentai.",
+            "description_es": "Hentai HQ ✓ SuperHQ y cómics porno de varios tipos. El mejor sitio web SUPER HENTAI para cómics eróticos, dibujos animados y putas en HQ Hentai.",
+            "description_jp": "変態 HQ ✓ SuperHQ とさまざまなタイプのポルノ漫画。 HQ Hentai のエロ漫画、漫画、愚痴を扱う最高の SUPER HENTAI ウェブサイト。",
+            "tags": [
+                    "Scouted",
+                    "Active",
+                    "New"
+            ],
+            "rating": 4.1,
             "addedAt": "2026-05-17"
     },
     {
@@ -3750,36 +3726,20 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
-            "id": "5e5617ea",
-            "name": "Leauge of Legends Hentai",
-            "url": "http://www.lolhentai.net",
-            "category": "Hentai Streaming",
-            "description": "Home - Sexy League of Legends Champions! Browse through our huge collection of LoLHentai Albums, Videos, Gifs, Games, and Comics | Create & share your",
-            "description_es": "Inicio - ¡Campeones sexys de League of Legends! Explore nuestra gran colección de álbumes, vídeos, gifs, juegos y cómics de LoLHentai | Crea y comparte tu",
-            "description_jp": "ホーム - セクシーなリーグ・オブ・レジェンドのチャンピオン！ LoLHentai アルバム、ビデオ、Gif、ゲーム、コミックの膨大なコレクションを閲覧 |を作成して共有",
+            "id": "d105f204",
+            "name": "https://www.pontogay.com",
+            "url": "https://www.pontogay.com",
+            "category": "Uncategorized",
+            "description": "Os melhores quadrinhos pornô gay da internet. Confira também vídeos eróticos polêmicos com diversos temas: interracial, pênis gays, famosos, desenhos,",
+            "description_es": "Los mejores comics porno gay de internet. Mira también polémicos vídeos eróticos con diferentes temáticas: interraciales, penes gay, famosos, dibujos,",
+            "description_jp": "インターネット上で最高のゲイ ポルノ漫画。異人種間、ゲイのペニス、セレブ、絵、",
             "tags": [
                     "Scouted",
                     "Active",
                     "New"
             ],
-            "rating": 4.0,
-            "addedAt": "2026-05-17"
-    },
-    {
-            "id": "873968dd",
-            "name": "Porno Espanol",
-            "url": "https://pornoespanol.blog",
-            "category": "Hentai Streaming",
-            "description": "Ver Videos Porno XXX En Español",
-            "description_es": "Ver Videos Porno XXX En Español",
-            "description_jp": "スペイン語で XXX ポルノビデオを見る",
-            "tags": [
-                    "Scouted",
-                    "Active",
-                    "New"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-05-17"
+            "rating": 4.1,
+            "addedAt": "2026-05-19"
     },
     {
             "id": "456c3a91",
@@ -3798,6 +3758,20 @@ const sitesData = [
             "addedAt": "2026-05-17"
     },
     {
+            "id": "zerochan",
+            "name": "Zerochan",
+            "url": "https://www.zerochan.net",
+            "category": "Images/Boorus",
+            "description": "Clean, curated anime artwork database with high-resolution images.",
+            "tags": [
+                    "Free",
+                    "Curated",
+                    "HD"
+            ],
+            "rating": 4.6,
+            "addedAt": "2026-03-10"
+    },
+    {
             "id": "ccb5d5ef",
             "name": "http://www.hentaiseason.com",
             "url": "http://www.hentaiseason.com",
@@ -3812,19 +3786,5 @@ const sitesData = [
             ],
             "rating": 3.9,
             "addedAt": "2026-05-17"
-    },
-    {
-            "id": "zerochan",
-            "name": "Zerochan",
-            "url": "https://www.zerochan.net",
-            "category": "Images/Boorus",
-            "description": "Clean, curated anime artwork database with high-resolution images.",
-            "tags": [
-                    "Free",
-                    "Curated",
-                    "HD"
-            ],
-            "rating": 4.6,
-            "addedAt": "2026-03-10"
     }
 ];
