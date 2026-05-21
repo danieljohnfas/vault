@@ -17,7 +17,9 @@ def check_url(site):
     url = site['url']
     print(f"Checking: {url}")
     try:
-        res = requests.get(url, headers=HEADERS, timeout=TIMEOUT, verify=False)
+        res = requests.head(url, headers=HEADERS, timeout=TIMEOUT, verify=False, allow_redirects=True)
+        if res.status_code >= 400:
+            res = requests.get(url, headers=HEADERS, timeout=TIMEOUT, verify=False)
         if res.status_code >= 200 and res.status_code < 400:
             return site, True
         else:

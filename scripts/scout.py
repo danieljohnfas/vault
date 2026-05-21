@@ -144,7 +144,7 @@ def validate_and_enrich(links, existing_urls):
             if res.status_code >= 400: continue
             
             # Now get full content
-            res = session.get(url, headers=HEADERS, timeout=8, verify=False)
+            res = session.get(url, headers=HEADERS, timeout=8, verify=True)
             if res.status_code == 200:
                 soup = BeautifulSoup(res.text, 'html.parser')
                 desc_tag = soup.find('meta', attrs={'name': 'description'}) or \
@@ -181,7 +181,7 @@ def validate_and_enrich(links, existing_urls):
                     "description_es": desc_es,
                     "description_jp": desc_jp,
                     "tags": ["Scouted", "Active", "New"],
-                    "rating": round(random.uniform(3.8, 4.9), 1),
+                    "rating": 0,
                     "addedAt": datetime.datetime.now().strftime("%Y-%m-%d")
                 }
                 valid_sites.append(site)

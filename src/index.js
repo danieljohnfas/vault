@@ -18,12 +18,91 @@ const ALLOWED_CATEGORIES = [
   'Images/Boorus', 'Games', 'Communities', 'Downloads', 'Visual Novels',
 ];
 
+
+// Rate Limiter
+const rateLimitMap = new Map();
+const RATE_LIMIT_MS = 60000;
+const MAX_REQS = 2;
+
+function isRateLimited(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  let record = rateLimitMap.get(ip);
+  if (!record) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_MS });
+    return false;
+  }
+  if (now > record.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_MS });
+    return false;
+  }
+  record.count++;
+  if (record.count > MAX_REQS) return true;
+  return false;
+}
+
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Content-Type': 'application/json',
 };
+
+// Global V8 isolate cache
+let cachedSitesData = null;
+
+async function getSitesData(urlOrigin, env) {
+  if (cachedSitesData) return cachedSitesData;
+  try {
+    const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js'));
+    if (!dataRes.ok) return [];
+    const dataText = await dataRes.text();
+    const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]+?\]);\s*$/);
+    if (arrayMatch) {
+      const jsonString = arrayMatch[1]
+        .replace(/,\s*([\]}])/g, '$1');
+      cachedSitesData = JSON.parse(jsonString);
+      return cachedSitesData || [];
+    }
+  } catch (err) {
+    console.error('Failed to parse sitesData:', err);
+  }
+  return [];
+}
+
+class HeadHandler {
+  constructor(site, canonicalUrl) {
+    this.site = site;
+    this.canonicalUrl = canonicalUrl;
+  }
+  element(element) {
+    const desc = (this.site.description || '').replace(/"/g, '&quot;');
+    const title = `${this.site.name} Review | HentaiVault`;
+    
+    element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<meta name="description" content="Read our expert review of ${this.site.name}. Curated, rated, and verified by the HentaiVault team. Category: ${this.site.category}.">`, { html: true });
+    
+    // Open Graph
+    element.append(`<meta property="og:title" content="${title}">`, { html: true });
+    element.append(`<meta property="og:description" content="${desc}">`, { html: true });
+    element.append(`<meta property="og:url" content="${this.canonicalUrl}">`, { html: true });
+    element.append(`<meta property="og:type" content="article">`, { html: true });
+    
+    // Twitter Card
+    element.append(`<meta name="twitter:card" content="summary">`, { html: true });
+    element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
+    element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
+  }
+}
+
+class TitleHandler {
+  constructor(titleText) {
+    this.titleText = titleText;
+  }
+  element(element) {
+    element.setInnerContent(this.titleText);
+  }
+}
 
 export default {
   async fetch(request, env, ctx) {
@@ -47,6 +126,51 @@ export default {
       return jsonError('Method not allowed.', 405);
     }
 
+    // ── Route: /site and /site.html ─────────────────────────────────────────
+    if (url.pathname === '/site' || url.pathname === '/site.html') {
+      if (url.pathname === '/site.html') {
+        const id = url.searchParams.get('id');
+        const search = id ? `?id=${id}` : '';
+        return new Response(null, {
+          status: 308,
+          headers: {
+            'Location': `${url.origin}/site${search}`,
+            'Cache-Control': 'public, max-age=604800'
+          }
+        });
+      }
+
+      const id = url.searchParams.get('id');
+      if (!id) {
+        return Response.redirect(url.origin + '/', 302);
+      }
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/site.html'));
+      if (!response.ok) {
+        return response;
+      }
+
+      const sites = await getSitesData(url.origin, env);
+      const site = sites.find(s => s.id === id);
+
+      if (!site) {
+        // Return 404 status code but still serve site.html so client-side rendering displays UI error
+        return new Response(response.body, {
+          status: 404,
+          headers: response.headers
+        });
+      }
+
+      const canonicalUrl = `https://hentaivault.me/site?id=${site.id}`;
+      const titleText = `${site.name} Review | HentaiVault`;
+
+      const rewriter = new HTMLRewriter()
+        .on('title', new TitleHandler(titleText))
+        .on('head', new HeadHandler(site, canonicalUrl));
+
+      return rewriter.transform(response);
+    }
+
     // ── Everything else: serve static assets ────────────────────────────────
     return env.ASSETS.fetch(request);
   },
@@ -56,6 +180,11 @@ export default {
 
 async function handleSubmit(request, env, ctx) {
   try {
+    const ip = request.headers.get('cf-connecting-ip');
+    if (isRateLimited(ip)) {
+      return jsonError('Too many submissions. Please try again later.', 429);
+    }
+
     const body = await request.json().catch(() => null);
     if (!body) return jsonError('Invalid request body.', 400);
 
@@ -103,7 +232,7 @@ async function handleSubmit(request, env, ctx) {
     // ── 4. Build new entry ───────────────────────────────────────────────────
     const id    = makeId(nameClean);
     const today = new Date().toISOString().split('T')[0];
-    const entry = `    { id: "${id}", name: "${nameClean}", url: "${urlClean}", category: "${catClean}", description: "${descClean}", tags: ["Community Submitted"], rating: 4.0, addedAt: "${today}" }`;
+    const entry = `    { "id": "${id}", "name": "${nameClean}", "url": "${urlClean}", "category": "${catClean}", "description": "${descClean}", "tags": ["Community Submitted"], "rating": 4.0, "addedAt": "${today}" }`;
 
     // ── 5. Insert before closing ]; ──────────────────────────────────────────
     const updated = rawContent.replace(/\n\];/, `,\n${entry}\n];`);
@@ -126,6 +255,9 @@ async function handleSubmit(request, env, ctx) {
       return jsonError('Failed to publish site. Please try again.', 500);
     }
 
+    // Ping Bing IndexNow in the background (non-blocking)
+    ctx.waitUntil(pingIndexNow(env));
+
     return new Response(
       JSON.stringify({
         success: true,
@@ -133,9 +265,6 @@ async function handleSubmit(request, env, ctx) {
       }),
       { status: 200, headers: CORS }
     );
-
-    // Ping Bing IndexNow in the background (non-blocking)
-    ctx.waitUntil(pingIndexNow(env));
 
   } catch (err) {
     console.error('Unexpected error:', err);

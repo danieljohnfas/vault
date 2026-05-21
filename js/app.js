@@ -245,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const allChip = document.createElement('div');
         allChip.className = 'filter-chip active';
         allChip.innerText = 'All';
+        allChip.setAttribute('data-value', 'All');
         allChip.onclick = () => {
             activeCategories = [];
             document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
@@ -258,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ALL_CATEGORIES.forEach(cat => {
             const chip = document.createElement('div');
             chip.className = 'filter-chip';
+            chip.setAttribute('data-value', cat);
             if (activeCategories.includes(cat)) chip.classList.add('active');
             chip.innerText = t.categories && t.categories[cat] ? t.categories[cat] : cat;
             chip.onclick = () => {
@@ -316,11 +318,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chips.length === 0) return;
 
         chips.forEach(chip => {
-            if (chip.innerText === 'All') {
+            const val = chip.getAttribute('data-value');
+            if (val === 'All') {
                 if (activeCategories.length === 0) chip.classList.add('active');
                 else chip.classList.remove('active');
             } else {
-                if (activeCategories.includes(chip.innerText)) chip.classList.add('active');
+                if (activeCategories.includes(val)) chip.classList.add('active');
                 else chip.classList.remove('active');
             }
         });
@@ -450,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-header">
                     <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
-                        <a href="site.html?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
+                        <a href="/site?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
                             <div class="card-title">${localName}</div>
                         </a>
                         <div class="card-category">${localCat}</div>
@@ -605,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ).slice(0, 6);
             if (matches.length > 0) {
                 tray.innerHTML = matches.map(s => `
-                    <div class="autocomplete-item" onclick="window.location.href='site.html?id=${s.id}'">
+                    <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">
                         <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
                         <div class="autocomplete-info">
                             <div class="autocomplete-name">${s.name}</div>

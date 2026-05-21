@@ -830,23 +830,7 @@ select {
 /* ==========================================================================
    Sticky Bottom Ad Banner
    ========================================================================== */
-.sticky-bottom-ad {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    min-height: 90px;
-    background: var(--bg-glass);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
-    padding: 10px;
-}
+
 
 /* Recently Added Badge */
 .new-badge {
@@ -896,9 +880,8 @@ body {
 }
 
 @media (max-width: 900px) {
-    .sticky-bottom-ad {
-        min-height: 60px;
-        padding: 5px;
+    #sticky-bottom-ad {
+        height: 60px;
     }
     body {
         padding-bottom: 70px;
@@ -1076,3 +1059,82 @@ body {
         scrollbar-color: var(--primary) transparent;
     }
 }
+/* QR Code Widget */
+#qr-widget {
+        position: fixed;
+        top: 85px;
+        right: 28px;
+        z-index: 999;
+        background: rgba(24,24,27,0.85);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,42,95,0.4);
+        border-radius: 24px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 0 24px rgba(255,42,95,0.25);
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        overflow: hidden;
+        width: 130px;
+        height: 44px;
+        animation: pulse-qr 2.5s infinite;
+    }
+    @keyframes pulse-qr {
+        0% { box-shadow: 0 0 0 0 rgba(255,42,95,0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(255,42,95,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,42,95,0); }
+    }
+    #qr-widget:hover {
+        width: 188px;
+        height: 230px;
+        padding: 16px;
+        border-radius: 16px;
+        border-color: rgba(255,42,95,0.7);
+        box-shadow: 0 0 36px rgba(255,42,95,0.4);
+        animation: none;
+    }
+    #qr-label {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ff2a5f;
+        white-space: nowrap;
+        opacity: 1;
+        letter-spacing: 0.03em;
+        margin-top: 0;
+        transition: font-size 0.2s;
+    }
+    #qr-widget:hover #qr-label {
+        font-size: 0.75rem;
+        margin-top: 4px;
+    }
+    #qr-img {
+        border-radius: 10px;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.25s ease 0.15s;
+        display: block;
+    }
+    #qr-widget:hover #qr-img { opacity: 1; height: 160px; }
+    #qr-caption {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.72rem;
+        color: #a1a1aa;
+        margin: 0;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.2s ease 0.2s;
+        letter-spacing: 0.04em;
+    }
+    #qr-widget:hover #qr-caption { opacity: 1; height: auto; margin-top: 6px; }
+    @media (max-width: 600px) {
+        #qr-widget { bottom: 16px; right: 16px; top: auto; width: 48px; height: 48px; border-radius: 16px; }
+        #qr-widget #qr-label { display: none; }
+        #qr-widget::before { content: '📱'; font-size: 1.6rem; color: #ff2a5f; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); line-height: 1; }
+        #qr-widget:hover::before { display: none; }
+    }

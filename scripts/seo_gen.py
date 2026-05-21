@@ -55,6 +55,7 @@ def generate_sitemap():
         {"url": "/terms", "priority": "0.3", "changefreq": "monthly"},
         {"url": "/disclaimer", "priority": "0.3", "changefreq": "monthly"},
         {"url": "/dmca", "priority": "0.3", "changefreq": "monthly"},
+        {"url": "/blog", "priority": "0.7", "changefreq": "weekly"},
     ]
 
     for page in static_pages:
@@ -64,11 +65,18 @@ def generate_sitemap():
     for cat in CATEGORIES:
         sitemap += f'  <url>\n    <loc>{BASE_URL}/category/{cat}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n'
 
-    # Individual Site Detail Pages (If you had them as separate HTMLs, but you likely don't)
-    # If your site uses site.html?id=XXX, we should list them here
+    # Blog Articles (Extensionless)
+    blog_dir = "blog"
+    if os.path.exists(blog_dir):
+        for file in os.listdir(blog_dir):
+            if file.endswith(".html") and file != "index.html":
+                slug = file[:-5]
+                sitemap += f'  <url>\n    <loc>{BASE_URL}/blog/{slug}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n'
+
+    # Individual Site Detail Pages (Extensionless)
     ids = re.findall(r'"id":\s*"([^"]+)"', content)
     for site_id in ids:
-        sitemap += f'  <url>\n    <loc>{BASE_URL}/site.html?id={site_id}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n'
+        sitemap += f'  <url>\n    <loc>{BASE_URL}/site?id={site_id}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n'
 
     # Footer
     sitemap += '</urlset>'

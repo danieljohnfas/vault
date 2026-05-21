@@ -1,0 +1,16 @@
+# Exclude development files, git configurations, and scripts from being uploaded to Cloudflare Workers Assets
+.git
+.github
+.gitignore
+.wrangler
+.dev.vars*
+.env*
+scraper.py
+*.py
+__pycache__/
+.vscode/
+.idea/
+scratch/
+scripts/
+src/
+wrangler.jsonc
