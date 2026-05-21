@@ -57,7 +57,7 @@ async function getSitesData(urlOrigin, env) {
     const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js'));
     if (!dataRes.ok) return [];
     const dataText = await dataRes.text();
-    const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]+?\]);\s*$/);
+    const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
     if (arrayMatch) {
       const jsonString = arrayMatch[1]
         .replace(/,\s*([\]}])/g, '$1');

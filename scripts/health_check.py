@@ -88,37 +88,8 @@ def run_health_check():
         print("All sites are healthy.")
         return
 
-    print(f"Health Check Complete: {len(alive_sites)} alive, {dead_count} removed.")
-
-    # Reconstruct the file
-    # Instead of full rewrite, we'll replace the array content
-    new_array_content = ""
-    for i, site in enumerate(alive_sites):
-        json_site = json.dumps(site, indent=8, ensure_ascii=False)
-        # Fix indentation
-        json_site = json_site.replace('\n', '\n    ')
-        new_array_content += f"\n    {json_site}"
-        if i < len(alive_sites) - 1:
-            new_array_content += ","
-
-    # Fix: Use a safer replacement to avoid 'bad escape \u' issues in re.sub
-    pattern = r'const sitesData = \[.*?\s+\];'
-    replacement = f'const sitesData = [{new_array_content}\n];'
-    
-    # We use string replace instead of re.sub to avoid template escape issues
-    # First we find the exact text to replace
-    match = re.search(pattern, content, flags=re.DOTALL)
-    if match:
-        new_full_content = content[:match.start()] + replacement + content[match.end():]
-    else:
-        print("Error: Could not find sitesData array for replacement.")
-        return
-
-
-    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-        f.write(new_full_content)
-    
-    print("Successfully updated data.js with healthy sites.")
+    print(f"Health Check Complete: {len(alive_sites)} alive, {dead_count} dead.")
+    print("Database update skipped to preserve all sites.")
 
 if __name__ == "__main__":
     run_health_check()
