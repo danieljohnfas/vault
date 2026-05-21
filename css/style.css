@@ -272,6 +272,49 @@ a:hover {
     margin-top: 30px;
 }
 
+/* Sticky Skyscraper Ads */
+.skyscraper {
+    position: fixed;
+    top: 90px; /* Below the header (70px) */
+    width: 160px;
+    height: 600px;
+    z-index: 900; /* Behind navbar (1000) but above content */
+    display: none; /* Hidden by default on mobile/tablets/narrow screens */
+}
+
+.skyscraper-left {
+    left: 20px;
+}
+
+.skyscraper-right {
+    right: 20px;
+}
+
+/* Show only on wide screens to prevent overlapping content */
+@media (min-width: 1400px) {
+    .skyscraper {
+        display: block;
+    }
+    
+    .skyscraper-left {
+        left: 10px;
+    }
+    
+    .skyscraper-right {
+        right: 10px;
+    }
+}
+
+@media (min-width: 1750px) {
+    .skyscraper-left {
+        left: calc(50% - 700px - 180px);
+    }
+    
+    .skyscraper-right {
+        right: calc(50% - 700px - 180px);
+    }
+}
+
 /* ==========================================================================
    Main Layout Grid
    ========================================================================== */
@@ -796,7 +839,7 @@ select {
         padding-right: 0;
     }
 
-    .ad-container.skyscraper {
+    .skyscraper {
         display: none;
     }
 }
