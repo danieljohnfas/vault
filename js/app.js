@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { console.error("Age gate init failed", e); }
 
     // --- Mobile Search Toggle ---
-    btnSearchMobile.addEventListener('click', () => {
-        searchBar.classList.toggle('mobile-open');
-        if (searchBar.classList.contains('mobile-open')) {
-            searchInput.focus();
-        }
-    });
+    if (btnSearchMobile && searchBar && searchInput) {
+        btnSearchMobile.addEventListener('click', () => {
+            searchBar.classList.toggle('mobile-open');
+            if (searchBar.classList.contains('mobile-open')) {
+                searchInput.focus();
+            }
+        });
+    }
 
     // --- Surprise Me Button ---
     const btnSurpriseMe = document.getElementById('btnSurpriseMe');
@@ -93,12 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initialization ---
-    initFilters();
+    if (siteGrid) {
+        initFilters();
+    }
 
     // Pre-filter from category page (window.FILTER_CATEGORY) or URL ?q= param
     const urlParams = new URLSearchParams(window.location.search);
     const urlQ = urlParams.get('q');
-    if (urlQ) { searchInput.value = urlQ; searchQuery = urlQ.toLowerCase(); }
+    if (urlQ && searchInput) { searchInput.value = urlQ; searchQuery = urlQ.toLowerCase(); }
     if (window.FILTER_CATEGORY) {
         activeCategories = [window.FILTER_CATEGORY];
         document.querySelectorAll('.cat-cb').forEach(cb => {
@@ -107,8 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-        applyFiltersAndSort();
-        syncMobileChips();
+        if (siteGrid) {
+            applyFiltersAndSort();
+            syncMobileChips();
+        }
         initAutocomplete();
         initThemeToggle();
     } catch (e) { console.error("Initialization failed", e); }

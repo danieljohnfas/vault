@@ -80,6 +80,11 @@ class HeadHandler {
     const title = `${this.site.name} Review | HentaiVault`;
     
     element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<link rel="alternate" hreflang="x-default" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<link rel="alternate" hreflang="en" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<link rel="alternate" hreflang="es" href="${this.canonicalUrl}&lang=es">`, { html: true });
+    element.append(`<link rel="alternate" hreflang="ja" href="${this.canonicalUrl}&lang=jp">`, { html: true });
+    element.append(`<link rel="alternate" hreflang="fr" href="${this.canonicalUrl}&lang=fr">`, { html: true });
     element.append(`<meta name="description" content="Read our expert review of ${this.site.name}. Curated, rated, and verified by the HentaiVault team. Category: ${this.site.category}.">`, { html: true });
     
     // Open Graph

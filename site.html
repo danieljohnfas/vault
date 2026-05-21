@@ -12,6 +12,13 @@
 
     <link rel="icon" type="image/png" href="assets/favicon.png">
 
+    <link rel="canonical" href="https://hentaivault.me/site.html">
+    <link rel="alternate" hreflang="x-default" href="https://hentaivault.me/site.html">
+    <link rel="alternate" hreflang="en" href="https://hentaivault.me/site.html?lang=en">
+    <link rel="alternate" hreflang="es" href="https://hentaivault.me/site.html?lang=es">
+    <link rel="alternate" hreflang="ja" href="https://hentaivault.me/site.html?lang=jp">
+    <link rel="alternate" hreflang="fr" href="https://hentaivault.me/site.html?lang=fr">
+
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,9 +166,43 @@
     <script src="js/data.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/app.js"></script>
+
+    <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
+    <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
 </head>
 
 <body>
+<!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+    <div class="skyscraper skyscraper-left">
+        <script>
+          atOptions = {
+            'key' : '13ca4044b4b6e65ef15f10d18752754e',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
+    </div>
+    <div class="skyscraper skyscraper-right">
+        <script>
+          atOptions = {
+            'key' : '13ca4044b4b6e65ef15f10d18752754e',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
+    </div>
+
+
+    
+
+    
     <!-- Age Gate Overlay -->
     <div class="age-gate" id="ageGate">
         <div class="age-gate-box">
@@ -177,9 +218,48 @@
         </div>
     </div>
 
-    <nav class="navbar"><div class="nav-container"><a href="/" class="logo"><span class="logo-icon">🔞</span> HentaiVault</a><a href="/" class="btn-outline">Back to Vault</a></div></nav>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span class="logo-icon">💎</span> HentaiVault
+            </a>
+            <div class="search-bar">
+                <div class="search-container">
+                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search websites, tags, or categories..." autocomplete="off">
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
+            </div>
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
+                <div class="lang-switcher">
+                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                    </select>
+                </div>
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
+            </div>
+        </div>
+    </nav>
 
     <main class="review-layout" id="reviewContainer">
+    <!-- Ad Leaderboard -->
+    <div class="ad-container leaderboard">
+        <script>
+          atOptions = {
+            'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
+    </div>
 
         <div style="text-align:center; padding:100px;">Loading Review...</div>
 
@@ -217,27 +297,156 @@ document.addEventListener('DOMContentLoaded', () => {
 
             }
 
-            document.title = `${site.name} Review | HentaiVault`;
-
-            
-
             const urlObj = new URL(site.url);
-
             const domain = urlObj.hostname;
-
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
             // Localization lookup
-
             const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
-
             const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
-
             const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
-
             const localCat  = escapeHTML((t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category);
-
             const localReview = escapeHTML(site[`longReview_${currentLang}`] || site.longReview);
+
+            // Dynamic localized headers and SEO meta tags
+            let titleText = `${localName} Review 2026 — Ratings & Alternatives | HentaiVault`;
+            let descText = `Read our expert review of ${localName} (${localCat}) for 2026. Learn about ratings, pros, cons, and alternatives.`;
+            let fallbackText = `${localName} has established itself as a premier destination for ${localCat.toLowerCase()} enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.`;
+
+            if (currentLang === 'fr') {
+                titleText = `Avis ${localName} 2026 — Notes et Alternatives | HentaiVault`;
+                descText = `Lire notre avis d'expert sur ${localName} (${localCat}) pour 2026. Découvrez les notes, les points forts, les points faibles et les alternatives.`;
+                fallbackText = `${localName} s'est imposé comme une destination de premier choix pour les passionnés de ${localCat.toLowerCase()}. Lors de notre audit de 2026, nous avons constaté que le site était très réactif et maintenu avec un contenu de haute qualité.`;
+            } else if (currentLang === 'es') {
+                titleText = `Reseña de ${localName} 2026 — Calificaciones y Alternativas | HentaiVault`;
+                descText = `Lea nuestra reseña experta de ${localName} (${localCat}) para 2026. Conozca calificaciones, pros, contras y alternativas.`;
+                fallbackText = `${localName} se ha establecido como un destino de primer nivel para los entusiastas de ${localCat.toLowerCase()}. En nuestra auditoría de 2026, encontramos que el sitio es muy receptivo y se mantiene con contenido de alta calidad.`;
+            } else if (currentLang === 'jp') {
+                titleText = `${localName}のレビュー 2026 — 評価と代替サイト | HentaiVault`;
+                descText = `2026年最新の${localName} (${localCat}) に関する専門家のレビューを読む。評価、メリット、デメリット、代替サイトをご紹介。`;
+                fallbackText = `${localName}は、${localCat}ファンのための主要な目的地として定着しています。2026年の監査では、サイトの応答性が非常に高く、高品質なコンテンツが維持されていることが確認されました。`;
+            }
+
+            document.title = titleText;
+            
+            // Function helpers to set metadata
+            const setMeta = (name, val) => {
+                let el = document.querySelector(`meta[name="${name}"]`);
+                if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el); }
+                el.content = val;
+            };
+            const setMetaProp = (prop, val) => {
+                let el = document.querySelector(`meta[property="${prop}"]`);
+                if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el); }
+                el.content = val;
+            };
+
+            setMeta('description', descText);
+            setMeta('keywords', `${localName} review, ${localName} 2026, ${localName} alternatives, ${localCat}`);
+            setMetaProp('og:title', titleText);
+            setMetaProp('og:description', descText);
+            setMetaProp('og:url', window.location.href);
+            setMeta('twitter:title', titleText);
+            setMeta('twitter:description', descText);
+
+            // Dynamic canonical and hreflang tags for SEO
+            const setLink = (rel, href, hreflang = null) => {
+                let selector = `link[rel="${rel}"]`;
+                if (hreflang) selector += `[hreflang="${hreflang}"]`;
+                let el = document.querySelector(selector);
+                if (!el) {
+                    el = document.createElement('link');
+                    el.rel = rel;
+                    if (hreflang) el.hreflang = hreflang;
+                    document.head.appendChild(el);
+                }
+                el.href = href;
+            };
+
+            const cleanUrl = new URL(window.location.origin + window.location.pathname);
+            cleanUrl.searchParams.set('id', siteId);
+            
+            const canonicalUrl = new URL(cleanUrl.toString());
+            if (currentLang !== 'en') {
+                canonicalUrl.searchParams.set('lang', currentLang);
+            }
+            setLink('canonical', canonicalUrl.toString());
+
+            const getLangUrl = (langParamVal) => {
+                const u = new URL(cleanUrl.toString());
+                u.searchParams.set('lang', langParamVal);
+                return u.toString();
+            };
+            
+            setLink('alternate', cleanUrl.toString(), 'x-default');
+            setLink('alternate', cleanUrl.toString(), 'en');
+            setLink('alternate', getLangUrl('es'), 'es');
+            setLink('alternate', getLangUrl('jp'), 'ja');
+            setLink('alternate', getLangUrl('fr'), 'fr');
+
+            const localReviewText = localReview || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
+
+            const labels = {
+                en: {
+                    expertReview: "Expert Review",
+                    pros: "Pros",
+                    cons: "Cons",
+                    conclusion: "Conclusion",
+                    conclusionText: `If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
+                    ready: "Ready to explore?",
+                    visitBelow: "Visit the official site below.",
+                    visitSite: `Visit ${localName} &rarr;`,
+                    similar: "Similar Sites You May Like",
+                    rating: "Rating: "
+                },
+                fr: {
+                    expertReview: "Avis d'expert",
+                    pros: "Points forts",
+                    cons: "Points faibles",
+                    conclusion: "Conclusion",
+                    conclusionText: `Si vous recherchez une source fiable pour ${localCat.toLowerCase()}, ${localName} est un choix de premier ordre. Il se classe très bien dans notre annuaire pour sa facilité d'utilisation et sa variété de contenu.`,
+                    ready: "Prêt à explorer ?",
+                    visitBelow: "Visitez le site officiel ci-dessous.",
+                    visitSite: `Visiter ${localName} &rarr;`,
+                    similar: "Sites similaires que vous pourriez aimer",
+                    rating: "Note : "
+                },
+                es: {
+                    expertReview: "Reseña de expertos",
+                    pros: "Pros",
+                    cons: "Contras",
+                    conclusion: "Conclusión",
+                    conclusionText: `Si está buscando una fuente confiable para ${localCat.toLowerCase()}, ${localName} es una opción de primer nivel. Ocupa un lugar destacado en nuestro directorio por su facilidad de uso y variedad de contenido.`,
+                    ready: "¿Listo para explorar?",
+                    visitBelow: "Visite el sitio oficial a continuación.",
+                    visitSite: `Visitar ${localName} &rarr;`,
+                    similar: "Sitios similares que le pueden gustar",
+                    rating: "Calificación: "
+                },
+                jp: {
+                    expertReview: "専門家によるレビュー",
+                    pros: "メリット",
+                    cons: "デメリット",
+                    conclusion: "結論",
+                    conclusionText: `${localCat}の信頼できるソースをお探しの場合は、${localName}が最適です。使いやすさとコンテンツの多様性により、当ディレクトリで高い評価を得ています。`,
+                    ready: "探索する準備はできましたか？",
+                    visitBelow: "以下の公式サイトをご覧ください。",
+                    visitSite: `${localName}を訪問する &rarr;`,
+                    similar: "あなたにおすすめの類似サイト",
+                    rating: "評価: "
+                }
+            }[currentLang] || {
+                expertReview: "Expert Review",
+                pros: "Pros",
+                cons: "Cons",
+                conclusion: "Conclusion",
+                conclusionText: `If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
+                ready: "Ready to explore?",
+                visitBelow: "Visit the official site below.",
+                visitSite: `Visit ${localName} &rarr;`,
+                similar: "Similar Sites You May Like",
+                rating: "Rating: "
+            };
 
             document.getElementById('reviewContainer').innerHTML = `
 
@@ -251,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <h1>${localName}</h1>
 
-                        <div class="rating">Rating: ${'★'.repeat(Math.floor(site.rating))}☆</div>
+                        <div class="rating">${labels.rating}${ '★'.repeat(Math.floor(site.rating)) }☆</div>
 
                     </div>
 
@@ -259,9 +468,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div class="review-content">
 
-                    <h2>Expert Review</h2>
+                    <h2>${labels.expertReview}</h2>
 
-                    <p>${localReview || localDesc + ' ' + localName + ' has established itself as a premier destination for ' + localCat.toLowerCase() + ' enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.'}</p>
+                    <p>${localReviewText}</p>
 
                     
 
@@ -269,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <div class="pc-box pros">
 
-                            <h3>Pros</h3>
+                            <h3>${labels.pros}</h3>
 
                             <ul class="pc-list">
 
@@ -281,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <div class="pc-box cons">
 
-                            <h3>Cons</h3>
+                            <h3>${labels.cons}</h3>
 
                             <ul class="pc-list">
 
@@ -293,17 +502,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     </div>
 
-                    <h2>Conclusion</h2>
+                    <h2>${labels.conclusion}</h2>
 
-                    <p>If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.</p>
+                    <p>${labels.conclusionText}</p>
 
                     <div class="cta-box">
 
-                        <h3>Ready to explore?</h3>
+                        <h3>${labels.ready}</h3>
 
-                        <p style="margin-bottom:20px;">Visit the official site below.</p>
+                        <p style="margin-bottom:20px;">${labels.visitBelow}</p>
 
-                        <a href="${site.url}" target="_blank" class="btn-visit" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">Visit ${localName} &rarr;</a>
+                        <a href="${site.url}" target="_blank" class="btn-visit" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${labels.visitSite}</a>
 
                     </div>
 
@@ -311,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
 
-                            <span>🔗</span> Similar Sites You May Like
+                            <span>🔗</span> ${labels.similar}
 
                         </h2>
 
@@ -383,7 +592,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     </script>
 
+    <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    </div>
+
+    <!-- QR Code Widget --><img id="qr-img"
+             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
+             alt="QR Code — HentaiVault.me"
+             width="160" height="160">
+        <p id="qr-caption">hentaivault.me</p>
+    </div>
+
+    <!-- Sticky Bottom Ad -->
+    <div id="sticky-bottom-ad">
+        <div class="sticky-ad-inner">
+            <script type="text/javascript">
+                atOptions = {'key' : '40d623b6e8e7efa7651f8c6fbeb29bef', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {}};
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
+        </div>
+        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    </div>
+
+    <div id="qr-widget" title="Scan to visit on mobile">
+        <div id="qr-label">📱 Scan Me</div>
 </body>
-
 </html>
-

@@ -7,6 +7,11 @@
     <meta name="description" content="The internet's #1 directory for best doujin sites, hentai streaming, nhentai alternatives, hanime alternatives, and booru sites in 2026. 500+ curated, rated & free to browse.">
     <meta name="6a97888e-site-verification" content="1a6fa8804679f9060c20d8c1b2c56706">
     <link rel="canonical" href="https://hentaivault.me">
+    <link rel="alternate" hreflang="x-default" href="https://hentaivault.me">
+    <link rel="alternate" hreflang="en" href="https://hentaivault.me?lang=en">
+    <link rel="alternate" hreflang="es" href="https://hentaivault.me?lang=es">
+    <link rel="alternate" hreflang="ja" href="https://hentaivault.me?lang=jp">
+    <link rel="alternate" hreflang="fr" href="https://hentaivault.me?lang=fr">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -88,10 +93,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <!-- Adsterra SocialBar (loads globally) -->
-    <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
 
     <!-- Adsterra Popunder -->
-    <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
@@ -117,26 +120,12 @@
     <meta name="twitter:description" content="The internet's #1 directory for best doujin sites, hentai streaming, nhentai alternatives, hanime alternatives, and booru sites in 2026. 500+ curated, rated & free to browse.">
     <meta name="twitter:image" content="https://hentaivault.me/assets/favicon.png">
 
+    <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
+    <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
 </head>
 <body>
-
-    <!-- Age Gate Overlay -->
-    <div class="age-gate" id="ageGate">
-        <div class="age-gate-box">
-            <div class="age-gate-icon">🔞</div>
-            <h2>Adults Only</h2>
-            <p>This website contains adult content including explicit anime and hentai material.</p>
-            <p class="age-gate-sub">You must be <strong>18 years of age or older</strong> to enter.</p>
-            <div class="age-gate-buttons">
-                <button class="btn-enter" id="btnEnter">I am 18+ — Enter</button>
-                <a href="https://www.google.com" class="btn-leave">I am under 18 — Leave</a>
-            </div>
-            <p class="age-gate-legal">By entering, you confirm you are of legal age in your jurisdiction and consent to viewing adult content.</p>
-        </div>
-    </div>
-
-    
-    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+<!-- Sticky Skyscraper Ads (Wide Screens Only) -->
     <div class="skyscraper skyscraper-left">
         <script>
           atOptions = {
@@ -162,6 +151,25 @@
         <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
+
+    <!-- Age Gate Overlay -->
+    <div class="age-gate" id="ageGate">
+        <div class="age-gate-box">
+            <div class="age-gate-icon">🔞</div>
+            <h2>Adults Only</h2>
+            <p>This website contains adult content including explicit anime and hentai material.</p>
+            <p class="age-gate-sub">You must be <strong>18 years of age or older</strong> to enter.</p>
+            <div class="age-gate-buttons">
+                <button class="btn-enter" id="btnEnter">I am 18+ — Enter</button>
+                <a href="https://www.google.com" class="btn-leave">I am under 18 — Leave</a>
+            </div>
+            <p class="age-gate-legal">By entering, you confirm you are of legal age in your jurisdiction and consent to viewing adult content.</p>
+        </div>
+    </div>
+
+    
+    
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -170,7 +178,7 @@
             </a>
             <div class="search-bar">
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search websites, tags, or categories..." autocomplete="off">
+                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search websites, tags, or categories..." autocomplete="off">
                     <div id="searchAutocomplete" class="search-autocomplete"></div>
                 </div>
             </div>
@@ -183,9 +191,10 @@
                         <option value="en">🇺🇸 EN</option>
                         <option value="es">🇪🇸 ES</option>
                         <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
                     </select>
                 </div>
-                <a href="#" class="btn-submit" id="btnSubmitSite">Submit</a>
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
             </div>
         </div>
     </nav>
@@ -197,9 +206,9 @@
             <p>Best doujin sites, hentai streaming, nhentai alternatives, booru sites and more — 500+ curated & ranked for 2026.</p>
             <div class="hero-btns">
                 <button id="btnSurpriseMe" class="btn-primary">
-                    <span class="btn-icon">🎲</span> Surprise Me
+                    <span class="btn-icon">🎲</span> <span data-i18n="surprise_me">Surprise Me</span>
                 </button>
-                <a href="#resultsCount" class="btn-secondary">Browse Vault</a>
+                <a href="#resultsCount" class="btn-secondary" data-i18n="browse_vault">Browse Vault</a>
             </div>
         </div>
     </header>
@@ -224,25 +233,25 @@
         <!-- Sidebar Filters -->
         <aside class="sidebar">
             <div class="filter-group">
-                <h3>Sort By</h3>
+                <h3 data-i18n="sort_by">Sort By</h3>
                 <select id="sortSelect" title="Sort Sites By">
-                    <option value="random">Random (Shuffle)</option>
-                    <option value="popular">Popularity</option>
-                    <option value="alpha">Alphabetical (A-Z)</option>
-                    <option value="newest">Newest Added</option>
-                    <option value="rating">Highest Rated</option>
+                    <option value="random" data-i18n="random">Random (Shuffle)</option>
+                    <option value="popular" data-i18n="popular">Popularity</option>
+                    <option value="alpha" data-i18n="alpha">Alphabetical (A-Z)</option>
+                    <option value="newest" data-i18n="newest">Newest Added</option>
+                    <option value="rating" data-i18n="rating">Highest Rated</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <h3>Categories</h3>
+                <h3 data-i18n="categories_title">Categories</h3>
                 <div class="checkbox-list" id="categoryFilters">
                     <!-- Categories injected via JS -->
                 </div>
             </div>
 
             <div class="filter-group">
-                <h3>Tags</h3>
+                <h3 data-i18n="tags_title">Tags</h3>
                 <div class="checkbox-list" id="tagFilters">
                     <!-- Tags injected via JS -->
                 </div>
@@ -277,7 +286,6 @@
             </div>
         </aside>
 
-
         <!-- Listings -->
         <section class="listings">
             <div class="listings-header">
@@ -295,7 +303,6 @@
             
             <!-- Legacy ad container hidden to prevent layout shifts -->
             <div class="ad-container native-banner hidden">
-                <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
                 <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
             </div>
 
@@ -305,7 +312,6 @@
         </section>
 
     </main>
-
 
     <!-- Submit Modal -->
     <div class="modal" id="submitModal">
@@ -388,7 +394,6 @@
         </div>
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
     </div>
-
 
     <!-- Scripts -->
     <script src="js/data.js"></script>
