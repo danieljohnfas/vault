@@ -97,6 +97,30 @@ class HeadHandler {
     element.append(`<meta name="twitter:card" content="summary">`, { html: true });
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
+    
+    // JSON-LD Review Schema
+    const schema = {
+      "@context": "https://schema.org/",
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "WebSite",
+        "name": this.site.name,
+        "url": this.site.url
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": this.site.rating || 4.5,
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "name": title,
+      "author": {
+        "@type": "Organization",
+        "name": "HentaiVault"
+      },
+      "reviewBody": desc
+    };
+    element.append(`<script type="application/ld+json">${JSON.stringify(schema)}</script>`, { html: true });
   }
 }
 

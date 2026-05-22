@@ -183,10 +183,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        searchInput.addEventListener('input', (e) => {
+        // Debounce helper
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        const debouncedSearch = debounce((e) => {
             searchQuery = e.target.value.toLowerCase();
             applyFiltersAndSort();
-        });
+        }, 300);
+
+        searchInput.addEventListener('input', debouncedSearch);
 
         sortSelect.addEventListener('change', (e) => {
             currentSort = e.target.value;
@@ -474,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
-                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" onclick="if(typeof gtag !== 'undefined') gtag('event', 'outbound_click', { 'event_category': 'outbound', 'event_label': '${site.url}', 'transport_type': 'beacon'});">${t.visit} &rarr;</a>
+                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${site.url}">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;
@@ -634,6 +645,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Global Event Delegation for Outbound Clicks
+    document.body.addEventListener('click', (e) => {
+        const visitBtn = e.target.closest('.btn-visit');
+        if (visitBtn && visitBtn.hasAttribute('data-outbound')) {
+            const destUrl = visitBtn.getAttribute('data-outbound');
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'outbound_click', {
+                    'event_category': 'outbound',
+                    'event_label': destUrl,
+                    'transport_type': 'beacon'
+                });
+            }
+        }
+    });
 });
 
 

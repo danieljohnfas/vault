@@ -92,14 +92,19 @@ def scout_from_directories():
 def scout_from_search():
     discovered = []
     # DuckDuckGo Lite doesn't require JS and is less likely to block simple scripts
+    # Updated queries based on Google Search Console performance data
     search_queries = [
+        "best doujin sites 2026",
+        "best doujinshi websites",
         "best hentai streaming sites 2026",
-        "new anime directory 2026",
+        "nhentai alternatives",
+        "hanime alternatives",
+        "best hentai boorus",
+        "game free hentai browser japan",
         "uncensored hentai games list",
-        "working nhentai mirrors",
-        "best manga reader sites",
-        "site:t.me hentai channels",
-        "site:t.me anime group links"
+        "best hentai manga sites",
+        "anime torrent sites",
+        "site:t.me hentai channels"
     ]
     
     for query in search_queries:
@@ -245,9 +250,9 @@ def main():
         existing_urls = []
         print("Starting with empty database.")
         
-    links = scout_from_directories()
+    links = scout_from_search()
     if len(links) < TARGET_COUNT:
-        links += scout_from_search()
+        links += scout_from_directories()
         
     print(f"Discovered {len(links)} potential links. Starting validation...")
     new_sites = validate_and_enrich(links, existing_urls)

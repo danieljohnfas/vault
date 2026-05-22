@@ -3,6 +3,10 @@ import json
 import re
 import concurrent.futures
 import os
+import urllib3
+
+# Suppress InsecureRequestWarning from unverified HTTPS requests
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # --- Configuration ---
 DATA_FILE = "js/data.js"
