@@ -124,6 +124,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HentaiVault">
     <link rel="apple-touch-icon" href="/assets/icon-192.png">
+
+    <style>
+        .cat-pill {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .cat-pill:hover {
+            border-color: var(--primary);
+        }
+        .cat-pill.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+    </style>
 </head>
 <body>
 <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
@@ -213,6 +234,17 @@
             </p>
             <div id="scanner-ui" style="background: var(--bg-surface); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
                 <h3 id="detected-region" style="color: var(--text-main); margin-bottom: 10px;">Detecting your region...</h3>
+                
+                <div class="scanner-categories" style="margin-top: 20px; margin-bottom: 25px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem;">Filter by Category (Leave empty to scan all):</p>
+                    <div id="category-filters" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="cat-pill" data-cat="Anime Streaming">Anime Streaming</button>
+                        <button class="cat-pill" data-cat="Hentai Streaming">Hentai Streaming</button>
+                        <button class="cat-pill" data-cat="Manga/Doujin">Manga/Doujin</button>
+                        <button class="cat-pill" data-cat="Images/Boorus">Images/Boorus</button>
+                        <button class="cat-pill" data-cat="Games">Games</button>
+                    </div>
+                </div>
                 
                 <div id="scan-progress-container" style="display: block; margin-top: 20px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem;">
@@ -474,15 +506,53 @@
         let foundWorking = 0;
         const BATCH_SIZE = 10;
         
-        async function runScan() {
-            for (let i = 0; i < allSites.length; i += BATCH_SIZE) {
-                const batch = allSites.slice(i, i + BATCH_SIZE);
+        let currentScanId = 0;
+        let selectedCategories = new Set();
+
+        const catPills = document.querySelectorAll('.cat-pill');
+        catPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                pill.classList.toggle('active');
+                if (pill.classList.contains('active')) {
+                    selectedCategories.add(pill.getAttribute('data-cat'));
+                } else {
+                    selectedCategories.delete(pill.getAttribute('data-cat'));
+                }
+                startNewScan();
+            });
+        });
+
+        function startNewScan() {
+            currentScanId++;
+            scanResults.innerHTML = "";
+            scanBar.style.width = "0%";
+            scanPercentage.textContent = "0%";
+            foundWorking = 0;
+            
+            let filteredSites = allSites;
+            if (selectedCategories.size > 0) {
+                filteredSites = allSites.filter(s => selectedCategories.has(s.category));
+            }
+            
+            if (filteredSites.length === 0) {
+                scanStatus.textContent = "No sites match the selected categories.";
+                return;
+            }
+            
+            runScan(currentScanId, filteredSites);
+        }
+        
+        async function runScan(scanId, sitesToScan) {
+            for (let i = 0; i < sitesToScan.length; i += BATCH_SIZE) {
+                if (currentScanId !== scanId) return; // Abort if a new scan started
+                
+                const batch = sitesToScan.slice(i, i + BATCH_SIZE);
                 
                 // Update UI
-                const pct = Math.round((i / allSites.length) * 100);
+                const pct = Math.round((i / sitesToScan.length) * 100);
                 scanBar.style.width = pct + "%";
                 scanPercentage.textContent = pct + "%";
-                scanStatus.textContent = `Scanning sites ${i + 1} to ${Math.min(i + BATCH_SIZE, allSites.length)} of ${allSites.length}...`;
+                scanStatus.textContent = `Scanning sites ${i + 1} to ${Math.min(i + BATCH_SIZE, sitesToScan.length)} of ${sitesToScan.length}...`;
 
                 // Test batch concurrently
                 const promises = batch.map(async (site) => {
@@ -494,6 +564,7 @@
                     // If primary fails and there are alt domains, test them sequentially
                     if (!works && site.alternativeDomains && site.alternativeDomains.length > 0) {
                         for (const altUrl of site.alternativeDomains) {
+                            if (currentScanId !== scanId) return; // Abort
                             const altWorks = await testUrl(altUrl);
                             if (altWorks) {
                                 works = true;
@@ -505,6 +576,7 @@
                     }
 
                     if (works) {
+                        if (currentScanId !== scanId) return; // Abort
                         foundWorking++;
                         
                         let subtitleHTML = `<p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
@@ -517,7 +589,7 @@
                                                 <span style="color: #00e676;">${workingUrl}</span> (Alt Domain)
                                             </p>`;
                         }
-
+                        
                         const faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64`;
                         const tagsHtml = (site.tags || []).slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('');
                         
@@ -559,6 +631,8 @@
                 // Wait for the entire batch to finish before moving to the next
                 await Promise.all(promises);
             }
+            
+            if (currentScanId !== scanId) return; // Abort if a new scan started
 
             // Finish UI
             scanBar.style.width = "100%";
@@ -566,12 +640,12 @@
             scanStatus.textContent = `Scan Complete. Found ${foundWorking} working sites!`;
             
             if (foundWorking === 0) {
-                scanResults.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px;">No working sites found at this time.</p>`;
+                scanResults.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px; grid-column: 1/-1;">No working sites found in this category at this time.</p>`;
             }
         }
 
-        // Start automatically
-        runScan();
+        // Start automatically with all sites
+        startNewScan();
     });
 </script>
 </body>
