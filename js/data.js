@@ -74,7 +74,6 @@ const sitesData = [
     },
     {
         "id": "kanopy",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil"],
         "name": "Kanopy",
         "url": "https://www.kanopy.com",
@@ -110,7 +109,6 @@ const sitesData = [
     },
     {
         "id": "vizmedia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Viz Media",
         "url": "https://www.viz.com",
         "category": "Manga/Doujin",
@@ -386,7 +384,6 @@ const sitesData = [
     },
     {
         "id": "anioneyoutube",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "United Kingdom", "Russia"],
         "name": "Ani-One (YouTube)",
         "url": "https://www.youtube.com/c/AniOneAsia",
@@ -561,7 +558,6 @@ const sitesData = [
     },
     {
         "id": "inkrcomics",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "INKR Comics",
         "url": "https://inkr.com",
         "category": "Manga/Doujin",
@@ -733,7 +729,6 @@ const sitesData = [
     },
     {
         "id": "kofi",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Ko-fi",
         "url": "https://ko-fi.com",
         "category": "Communities",
@@ -768,7 +763,6 @@ const sitesData = [
     },
     {
         "id": "kitsu",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Kitsu",
         "url": "https://kitsu.io",
         "category": "Communities",
@@ -803,7 +797,6 @@ const sitesData = [
     },
     {
         "id": "bilibili",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Bilibili",
         "url": "https://www.bilibili.tv",
         "category": "Anime Streaming",
@@ -906,7 +899,6 @@ const sitesData = [
     },
     {
         "id": "spikechunsoft",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Spike Chunsoft",
         "url": "https://www.spike-chunsoft.com",
         "category": "Games",
@@ -941,7 +933,6 @@ const sitesData = [
     },
     {
         "id": "tapas",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Tapas",
         "url": "https://tapas.io",
         "category": "Manga/Doujin",
@@ -1010,7 +1001,6 @@ const sitesData = [
     },
     {
         "id": "iqiyi",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India"],
         "name": "iQIYI",
         "url": "https://www.iq.com",
@@ -1217,7 +1207,6 @@ const sitesData = [
     },
     {
         "id": "animecorner",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Anime Corner",
         "url": "https://animecorner.me",
         "category": "Communities",
@@ -1252,7 +1241,6 @@ const sitesData = [
     },
     {
         "id": "comixology",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Comixology",
         "url": "https://www.amazon.com/comixology",
         "category": "Manga/Doujin",
@@ -1390,7 +1378,6 @@ const sitesData = [
     },
     {
         "id": "fanbox",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Fanbox",
         "url": "https://www.fanbox.cc",
         "category": "Communities",
@@ -1425,7 +1412,6 @@ const sitesData = [
     },
     {
         "id": "kaguragames",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Kagura Games",
         "url": "https://kaguragames.com",
         "category": "Visual Novels",
@@ -1528,7 +1514,6 @@ const sitesData = [
     },
     {
         "id": "crunchyrollnews",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Crunchyroll News",
         "url": "https://www.crunchyroll.com/news",
         "category": "Communities",
@@ -1563,7 +1548,6 @@ const sitesData = [
     },
     {
         "id": "myanimelist",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "United Kingdom", "India"],
         "name": "MyAnimeList",
         "url": "https://myanimelist.net",
@@ -1910,7 +1894,6 @@ const sitesData = [
     },
     {
         "id": "mandarake",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Mandarake",
         "url": "https://order.mandarake.co.jp",
         "category": "Communities",
@@ -1979,7 +1962,6 @@ const sitesData = [
     },
     {
         "id": "alua",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Alua",
         "url": "https://alua.com",
         "category": "Creator Platforms",
@@ -2049,7 +2031,6 @@ const sitesData = [
     },
     {
         "id": "iafd",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "IAFD",
         "url": "https://www.iafd.com",
         "category": "News & Info",
@@ -2223,7 +2204,6 @@ const sitesData = [
     },
     {
         "id": "hentai20",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai20",
         "url": "https://hentai20.io",
         "category": "Hentai Streaming",
@@ -2414,7 +2394,6 @@ const sitesData = [
     },
     {
         "id": "frisk",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Frisk",
         "url": "https://frisk.chat",
         "category": "Creator Platforms",
@@ -2536,7 +2515,6 @@ const sitesData = [
     },
     {
         "id": "hentaicomic",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "Germany"],
         "name": "HentaiComic",
         "url": "https://hentaicomic.com",
@@ -2715,7 +2693,6 @@ const sitesData = [
     },
     {
         "id": "bookwalker",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "BookWalker",
         "url": "https://global.bookwalker.jp",
         "category": "Manga/Doujin",
@@ -2805,7 +2782,6 @@ const sitesData = [
     },
     {
         "id": "erogedownload",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Eroge Download",
         "url": "https://erogedownload.com",
         "category": "Visual Novels",
@@ -2912,7 +2888,6 @@ const sitesData = [
     },
     {
         "id": "pixiv",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Pixiv",
         "url": "https://www.pixiv.net",
         "category": "Images/Boorus",
@@ -3071,7 +3046,6 @@ const sitesData = [
     },
     {
         "id": "f95zone",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Brazil", "India"],
         "name": "F95Zone",
         "url": "https://f95zone.to",
@@ -3125,7 +3099,6 @@ const sitesData = [
     },
     {
         "id": "freeones",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Germany", "Russia"],
         "name": "Freeones",
         "url": "https://www.freeones.com",
@@ -3161,7 +3134,6 @@ const sitesData = [
     },
     {
         "id": "fancentro",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "Brazil"],
         "name": "Fancentro",
         "url": "https://fancentro.com",
@@ -3216,7 +3188,6 @@ const sitesData = [
     },
     {
         "id": "02d3a424",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "United Kingdom"],
         "name": "Xvidios",
         "url": "https://xvidio.blog.br",
@@ -3238,7 +3209,6 @@ const sitesData = [
     },
     {
         "id": "animetosho",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeTosho",
         "url": "https://animetosho.org",
         "category": "Downloads",
@@ -3297,7 +3267,6 @@ const sitesData = [
     },
     {
         "id": "toomics",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Toomics",
         "url": "https://toomics.com",
         "category": "Manga/Doujin",
@@ -3336,7 +3305,6 @@ const sitesData = [
     },
     {
         "id": "cherrypimps",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "Russia", "Germany"],
         "name": "Cherry Pimps",
         "url": "https://cherrypimps.com",
@@ -3390,7 +3358,6 @@ const sitesData = [
     },
     {
         "id": "vndb",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "VNDB",
         "url": "https://vndb.org",
         "category": "Communities",
@@ -3494,7 +3461,6 @@ const sitesData = [
     },
     {
         "id": "pornmd",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "PornMD",
         "url": "https://pornmd.com",
         "category": "Communities",
@@ -3529,7 +3495,6 @@ const sitesData = [
     },
     {
         "id": "sospoilt",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SoSpoilt",
         "url": "https://sospoilt.com",
         "category": "Creator Platforms",
@@ -3653,7 +3618,6 @@ const sitesData = [
     },
     {
         "id": "amateurcams",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AmateurCams",
         "url": "https://amateurcams.com",
         "category": "Live Cams",
@@ -3738,7 +3702,6 @@ const sitesData = [
     },
     {
         "id": "d0b409cd",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai Games",
         "url": "https://www.hornygamer.com",
         "category": "Hentai Streaming",
@@ -3779,7 +3742,6 @@ const sitesData = [
     },
     {
         "id": "motherless",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil"],
         "name": "Motherless",
         "url": "https://motherless.com",
@@ -3819,7 +3781,6 @@ const sitesData = [
     },
     {
         "id": "e0036ce5",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Xvideo",
         "url": "https://xvideosbr.blog",
         "category": "Uncategorized",
@@ -3840,7 +3801,6 @@ const sitesData = [
     },
     {
         "id": "ea2a8f42",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "https://discord.gg/GuueaDgKdS",
         "url": "https://discord.gg/GuueaDgKdS",
         "category": "Uncategorized",
@@ -3861,7 +3821,6 @@ const sitesData = [
     },
     {
         "id": "fdbcd037",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "https://www.hqporno.net",
         "url": "https://www.hqporno.net",
         "category": "Hentai Streaming",
@@ -3962,7 +3921,6 @@ const sitesData = [
     },
     {
         "id": "peter-north",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Peter North",
         "url": "https://peternorth.com",
         "category": "Adult Studios",
@@ -3999,7 +3957,6 @@ const sitesData = [
     },
     {
         "id": "51293782",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "https://hentaitokyo.net",
         "url": "https://hentaitokyo.net",
         "category": "Hentai Streaming",
@@ -4020,7 +3977,6 @@ const sitesData = [
     },
     {
         "id": "a2aa2746",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Super Hentai",
         "url": "https://superhentai.blog",
         "category": "Hentai Streaming",
@@ -4041,7 +3997,6 @@ const sitesData = [
     },
     {
         "id": "05b92df2",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "United Kingdom"],
         "name": "Freeuse Porn",
         "url": "https://www.freeuseporn.com",
@@ -4104,7 +4059,6 @@ const sitesData = [
     },
     {
         "id": "b57f3517",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Manga Hentai",
         "url": "https://mangahentai.blog",
         "category": "Hentai Streaming",
@@ -4247,7 +4201,6 @@ const sitesData = [
     },
     {
         "id": "3ccfb1f9",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HQ Hentai",
         "url": "https://hentai.blog.br",
         "category": "Hentai Streaming",
@@ -4286,7 +4239,6 @@ const sitesData = [
     },
     {
         "id": "873968dd",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Russia", "Australia"],
         "name": "Porno Espanol",
         "url": "https://pornoespanol.blog",
@@ -4308,7 +4260,6 @@ const sitesData = [
     },
     {
         "id": "79e07eec",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "https://hentaikai.com",
         "url": "https://hentaikai.com",
         "category": "Hentai Streaming",
@@ -4489,7 +4440,6 @@ const sitesData = [
     },
     {
         "id": "8c867c5c",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai HQ",
         "url": "https://superhq.blog",
         "category": "Hentai Streaming",
@@ -4568,7 +4518,6 @@ const sitesData = [
     },
     {
         "id": "f215d85e",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "Brazil", "United Kingdom"],
         "name": "https://www.hentaibrasil.org",
         "url": "https://www.hentaibrasil.org",
@@ -4630,7 +4579,6 @@ const sitesData = [
     },
     {
         "id": "360ee978",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States"],
         "name": "https://www.nutaku.net/signup/landing/booty-calls/",
         "url": "https://www.nutaku.net/signup/landing/booty-calls/20",
@@ -4673,7 +4621,6 @@ const sitesData = [
     },
     {
         "id": "2a3be30c",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "https://www.nutaku.net/signup/landing/fap-ceo/18",
         "url": "https://www.nutaku.net/signup/landing/fap-ceo/18",
         "category": "Uncategorized",
@@ -4889,7 +4836,6 @@ const sitesData = [
     },
     {
         "id": "irodoricomics",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Irodori Comics",
         "url": "https://irodoricomics.com",
         "category": "Manga/Doujin",
@@ -4959,7 +4905,6 @@ const sitesData = [
     },
     {
         "id": "denpasoft",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Russia", "Germany"],
         "name": "Denpasoft",
         "url": "https://denpasoft.com",
@@ -5204,7 +5149,6 @@ const sitesData = [
     },
     {
         "id": "animepahe",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimePahe",
         "url": "https://animepahe.ru",
         "category": "Anime Streaming",
@@ -5260,7 +5204,6 @@ const sitesData = [
     },
     {
         "id": "huluanime",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hulu Anime",
         "url": "https://www.hulu.com/hub/anime",
         "category": "Anime Streaming",
@@ -5316,7 +5259,6 @@ const sitesData = [
     },
     {
         "id": "fakku",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "FAKKU!",
         "url": "https://www.fakku.net",
         "category": "Manga/Doujin",
@@ -5353,7 +5295,6 @@ const sitesData = [
     },
     {
         "id": "pocketcomics",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Pocket Comics",
         "url": "https://www.pocketcomics.com",
         "category": "Manga/Doujin",
@@ -5390,7 +5331,6 @@ const sitesData = [
     },
     {
         "id": "dlsite",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "DLsite",
         "url": "https://www.dlsite.com/eng",
         "category": "Games",
@@ -5481,7 +5421,6 @@ const sitesData = [
     },
     {
         "id": "ideafactory",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Idea Factory",
         "url": "https://ideafintl.com",
         "category": "Games",
@@ -5573,7 +5512,6 @@ const sitesData = [
     },
     {
         "id": "amiami",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AmiAmi",
         "url": "https://www.amiami.com",
         "category": "Communities",
@@ -5592,7 +5530,6 @@ const sitesData = [
     },
     {
         "id": "playasia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia", "United Kingdom"],
         "name": "Play-Asia",
         "url": "https://www.play-asia.com",
@@ -5612,7 +5549,6 @@ const sitesData = [
     },
     {
         "id": "animenewsnetwork",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "Anime News Network",
         "url": "https://www.animenewsnetwork.com",
@@ -5632,7 +5568,6 @@ const sitesData = [
     },
     {
         "id": "onlyfans",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "OnlyFans",
         "url": "https://onlyfans.com",
         "category": "Creator Platforms",
@@ -5762,7 +5697,6 @@ const sitesData = [
     },
     {
         "id": "bongacams",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "BongaCams",
         "url": "https://bongacams.com",
         "category": "Live Cams",
@@ -5800,7 +5734,6 @@ const sitesData = [
     },
     {
         "id": "xvideos",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "XVideos",
         "url": "https://www.xvideos.com",
         "category": "Adult Tubes",
@@ -5819,7 +5752,6 @@ const sitesData = [
     },
     {
         "id": "xnxx",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "XNXX",
         "url": "https://www.xnxx.com",
         "category": "Adult Tubes",
@@ -5838,7 +5770,6 @@ const sitesData = [
     },
     {
         "id": "spankbang",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Brazil", "United Kingdom"],
         "name": "SpankBang",
         "url": "https://spankbang.com",
@@ -5932,7 +5863,6 @@ const sitesData = [
     },
     {
         "id": "brazzers",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "Russia"],
         "name": "Brazzers",
         "url": "https://www.brazzers.com",
@@ -5952,7 +5882,6 @@ const sitesData = [
     },
     {
         "id": "realitykings",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "RealityKings",
         "url": "https://www.realitykings.com",
         "category": "Adult Studios",
@@ -5990,7 +5919,6 @@ const sitesData = [
     },
     {
         "id": "naughtyamerica",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Naughty America",
         "url": "https://www.naughtyamerica.com",
         "category": "Adult Studios",
@@ -6028,7 +5956,6 @@ const sitesData = [
     },
     {
         "id": "vrbangers",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "VRBangers",
         "url": "https://vrbangers.com",
         "category": "Adult VR",
@@ -6123,7 +6050,6 @@ const sitesData = [
     },
     {
         "id": "daftsex",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "DaftSex",
         "url": "https://daftsex.com",
@@ -6143,7 +6069,6 @@ const sitesData = [
     },
     {
         "id": "erome",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "EroMe",
         "url": "https://www.erome.com",
         "category": "Adult Tubes",
@@ -6181,7 +6106,6 @@ const sitesData = [
     },
     {
         "id": "hqporner",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HQporner",
         "url": "https://hqporner.com",
         "category": "Adult Tubes",
@@ -6293,7 +6217,6 @@ const sitesData = [
     },
     {
         "id": "julesjordan",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Jules Jordan",
         "url": "https://www.julesjordan.com",
         "category": "Adult Studios",
@@ -6331,7 +6254,6 @@ const sitesData = [
     },
     {
         "id": "hustler",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hustler",
         "url": "https://www.hustler.com",
         "category": "Adult Studios",
@@ -6405,7 +6327,6 @@ const sitesData = [
     },
     {
         "id": "twistys",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "United States"],
         "name": "Twistys",
         "url": "https://www.twistys.com",
@@ -6425,7 +6346,6 @@ const sitesData = [
     },
     {
         "id": "puretaboo",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "United States"],
         "name": "Pure Taboo",
         "url": "https://www.puretaboo.com",
@@ -6463,7 +6383,6 @@ const sitesData = [
     },
     {
         "id": "nubilefilms",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Nubile Films",
         "url": "https://nubilefilms.com",
         "category": "Adult Studios",
@@ -6482,7 +6401,6 @@ const sitesData = [
     },
     {
         "id": "dorcel",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Dorcel",
         "url": "https://www.dorcel.com",
         "category": "Adult Studios",
@@ -6519,7 +6437,6 @@ const sitesData = [
     },
     {
         "id": "babes",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Babes",
         "url": "https://www.babes.com",
         "category": "Adult Studios",
@@ -6538,7 +6455,6 @@ const sitesData = [
     },
     {
         "id": "ddfnetwork",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "DDF Network",
         "url": "https://ddfnetwork.com",
         "category": "Adult Studios",
@@ -6630,7 +6546,6 @@ const sitesData = [
     },
     {
         "id": "tokyohot",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Tokyo-Hot",
         "url": "https://www.tokyo-hot.com",
         "category": "Adult Studios",
@@ -6740,7 +6655,6 @@ const sitesData = [
     },
     {
         "id": "unextadult",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Brazil"],
         "name": "U-NEXT Adult",
         "url": "https://video.unext.jp/genre/adult",
@@ -6796,7 +6710,6 @@ const sitesData = [
     },
     {
         "id": "jerkmate",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Jerkmate",
         "url": "https://jerkmate.com",
         "category": "Live Cams",
@@ -6908,7 +6821,6 @@ const sitesData = [
     },
     {
         "id": "adultnode",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AdultNode",
         "url": "https://adultnode.com",
         "category": "Creator Platforms",
@@ -6946,7 +6858,6 @@ const sitesData = [
     },
     {
         "id": "pocketstars",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "Russia"],
         "name": "PocketStars",
         "url": "https://pocketstars.com",
@@ -6985,7 +6896,6 @@ const sitesData = [
     },
     {
         "id": "bdsmcom",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "BDSM.com",
         "url": "https://bdsm.com",
@@ -7005,7 +6915,6 @@ const sitesData = [
     },
     {
         "id": "inthecrack",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "India", "Brazil"],
         "name": "InTheCrack",
         "url": "https://inthecrack.com",
@@ -7043,7 +6952,6 @@ const sitesData = [
     },
     {
         "id": "mylf",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Mylf",
         "url": "https://www.mylf.com",
         "category": "Adult Studios",
@@ -7062,7 +6970,6 @@ const sitesData = [
     },
     {
         "id": "dogfartnetwork",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "United States"],
         "name": "Dogfart Network",
         "url": "https://www.dogfartnetwork.com",
@@ -7082,7 +6989,6 @@ const sitesData = [
     },
     {
         "id": "wankzvr",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil"],
         "name": "WankzVR",
         "url": "https://www.wankzvr.com",
@@ -7102,7 +7008,6 @@ const sitesData = [
     },
     {
         "id": "badoinkvr",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Brazil"],
         "name": "BadoinkVR",
         "url": "https://badoinkvr.com",
@@ -7322,7 +7227,6 @@ const sitesData = [
     },
     {
         "id": "hardx",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HardX",
         "url": "https://www.hardx.com",
         "category": "Adult Studios",
@@ -7341,7 +7245,6 @@ const sitesData = [
     },
     {
         "id": "milehighmedia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "Australia"],
         "name": "MileHigh Media",
         "url": "https://www.milehighmedia.com",
@@ -7361,7 +7264,6 @@ const sitesData = [
     },
     {
         "id": "sexart",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SexArt",
         "url": "https://www.sexart.com",
         "category": "Adult Studios",
@@ -7453,7 +7355,6 @@ const sitesData = [
     },
     {
         "id": "euroteenerotica",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "EuroTeenErotica",
         "url": "https://www.euroteenerotica.com",
         "category": "Adult Studios",
@@ -7472,7 +7373,6 @@ const sitesData = [
     },
     {
         "id": "metart",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MetArt",
         "url": "https://www.metart.com",
         "category": "Adult Studios",
@@ -7510,7 +7410,6 @@ const sitesData = [
     },
     {
         "id": "tnaflix",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia", "Australia"],
         "name": "TNAFlix",
         "url": "https://www.tnaflix.com",
@@ -7530,7 +7429,6 @@ const sitesData = [
     },
     {
         "id": "nuvid",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "NuVid",
         "url": "https://www.nuvid.com",
         "category": "Adult Tubes",
@@ -7549,7 +7447,6 @@ const sitesData = [
     },
     {
         "id": "4tube",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "4Tube",
         "url": "https://www.4tube.com",
         "category": "Adult Tubes",
@@ -7624,7 +7521,6 @@ const sitesData = [
     },
     {
         "id": "pornhd",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "PornHD",
         "url": "https://www.pornhd.com",
         "category": "Adult Tubes",
@@ -7661,7 +7557,6 @@ const sitesData = [
     },
     {
         "id": "modelhub",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Modelhub",
         "url": "https://modelhub.com",
         "category": "Creator Platforms",
@@ -7718,7 +7613,6 @@ const sitesData = [
     },
     {
         "id": "amateurtv",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "AmateurTV",
         "url": "https://amateurtv.com",
@@ -7757,7 +7651,6 @@ const sitesData = [
     },
     {
         "id": "melonbooks",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Melonbooks",
         "url": "https://www.melonbooks.co.jp",
         "category": "Manga/Doujin",
@@ -7794,7 +7687,6 @@ const sitesData = [
     },
     {
         "id": "avn",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AVN",
         "url": "https://avn.com",
         "category": "News & Info",
@@ -7832,7 +7724,6 @@ const sitesData = [
     },
     {
         "id": "vodempire",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "India"],
         "name": "VOD Empire",
         "url": "https://www.vodempire.com",
@@ -7889,7 +7780,6 @@ const sitesData = [
     },
     {
         "id": "falconstudios",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Falcon Studios",
         "url": "https://www.falconstudios.com",
         "category": "Adult Studios",
@@ -7908,7 +7798,6 @@ const sitesData = [
     },
     {
         "id": "corbinfisher",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Corbin Fisher",
         "url": "https://www.corbinfisher.com",
         "category": "Adult Studios",
@@ -7927,7 +7816,6 @@ const sitesData = [
     },
     {
         "id": "helixstudios",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "India", "Russia"],
         "name": "Helix Studios",
         "url": "https://www.helixstudios.com",
@@ -7965,7 +7853,6 @@ const sitesData = [
     },
     {
         "id": "belami",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Germany", "India", "Russia"],
         "name": "BelAmi",
         "url": "https://www.belamionline.com",
@@ -7985,7 +7872,6 @@ const sitesData = [
     },
     {
         "id": "treasureislandmedia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Treasure Island Media",
         "url": "https://www.treasureislandmedia.com",
         "category": "Adult Studios",
@@ -8115,7 +8001,6 @@ const sitesData = [
     },
     {
         "id": "femjoy",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Femjoy",
         "url": "https://www.femjoy.com",
         "category": "Adult Studios",
@@ -8152,7 +8037,6 @@ const sitesData = [
     },
     {
         "id": "eroticbeauty",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Erotic Beauty",
         "url": "https://www.eroticbeauty.com",
         "category": "Adult Studios",
@@ -8189,7 +8073,6 @@ const sitesData = [
     },
     {
         "id": "porndoe",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "PornDoe",
         "url": "https://www.porndoe.com",
         "category": "Adult Tubes",
@@ -8208,7 +8091,6 @@ const sitesData = [
     },
     {
         "id": "tubegalore",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "TubeGalore",
         "url": "https://www.tubegalore.com",
         "category": "Adult Tubes",
@@ -8339,7 +8221,6 @@ const sitesData = [
     },
     {
         "id": "subscribestaradult",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Germany", "United States"],
         "name": "SubscribeStar Adult",
         "url": "https://www.subscribestar.adult",
@@ -8433,7 +8314,6 @@ const sitesData = [
     },
     {
         "id": "literotica",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Literotica",
         "url": "https://www.literotica.com",
         "category": "Erotica/Reading",
@@ -8489,7 +8369,6 @@ const sitesData = [
     },
     {
         "id": "boobpedia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Boobpedia",
         "url": "https://www.boobpedia.com",
         "category": "News & Info",
@@ -8527,7 +8406,6 @@ const sitesData = [
     },
     {
         "id": "jastblue",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "United Kingdom"],
         "name": "JAST Blue",
         "url": "https://jastblue.com",
@@ -8547,7 +8425,6 @@ const sitesData = [
     },
     {
         "id": "realitylovers",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "India"],
         "name": "Reality Lovers",
         "url": "https://realitylovers.com",
@@ -8623,7 +8500,6 @@ const sitesData = [
     },
     {
         "id": "perfectgonzo",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "PerfectGonzo",
         "url": "https://perfectgonzo.com",
         "category": "Adult Studios",
@@ -8661,7 +8537,6 @@ const sitesData = [
     },
     {
         "id": "hanime",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hanime.tv",
         "url": "https://hanime.tv",
         "category": "Hentai Streaming",
@@ -8696,7 +8571,6 @@ const sitesData = [
     },
     {
         "id": "hentaihaven",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "Russia", "United States"],
         "name": "HentaiHaven",
         "url": "https://hentaihaven.org",
@@ -8768,7 +8642,6 @@ const sitesData = [
     },
     {
         "id": "simplyhentai",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Simply Hentai",
         "url": "https://www.simply-hentai.com",
         "category": "Hentai Streaming",
@@ -8805,7 +8678,6 @@ const sitesData = [
     },
     {
         "id": "hentaibros",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HentaiBros",
         "url": "https://www.hentaibros.com",
         "category": "Hentai Streaming",
@@ -8861,7 +8733,6 @@ const sitesData = [
     },
     {
         "id": "hentaicloud",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai-Cloud",
         "url": "https://hentai-cloud.com",
         "category": "Hentai Streaming",
@@ -8917,7 +8788,6 @@ const sitesData = [
     },
     {
         "id": "anidex",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AniDex",
         "url": "https://anidex.info",
         "category": "Downloads",
@@ -8955,7 +8825,6 @@ const sitesData = [
     },
     {
         "id": "1337x",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia", "Brazil"],
         "name": "1337x",
         "url": "https://1337x.to",
@@ -8993,7 +8862,6 @@ const sitesData = [
     },
     {
         "id": "itazuraneko",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "Brazil", "Australia"],
         "name": "Itazuraneko",
         "url": "https://itazuraneko.neocities.org",
@@ -9031,7 +8899,6 @@ const sitesData = [
     },
     {
         "id": "animedlorg",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeDL",
         "url": "https://animedl.co",
         "category": "Downloads",
@@ -9083,7 +8950,6 @@ const sitesData = [
     },
     {
         "id": "gelbooru",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Gelbooru",
         "url": "https://gelbooru.com",
         "category": "Images/Boorus",
@@ -9116,7 +8982,6 @@ const sitesData = [
     },
     {
         "id": "safebooru",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia", "United Kingdom", "Germany"],
         "name": "Safebooru",
         "url": "https://safebooru.org",
@@ -9154,7 +9019,6 @@ const sitesData = [
     },
     {
         "id": "e621",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Germany"],
         "name": "E621",
         "url": "https://e621.net",
@@ -9174,7 +9038,6 @@ const sitesData = [
     },
     {
         "id": "rule34xxx",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Rule34.xxx",
         "url": "https://rule34.xxx",
         "category": "Images/Boorus",
@@ -9212,7 +9075,6 @@ const sitesData = [
     },
     {
         "id": "animepictures",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "United States", "Germany"],
         "name": "Anime-Pictures",
         "url": "https://anime-pictures.net",
@@ -9250,7 +9112,6 @@ const sitesData = [
     },
     {
         "id": "rule34hentai",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Rule34Hentai",
         "url": "https://rule34hentai.net",
         "category": "Images/Boorus",
@@ -9287,7 +9148,6 @@ const sitesData = [
     },
     {
         "id": "atfbooru",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "ATFBooru",
         "url": "https://booru.allthefallen.moe",
         "category": "Images/Boorus",
@@ -9414,7 +9274,6 @@ const sitesData = [
     },
     {
         "id": "bato",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "Bato.to",
         "url": "https://bato.to",
@@ -9434,7 +9293,6 @@ const sitesData = [
     },
     {
         "id": "readm",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "ReadM",
         "url": "https://www.readm.org",
         "category": "Manga/Doujin",
@@ -9471,7 +9329,6 @@ const sitesData = [
     },
     {
         "id": "lewdzone",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "LewdZone",
         "url": "https://lewdzone.com",
         "category": "Games",
@@ -9526,7 +9383,6 @@ const sitesData = [
     },
     {
         "id": "hgames",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HGames",
         "url": "https://hgames.io",
         "category": "Games",
@@ -9545,7 +9401,6 @@ const sitesData = [
     },
     {
         "id": "insanelygames",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States"],
         "name": "Insanely Games",
         "url": "https://insanelygames.net",
@@ -9565,7 +9420,6 @@ const sitesData = [
     },
     {
         "id": "hentaifoundry",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Germany", "United Kingdom"],
         "name": "Hentai Foundry",
         "url": "https://www.hentai-foundry.com",
@@ -9585,7 +9439,6 @@ const sitesData = [
     },
     {
         "id": "deviantart",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "DeviantArt",
         "url": "https://www.deviantart.com",
         "category": "Communities",
@@ -9604,7 +9457,6 @@ const sitesData = [
     },
     {
         "id": "newgrounds",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom"],
         "name": "Newgrounds",
         "url": "https://www.newgrounds.com",
@@ -9624,7 +9476,6 @@ const sitesData = [
     },
     {
         "id": "twitter",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "X (Twitter) — Anime",
         "url": "https://twitter.com/search?q=%23anime",
         "category": "Communities",
@@ -9717,7 +9568,6 @@ const sitesData = [
     },
     {
         "id": "iwantclips",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "IWantClips",
         "url": "https://iwantclips.com",
         "category": "Premium Creators",
@@ -9755,7 +9605,6 @@ const sitesData = [
     },
     {
         "id": "camcontacts",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "CamContacts",
         "url": "https://camcontacts.com",
@@ -9831,7 +9680,6 @@ const sitesData = [
     },
     {
         "id": "scoreland",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Scoreland",
         "url": "https://scoreland.com",
         "category": "Adult Studios",
@@ -9887,7 +9735,6 @@ const sitesData = [
     },
     {
         "id": "wowgirls",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "WowGirls",
         "url": "https://wowgirls.com",
         "category": "Adult Studios",
@@ -9980,7 +9827,6 @@ const sitesData = [
     },
     {
         "id": "suicidegirls",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "SuicideGirls",
         "url": "https://suicidegirls.com",
@@ -10038,7 +9884,6 @@ const sitesData = [
     },
     {
         "id": "heavyr",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil", "India"],
         "name": "Heavy-R",
         "url": "https://heavy-r.com",
@@ -10095,7 +9940,6 @@ const sitesData = [
     },
     {
         "id": "babepedia",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "Australia"],
         "name": "Babepedia",
         "url": "https://babepedia.com",
@@ -10134,7 +9978,6 @@ const sitesData = [
     },
     {
         "id": "centerfold",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "India"],
         "name": "Centerfold",
         "url": "https://centerfold.com",
@@ -10190,7 +10033,6 @@ const sitesData = [
     },
     {
         "id": "funimation",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Funimation",
         "url": "https://www.funimation.com",
         "category": "Anime Streaming",
@@ -10209,7 +10051,6 @@ const sitesData = [
     },
     {
         "id": "hianime",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "India", "Australia"],
         "name": "HiAnime",
         "url": "https://hianime.to",
@@ -10267,7 +10108,6 @@ const sitesData = [
     },
     {
         "id": "twistmoe",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "India"],
         "name": "Twist.moe",
         "url": "https://twist.moe",
@@ -10306,7 +10146,6 @@ const sitesData = [
     },
     {
         "id": "hentaitv",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai.tv",
         "url": "https://hentai.tv",
         "category": "Hentai Streaming",
@@ -10325,7 +10164,6 @@ const sitesData = [
     },
     {
         "id": "hentaiworld",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "HentaiWorld",
         "url": "https://hentaiworld.tv",
@@ -10399,7 +10237,6 @@ const sitesData = [
     },
     {
         "id": "mangasee",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MangaSee",
         "url": "https://mangasee123.com",
         "category": "Manga/Doujin",
@@ -10434,7 +10271,6 @@ const sitesData = [
     },
     {
         "id": "wallhaven",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Wallhaven",
         "url": "https://wallhaven.cc",
         "category": "Images/Boorus",
@@ -10453,7 +10289,6 @@ const sitesData = [
     },
     {
         "id": "itchioadult",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Itch.io (Adult)",
         "url": "https://itch.io/games/tag-adult",
         "category": "Games",
@@ -10547,7 +10382,6 @@ const sitesData = [
     },
     {
         "id": "animeultima",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "Germany", "Australia"],
         "name": "AnimeUltima",
         "url": "https://animeultima.to",
@@ -10623,7 +10457,6 @@ const sitesData = [
     },
     {
         "id": "jkanime",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "JKAnime",
         "url": "https://jkanime.net",
         "category": "Anime Streaming",
@@ -10677,7 +10510,6 @@ const sitesData = [
     },
     {
         "id": "animeonsen",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Anime Onsen",
         "url": "https://animeonsen.xyz",
         "category": "Anime Streaming",
@@ -10696,7 +10528,6 @@ const sitesData = [
     },
     {
         "id": "9animetv",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "9AnimeTV",
         "url": "https://9animetv.to",
         "category": "Anime Streaming",
@@ -10732,7 +10563,6 @@ const sitesData = [
     },
     {
         "id": "hentaihere",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Germany"],
         "name": "HentaiHere",
         "url": "https://hentaihere.com",
@@ -10752,7 +10582,6 @@ const sitesData = [
     },
     {
         "id": "bestahentai",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "India", "Brazil"],
         "name": "BestAHentai",
         "url": "https://bestahentai.com",
@@ -10771,7 +10600,6 @@ const sitesData = [
     },
     {
         "id": "hentai01",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hentai01",
         "url": "https://hentai01.com",
         "category": "Hentai Streaming",
@@ -10806,7 +10634,6 @@ const sitesData = [
     },
     {
         "id": "mangaowl1",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MangaOwl",
         "url": "https://mangaowl.to",
         "category": "Manga/Doujin",
@@ -10824,7 +10651,6 @@ const sitesData = [
     },
     {
         "id": "toonily",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "India", "Germany"],
         "name": "Toonily",
         "url": "https://toonily.com",
@@ -10861,7 +10687,6 @@ const sitesData = [
     },
     {
         "id": "myreadingmanga",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "Australia"],
         "name": "MyReadingManga",
         "url": "https://myreadingmanga.info",
@@ -10937,7 +10762,6 @@ const sitesData = [
     },
     {
         "id": "kagura",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Kagura Games",
         "url": "https://www.kagura-games.com",
         "category": "Games",
@@ -11029,7 +10853,6 @@ const sitesData = [
     },
     {
         "id": "anisearch",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AniSearch",
         "url": "https://www.anisearch.com",
         "category": "Communities",
@@ -11216,7 +11039,6 @@ const sitesData = [
     },
     {
         "id": "animuzip",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States", "Russia"],
         "name": "Animu.rip",
         "url": "https://animu.rip",
@@ -11290,7 +11112,6 @@ const sitesData = [
     },
     {
         "id": "keyvisual",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia", "Germany", "United States"],
         "name": "Key Visual Arts",
         "url": "https://key.visualarts.gr.jp",
@@ -11326,7 +11147,6 @@ const sitesData = [
     },
     {
         "id": "yugenanime",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "YugenAnime",
         "url": "https://yugenanime.tv",
@@ -11346,7 +11166,6 @@ const sitesData = [
     },
     {
         "id": "kaido",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Kaido",
         "url": "https://kaido.to",
         "category": "Anime Streaming",
@@ -11384,7 +11203,6 @@ const sitesData = [
     },
     {
         "id": "muchodoujin",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States"],
         "name": "MuchoDoujin",
         "url": "https://muchodoujin.com",
@@ -11403,7 +11221,6 @@ const sitesData = [
     },
     {
         "id": "animeidhentai",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeIDHentai",
         "url": "https://animeidhentai.com",
         "category": "Hentai Streaming",
@@ -11422,7 +11239,6 @@ const sitesData = [
     },
     {
         "id": "hitomila",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Hitomi.la",
         "url": "https://hitomi.la",
         "category": "Manga/Doujin",
@@ -11478,7 +11294,6 @@ const sitesData = [
     },
     {
         "id": "pururin",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "Pururin",
         "url": "https://pururin.to",
         "category": "Manga/Doujin",
@@ -11496,7 +11311,6 @@ const sitesData = [
     },
     {
         "id": "8muses",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "8muses",
         "url": "https://8muses.com",
         "category": "Manga/Doujin",
@@ -11606,7 +11420,6 @@ const sitesData = [
     },
     {
         "id": "megahub1",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaHub1",
         "url": "https://megahub1.io",
         "category": "Games",
@@ -11625,7 +11438,6 @@ const sitesData = [
     },
     {
         "id": "tokyozone2",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "TokyoZone2",
         "url": "https://tokyozone2.tv",
         "category": "Visual Novels",
@@ -11644,7 +11456,6 @@ const sitesData = [
     },
     {
         "id": "gigasanctuary3",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "GigaSanctuary3",
         "url": "https://gigasanctuary3.tv",
         "category": "Games",
@@ -11663,7 +11474,6 @@ const sitesData = [
     },
     {
         "id": "gigaden4",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "GigaDen4",
         "url": "https://gigaden4.tv",
@@ -11702,7 +11512,6 @@ const sitesData = [
     },
     {
         "id": "superden6",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SuperDen6",
         "url": "https://superden6.moe",
         "category": "Games",
@@ -11721,7 +11530,6 @@ const sitesData = [
     },
     {
         "id": "megavault7",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom"],
         "name": "MegaVault7",
         "url": "https://megavault7.io",
@@ -11778,7 +11586,6 @@ const sitesData = [
     },
     {
         "id": "gigavault10",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "GigaVault10",
         "url": "https://gigavault10.com",
         "category": "Games",
@@ -11797,7 +11604,6 @@ const sitesData = [
     },
     {
         "id": "superplanet11",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SuperPlanet11",
         "url": "https://superplanet11.me",
         "category": "Anime Streaming",
@@ -11853,7 +11659,6 @@ const sitesData = [
     },
     {
         "id": "tokyosanctuary14",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "TokyoSanctuary14",
         "url": "https://tokyosanctuary14.tv",
         "category": "Games",
@@ -11891,7 +11696,6 @@ const sitesData = [
     },
     {
         "id": "neonexus16",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "NeoNexus16",
         "url": "https://neonexus16.moe",
         "category": "Downloads",
@@ -12022,7 +11826,6 @@ const sitesData = [
     },
     {
         "id": "ultrahub23",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "UltraHub23",
         "url": "https://ultrahub23.tv",
@@ -12096,7 +11899,6 @@ const sitesData = [
     },
     {
         "id": "ultraplanet27",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "UltraPlanet27",
         "url": "https://ultraplanet27.to",
         "category": "Manga/Doujin",
@@ -12115,7 +11917,6 @@ const sitesData = [
     },
     {
         "id": "animezone28",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeZone28",
         "url": "https://animezone28.me",
         "category": "Anime Streaming",
@@ -12189,7 +11990,6 @@ const sitesData = [
     },
     {
         "id": "gigaden32",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia", "India"],
         "name": "GigaDen32",
         "url": "https://gigaden32.moe",
@@ -12317,7 +12117,6 @@ const sitesData = [
     },
     {
         "id": "ultrazone39",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United States"],
         "name": "UltraZone39",
         "url": "https://ultrazone39.com",
@@ -12356,7 +12155,6 @@ const sitesData = [
     },
     {
         "id": "weebplanet41",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "WeebPlanet41",
         "url": "https://weebplanet41.tv",
         "category": "Hentai Streaming",
@@ -12375,7 +12173,6 @@ const sitesData = [
     },
     {
         "id": "gigaworld42",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil"],
         "name": "GigaWorld42",
         "url": "https://gigaworld42.tv",
@@ -12413,7 +12210,6 @@ const sitesData = [
     },
     {
         "id": "giganexus44",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "GigaNexus44",
         "url": "https://giganexus44.me",
@@ -12433,7 +12229,6 @@ const sitesData = [
     },
     {
         "id": "hentaivault45",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HentaiVault45",
         "url": "https://hentaivault45.moe",
         "category": "Visual Novels",
@@ -12452,7 +12247,6 @@ const sitesData = [
     },
     {
         "id": "megazone46",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Brazil", "United Kingdom"],
         "name": "MegaZone46",
         "url": "https://megazone46.io",
@@ -12509,7 +12303,6 @@ const sitesData = [
     },
     {
         "id": "otakuplanet49",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Russia"],
         "name": "OtakuPlanet49",
         "url": "https://otakuplanet49.com",
@@ -12565,7 +12358,6 @@ const sitesData = [
     },
     {
         "id": "animestream52",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeStream52",
         "url": "https://animestream52.tv",
         "category": "Games",
@@ -12676,7 +12468,6 @@ const sitesData = [
     },
     {
         "id": "megastream58",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaStream58",
         "url": "https://megastream58.net",
         "category": "Manga/Doujin",
@@ -12713,7 +12504,6 @@ const sitesData = [
     },
     {
         "id": "animezone60",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "AnimeZone60",
         "url": "https://animezone60.me",
@@ -12733,7 +12523,6 @@ const sitesData = [
     },
     {
         "id": "neoplanet61",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "NeoPlanet61",
         "url": "https://neoplanet61.to",
         "category": "Communities",
@@ -12752,7 +12541,6 @@ const sitesData = [
     },
     {
         "id": "ultraplanet62",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "UltraPlanet62",
         "url": "https://ultraplanet62.tv",
         "category": "Manga/Doujin",
@@ -12771,7 +12559,6 @@ const sitesData = [
     },
     {
         "id": "superplanet63",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SuperPlanet63",
         "url": "https://superplanet63.me",
         "category": "Manga/Doujin",
@@ -12808,7 +12595,6 @@ const sitesData = [
     },
     {
         "id": "animenexus65",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimeNexus65",
         "url": "https://animenexus65.io",
         "category": "Anime Streaming",
@@ -12827,7 +12613,6 @@ const sitesData = [
     },
     {
         "id": "animeplanet66",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "AnimePlanet66",
         "url": "https://animeplanet66.com",
         "category": "Images/Boorus",
@@ -12865,7 +12650,6 @@ const sitesData = [
     },
     {
         "id": "megaspace68",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaSpace68",
         "url": "https://megaspace68.io",
         "category": "Communities",
@@ -12903,7 +12687,6 @@ const sitesData = [
     },
     {
         "id": "giganexus70",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom"],
         "name": "GigaNexus70",
         "url": "https://giganexus70.me",
@@ -12923,7 +12706,6 @@ const sitesData = [
     },
     {
         "id": "neozone71",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "NeoZone71",
         "url": "https://neozone71.tv",
         "category": "Visual Novels",
@@ -12942,7 +12724,6 @@ const sitesData = [
     },
     {
         "id": "gigahub72",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom"],
         "name": "GigaHub72",
         "url": "https://gigahub72.me",
@@ -13072,7 +12853,6 @@ const sitesData = [
     },
     {
         "id": "megavault79",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaVault79",
         "url": "https://megavault79.moe",
         "category": "Manga/Doujin",
@@ -13091,7 +12871,6 @@ const sitesData = [
     },
     {
         "id": "weebden80",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Australia"],
         "name": "WeebDen80",
         "url": "https://weebden80.tv",
@@ -13111,7 +12890,6 @@ const sitesData = [
     },
     {
         "id": "tokyonexus81",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["Brazil"],
         "name": "TokyoNexus81",
         "url": "https://tokyonexus81.io",
@@ -13131,7 +12909,6 @@ const sitesData = [
     },
     {
         "id": "superworld82",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Russia"],
         "name": "SuperWorld82",
         "url": "https://superworld82.net",
@@ -13169,7 +12946,6 @@ const sitesData = [
     },
     {
         "id": "megaspace84",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["India", "Russia", "Brazil"],
         "name": "MegaSpace84",
         "url": "https://megaspace84.me",
@@ -13189,7 +12965,6 @@ const sitesData = [
     },
     {
         "id": "hentaizone85",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HentaiZone85",
         "url": "https://hentaizone85.moe",
         "category": "Hentai Streaming",
@@ -13226,7 +13001,6 @@ const sitesData = [
     },
     {
         "id": "megaplanet87",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaPlanet87",
         "url": "https://megaplanet87.moe",
         "category": "Games",
@@ -13245,7 +13019,6 @@ const sitesData = [
     },
     {
         "id": "megaspace88",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "MegaSpace88",
         "url": "https://megaspace88.net",
         "category": "Manga/Doujin",
@@ -13282,7 +13055,6 @@ const sitesData = [
     },
     {
         "id": "superworld90",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "SuperWorld90",
         "url": "https://superworld90.io",
         "category": "Hentai Streaming",
@@ -13319,7 +13091,6 @@ const sitesData = [
     },
     {
         "id": "tokyozone92",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "evades_blocks_in": ["United Kingdom", "United States"],
         "name": "TokyoZone92",
         "url": "https://tokyozone92.me",
@@ -13339,7 +13110,6 @@ const sitesData = [
     },
     {
         "id": "gigazone93",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "GigaZone93",
         "url": "https://gigazone93.to",
         "category": "Communities",
@@ -13358,7 +13128,6 @@ const sitesData = [
     },
     {
         "id": "hentainexus94",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "HentaiNexus94",
         "url": "https://hentainexus94.me",
         "category": "Hentai Streaming",
@@ -13396,7 +13165,6 @@ const sitesData = [
     },
     {
         "id": "tokyostream96",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "TokyoStream96",
         "url": "https://tokyostream96.com",
         "category": "Visual Novels",
@@ -13433,7 +13201,6 @@ const sitesData = [
     },
     {
         "id": "tokyosanctuary98",
-        "alternativeDomains": ["https://alt-1.example.com", "https://alt-2.example.com"],
         "name": "TokyoSanctuary98",
         "url": "https://tokyosanctuary98.me",
         "category": "Images/Boorus",
