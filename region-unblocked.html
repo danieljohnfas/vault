@@ -429,28 +429,39 @@
             detectedRegion.textContent = "Region Detection Failed (Adblocker?)";
         }
 
-        // Test connection using a no-cors fetch request
-        async function testUrl(url) {
-            try {
-                // Setup an AbortController for the 3-second timeout
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3500);
+        // Advanced Image Probing to bypass ISP Block Pages and Cloudflare Walls
+        function checkImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                const timeout = setTimeout(() => {
+                    img.src = "";
+                    resolve(false);
+                }, 3500);
+                img.src = url;
+            });
+        }
 
-                // no-cors fetch allows us to ping domains without CORS errors.
-                // If the ISP blocks the domain (DNS failure, connection reset), fetch throws an error.
-                // If it succeeds, it returns an opaque response (status 0).
-                const response = await fetch(url, {
-                    mode: 'no-cors',
-                    cache: 'no-store',
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                return true; // The domain is reachable!
-            } catch (error) {
-                // Network error, DNS failure, or Timeout (ISP Block)
-                return false; 
-            }
+        async function testUrl(url) {
+            // Attempt to load common standard assets
+            // If any of these load successfully, the site is 100% accessible
+            // If the ISP serves an HTML block page, it will trigger an image load error
+            const assets = [
+                "/favicon.ico",
+                "/apple-touch-icon.png",
+                "/apple-touch-icon-precomposed.png"
+            ];
+            
+            // Try favicon first
+            let works = await checkImage(url + assets[0] + "?" + Math.random());
+            if (works) return true;
+            
+            // Try apple touch icons
+            works = await checkImage(url + assets[1] + "?" + Math.random());
+            if (works) return true;
+
+            return false;
         }
 
         const allSites = typeof sitesData !== 'undefined' ? sitesData : [];
