@@ -261,7 +261,7 @@
         <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
     </div>
 
-        <div style="text-align:center; padding:100px;">Loading Review...</div>
+        <div id="reviewContent"><div style="text-align:center; padding:100px;">Loading Review...</div></div>
 
     </main>
 
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!site) {
 
-                document.getElementById('reviewContainer').innerHTML = '<h1>Site not found</h1><a href="/">Return to Home</a>';
+                document.getElementById('reviewContent').innerHTML = '<h1>Site not found</h1><a href="/">Return to Home</a>';
 
                 return;
 
@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rating: "Rating: "
             };
 
-            document.getElementById('reviewContainer').innerHTML = `
+            document.getElementById('reviewContent').innerHTML = `
 
                 <div class="review-header">
 

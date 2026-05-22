@@ -133,6 +133,127 @@ class TitleHandler {
   }
 }
 
+class ReviewBodyHandler {
+  constructor(site, lang, sitesData) {
+    this.site = site;
+    this.lang = lang;
+    this.sitesData = sitesData;
+  }
+  element(element) {
+    const escapeHTML = (str) => {
+        if (!str) return '';
+        return String(str).replace(/[&<>'"]/g, tag => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[tag] || tag));
+    };
+
+    const urlObj = new URL(this.site.url);
+    const domain = urlObj.hostname;
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+
+    const labels = {
+        en: {
+            expertReview: "Expert Review", pros: "Pros", cons: "Cons", conclusion: "Conclusion",
+            conclusionText: `If you are looking for a reliable source for ${this.site.category}, ${this.site.name} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
+            ready: "Ready to explore?", visitBelow: "Visit the official site below.", visitSite: `Visit ${this.site.name} &rarr;`, similar: "Similar Sites You May Like", rating: "Rating: "
+        },
+        fr: {
+            expertReview: "Avis d'expert", pros: "Points forts", cons: "Points faibles", conclusion: "Conclusion",
+            conclusionText: `Si vous recherchez une source fiable pour ${this.site.category.toLowerCase()}, ${this.site.name} est un choix de premier ordre. Il se classe très bien dans notre annuaire pour sa facilité d'utilisation et sa variété de contenu.`,
+            ready: "Prêt à explorer ?", visitBelow: "Visitez le site officiel ci-dessous.", visitSite: `Visiter ${this.site.name} &rarr;`, similar: "Sites similaires que vous pourriez aimer", rating: "Note : "
+        },
+        es: {
+            expertReview: "Reseña de expertos", pros: "Pros", cons: "Contras", conclusion: "Conclusión",
+            conclusionText: `Si está buscando una fuente confiable para ${this.site.category.toLowerCase()}, ${this.site.name} es una opción de primer nivel. Ocupa un lugar destacado en nuestro directorio por su facilidad de uso y variedad de contenido.`,
+            ready: "¿Listo para explorar?", visitBelow: "Visite el sitio oficial a continuación.", visitSite: `Visitar ${this.site.name} &rarr;`, similar: "Sitios similares que le pueden gustar", rating: "Calificación: "
+        },
+        jp: {
+            expertReview: "専門家によるレビュー", pros: "メリット", cons: "デメリット", conclusion: "結論",
+            conclusionText: `${this.site.category}の信頼できるソースをお探しの場合は、${this.site.name}が最適です。使いやすさとコンテンツの多様性により、当ディレクトリで高い評価を得ています。`,
+            ready: "探索する準備はできましたか？", visitBelow: "以下の公式サイトをご覧ください。", visitSite: `${this.site.name}を訪問する &rarr;`, similar: "あなたにおすすめの類似サイト", rating: "評価: "
+        }
+    };
+
+    const l = labels[this.lang] || labels.en;
+    const localName = escapeHTML(this.site[`name_${this.lang}`] || this.site.name);
+    const localCat  = escapeHTML(this.site.category);
+    const localDesc = escapeHTML(this.site[`description_${this.lang}`] || this.site.description);
+    let fallbackText = `${localName} has established itself as a premier destination for ${localCat.toLowerCase()} enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.`;
+    if (this.lang === 'fr') fallbackText = `${localName} s'est imposé comme une destination de premier choix pour les passionnés de ${localCat.toLowerCase()}. Lors de notre audit de 2026, nous avons constaté que le site était très réactif et maintenu avec un contenu de haute qualité.`;
+    else if (this.lang === 'es') fallbackText = `${localName} se ha establecido como un destino de primer nivel para los entusiastas de ${localCat.toLowerCase()}. En nuestra auditoría de 2026, encontramos que el sitio es muy receptivo y se mantiene con contenido de alta calidad.`;
+    else if (this.lang === 'jp') fallbackText = `${localName}は、${localCat}ファンのための主要な目的地として定着しています。2026年の監査では、サイトの応答性が非常に高く、高品質なコンテンツが維持されていることが確認されました。`;
+    const localReviewText = escapeHTML(this.site[`longReview_${this.lang}`] || this.site.longReview) || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
+
+    const related = this.sitesData
+        .filter(s => s.category === this.site.category && s.id !== this.site.id)
+        .slice(0, 3);
+
+    const relatedHTML = related.map(s => {
+        const sUrl = new URL(s.url);
+        const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=64`;
+        return `
+            <div class="card">
+                <div class="card-header">
+                    <img src="${sFavicon}" alt="" class="card-icon">
+                    <div>
+                        <div class="card-title"><a href="/site?id=${s.id}" style="color:inherit;">${escapeHTML(s.name)}</a></div>
+                        <div class="card-category">${escapeHTML(s.category)}</div>
+                    </div>
+                </div>
+                <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${escapeHTML(s.description)}</div>
+            </div>
+        `;
+    }).join('');
+
+    const html = `
+        <div class="review-header">
+            <img src="${faviconUrl}" alt="${localName}" class="review-icon">
+            <div class="review-meta">
+                <div class="review-badge">${localCat}</div>
+                <h1>${localName}</h1>
+                <div class="rating">${l.rating}${ '★'.repeat(Math.floor(this.site.rating)) }☆</div>
+            </div>
+        </div>
+        <div class="review-content">
+            <h2>${l.expertReview}</h2>
+            <p>${localReviewText}</p>
+            
+            <div class="pros-cons">
+                <div class="pc-box pros">
+                    <h3>${l.pros}</h3>
+                    <ul class="pc-list">
+                        ${ (this.site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li>${escapeHTML(p)}</li>`).join('') }
+                    </ul>
+                </div>
+                <div class="pc-box cons">
+                    <h3>${l.cons}</h3>
+                    <ul class="pc-list">
+                        ${ (this.site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li>${escapeHTML(c)}</li>`).join('') }
+                    </ul>
+                </div>
+            </div>
+            <h2>${l.conclusion}</h2>
+            <p>${l.conclusionText}</p>
+            <div class="cta-box">
+                <h3>${l.ready}</h3>
+                <p style="margin-bottom:20px;">${l.visitBelow}</p>
+                <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+            </div>
+            <div class="related-sites" style="margin-top: 60px;">
+                <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
+                    <span>🔗</span> ${l.similar}
+                </h2>
+                <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    ${relatedHTML}
+                </div>
+            </div>
+        </div>
+    `;
+
+    element.setInnerContent(html, { html: true });
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -192,10 +313,12 @@ export default {
 
       const canonicalUrl = `https://hentaivault.me/site?id=${site.id}`;
       const titleText = `${site.name} Review | HentaiVault`;
+      const lang = url.searchParams.get('lang') || 'en';
 
       const rewriter = new HTMLRewriter()
         .on('title', new TitleHandler(titleText))
-        .on('head', new HeadHandler(site, canonicalUrl));
+        .on('head', new HeadHandler(site, canonicalUrl))
+        .on('div#reviewContent', new ReviewBodyHandler(site, lang, sites));
 
       return rewriter.transform(response);
     }
