@@ -453,7 +453,7 @@
             }
         }
 
-        const allSites = window.sitesData || [];
+        const allSites = typeof sitesData !== 'undefined' ? sitesData : [];
         if (allSites.length === 0) {
             scanStatus.textContent = "No sites found in database.";
             scanBar.style.width = "100%";
