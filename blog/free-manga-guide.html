@@ -272,5 +272,22 @@
             });
         }
     </script>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+            <h3>Share this link</h3>
+            <div class="share-qr-container">
+                <img id="shareQrImg" src="" alt="QR Code">
+            </div>
+            <div class="share-actions">
+                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -35,6 +35,31 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HentaiVault">
     <link rel="apple-touch-icon" href="/assets/icon-192.png">
+
+    <script>
+        window.openShareModal = function(url, title, text) {
+            if (navigator.share) {
+                navigator.share({ title: title, text: text, url: url }).catch(console.error);
+                return;
+            }
+            const modal = document.getElementById('shareModal');
+            if (modal) {
+                document.getElementById('shareQrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(url);
+                document.getElementById('btnShareCopy').onclick = () => { navigator.clipboard.writeText(url); alert('Copied!'); };
+                document.getElementById('btnShareTwitter').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + ' ' + url);
+                document.getElementById('btnShareReddit').href = 'https://reddit.com/submit?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
+                modal.classList.add('active');
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('shareModal');
+            if(modal) {
+                modal.querySelector('.close-share').onclick = () => modal.classList.remove('active');
+                modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
+            }
+        });
+    </script>
+
 </head>
 <body>
 <!-- Skyscraper Ads -->
@@ -230,5 +255,22 @@
             });
         }
     </script>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+            <h3>Share this link</h3>
+            <div class="share-qr-container">
+                <img id="shareQrImg" src="" alt="QR Code">
+            </div>
+            <div class="share-actions">
+                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
