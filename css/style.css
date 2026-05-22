@@ -1181,3 +1181,42 @@ body {
         #qr-widget::before { content: '📱'; font-size: 1.6rem; color: #ff2a5f; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); line-height: 1; }
         #qr-widget:hover::before { display: none; }
     }
+
+/* ==========================================================================
+   Legal & Static Pages
+   ========================================================================== */
+.legal-content {
+    max-width: 800px;
+    margin: 120px auto 60px;
+    padding: 40px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
+}
+
+.legal-content h1 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.legal-content h2 {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.legal-content p, .legal-content ul, .legal-content form {
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.legal-content ul {
+    padding-left: 20px;
+}
