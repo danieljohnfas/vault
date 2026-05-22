@@ -1394,3 +1394,106 @@ html[lang]:not([lang='de']) .i18n-de {
     color: var(--text-muted) !important;
     line-height: 1.4;
 }
+
+/* ==========================================================================
+   Share Modal & Buttons
+   ========================================================================== */
+
+.share-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.share-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.share-modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.share-modal.active .share-modal-content {
+    transform: translateY(0);
+}
+
+.share-modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+.share-qr-container {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.share-qr-container img {
+    display: block;
+    width: 150px;
+    height: 150px;
+}
+
+.share-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-share-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn-share-action:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn-share-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.btn-share-icon:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}

@@ -517,13 +517,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${labels.conclusionText}</p>
 
                     <div class="cta-box">
-
                         <h3>${labels.ready}</h3>
-
                         <p style="margin-bottom:20px;">${labels.visitBelow}</p>
-
+                        <button onclick="window.openShareModal('https://hentaivault.me/site?id=${site.id}', '${localName} | HentaiVault', 'Check out ${localName} - The best ${localCat} site! Found on HentaiVault.')" class="btn-outline" style="font-size:1.2rem; padding:15px 30px; margin-right: 15px;">📤 Share</button>
                         <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${labels.visitSite}</a>
-
                     </div>
 
                     <div class="related-sites" style="margin-top: 60px;">
@@ -636,5 +633,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     </script>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+            <h3>Share this link</h3>
+            <div class="share-qr-container">
+                <img id="shareQrImg" src="" alt="QR Code">
+            </div>
+            <div class="share-actions">
+                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

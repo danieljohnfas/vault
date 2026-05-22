@@ -54,6 +54,41 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { console.error("Favorites parse failed", e); }
     let showFavoritesOnly = false;
 
+    
+    // --- Share Logic ---
+    window.openShareModal = function(url, title, text) {
+        if (navigator.share) {
+            navigator.share({ title: title, text: text, url: url }).catch(console.error);
+        } else {
+            const modal = document.getElementById('shareModal');
+            if (!modal) return;
+            document.getElementById('shareQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+            const btnCopy = document.getElementById('btnShareCopy');
+            btnCopy.onclick = () => {
+                navigator.clipboard.writeText(url);
+                btnCopy.innerHTML = '✅ Copied!';
+                setTimeout(() => btnCopy.innerHTML = '📋 Copy Link', 2000);
+            };
+            document.getElementById('btnShareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+            document.getElementById('btnShareReddit').href = `https://reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+            modal.classList.add('active');
+        }
+    };
+
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'shareModal' || e.target.classList.contains('close-share')) {
+            const modal = document.getElementById('shareModal');
+            if (modal) modal.classList.remove('active');
+        }
+    });
+
+    const btnShareVault = document.getElementById('btnShareVault');
+    if (btnShareVault) {
+        btnShareVault.addEventListener('click', () => {
+            window.openShareModal('https://hentaivault.me', 'HentaiVault', 'Check out HentaiVault - The #1 directory for adult sites, games and manga!');
+        });
+    }
+
     // --- Age Gate ---
     try {
         if (localStorage.getItem('hv_age_verified') === 'true') {
@@ -569,6 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-footer">
                     <div class="rating" title="Rating: ${site.rating}/5">${starsHtml}</div>
                     <div class="card-actions">
+                        <button class="btn-share-icon" data-id="${site.id}" title="Share ${localName}">📤</button>
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
@@ -578,6 +614,13 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             // Add Favorite Listener
+            const shareBtn = card.querySelector('.btn-share-icon');
+            if (shareBtn) {
+                shareBtn.onclick = (e) => {
+                    e.preventDefault();
+                    window.openShareModal(`https://hentaivault.me/site?id=${site.id}`, `${localName} | HentaiVault`, `Check out ${localName} - The best ${localCat} site! Found on HentaiVault.`);
+                };
+            }
             const favBtn = card.querySelector('.btn-favorite');
             favBtn.onclick = (e) => {
                 e.preventDefault();
