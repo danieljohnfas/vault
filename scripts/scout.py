@@ -89,19 +89,34 @@ def scout_from_directories():
             
     return discovered
 
+def generate_dynamic_queries():
+    bases = [
+        "doujin sites", "hentai streaming", "hentai boorus", "anime streaming",
+        "read hentai manga", "visual novel adult games", "hentai communities",
+        "eroge download", "free hentai comics", "nsfw anime games", "uncensored hentai",
+        "hentai games list", "best doujinshi portals", "watch hentai free"
+    ]
+    modifiers = [
+        "2026", "free", "no ads", "best", "top", "list", "directory",
+        "unblocked", "mobile friendly", "high quality", "hd", "english sub",
+        "raw", "translated", "forums", "recommendations", "reddit alternatives"
+    ]
+    
+    queries = set()
+    while len(queries) < 15:
+        base = random.choice(bases)
+        mod = random.choice(modifiers)
+        if random.random() > 0.5:
+            queries.add(f"{mod} {base}")
+        else:
+            queries.add(f"{base} {mod}")
+            
+    return list(queries)
+
 def scout_from_search():
     discovered = []
-    # DuckDuckGo Lite doesn't require JS and is less likely to block simple scripts
-    # Updated queries based on Google Search Console performance data
-    search_queries = [
-        "best doujin sites 2026",
-        "best hentai streaming sites 2026",
-        "best hentai boorus",
-        "anime streaming sites",
-        "where to read hentai manga",
-        "visual novel adult games",
-        "hentai communities"
-    ]
+    search_queries = generate_dynamic_queries()
+    print(f"Generated {len(search_queries)} dynamic search queries.")
     
     for query in search_queries:
         print(f"Searching: {query}")
@@ -262,6 +277,17 @@ def main():
         
     print(f"Discovered {len(links)} potential links. Starting validation...")
     new_sites = validate_and_enrich(links, existing_urls)
+    
+    # --- Starvation Check ---
+    if len(new_sites) < 20:
+        warning_msg = f"⚠️ CRITICAL STARVATION ALERT: Scout only added {len(new_sites)} sites today!"
+        print(warning_msg)
+        try:
+            with open("scripts/starvation_alert.log", "a", encoding="utf-8") as af:
+                af.write(f"{datetime.datetime.now().isoformat()} - {warning_msg}\n")
+        except:
+            pass
+            
     update_data_file(new_sites)
 
     # Auto-regenerate sitemap.xml with hreflang tags for all 8 languages
