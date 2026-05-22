@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
-                        <a href="${trackedUrl}" target="_blank" rel="noopener noreferrer" class="btn-visit">${t.visit} &rarr;</a>
+                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" onclick="if(typeof gtag !== 'undefined') gtag('event', 'outbound_click', { 'event_category': 'outbound', 'event_label': '${site.url}', 'transport_type': 'beacon'});">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;
@@ -537,6 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const url         = submitForm.url.value.trim();
         const category    = submitForm.category.value;
         const description = submitForm.description.value.trim();
+        const turnstileToken = submitForm.querySelector('[name="cf-turnstile-response"]')?.value || '';
 
         // Loading state
         submitBtn.disabled    = true;
@@ -547,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/submit', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ name, url, category, description }),
+                body:    JSON.stringify({ name, url, category, description, turnstileToken }),
             });
 
             const data = await res.json();

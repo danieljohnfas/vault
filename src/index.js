@@ -193,9 +193,33 @@ async function handleSubmit(request, env, ctx) {
     const body = await request.json().catch(() => null);
     if (!body) return jsonError('Invalid request body.', 400);
 
-    const { name, url, category, description } = body;
+    const { name, url, category, description, turnstileToken } = body;
 
-    // ── 1. Validate ──────────────────────────────────────────────────────────
+    // ── 1. Validate CAPTCHA ──────────────────────────────────────────────────
+    if (!turnstileToken) {
+      return jsonError('Please complete the CAPTCHA.', 400);
+    }
+
+    if (!env.TURNSTILE_SECRET_KEY) {
+      return jsonError('Server misconfiguration: missing Turnstile key.', 500);
+    }
+
+    const turnstileFormData = new FormData();
+    turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
+    turnstileFormData.append('response', turnstileToken);
+    if (ip) turnstileFormData.append('remoteip', ip);
+
+    const turnstileRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: turnstileFormData
+    });
+
+    const turnstileData = await turnstileRes.json();
+    if (!turnstileData.success) {
+      return jsonError('CAPTCHA verification failed. Please try again.', 400);
+    }
+
+    // ── 2. Validate Inputs ───────────────────────────────────────────────────
     const nameClean = sanitize(name);
     const descClean = sanitize(description);
     const urlClean  = (url || '').trim();
@@ -230,19 +254,45 @@ async function handleSubmit(request, env, ctx) {
     const sha        = fileData.sha;
     const rawContent = decodeB64(fileData.content);
 
+    // Extract the JSON array from the file string
+    const arrayMatch = rawContent.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
+    if (!arrayMatch) {
+      return jsonError('Could not parse directory data structure.', 500);
+    }
+
+    let sitesArray;
+    try {
+      // Handle trailing commas safely before parsing
+      const jsonString = arrayMatch[1].replace(/,\s*([\]}])/g, '$1');
+      sitesArray = JSON.parse(jsonString);
+    } catch (e) {
+      console.error('Parse error on submission:', e);
+      return jsonError('Data structure is corrupted.', 500);
+    }
+
     // ── 3. Duplicate check ───────────────────────────────────────────────────
-    if (rawContent.includes(urlClean))
+    if (sitesArray.some(s => s.url === urlClean))
       return jsonError('This site is already listed in the directory!', 409);
 
     // ── 4. Build new entry ───────────────────────────────────────────────────
     const id    = makeId(nameClean);
     const today = new Date().toISOString().split('T')[0];
-    const entry = `    { "id": "${id}", "name": "${nameClean}", "url": "${urlClean}", "category": "${catClean}", "description": "${descClean}", "tags": ["Community Submitted"], "rating": 4.0, "addedAt": "${today}" }`;
+    const newEntry = {
+      id,
+      name: nameClean,
+      url: urlClean,
+      category: catClean,
+      description: descClean,
+      tags: ["Community Submitted"],
+      rating: 4.0,
+      addedAt: today
+    };
 
-    // ── 5. Insert before closing ]; ──────────────────────────────────────────
-    const updated = rawContent.replace(/\n\];/, `,\n${entry}\n];`);
-    if (updated === rawContent)
-      return jsonError('Could not update directory. Contact admin.', 500);
+    sitesArray.push(newEntry);
+
+    // ── 5. Serialize back to file ──────────────────────────────────────────
+    const newSitesStr = JSON.stringify(sitesArray, null, 4);
+    const updated = `const sitesData = ${newSitesStr};`;
 
     // ── 6. Commit to GitHub ──────────────────────────────────────────────────
     const commitRes = await fetch(GITHUB_API, {
