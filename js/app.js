@@ -589,9 +589,41 @@ document.addEventListener('DOMContentLoaded', () => {
             // Inject in-feed ad every 8 cards (counting from start of full grid)
             const globalIndex = existingCards + batchIndex + 1;
             if (globalIndex % 8 === 0) {
-                const adWrapper = document.createElement('div');
-                adWrapper.innerHTML = IN_FEED_AD_HTML;
-                siteGrid.appendChild(adWrapper.firstElementChild);
+                const adDiv = document.createElement('div');
+                adDiv.className = 'in-feed-ad';
+                adDiv.setAttribute('aria-hidden', 'true');
+                
+                // Use a local iframe to safely sandbox the ad network's document.write()
+                const iframe = document.createElement('iframe');
+                iframe.width = "728";
+                iframe.height = "90";
+                iframe.frameBorder = "0";
+                iframe.scrolling = "no";
+                iframe.style.border = "none";
+                iframe.style.overflow = "hidden";
+                iframe.style.maxWidth = "100%";
+                
+                adDiv.appendChild(iframe);
+                siteGrid.appendChild(adDiv);
+                
+                // Write the ad script into the iframe
+                const iframeDoc = iframe.contentWindow.document;
+                iframeDoc.open();
+                iframeDoc.write(`
+                    <html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:transparent;}</style></head><body>
+                    <script>
+                        atOptions = {
+                            'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                    <\/script>
+                    <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
+                    </body></html>
+                `);
+                iframeDoc.close();
             }
             batchIndex++;
         });
