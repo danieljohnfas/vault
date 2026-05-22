@@ -213,8 +213,8 @@
             </p>
             <div id="scanner-ui" style="background: var(--bg-surface); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
                 <h3 id="detected-region" style="color: var(--text-main); margin-bottom: 10px;">Detecting your region...</h3>
-                <button id="btnScan" class="btn-primary" style="width: 100%; font-size: 1.2rem; padding: 15px;">🔍 Run Live Scan</button>
-                <div id="scan-progress-container" style="display: none; margin-top: 20px;">
+                
+                <div id="scan-progress-container" style="display: block; margin-top: 20px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem;">
                         <span id="scan-status">Scanning...</span>
                         <span id="scan-percentage">0%</span>
@@ -251,7 +251,7 @@
     <main class="main-layout" style="display: block; max-width: 800px; margin: 0 auto; padding: 40px 20px;">
         <section class="listings" style="width: 100%;">
             <div class="listings-header">
-                <h2>Penetrating Sites (Working Alternatives)</h2>
+                <h2>Working Sites in Your Area</h2>
             </div>
             
             <div id="scan-results" style="display: flex; flex-direction: column; gap: 15px;">
@@ -405,13 +405,15 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
-        const btnScan = document.getElementById("btnScan");
         const detectedRegion = document.getElementById("detected-region");
         const scanProgressContainer = document.getElementById("scan-progress-container");
         const scanStatus = document.getElementById("scan-status");
         const scanBar = document.getElementById("scan-bar");
         const scanPercentage = document.getElementById("scan-percentage");
         const scanResults = document.getElementById("scan-results");
+
+        // Clear initial text
+        scanResults.innerHTML = "";
 
         // Cloudflare Trace endpoint to detect Country
         try {
@@ -443,68 +445,89 @@
             });
         }
 
-        btnScan.addEventListener("click", async () => {
-            btnScan.style.display = "none";
-            scanProgressContainer.style.display = "block";
-            scanResults.innerHTML = "";
+        const allSites = window.sitesData || [];
+        if (allSites.length === 0) {
+            scanStatus.textContent = "No sites found in database.";
+            scanBar.style.width = "100%";
+            return;
+        }
 
-            // Filter sites that actually have alternative domains
-            const scannableSites = window.sitesData ? window.sitesData.filter(s => s.alternativeDomains && s.alternativeDomains.length > 0) : [];
-            
-            if (scannableSites.length === 0) {
-                scanStatus.textContent = "No alternative domains found in database.";
-                scanBar.style.width = "100%";
-                return;
-            }
-
-            let foundPenetrations = 0;
-
-            for (let i = 0; i < scannableSites.length; i++) {
-                const site = scannableSites[i];
-                const pct = Math.round(((i) / scannableSites.length) * 100);
+        let foundWorking = 0;
+        const BATCH_SIZE = 10;
+        
+        async function runScan() {
+            for (let i = 0; i < allSites.length; i += BATCH_SIZE) {
+                const batch = allSites.slice(i, i + BATCH_SIZE);
+                
+                // Update UI
+                const pct = Math.round((i / allSites.length) * 100);
                 scanBar.style.width = pct + "%";
                 scanPercentage.textContent = pct + "%";
-                scanStatus.textContent = `Probing ${site.name}...`;
+                scanStatus.textContent = `Scanning sites ${i + 1} to ${Math.min(i + BATCH_SIZE, allSites.length)} of ${allSites.length}...`;
 
-                // Probe the primary domain
-                const primaryWorks = await testUrl(site.url);
+                // Test batch concurrently
+                const promises = batch.map(async (site) => {
+                    // Test primary domain
+                    let works = await testUrl(site.url);
+                    let workingUrl = site.url;
+                    let isAlt = false;
 
-                if (!primaryWorks) {
-                    // Primary is blocked or down, probe alternatives
-                    scanStatus.textContent = `Primary blocked. Probing alternatives for ${site.name}...`;
-                    
-                    for (const altUrl of site.alternativeDomains) {
-                        const altWorks = await testUrl(altUrl);
-                        if (altWorks) {
-                            // Alternative works! It penetrates the block!
-                            foundPenetrations++;
-                            const resultHTML = `
-                                <div style="background: var(--bg-surface-elevated); border: 1px solid var(--primary); border-radius: var(--radius-lg); padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <h3 style="margin: 0; color: var(--text-main);">${site.name}</h3>
-                                        <p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
-                                            <span style="color: #ff4444; text-decoration: line-through;">${site.url}</span> &rarr; 
-                                            <span style="color: #00e676;">${altUrl}</span>
-                                        </p>
-                                    </div>
-                                    <a href="${altUrl}" target="_blank" class="btn-primary" style="padding: 8px 15px;">Visit Unblocked</a>
-                                </div>
-                            `;
-                            scanResults.insertAdjacentHTML("beforeend", resultHTML);
-                            break; // Stop after finding the first working alt
+                    // If primary fails and there are alt domains, test them sequentially
+                    if (!works && site.alternativeDomains && site.alternativeDomains.length > 0) {
+                        for (const altUrl of site.alternativeDomains) {
+                            const altWorks = await testUrl(altUrl);
+                            if (altWorks) {
+                                works = true;
+                                workingUrl = altUrl;
+                                isAlt = true;
+                                break;
+                            }
                         }
                     }
-                }
+
+                    if (works) {
+                        foundWorking++;
+                        
+                        let subtitleHTML = `<p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                              <span style="color: #00e676;">${workingUrl}</span>
+                                            </p>`;
+                        
+                        if (isAlt) {
+                            subtitleHTML = `<p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                                <span style="color: #ff4444; text-decoration: line-through;">${site.url}</span> &rarr; 
+                                                <span style="color: #00e676;">${workingUrl}</span> (Alt Domain)
+                                            </p>`;
+                        }
+
+                        const resultHTML = `
+                            <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h3 style="margin: 0; color: var(--text-main);">${site.name}</h3>
+                                    ${subtitleHTML}
+                                </div>
+                                <a href="${workingUrl}" target="_blank" class="btn-primary" style="padding: 8px 15px;">Visit</a>
+                            </div>
+                        `;
+                        scanResults.insertAdjacentHTML("beforeend", resultHTML);
+                    }
+                });
+
+                // Wait for the entire batch to finish before moving to the next
+                await Promise.all(promises);
             }
 
+            // Finish UI
             scanBar.style.width = "100%";
             scanPercentage.textContent = "100%";
-            scanStatus.textContent = "Scan Complete.";
+            scanStatus.textContent = `Scan Complete. Found ${foundWorking} working sites!`;
             
-            if (foundPenetrations === 0) {
-                scanResults.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px;">No blocked sites with working alternatives found at this time.</p>`;
+            if (foundWorking === 0) {
+                scanResults.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px;">No working sites found at this time.</p>`;
             }
-        });
+        }
+
+        // Start automatically
+        runScan();
     });
 </script>
 </body>
