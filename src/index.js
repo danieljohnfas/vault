@@ -378,6 +378,29 @@ export default {
       return jsonError('Method not allowed.', 405);
     }
 
+    // ── Route: /api/push-subscribe ──────────────────────────────────────────
+    if (url.pathname === '/api/push-subscribe') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (request.method === 'POST') {
+        if (!env.PUSH_SUBSCRIBERS) return jsonError('Push KV namespace not configured.', 500);
+        try {
+          const subscription = await request.json();
+          if (!subscription || !subscription.endpoint) return jsonError('Invalid subscription', 400);
+          
+          // Use a hash or trailing part of endpoint as the key
+          const key = `sub_${encodeB64(subscription.endpoint).slice(-30)}`;
+          await env.PUSH_SUBSCRIBERS.put(key, JSON.stringify(subscription));
+          
+          return new Response(JSON.stringify({ success: true }), { status: 200, headers: CORS });
+        } catch (e) {
+          return jsonError('Bad request payload.', 400);
+        }
+      }
+      return jsonError('Method not allowed.', 405);
+    }
+
     // ── Route: /site and /site.html ─────────────────────────────────────────
     if (url.pathname === '/site' || url.pathname === '/site.html') {
       if (url.pathname === '/site.html') {

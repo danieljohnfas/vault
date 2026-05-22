@@ -13,5 +13,11 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "PUSH_SUBSCRIBERS",
+      "id": "YOUR_KV_NAMESPACE_ID"
+    }
   ]
 }

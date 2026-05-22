@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSurpriseMe.innerHTML = '<span style="font-size: 1.2rem;">✨</span> Opening...';
             setTimeout(() => { btnSurpriseMe.innerHTML = originalText; }, 1000);
             
-            // Open random site
-            window.open(randomSite.url, '_blank', 'noopener');
+            // Route to review page to capture pageviews and ads
+            window.location.href = `/site?id=${randomSite.id}`;
         });
     }
 
