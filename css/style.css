@@ -1280,4 +1280,117 @@ html[lang]:not([lang='de']) .i18n-de {
     .in-feed-ad {
         min-height: 50px;
     }
+    
+    /* Fix: Mobile Sidebar Filters too long */
+    .checkbox-list {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 8px;
+    }
+    .checkbox-list::-webkit-scrollbar {
+        width: 4px;
+    }
+    .checkbox-list::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+    }
+}
+
+/* ==========================================================================
+   Age Gate Overlay (UI Fix)
+   ========================================================================== */
+.age-gate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(9, 9, 11, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.age-gate.hidden {
+    display: none !important;
+}
+
+.age-gate-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: var(--shadow-neon);
+}
+
+.age-gate-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    line-height: 1;
+}
+
+.age-gate-box h2 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+
+.age-gate-box p {
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.age-gate-sub {
+    font-size: 1.1rem;
+    color: var(--secondary) !important;
+    margin-bottom: 24px !important;
+}
+
+.age-gate-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.btn-enter {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-pill);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.btn-enter:hover {
+    background: var(--primary-hover);
+    transform: scale(1.02);
+}
+
+.btn-leave {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+}
+
+.btn-leave:hover {
+    background: var(--bg-surface-elevated);
+    color: var(--text-main);
+}
+
+.age-gate-legal {
+    font-size: 0.75rem !important;
+    color: var(--text-muted) !important;
+    line-height: 1.4;
 }

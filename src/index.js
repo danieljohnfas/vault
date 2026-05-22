@@ -289,7 +289,40 @@ class ReviewBodyHandler {
         </div>
     `;
 
-    element.setInnerContent(html, { html: true });
+    // FAQ Schema for Rich Results
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": `Is ${localName} free?`,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": `Yes, you can browse and access content on ${localName} for free.`
+                }
+            },
+            {
+                "@type": "Question",
+                "name": `Is ${localName} safe?`,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": `Yes, ${localName} has been reviewed and listed in our directory. However, we always recommend using an ad-blocker or VPN for adult websites.`
+                }
+            },
+            {
+                "@type": "Question",
+                "name": `What is the best alternative to ${localName}?`,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": `There are several great alternatives to ${localName} in the ${localCat} category. Check our Similar Sites section below for top-rated recommendations.`
+                }
+            }
+        ]
+    };
+    const schemaScript = `\n<script type="application/ld+json">\n${JSON.stringify(faqSchema)}\n</script>\n`;
+
+    element.setInnerContent(html + schemaScript, { html: true });
   }
 }
 

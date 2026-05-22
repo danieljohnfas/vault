@@ -222,9 +222,18 @@
                     <span class="btn-icon">🎲</span> <span data-i18n="surprise_me">Surprise Me</span>
                 </button>
                 <a href="#resultsCount" class="btn-secondary" data-i18n="browse_vault">Browse Vault</a>
+                <button id="btnSubscribePush" class="btn-outline" style="border-color: var(--secondary); color: var(--secondary);">
+                    <span class="btn-icon">🔔</span> Subscribe for Updates
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Recently Viewed Shelf -->
+    <div id="recentlyViewedContainer" style="display: none; max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
+        <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--text-muted);">Recently Viewed</h3>
+        <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;"></div>
+    </div>
 
     <!-- Ad Leaderboard -->
     <div class="ad-container leaderboard">

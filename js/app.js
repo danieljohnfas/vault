@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         if (localStorage.getItem('hv_age_verified') === 'true') {
             if (ageGate) ageGate.classList.add('hidden');
+        } else {
+            document.body.style.overflow = 'hidden'; // Block scrolling
         }
         if (btnEnter) {
             btnEnter.addEventListener('click', () => {
@@ -65,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('hv_age_verified', 'true');
                 } catch (e) {}
                 if (ageGate) ageGate.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
             });
         }
     } catch (e) { console.error("Age gate init failed", e); }
@@ -93,6 +96,78 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(randomSite.url, '_blank', 'noopener');
         });
     }
+
+    // --- Push Notifications ---
+    const btnSubscribePush = document.getElementById('btnSubscribePush');
+    if (btnSubscribePush) {
+        btnSubscribePush.addEventListener('click', async () => {
+            if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+                alert("Push notifications are not supported in your browser.");
+                return;
+            }
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const registration = await navigator.serviceWorker.ready;
+                    const applicationServerKey = "BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuB-5PNDEXcFS3-2cWZGxQGgA4"; 
+                    const urlBase64ToUint8Array = (base64String) => {
+                        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+                        const rawData = window.atob(base64);
+                        return new Uint8Array([...rawData].map(char => char.charCodeAt(0)));
+                    };
+                    const subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
+                    });
+                    
+                    fetch('/api/push-subscribe', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(subscription)
+                    }).catch(console.error);
+
+                    btnSubscribePush.innerHTML = '✅ Subscribed!';
+                    btnSubscribePush.style.borderColor = 'var(--text-muted)';
+                    btnSubscribePush.style.color = 'var(--text-muted)';
+                    btnSubscribePush.disabled = true;
+                } else {
+                    alert("Permission denied. We cannot send you notifications.");
+                }
+            } catch (error) {
+                console.error("Push subscription failed", error);
+            }
+        });
+    }
+
+    // --- Recently Viewed Tracker ---
+    try {
+        const uParams = new URLSearchParams(window.location.search);
+        const sId = uParams.get('id');
+        if (window.location.pathname === '/site' && sId && typeof sitesData !== 'undefined') {
+            let recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
+            recent = recent.filter(id => id !== sId);
+            recent.unshift(sId);
+            if (recent.length > 5) recent.pop();
+            localStorage.setItem('hv_recent', JSON.stringify(recent));
+        }
+
+        const recentContainer = document.getElementById('recentlyViewedContainer');
+        const recentShelf = document.getElementById('recentlyViewedShelf');
+        if (recentContainer && recentShelf && typeof sitesData !== 'undefined') {
+            const recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
+            if (recent.length > 0) {
+                recentContainer.style.display = 'block';
+                const recentSites = recent.map(id => sitesData.find(s => s.id === id)).filter(Boolean);
+                recentShelf.innerHTML = recentSites.map(site => `
+                    <a href="/site?id=${site.id}" style="display:flex; flex-direction:column; align-items:center; min-width: 80px; text-align:center; text-decoration:none; gap:6px; transition:transform 0.2s;">
+                        <img src="https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
+                        <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${site.name}</span>
+                    </a>
+                `).join('');
+            }
+        }
+    } catch (e) { console.error("Recently viewed failed", e); }
 
     // --- Initialization ---
     if (siteGrid) {

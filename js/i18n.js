@@ -162,6 +162,9 @@ const TRANSLATIONS = {
 };
 
 const META_TRANSLATIONS = {
+    "top-10-sites-may-2026": {
+        en: { title: "Top 10 Sites - May 2026", desc: "The best new sites added this month." }
+    },
     fr: {
         homepage: {
             title: "HentaiVault — Meilleurs sites de doujin, streaming hentai et alternatives nhentai 2026",
