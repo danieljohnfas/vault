@@ -629,9 +629,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             siteGrid.appendChild(card);
 
-            // Inject in-feed ad every 8 cards (counting from start of full grid)
+            // Inject in-feed ad every 9 cards (counting from start of full grid)
             const globalIndex = existingCards + batchIndex + 1;
-            if (globalIndex % 8 === 0) {
+            if (globalIndex % 9 === 0) {
                 const adDiv = document.createElement('div');
                 adDiv.className = 'in-feed-ad';
                 adDiv.setAttribute('aria-hidden', 'true');
