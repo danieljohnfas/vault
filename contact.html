@@ -67,9 +67,12 @@
 
     <meta name="twitter:image" content="https://hentaivault.me/assets/favicon.png">
 
-    <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
-    <script src="https://pl29414982.profitablecpmratenetwork.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
+    <script defer="defer" src="https://pl29414985.effectivecpmnetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <script defer="defer" src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
+    <script async="async" data-cfasync="false" src="https://pl29414983.effectivecpmnetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
+
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -84,7 +87,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
+        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
     <div class="skyscraper skyscraper-right">
         <script>
@@ -96,7 +99,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
+        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
 
@@ -144,7 +147,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
+        <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
     </div>
 
         <h1>Contact Us</h1>
@@ -206,6 +209,50 @@
         </div>
     </footer>
 
+    <!-- Submit Modal -->
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Submit a New Site</h2>
+            <p>Help grow the vault! Submitted sites are <strong>automatically published</strong> after basic validation.</p>
+            <form id="submitForm">
+                <div class="form-group">
+                    <label for="siteName">Website Name</label>
+                    <input type="text" id="siteName" name="site_name" placeholder="e.g. AnimeSite.tv" required>
+                </div>
+                <div class="form-group">
+                    <label for="siteUrl">URL</label>
+                    <input type="url" id="siteUrl" name="url" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label for="siteCategory">Category</label>
+                    <select name="category" id="siteCategory" title="Select Site Category" required>
+                        <option value="Anime Streaming">Anime Streaming</option>
+                        <option value="Hentai Streaming">Hentai Streaming</option>
+                        <option value="Manga/Doujin">Manga/Doujin</option>
+                        <option value="Images/Boorus">Images/Boorus</option>
+                        <option value="Games">Games</option>
+                        <option value="Communities">Communities</option>
+                        <option value="Visual Novels">Visual Novels</option>
+                        <option value="Adult Studios">Adult Studios</option>
+                        <option value="Live Cams">Live Cams</option>
+                        <option value="Premium Creators">Premium Creators</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="siteDesc">Description</label>
+                    <textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site (at least 20 characters)..." required></textarea>
+                </div>
+                
+                <!-- Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom: 15px;"></div>
+                
+                <div id="submitStatus" class="submit-status hidden"></div>
+                <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/data.js"></script>
     <script src="js/i18n.js"></script>
@@ -219,28 +266,25 @@
         }
     </script>
 
-    <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    <!-- Sticky Bottom Ad -->
+    <div id="sticky-bottom-ad">
+        <div class="sticky-ad-inner">
+            <script type="text/javascript">
+                atOptions = {'key' : '90b220b63fa3e2eb3c163fec3b34a465', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {}};
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
+        </div>
+        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
     </div>
 
-    <!-- QR Code Widget --><img id="qr-img"
+    <!-- QR Code Widget -->
+    <div id="qr-widget" title="Scan to visit on mobile">
+        <div id="qr-label">📱 Scan Me</div>
+        <img id="qr-img"
              src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
              alt="QR Code — HentaiVault.me"
              width="160" height="160">
         <p id="qr-caption">hentaivault.me</p>
     </div>
-
-    <!-- Sticky Bottom Ad -->
-    <div id="sticky-bottom-ad">
-        <div class="sticky-ad-inner">
-            <script type="text/javascript">
-                atOptions = {'key' : '40d623b6e8e7efa7651f8c6fbeb29bef', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {}};
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
-        </div>
-        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
-    </div>
-
-    <div id="qr-widget" title="Scan to visit on mobile">
-        <div id="qr-label">📱 Scan Me</div>
 </body>
 </html>
