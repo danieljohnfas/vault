@@ -130,7 +130,7 @@ const TRANSLATIONS = {
             "Adult VR": "VR pour adultes",
             "Premium Creators": "Créateurs Premium"
         }
-,
+    },
     pt: {
         vault: "Vault", directory: "Diretório", blog: "Blog", submit: "Enviar Site", favorites: "Meus Favoritos",
         search_placeholder: "Pesquisar mais de 500 sites...", sort_by: "Ordenar por:", random: "Aleatório", popular: "Mais Popular",
@@ -275,7 +275,7 @@ const META_TRANSLATIONS = {
                 description: "アダルトサイトを閲覧する際にデバイスと個人情報を守る方法。VPN、広告ブロッカー、プライベートブラウジングの使い方。"
             }
         }
-,
+    },
     pt: {
         homepage: {
             title: "HentaiVault — Melhores Sites de Doujin, Streaming Hentai e Alternativas ao nhentai 2026",
@@ -391,7 +391,7 @@ const BLOG_H1_TRANSLATIONS = {
         "free-manga-guide.html": "変態漫画と同人を安全に読む方法",
         "nhentai-alternatives-2026.html": "nhentaiの代わりとなるおすすめサイト＆稼働中ミラー (2026年)",
         "privacy-safety-guide.html": "アダルト＆変態サイトを安全かつプライベートに閲覧する方法"
-,
+    },
     pt: {
         "best-doujin-sites-2026.html": "Os 10 Melhores Sites de Doujinshi de 2026",
         "best-streaming-2026.html": "Os 10 Melhores Sites de Streaming Hentai de 2026",
