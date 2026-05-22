@@ -254,7 +254,7 @@
                 <h2>Working Sites in Your Area</h2>
             </div>
             
-            <div id="scan-results" style="display: flex; flex-direction: column; gap: 15px;">
+            <div id="scan-results" class="grid-container">
                 <p style="color: var(--text-muted); text-align: center; padding: 40px;">Run the scan above to populate this list.</p>
             </div>
         </section>
@@ -507,13 +507,38 @@
                                             </p>`;
                         }
 
+                        const faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64`;
+                        const tagsHtml = (site.tags || []).slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('');
+                        
+                        let displayCat = site.category || 'Directory';
+                        if (isAlt) {
+                            displayCat = '✅ Verified Alt Domain';
+                        } else {
+                            displayCat = '✅ Verified Unblocked';
+                        }
+
                         const resultHTML = `
-                            <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <h3 style="margin: 0; color: var(--text-main);">${site.name}</h3>
-                                    ${subtitleHTML}
+                            <div class="card" style="position: relative;">
+                                <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
+                                    ${isAlt ? '<div class="new-badge" style="background: var(--primary);">Alt Link</div>' : ''}
                                 </div>
-                                <a href="${workingUrl}" target="_blank" class="btn-primary" style="padding: 8px 15px;">Visit</a>
+                                <div class="card-header">
+                                    <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                                    <div>
+                                        <a href="/site?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;" target="_blank">
+                                            <div class="card-title">${site.name}</div>
+                                        </a>
+                                        <div class="card-category" style="color: #00e676; font-weight: bold;">${displayCat}</div>
+                                    </div>
+                                </div>
+                                <div class="card-desc" style="margin-top: 10px;">${subtitleHTML}</div>
+                                <div class="card-tags" style="margin-top: 15px;">${tagsHtml}</div>
+                                <div class="card-footer" style="margin-top: auto; padding-top: 15px;">
+                                    <div class="rating">⭐ ${site.rating || 'N/A'}</div>
+                                    <div class="card-actions">
+                                        <a href="${workingUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site &rarr;</a>
+                                    </div>
+                                </div>
                             </div>
                         `;
                         scanResults.insertAdjacentHTML("beforeend", resultHTML);
