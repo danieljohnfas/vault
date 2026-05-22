@@ -1,0 +1,53 @@
+{
+  "name": "HentaiVault",
+  "short_name": "HentaiVault",
+  "description": "The internet's #1 directory for hentai streaming, doujin sites, and nhentai alternatives. 600+ curated, rated & free to browse.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#09090b",
+  "background_color": "#09090b",
+  "lang": "en",
+  "categories": ["entertainment", "lifestyle"],
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Manga & Doujin",
+      "short_name": "Manga",
+      "url": "/category/manga-doujin",
+      "description": "Browse manga & doujin sites"
+    },
+    {
+      "name": "Hentai Streaming",
+      "short_name": "Streaming",
+      "url": "/category/hentai-streaming",
+      "description": "Browse hentai streaming sites"
+    },
+    {
+      "name": "Images & Boorus",
+      "short_name": "Boorus",
+      "url": "/category/images-boorus",
+      "description": "Browse image boards and boorus"
+    }
+  ]
+}

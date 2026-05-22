@@ -264,5 +264,17 @@ def main():
     new_sites = validate_and_enrich(links, existing_urls)
     update_data_file(new_sites)
 
+    # Auto-regenerate sitemap.xml with hreflang tags for all 8 languages
+    try:
+        import subprocess, sys
+        sitemap_script = os.path.join(os.path.dirname(__file__), "generate_sitemap.py")
+        if os.path.exists(sitemap_script):
+            subprocess.run([sys.executable, sitemap_script], check=True)
+            print("✅ sitemap.xml regenerated automatically")
+        else:
+            print("⚠️  generate_sitemap.py not found — run it manually to update sitemap")
+    except Exception as e:
+        print(f"⚠️  Sitemap regeneration failed: {e}")
+
 if __name__ == "__main__":
     main()

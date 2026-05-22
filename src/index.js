@@ -207,9 +207,25 @@ class ReviewBodyHandler {
     else if (this.lang === 'de') fallbackText = `${localName} hat sich als erstklassiges Ziel für ${localCat}-Enthusiasten etabliert. Bei unserem Audit im Jahr 2026 stellten wir fest, dass die Seite sehr reaktionsschnell ist und mit hochwertigen Inhalten gepflegt wird.`;
     const localReviewText = escapeHTML(this.site[`longReview_${this.lang}`] || this.site.longReview) || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
 
+    // Jaccard tag similarity — score by tag overlap + category bonus
+    const jaccardSimilarity = (tagsA, tagsB) => {
+        if (!tagsA || !tagsB || tagsA.length === 0 || tagsB.length === 0) return 0;
+        const setA = new Set(tagsA);
+        const setB = new Set(tagsB);
+        const intersection = [...setA].filter(t => setB.has(t)).length;
+        const union = new Set([...tagsA, ...tagsB]).size;
+        return union === 0 ? 0 : intersection / union;
+    };
     const related = this.sitesData
-        .filter(s => s.category === this.site.category && s.id !== this.site.id)
-        .slice(0, 3);
+        .filter(s => s.id !== this.site.id)
+        .map(s => ({
+            site: s,
+            score: (s.category === this.site.category ? 0.5 : 0) +
+                   jaccardSimilarity(this.site.tags || [], s.tags || [])
+        }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3)
+        .map(r => r.site);
 
     const relatedHTML = related.map(s => {
         const sUrl = new URL(s.url);

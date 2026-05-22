@@ -1232,3 +1232,52 @@ html[lang]:not([lang='ar']) .i18n-ar,
 html[lang]:not([lang='de']) .i18n-de {
     display: none !important;
 }
+
+/* ==========================================================================
+   Infinite Scroll Sentinel & In-Feed Ads
+   ========================================================================== */
+
+/* Load More button is the scroll sentinel — invisible, just a trigger point */
+#loadMore.btn-outline {
+    opacity: 0;
+    pointer-events: none;
+    height: 1px;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    margin: 0;
+    display: block !important; /* Always in DOM as sentinel; JS controls visibility */
+}
+
+/* In-feed ad — spans full grid width as a natural banner between card rows */
+.in-feed-ad {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90px;
+    padding: 8px 0;
+    background: transparent;
+    position: relative;
+}
+
+.in-feed-ad::before {
+    content: 'Advertisement';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+/* On mobile, collapse to 320px-friendly size */
+@media (max-width: 768px) {
+    .in-feed-ad {
+        min-height: 50px;
+    }
+}

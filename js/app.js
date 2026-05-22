@@ -394,13 +394,22 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSites(false);
     }
 
+    // In-feed ad HTML (uses existing leaderboard ad key for in-feed placement)
+    const IN_FEED_AD_HTML = `
+        <div class="in-feed-ad" aria-hidden="true">
+            <script>atOptions = {'key':'40d623b6e8e7efa7651f8c6fbeb29bef','format':'iframe','height':90,'width':728,'params':{}}<\/script>
+            <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
+        </div>`;
+
     function renderSites(append = false) {
         if (!append) siteGrid.innerHTML = '';
 
         const total = currentSites.length;
-        const visible = append 
+        const pageItems = append 
             ? currentSites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
             : currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
+        // For counting purposes use total visible from slice(0, page*IPP)
+        const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
 
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         const startIdx = total === 0 ? 0 : 1;
@@ -422,8 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMoreBtn.style.display = 'none';
             return;
         }
+        // Track card index for this batch (for in-feed ad injection every 8 cards)
+        const existingCards = siteGrid.querySelectorAll('.card').length;
+        let batchIndex = 0;
 
-        visible.forEach((site) => {
+        pageItems.forEach((site) => {
             const isRecentlyAdded = (new Date() - new Date(site.addedAt)) < (7 * 24 * 60 * 60 * 1000); // 7 days
             const isNew = (new Date() - new Date(site.addedAt)) < (30 * 24 * 60 * 60 * 1000); // 30 days
             const isTrending = site.rating >= 4.8 || (isNew && site.rating >= 4.5);
@@ -498,9 +510,19 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             siteGrid.appendChild(card);
+
+            // Inject in-feed ad every 8 cards (counting from start of full grid)
+            const globalIndex = existingCards + batchIndex + 1;
+            if (globalIndex % 8 === 0) {
+                const adWrapper = document.createElement('div');
+                adWrapper.innerHTML = IN_FEED_AD_HTML;
+                siteGrid.appendChild(adWrapper.firstElementChild);
+            }
+            batchIndex++;
         });
 
-        loadMoreBtn.style.display = (visible.length < total) ? 'inline-block' : 'none';
+        // Keep loadMore as invisible sentinel for IntersectionObserver
+        loadMoreBtn.style.display = (visible.length < total) ? 'block' : 'none';
     }
 
     function toggleFavorite(id, btn) {
@@ -521,16 +543,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Infinite Scroll (Load Automatically)
+    // Infinite Scroll — fully automatic, button is invisible sentinel
+    // Users never see the button; cards load seamlessly as they scroll
     const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
             currentPage++;
             renderSites(true);
         }
-    }, { rootMargin: '300px' });
+    }, { rootMargin: '400px' }); // Trigger 400px before reaching bottom
 
     observer.observe(loadMoreBtn);
 
+    // Keep click as fallback
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
         renderSites(true);
