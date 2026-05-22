@@ -1220,3 +1220,15 @@ body {
 .legal-content ul {
     padding-left: 20px;
 }
+/* i18n dynamic visibility */
+:root:not([lang]) .i18n-fr, :root:not([lang]) .i18n-es, :root:not([lang]) .i18n-jp, :root:not([lang]) .i18n-pt, :root:not([lang]) .i18n-hi, :root:not([lang]) .i18n-ar, :root:not([lang]) .i18n-de { display: none !important; }
+html[lang]:not([lang='en']) .i18n-en,
+html[lang]:not([lang='fr']) .i18n-fr,
+html[lang]:not([lang='es']) .i18n-es,
+html[lang]:not([lang='jp']) .i18n-jp,
+html[lang]:not([lang='pt']) .i18n-pt,
+html[lang]:not([lang='hi']) .i18n-hi,
+html[lang]:not([lang='ar']) .i18n-ar,
+html[lang]:not([lang='de']) .i18n-de {
+    display: none !important;
+}

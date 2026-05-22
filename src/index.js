@@ -171,9 +171,28 @@ class ReviewBodyHandler {
             expertReview: "専門家によるレビュー", pros: "メリット", cons: "デメリット", conclusion: "結論",
             conclusionText: `${this.site.category}の信頼できるソースをお探しの場合は、${this.site.name}が最適です。使いやすさとコンテンツの多様性により、当ディレクトリで高い評価を得ています。`,
             ready: "探索する準備はできましたか？", visitBelow: "以下の公式サイトをご覧ください。", visitSite: `${this.site.name}を訪問する &rarr;`, similar: "あなたにおすすめの類似サイト", rating: "評価: "
+        },
+        pt: {
+            expertReview: "Revisão de Especialista", pros: "Prós", cons: "Contras", conclusion: "Conclusão",
+            conclusionText: `Se você está procurando uma fonte confiável para ${this.site.category.toLowerCase()}, ${this.site.name} é uma escolha de primeira linha. Ele tem uma classificação alta em nosso diretório por sua facilidade de uso e variedade de conteúdo.`,
+            ready: "Pronto para explorar?", visitBelow: "Visite o site oficial abaixo.", visitSite: `Visitar ${this.site.name} &rarr;`, similar: "Sites semelhantes que você pode gostar", rating: "Avaliação: "
+        },
+        hi: {
+            expertReview: "विशेषज्ञ समीक्षा", pros: "खूबियां", cons: "खामियां", conclusion: "निष्कर्ष",
+            conclusionText: `यदि आप ${this.site.category.toLowerCase()} के लिए एक विश्वसनीय स्रोत की तलाश कर रहे हैं, तो ${this.site.name} एक शीर्ष विकल्प है। उपयोग में आसानी और सामग्री की विविधता के लिए यह हमारी निर्देशिका में उच्च स्थान पर है।`,
+            ready: "खोजने के लिए तैयार हैं?", visitBelow: "नीचे आधिकारिक साइट पर जाएं।", visitSite: `${this.site.name} पर जाएं &rarr;`, similar: "समान साइटें जो आपको पसंद आ सकती हैं", rating: "रेटिंग: "
+        },
+        ar: {
+            expertReview: "مراجعة الخبراء", pros: "الإيجابيات", cons: "السلبيات", conclusion: "استنتاج",
+            conclusionText: `إذا كنت تبحث عن مصدر موثوق لـ ${this.site.category.toLowerCase()} ، فإن ${this.site.name} يعد خيارًا من الدرجة الأولى. يحتل مرتبة عالية في دليلنا لسهولة استخدامه وتنوع محتواه.`,
+            ready: "هل أنت مستعد للاستكشاف؟", visitBelow: "قم بزيارة الموقع الرسمي أدناه.", visitSite: `زيارة ${this.site.name} &rarr;`, similar: "مواقع مشابهة قد تعجبك", rating: "التقييم: "
+        },
+        de: {
+            expertReview: "Expertenbewertung", pros: "Vorteile", cons: "Nachteile", conclusion: "Fazit",
+            conclusionText: `Wenn Sie nach einer zuverlässigen Quelle für ${this.site.category.toLowerCase()} suchen, ist ${this.site.name} eine erstklassige Wahl. Es rangiert in unserem Verzeichnis hoch wegen seiner Benutzerfreundlichkeit und Inhaltsvielfalt.`,
+            ready: "Bereit zum Erkunden?", visitBelow: "Besuchen Sie die offizielle Website unten.", visitSite: `${this.site.name} besuchen &rarr;`, similar: "Ähnliche Seiten, die Ihnen gefallen könnten", rating: "Bewertung: "
         }
     };
-
     const l = labels[this.lang] || labels.en;
     const localName = escapeHTML(this.site[`name_${this.lang}`] || this.site.name);
     const localCat  = escapeHTML(this.site.category);
@@ -182,6 +201,10 @@ class ReviewBodyHandler {
     if (this.lang === 'fr') fallbackText = `${localName} s'est imposé comme une destination de premier choix pour les passionnés de ${localCat.toLowerCase()}. Lors de notre audit de 2026, nous avons constaté que le site était très réactif et maintenu avec un contenu de haute qualité.`;
     else if (this.lang === 'es') fallbackText = `${localName} se ha establecido como un destino de primer nivel para los entusiastas de ${localCat.toLowerCase()}. En nuestra auditoría de 2026, encontramos que el sitio es muy receptivo y se mantiene con contenido de alta calidad.`;
     else if (this.lang === 'jp') fallbackText = `${localName}は、${localCat}ファンのための主要な目的地として定着しています。2026年の監査では、サイトの応答性が非常に高く、高品質なコンテンツが維持されていることが確認されました。`;
+    else if (this.lang === 'pt') fallbackText = `${localName} estabeleceu-se como um destino de primeira linha para entusiastas de ${localCat.toLowerCase()}. Em nossa auditoria de 2026, descobrimos que o site é altamente responsivo e mantido com conteúdo de alta qualidade.`;
+    else if (this.lang === 'hi') fallbackText = `${localName} ने ${localCat} के प्रति उत्साही लोगों के लिए खुद को एक प्रमुख गंतव्य के रूप में स्थापित किया है। हमारे 2026 के ऑडिट में, हमने पाया कि साइट अत्यधिक उत्तरदायी है और उच्च गुणवत्ता वाली सामग्री के साथ बनाए रखी गई है।`;
+    else if (this.lang === 'ar') fallbackText = `أثبتت ${localName} نفسها كوجهة رئيسية لعشاق ${localCat}. في مراجعتنا لعام 2026، وجدنا أن الموقع سريع الاستجابة ويتم الحفاظ عليه بمحتوى عالي الجودة.`;
+    else if (this.lang === 'de') fallbackText = `${localName} hat sich als erstklassiges Ziel für ${localCat}-Enthusiasten etabliert. Bei unserem Audit im Jahr 2026 stellten wir fest, dass die Seite sehr reaktionsschnell ist und mit hochwertigen Inhalten gepflegt wird.`;
     const localReviewText = escapeHTML(this.site[`longReview_${this.lang}`] || this.site.longReview) || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
 
     const related = this.sitesData
@@ -258,6 +281,36 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Detect Geo Lang
+    const cookieHeader = request.headers.get('Cookie') || '';
+    const langCookieMatch = cookieHeader.match(/hv_lang=([a-z]{2})/);
+    const cookieLang = langCookieMatch ? langCookieMatch[1] : null;
+
+    let detectedLang = 'en';
+    const country = request.cf ? request.cf.country : null;
+    if (country === 'BR') detectedLang = 'pt';
+    else if (country === 'IN') detectedLang = 'hi';
+    else if (country === 'MA') detectedLang = 'ar';
+    else if (['DE', 'AT', 'CH'].includes(country)) detectedLang = 'de';
+    else if (country === 'FR') detectedLang = 'fr';
+    else if (['ES', 'MX', 'AR', 'CO', 'CL', 'PE'].includes(country)) detectedLang = 'es';
+    else if (country === 'JP') detectedLang = 'jp';
+
+    const effectiveLang = url.searchParams.get('lang') || cookieLang || detectedLang;
+
+    // Geo-Routing for top-level pages if no cookie and no query param exists
+    const isHtml = url.pathname === '/' || url.pathname.endsWith('.html') || url.pathname.includes('/category/') || url.pathname.includes('/blog/');
+    if (isHtml && !cookieLang && !url.searchParams.has('lang')) {
+        url.searchParams.set('lang', effectiveLang);
+        return new Response(null, {
+            status: 302,
+            headers: {
+                'Location': url.toString(),
+                'Set-Cookie': `hv_lang=${effectiveLang}; Path=/; Max-Age=31536000`
+            }
+        });
+    }
+
     // ── Route: IndexNow key verification ────────────────────────────────────
     if (env.INDEXNOW_KEY && url.pathname === `/${env.INDEXNOW_KEY}.txt`) {
       return new Response(env.INDEXNOW_KEY, {
@@ -313,7 +366,7 @@ export default {
 
       const canonicalUrl = `https://hentaivault.me/site?id=${site.id}`;
       const titleText = `${site.name} Review | HentaiVault`;
-      const lang = url.searchParams.get('lang') || 'en';
+      const lang = effectiveLang;
 
       const rewriter = new HTMLRewriter()
         .on('title', new TitleHandler(titleText))

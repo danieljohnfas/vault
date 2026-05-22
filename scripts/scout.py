@@ -162,6 +162,10 @@ def validate_and_enrich(links, existing_urls):
                 desc_es = translate_text(desc, 'es')
                 desc_jp = translate_text(desc, 'ja')
                 desc_fr = translate_text(desc, 'fr')
+                desc_pt = translate_text(desc, 'pt')
+                desc_hi = translate_text(desc, 'hi')
+                desc_ar = translate_text(desc, 'ar')
+                desc_de = translate_text(desc, 'de')
 
                 category = "Communities"
                 low_title = link['name'].lower()
@@ -183,6 +187,10 @@ def validate_and_enrich(links, existing_urls):
                     "description_es": desc_es,
                     "description_jp": desc_jp,
                     "description_fr": desc_fr,
+                    "description_pt": desc_pt,
+                    "description_hi": desc_hi,
+                    "description_ar": desc_ar,
+                    "description_de": desc_de,
                     "tags": ["Scouted", "Active", "New"],
                     "rating": 0,
                     "addedAt": datetime.datetime.now().strftime("%Y-%m-%d")
