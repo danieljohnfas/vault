@@ -95,16 +95,12 @@ def scout_from_search():
     # Updated queries based on Google Search Console performance data
     search_queries = [
         "best doujin sites 2026",
-        "best doujinshi websites",
         "best hentai streaming sites 2026",
-        "nhentai alternatives",
-        "hanime alternatives",
         "best hentai boorus",
-        "game free hentai browser japan",
-        "uncensored hentai games list",
-        "best hentai manga sites",
-        "anime torrent sites",
-        "site:t.me hentai channels"
+        "anime streaming sites",
+        "where to read hentai manga",
+        "visual novel adult games",
+        "hentai communities"
     ]
     
     for query in search_queries:
@@ -165,16 +161,17 @@ def validate_and_enrich(links, existing_urls):
                 print(f"Processing translations for: {link['name']}")
                 desc_es = translate_text(desc, 'es')
                 desc_jp = translate_text(desc, 'ja')
+                desc_fr = translate_text(desc, 'fr')
 
-                category = "Uncategorized"
+                category = "Communities"
                 low_title = link['name'].lower()
                 low_url = url.lower()
                 
                 if "t.me" in low_url: category = "Communities"
                 elif any(k in low_title or k in low_url for k in ["anime", "stream", "episodes", "watch"]): category = "Anime Streaming"
-                elif any(k in low_title or k in low_url for k in ["hentai", "xxx", "porn", "adult"]): category = "Hentai Streaming"
-                elif any(k in low_title or k in low_url for k in ["manga", "doujin", "comic", "read"]): category = "Manga/Doujin"
-                elif any(k in low_title or k in low_url for k in ["game", "vn", "eroge", "play"]): category = "Games"
+                elif any(k in low_title or k in low_url for k in ["hentai", "xxx", "porn", "adult", "tube", "video"]): category = "Hentai Streaming"
+                elif any(k in low_title or k in low_url for k in ["manga", "doujin", "comic", "read", "book"]): category = "Manga/Doujin"
+                elif any(k in low_title or k in low_url for k in ["game", "vn", "eroge", "play", "rpg"]): category = "Games"
                 elif any(k in low_title or k in low_url for k in ["booru", "image", "gallery", "pic"]): category = "Images/Boorus"
 
                 site = {
@@ -185,6 +182,7 @@ def validate_and_enrich(links, existing_urls):
                     "description": desc,
                     "description_es": desc_es,
                     "description_jp": desc_jp,
+                    "description_fr": desc_fr,
                     "tags": ["Scouted", "Active", "New"],
                     "rating": 0,
                     "addedAt": datetime.datetime.now().strftime("%Y-%m-%d")
