@@ -26,6 +26,9 @@ jobs:
         pip install -r scripts/requirements.txt
 
     - name: 1. Scout & Translate
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        GOOGLE_CX: ${{ secrets.GOOGLE_CX }}
       run: python scripts/scout.py
 
     - name: 2. Health Check

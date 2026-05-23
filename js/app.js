@@ -309,6 +309,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         searchInput.addEventListener('input', debouncedSearch);
 
+    const regionSelect = document.getElementById('regionSelect');
+    if (regionSelect) {
+        regionSelect.addEventListener('change', () => {
+            resetPagination();
+            applyFiltersAndSort();
+        });
+    }
+
+
         sortSelect.addEventListener('change', (e) => {
             currentSort = e.target.value;
             applyFiltersAndSort();
@@ -475,7 +484,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Tags filter (Match ALL - AND logic for power users)
             const matchesTags = activeTags.length === 0 || activeTags.every(t => site.tags.includes(t));
 
-            return matchesSearch && matchesCategory && matchesTags;
+            // Region filter (if active on the page)
+            const regionSelect = document.getElementById('regionSelect');
+            let matchesRegion = true;
+            if (regionSelect && regionSelect.value !== 'All') {
+                matchesRegion = site.evades_blocks_in && site.evades_blocks_in.includes(regionSelect.value);
+            }
+
+            return matchesSearch && matchesCategory && matchesTags && matchesRegion;
         });
 
         // Sort

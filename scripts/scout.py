@@ -60,7 +60,13 @@ def scout_from_directories():
         "https://thehentaiworld.com/hentai-sites/",
         "https://hentai-cosplay.com/",
         "https://www.hentaicloud.com/",
-        "https://www.hentaihome.net/"
+        "https://www.hentaihome.net/",
+        "https://fap.directory/",
+        "https://nsfw-links.com/",
+        "https://pornsites.xxx/",
+        "https://www.adult-site-directory.com/",
+        "https://anime-index.org/",
+        "https://www.fakku.net/links"
     ]
     
     for url in sources:
@@ -113,26 +119,61 @@ def generate_dynamic_queries():
             
     return list(queries)
 
+def scout_with_google_api(query):
+    api_key = os.environ.get('GOOGLE_API_KEY')
+    cx = os.environ.get('GOOGLE_CX')
+    if not api_key or not cx: return []
+    discovered = []
+    try:
+        res = requests.get(
+            "https://www.googleapis.com/customsearch/v1",
+            params={"key": api_key, "cx": cx, "q": query, "num": 10},
+            timeout=10
+        )
+        if res.status_code == 200:
+            data = res.json()
+            for r in data.get("items", []):
+                discovered.append({"name": r.get("title", ""), "url": r.get("link", "")})
+    except Exception as e:
+        print(f"Google API error: {e}")
+    return discovered
+
+def scout_with_ddg_lib(query):
+    discovered = []
+    try:
+        from duckduckgo_search import DDGS
+        with DDGS() as ddgs:
+            results = ddgs.text(query, max_results=10)
+            if results:
+                for r in results:
+                    discovered.append({"name": r.get("title", ""), "url": r.get("href", "")})
+    except ImportError:
+        print("duckduckgo_search not installed.")
+    except Exception as e:
+        print(f"DDG lib error: {e}")
+    return discovered
+
 def scout_from_search():
     discovered = []
     search_queries = generate_dynamic_queries()
     print(f"Generated {len(search_queries)} dynamic search queries.")
     
+    use_official_api = bool(os.environ.get('GOOGLE_API_KEY') and os.environ.get('GOOGLE_CX'))
+    print(f"Google Custom Search API configured: {use_official_api}")
+    
     for query in search_queries:
         print(f"Searching: {query}")
         try:
-            search_url = f"https://duckduckgo.com/lite/?q={query.replace(' ', '+')}"
-            res = session.get(search_url, headers=HEADERS, timeout=15)
-            if res.status_code == 200:
-                soup = BeautifulSoup(res.text, 'html.parser')
-                # In DDG Lite, results are in tables
-                for link in soup.find_all('a', class_='result-link', href=True):
-                    href = link.get('href')
-                    title = link.get_text().strip()
-                    if href and href.startswith("http") and "duckduckgo" not in href:
-                        discovered.append({"name": title, "url": href})
+            results = []
+            if use_official_api:
+                results = scout_with_google_api(query)
             
-            time.sleep(random.uniform(3, 6))
+            # Fallback to DDG library if Google returned nothing or is unconfigured
+            if not results:
+                results = scout_with_ddg_lib(query)
+                
+            discovered.extend(results)
+            time.sleep(random.uniform(2, 4))
         except Exception as e:
             print(f"Search failed for {query}: {e}")
             
