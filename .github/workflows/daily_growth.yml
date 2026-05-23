@@ -27,8 +27,7 @@ jobs:
 
     - name: 1. Scout & Translate
       env:
-        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        GOOGLE_CX: ${{ secrets.GOOGLE_CX }}
+        TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
       run: python scripts/scout.py
 
     - name: 2. Health Check

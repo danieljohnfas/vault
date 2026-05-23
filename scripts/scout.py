@@ -119,23 +119,22 @@ def generate_dynamic_queries():
             
     return list(queries)
 
-def scout_with_google_api(query):
-    api_key = os.environ.get('GOOGLE_API_KEY')
-    cx = os.environ.get('GOOGLE_CX')
-    if not api_key or not cx: return []
+def scout_with_tavily_api(query):
+    api_key = os.environ.get('TAVILY_API_KEY')
+    if not api_key: return []
     discovered = []
     try:
-        res = requests.get(
-            "https://www.googleapis.com/customsearch/v1",
-            params={"key": api_key, "cx": cx, "q": query, "num": 10},
+        res = requests.post(
+            "https://api.tavily.com/search",
+            json={"api_key": api_key, "query": query, "max_results": 10},
             timeout=10
         )
         if res.status_code == 200:
             data = res.json()
-            for r in data.get("items", []):
-                discovered.append({"name": r.get("title", ""), "url": r.get("link", "")})
+            for r in data.get("results", []):
+                discovered.append({"name": r.get("title", ""), "url": r.get("url", "")})
     except Exception as e:
-        print(f"Google API error: {e}")
+        print(f"Tavily API error: {e}")
     return discovered
 
 def scout_with_ddg_lib(query):
@@ -158,17 +157,17 @@ def scout_from_search():
     search_queries = generate_dynamic_queries()
     print(f"Generated {len(search_queries)} dynamic search queries.")
     
-    use_official_api = bool(os.environ.get('GOOGLE_API_KEY') and os.environ.get('GOOGLE_CX'))
-    print(f"Google Custom Search API configured: {use_official_api}")
+    use_official_api = bool(os.environ.get('TAVILY_API_KEY'))
+    print(f"Tavily API Key configured: {use_official_api}")
     
     for query in search_queries:
         print(f"Searching: {query}")
         try:
             results = []
             if use_official_api:
-                results = scout_with_google_api(query)
+                results = scout_with_tavily_api(query)
             
-            # Fallback to DDG library if Google returned nothing or is unconfigured
+            # Fallback to DDG library if Tavily returned nothing or is unconfigured
             if not results:
                 results = scout_with_ddg_lib(query)
                 
