@@ -222,16 +222,19 @@ def validate_and_enrich(links, existing_urls):
                 desc_ar = translate_text(desc, 'ar')
                 desc_de = translate_text(desc, 'de')
 
-                category = "Communities"
+                category = "Communities & Forums"
                 low_title = link['name'].lower()
                 low_url = url.lower()
                 
-                if "t.me" in low_url: category = "Communities"
+                if "t.me" in low_url: category = "Communities & Forums"
                 elif any(k in low_title or k in low_url for k in ["anime", "stream", "episodes", "watch"]): category = "Anime Streaming"
                 elif any(k in low_title or k in low_url for k in ["hentai", "xxx", "porn", "adult", "tube", "video"]): category = "Hentai Streaming"
-                elif any(k in low_title or k in low_url for k in ["manga", "doujin", "comic", "read", "book"]): category = "Manga/Doujin"
-                elif any(k in low_title or k in low_url for k in ["game", "vn", "eroge", "play", "rpg"]): category = "Games"
-                elif any(k in low_title or k in low_url for k in ["booru", "image", "gallery", "pic"]): category = "Images/Boorus"
+                elif any(k in low_title or k in low_url for k in ["manga", "doujin", "comic", "read", "book"]): category = "Manga & Doujinshi"
+                elif any(k in low_title or k in low_url for k in ["game", "vn", "eroge", "play", "rpg"]): category = "Games & Visual Novels"
+                elif any(k in low_title or k in low_url for k in ["booru", "image", "gallery", "pic"]): category = "Image Boards (Boorus)"
+                elif any(k in low_title or k in low_url for k in ["download", "torrent", "mega", "drive"]): category = "Downloads & Torrents"
+                elif any(k in low_title or k in low_url for k in ["vr", "interactive", "3d"]): category = "Immersive & Interactive"
+                elif any(k in low_title or k in low_url for k in ["patreon", "fansly", "onlyfans", "creator"]): category = "Creator Platforms"
 
                 site = {
                     "id": str(uuid.uuid4())[:8],
