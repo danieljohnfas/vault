@@ -302,6 +302,25 @@ def update_data_file(new_sites):
         f.write(new_content)
     print(f"Successfully added {len(new_sites)} sites to {DATA_FILE}")
 
+def update_html_counts(total_count):
+    import glob
+    import re
+    pattern = re.compile(r'\b\d+\+ curated')
+    replacement = f"{total_count}+ curated"
+    count = 0
+    for filepath in glob.glob('**/*.html', recursive=True):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read()
+            if pattern.search(content):
+                new_content = pattern.sub(replacement, content)
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                count += 1
+        except Exception:
+            pass
+    print(f"Updated site counts to {total_count}+ in {count} HTML files.")
+
 def main():
     print(f"Starting Scout... Target: {TARGET_COUNT} new sites.")
     try:
@@ -332,6 +351,9 @@ def main():
             pass
             
     update_data_file(new_sites)
+    
+    total_count = len(existing_urls) + len(new_sites)
+    update_html_counts(total_count)
 
     # Auto-regenerate sitemap.xml with hreflang tags for all 8 languages
     try:
