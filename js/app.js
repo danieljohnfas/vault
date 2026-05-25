@@ -606,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
                 </div>
                 <div class="card-header">
-                    <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                    <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>
                         <a href="/site?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
                             <div class="card-title">${localName}</div>
