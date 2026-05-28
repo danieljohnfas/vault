@@ -1485,3 +1485,19 @@ html[lang]:not([lang='de']) .i18n-de {
     color: var(--primary-color);
     transform: scale(1.1);
 }
+
+/* Mobile-only 300x250 ad — hide on desktop */
+.mobile-ad-300 {
+    display: flex;
+}
+
+@media (min-width: 900px) {
+    .mobile-ad-300 {
+        display: none;
+    }
+}
+
+/* Missing variable: --radius-xl */
+:root {
+    --radius-xl: 24px;
+}
