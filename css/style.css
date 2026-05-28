@@ -1409,8 +1409,8 @@ html[lang]:not([lang='de']) .i18n-de {
 }
 
 .share-modal-content {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 24px;
     width: 90%;
@@ -1457,9 +1457,9 @@ html[lang]:not([lang='de']) .i18n-de {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: var(--bg-dark);
+    background: var(--bg-surface-elevated);
     color: var(--text-main);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;
@@ -1469,9 +1469,9 @@ html[lang]:not([lang='de']) .i18n-de {
 }
 
 .btn-share-action:hover {
-    background: var(--primary-color);
+    background: var(--primary);
     color: white;
-    border-color: var(--primary-color);
+    border-color: var(--primary);
 }
 
 .btn-share-icon {
@@ -1484,7 +1484,7 @@ html[lang]:not([lang='de']) .i18n-de {
 }
 
 .btn-share-icon:hover {
-    color: var(--primary-color);
+    color: var(--primary);
     transform: scale(1.1);
 }
 

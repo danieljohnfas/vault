@@ -57,6 +57,7 @@ self.addEventListener('fetch', event => {
     // Skip non-GET, cross-origin ads, and non-http requests
     if (event.request.method !== 'GET') return;
     if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+    if (url.pathname.startsWith('/api/')) return; // Don't cache dynamic API requests
     if (isAdRequest(url)) return; // Let ads fall through to network without caching
 
     const isHTML = event.request.headers.get('accept')?.includes('text/html') ||
@@ -87,7 +88,9 @@ self.addEventListener('fetch', event => {
                             caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
                         }
                         return response;
-                    }).catch(() => {});
+                    }).catch(error => {
+                        console.error('Service Worker: Background update failed for', event.request.url, error);
+                    });
                     return cached;
                 }
                 return fetch(event.request).then(response => {

@@ -18,6 +18,7 @@ wrangler.jsonc
 .assetsignore
 package.json
 package-lock.json
-*.js
+/*.js
 !sw.js
 temp_data.js
+node_modules/

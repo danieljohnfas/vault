@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (localStorage.getItem('hv_age_verified') === 'true') {
             if (ageGate) ageGate.classList.add('hidden');
         } else {
-            document.body.style.overflow = 'hidden'; // Block scrolling
+            if (ageGate) document.body.style.overflow = 'hidden'; // Block scrolling ONLY if ageGate exists
         }
         if (btnEnter) {
             btnEnter.addEventListener('click', () => {
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 recentShelf.innerHTML = recentSites.map(site => `
                     <a href="/site?id=${site.id}" style="display:flex; flex-direction:column; align-items:center; min-width: 80px; text-align:center; text-decoration:none; gap:6px; transition:transform 0.2s;">
                         <img src="https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
-                        <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${site.name}</span>
+                        <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${escapeHTML(site.name)}</span>
                     </a>
                 `).join('');
             }
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { console.error("Recently viewed failed", e); }
 
     // --- Initialization ---
-    if (siteGrid) {
+    if (siteGrid && sortSelect && categoryFiltersContainer && tagFiltersContainer) {
         initFilters();
     }
 
@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
                    currentLang === 'jp' ? "フィルターに一致するサイトが見つかりませんでした。" :
                    "No sites found matching your filters.");
             siteGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px; line-height: 1.6;">${emptyMsg}</p>`;
-            loadMoreBtn.style.display = 'none';
+            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
             return;
         }
         // Track card index for this batch (for in-feed ad injection every 8 cards)
@@ -625,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
-                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${site.url}">${t.visit} &rarr;</a>
+                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${escapeHTML(site.url)}">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;
@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Keep loadMore as invisible sentinel for IntersectionObserver
-        loadMoreBtn.style.display = (visible.length < total) ? 'block' : 'none';
+        if (loadMoreBtn) loadMoreBtn.style.display = (visible.length < total) ? 'block' : 'none';
     }
 
     function toggleFavorite(id, btn) {
@@ -734,7 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn    = document.getElementById('submitBtn');
     const submitStatus = document.getElementById('submitStatus');
 
-    if (submitForm) {
+    if (submitForm && submitBtn && submitStatus) {
     submitForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
