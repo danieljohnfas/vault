@@ -6,7 +6,9 @@
     /* Brand Colors - Vibrant Cyberpunk/Synthwave feel */
     --primary: #ff2a5f;
     --primary-hover: #ff003c;
+    --primary-light: rgba(255, 42, 95, 0.1);
     --secondary: #00e5ff;
+    --secondary-light: rgba(0, 229, 255, 0.1);
     --accent: #b026ff;
 
     /* Dark Theme Surfaces */

@@ -310,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', debouncedSearch);
 
     const regionSelect = document.getElementById('regionSelect');
+    const resetPagination = () => { currentPage = 1; };
     if (regionSelect) {
         regionSelect.addEventListener('change', () => {
             resetPagination();
@@ -540,7 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         const startIdx = total === 0 ? 0 : 1;
         const countText = `${t.showing} ${startIdx} - ${visible.length} ${t.of} ${total} ${t.sites}`;
-        resultsCount.innerText = countText;
+        if (resultsCount) resultsCount.innerText = countText;
 
         const mobileCount = document.getElementById('mobileResultsCount');
         if (mobileCount) mobileCount.innerText = countText;
@@ -711,26 +712,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Infinite Scroll — fully automatic, button is invisible sentinel
     // Users never see the button; cards load seamlessly as they scroll
-    const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
+    if (loadMoreBtn) {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
+                currentPage++;
+                renderSites(true);
+            }
+        }, { rootMargin: '400px' }); // Trigger 400px before reaching bottom
+
+        observer.observe(loadMoreBtn);
+
+        // Keep click as fallback
+        loadMoreBtn.addEventListener('click', () => {
             currentPage++;
             renderSites(true);
-        }
-    }, { rootMargin: '400px' }); // Trigger 400px before reaching bottom
-
-    observer.observe(loadMoreBtn);
-
-    // Keep click as fallback
-    loadMoreBtn.addEventListener('click', () => {
-        currentPage++;
-        renderSites(true);
-    });
+        });
+    }
 
     // ── Form Submission → /api/submit (Cloudflare Pages Function) ────────────
     const submitForm   = document.getElementById('submitForm');
     const submitBtn    = document.getElementById('submitBtn');
     const submitStatus = document.getElementById('submitStatus');
 
+    if (submitForm) {
     submitForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -772,6 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Submit to Vault';
         }
     });
+    }
 
     function showStatus(type, message) {
         submitStatus.textContent     = message;
@@ -804,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById("searchInput");
         const tray = document.getElementById("searchAutocomplete");
         if (!input || !tray) return;
-        input.oninput = (e) => {
+        input.addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase().trim();
             if (val.length < 2) {
                 tray.classList.remove("active");
@@ -828,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 tray.classList.remove("active");
             }
-        };
+        });
         document.addEventListener("click", (e) => {
             if (!input.contains(e.target) && !tray.contains(e.target)) {
                 tray.classList.remove("active");

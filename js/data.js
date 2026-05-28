@@ -1,10 +1,11 @@
 // data.js
-// Safe mode for compliance review - 100% Legal entities only.
-
 const sitesData = [
     {
         "id": "kodanshacomics",
-        "evades_blocks_in": ["Australia", "Brazil"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil"
+        ],
         "name": "Kodansha Comics",
         "url": "https://kodansha.us",
         "category": "Manga & Doujinshi",
@@ -39,7 +40,11 @@ const sitesData = [
     },
     {
         "id": "hidive",
-        "evades_blocks_in": ["United Kingdom", "Germany", "Russia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Germany",
+            "Russia"
+        ],
         "name": "HIDIVE",
         "url": "https://www.hidive.com",
         "category": "Anime Streaming",
@@ -74,7 +79,9 @@ const sitesData = [
     },
     {
         "id": "kanopy",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "Kanopy",
         "url": "https://www.kanopy.com",
         "category": "Anime Streaming",
@@ -177,7 +184,10 @@ const sitesData = [
     },
     {
         "id": "hoopla",
-        "evades_blocks_in": ["Australia", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "United Kingdom"
+        ],
         "name": "Hoopla",
         "url": "https://www.hoopladigital.com",
         "category": "Anime Streaming",
@@ -212,7 +222,11 @@ const sitesData = [
     },
     {
         "id": "museasiayoutube",
-        "evades_blocks_in": ["Russia", "Germany", "United States"],
+        "evades_blocks_in": [
+            "Russia",
+            "Germany",
+            "United States"
+        ],
         "name": "Muse Asia (YouTube)",
         "url": "https://www.youtube.com/c/MuseAsia",
         "category": "Anime Streaming",
@@ -349,7 +363,11 @@ const sitesData = [
     },
     {
         "id": "plutotvanime",
-        "evades_blocks_in": ["Brazil", "India", "United Kingdom"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "United Kingdom"
+        ],
         "name": "Pluto TV Anime",
         "url": "https://pluto.tv/en/live-tv/anime-all-day",
         "category": "Anime Streaming",
@@ -358,7 +376,7 @@ const sitesData = [
         "longReview": "In our comprehensive 2026 audit, Pluto TV Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Pluto TV Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
         "description_es": "Pluto TV Anime es una plataforma de alta autoridad especializada en anime streaming.",
         "description_jp": "Pluto TV Animeは、Anime Streamingを専門とする高品質なプラットフォームです。",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Free",
             "Official",
@@ -384,7 +402,11 @@ const sitesData = [
     },
     {
         "id": "anioneyoutube",
-        "evades_blocks_in": ["Australia", "United Kingdom", "Russia"],
+        "evades_blocks_in": [
+            "Australia",
+            "United Kingdom",
+            "Russia"
+        ],
         "name": "Ani-One (YouTube)",
         "url": "https://www.youtube.com/c/AniOneAsia",
         "category": "Anime Streaming",
@@ -419,7 +441,11 @@ const sitesData = [
     },
     {
         "id": "amazonprimevideo",
-        "evades_blocks_in": ["Brazil", "India", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "Australia"
+        ],
         "name": "Amazon Prime Video",
         "url": "https://www.amazon.com/primevideo",
         "category": "Anime Streaming",
@@ -488,7 +514,10 @@ const sitesData = [
     },
     {
         "id": "vuduanime",
-        "evades_blocks_in": ["Australia", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Germany"
+        ],
         "name": "Vudu Anime",
         "url": "https://www.vudu.com",
         "category": "Anime Streaming",
@@ -497,7 +526,7 @@ const sitesData = [
         "longReview": "In our comprehensive 2026 audit, Vudu Anime emerged as a top-tier destination for anime streaming. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to anime streaming, Vudu Anime provides a robust set of features and a massive library that makes it a must-visit in our directory.",
         "description_es": "Vudu Anime es una plataforma de alta autoridad especializada en anime streaming.",
         "description_jp": "Vudu Animeは、Anime Streamingを専門とする高品質なプラットフォームです。",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Official",
             "Paid",
@@ -523,7 +552,11 @@ const sitesData = [
     },
     {
         "id": "itchio",
-        "evades_blocks_in": ["India", "Germany", "Russia"],
+        "evades_blocks_in": [
+            "India",
+            "Germany",
+            "Russia"
+        ],
         "name": "Itch.io",
         "url": "https://itch.io/games/nsfw",
         "category": "Games & Visual Novels",
@@ -634,7 +667,7 @@ const sitesData = [
         "longReview": "In our comprehensive 2026 audit, Coolmic emerged as a top-tier destination for manga/doujin. The platform offers a seamless user experience with high-quality content that is updated frequently. Whether you are a long-time fan or new to manga/doujin, Coolmic provides a robust set of features and a massive library that makes it a must-visit in our directory.",
         "description_es": "Coolmic es una plataforma de alta autoridad especializada en manga/doujin.",
         "description_jp": "Coolmicは、Manga/Doujinを専門とする高品質なプラットフォームです。",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Official",
             "Paid",
@@ -660,7 +693,9 @@ const sitesData = [
     },
     {
         "id": "nisa",
-        "evades_blocks_in": ["Germany"],
+        "evades_blocks_in": [
+            "Germany"
+        ],
         "name": "NISA",
         "url": "https://nisamerica.com",
         "category": "Games & Visual Novels",
@@ -1001,7 +1036,9 @@ const sitesData = [
     },
     {
         "id": "iqiyi",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "iQIYI",
         "url": "https://www.iq.com",
         "category": "Anime Streaming",
@@ -1036,7 +1073,9 @@ const sitesData = [
     },
     {
         "id": "crunchyrollstore",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Crunchyroll Store",
         "url": "https://store.crunchyroll.com",
         "category": "Communities & Forums",
@@ -1309,7 +1348,10 @@ const sitesData = [
     },
     {
         "id": "goodsmile",
-        "evades_blocks_in": ["Australia", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Germany"
+        ],
         "name": "Good Smile",
         "url": "https://www.goodsmile.info",
         "category": "Communities & Forums",
@@ -1548,7 +1590,11 @@ const sitesData = [
     },
     {
         "id": "myanimelist",
-        "evades_blocks_in": ["Brazil", "United Kingdom", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United Kingdom",
+            "India"
+        ],
         "name": "MyAnimeList",
         "url": "https://myanimelist.net",
         "category": "Communities & Forums",
@@ -1617,7 +1663,9 @@ const sitesData = [
     },
     {
         "id": "baddragon",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Bad Dragon",
         "url": "https://bad-dragon.com",
         "category": "Immersive & Interactive",
@@ -1720,7 +1768,10 @@ const sitesData = [
     },
     {
         "id": "gogcom",
-        "evades_blocks_in": ["Germany", "United States"],
+        "evades_blocks_in": [
+            "Germany",
+            "United States"
+        ],
         "name": "GOG.com",
         "url": "https://www.gog.com",
         "category": "Games & Visual Novels",
@@ -1755,7 +1806,10 @@ const sitesData = [
     },
     {
         "id": "vixenmediagroup",
-        "evades_blocks_in": ["India", "United States"],
+        "evades_blocks_in": [
+            "India",
+            "United States"
+        ],
         "name": "Vixen Media Group",
         "url": "https://www.vixen.com",
         "category": "Adult Tubes & Studios",
@@ -1790,7 +1844,9 @@ const sitesData = [
     },
     {
         "id": "komiflo",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Komiflo",
         "url": "https://komiflo.com",
         "category": "Manga & Doujinshi",
@@ -1825,7 +1881,9 @@ const sitesData = [
     },
     {
         "id": "tappytoon",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Tappytoon",
         "url": "https://www.tappytoon.com",
         "category": "Manga & Doujinshi",
@@ -1996,7 +2054,10 @@ const sitesData = [
     },
     {
         "id": "admireme",
-        "evades_blocks_in": ["Germany", "United States"],
+        "evades_blocks_in": [
+            "Germany",
+            "United States"
+        ],
         "name": "AdmireMe",
         "url": "https://admireme.vip",
         "category": "Creator Platforms",
@@ -2065,7 +2126,11 @@ const sitesData = [
     },
     {
         "id": "netflixanime",
-        "evades_blocks_in": ["Russia", "Brazil", "Germany"],
+        "evades_blocks_in": [
+            "Russia",
+            "Brazil",
+            "Germany"
+        ],
         "name": "Netflix Anime",
         "url": "https://www.netflix.com/browse/genre/7424",
         "category": "Anime Streaming",
@@ -2134,7 +2199,9 @@ const sitesData = [
     },
     {
         "id": "dipsea",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Dipsea",
         "url": "https://www.dipseastories.com",
         "category": "Immersive & Interactive",
@@ -2169,7 +2236,10 @@ const sitesData = [
     },
     {
         "id": "gammaentertainment",
-        "evades_blocks_in": ["United States", "Australia"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia"
+        ],
         "name": "Gamma Entertainment",
         "url": "https://www.gammaentertainment.com",
         "category": "Adult Tubes & Studios",
@@ -2290,7 +2360,11 @@ const sitesData = [
     },
     {
         "id": "nhentai",
-        "evades_blocks_in": ["India", "Brazil", "Australia"],
+        "evades_blocks_in": [
+            "India",
+            "Brazil",
+            "Australia"
+        ],
         "name": "nHentai",
         "url": "https://nhentai.net",
         "category": "Hentai Streaming",
@@ -2359,7 +2433,10 @@ const sitesData = [
     },
     {
         "id": "evilangel",
-        "evades_blocks_in": ["Germany", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "Russia"
+        ],
         "name": "Evil Angel",
         "url": "https://www.evilangel.com",
         "category": "Adult Tubes & Studios",
@@ -2428,7 +2505,10 @@ const sitesData = [
     },
     {
         "id": "hentai2w",
-        "evades_blocks_in": ["United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "United States"
+        ],
         "name": "Hentai2W",
         "url": "https://hentai2.com",
         "category": "Hentai Streaming",
@@ -2515,7 +2595,10 @@ const sitesData = [
     },
     {
         "id": "hentaicomic",
-        "evades_blocks_in": ["Brazil", "Germany"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Germany"
+        ],
         "name": "HentaiComic",
         "url": "https://hentaicomic.com",
         "category": "Hentai Streaming",
@@ -2552,7 +2635,9 @@ const sitesData = [
     },
     {
         "id": "smashwordserotica",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Smashwords Erotica",
         "url": "https://www.smashwords.com",
         "category": "Manga & Doujinshi",
@@ -2655,7 +2740,10 @@ const sitesData = [
     },
     {
         "id": "dlraw",
-        "evades_blocks_in": ["Brazil", "Russia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Russia"
+        ],
         "name": "DLRaw",
         "url": "https://dlraw.to",
         "category": "Downloads & Torrents",
@@ -2674,7 +2762,9 @@ const sitesData = [
     },
     {
         "id": "nyaa",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Nyaa",
         "url": "https://nyaa.si",
         "category": "Downloads & Torrents",
@@ -2763,7 +2853,10 @@ const sitesData = [
     },
     {
         "id": "copymanga",
-        "evades_blocks_in": ["Russia", "Australia"],
+        "evades_blocks_in": [
+            "Russia",
+            "Australia"
+        ],
         "name": "CopyManga",
         "url": "https://copymanga.site",
         "category": "Manga & Doujinshi",
@@ -2800,7 +2893,11 @@ const sitesData = [
     },
     {
         "id": "webtoon",
-        "evades_blocks_in": ["Russia", "Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Russia",
+            "Brazil",
+            "Australia"
+        ],
         "name": "Webtoon",
         "url": "https://www.webtoons.com",
         "category": "Manga & Doujinshi",
@@ -2835,7 +2932,9 @@ const sitesData = [
     },
     {
         "id": "zoro",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Aniwave (Zoro)",
         "url": "https://aniwave.to",
         "category": "Anime Streaming",
@@ -2940,7 +3039,11 @@ const sitesData = [
     },
     {
         "id": "animixplay",
-        "evades_blocks_in": ["United States", "Germany", "India"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany",
+            "India"
+        ],
         "name": "AniMixPlay",
         "url": "https://animixplay.to",
         "category": "Anime Streaming",
@@ -3011,7 +3114,9 @@ const sitesData = [
     },
     {
         "id": "tryst",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Tryst",
         "url": "https://tryst.link",
         "category": "Immersive & Interactive",
@@ -3046,7 +3151,11 @@ const sitesData = [
     },
     {
         "id": "f95zone",
-        "evades_blocks_in": ["Australia", "Brazil", "India"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil",
+            "India"
+        ],
         "name": "F95Zone",
         "url": "https://f95zone.to",
         "category": "Games & Visual Novels",
@@ -3099,7 +3208,10 @@ const sitesData = [
     },
     {
         "id": "freeones",
-        "evades_blocks_in": ["Germany", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "Russia"
+        ],
         "name": "Freeones",
         "url": "https://www.freeones.com",
         "category": "Communities & Forums",
@@ -3134,7 +3246,10 @@ const sitesData = [
     },
     {
         "id": "fancentro",
-        "evades_blocks_in": ["United Kingdom", "Brazil"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Brazil"
+        ],
         "name": "Fancentro",
         "url": "https://fancentro.com",
         "category": "Creator Platforms",
@@ -3169,7 +3284,9 @@ const sitesData = [
     },
     {
         "id": "wcofun",
-        "evades_blocks_in": ["Germany"],
+        "evades_blocks_in": [
+            "Germany"
+        ],
         "name": "WCOFun",
         "url": "https://www.wcofun.net",
         "category": "Anime Streaming",
@@ -3188,7 +3305,10 @@ const sitesData = [
     },
     {
         "id": "02d3a424",
-        "evades_blocks_in": ["India", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom"
+        ],
         "name": "Xvidios",
         "url": "https://xvidio.blog.br",
         "category": "Immersive & Interactive",
@@ -3227,7 +3347,9 @@ const sitesData = [
     },
     {
         "id": "771bd9b2",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Ahegao Porn",
         "url": "https://www.ahegaoporn.net",
         "category": "Hentai Streaming",
@@ -3305,7 +3427,11 @@ const sitesData = [
     },
     {
         "id": "cherrypimps",
-        "evades_blocks_in": ["United Kingdom", "Russia", "Germany"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Russia",
+            "Germany"
+        ],
         "name": "Cherry Pimps",
         "url": "https://cherrypimps.com",
         "category": "Adult Tubes & Studios",
@@ -3392,7 +3518,10 @@ const sitesData = [
     },
     {
         "id": "azuki",
-        "evades_blocks_in": ["Russia", "Australia"],
+        "evades_blocks_in": [
+            "Russia",
+            "Australia"
+        ],
         "name": "Azuki",
         "url": "https://www.azuki.co",
         "category": "Manga & Doujinshi",
@@ -3563,7 +3692,11 @@ const sitesData = [
     },
     {
         "id": "659af950",
-        "evades_blocks_in": ["Brazil", "United States", "United Kingdom"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United States",
+            "United Kingdom"
+        ],
         "name": "Porn Sponsors",
         "url": "https://www.adultaffiliateslist.com",
         "category": "Hentai Streaming",
@@ -3742,7 +3875,9 @@ const sitesData = [
     },
     {
         "id": "motherless",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "Motherless",
         "url": "https://motherless.com",
         "category": "Communities & Forums",
@@ -3808,7 +3943,7 @@ const sitesData = [
         "description_es": "Lista superior y reseñas de sitios otaku | 9327 miembros",
         "description_jp": "オタク サイトのトップリストとレビュー |会員数9327名",
         "addedAt": "2026-05-17",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Scouted",
             "Active",
@@ -3841,7 +3976,9 @@ const sitesData = [
     },
     {
         "id": "gogoanime",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "GogoAnime",
         "url": "https://gogoanime3.co",
         "category": "Anime Streaming",
@@ -3860,7 +3997,10 @@ const sitesData = [
     },
     {
         "id": "38085b4a",
-        "evades_blocks_in": ["India", "Russia"],
+        "evades_blocks_in": [
+            "India",
+            "Russia"
+        ],
         "name": "HQ Erótico",
         "url": "https://hqerotico.com",
         "category": "Immersive & Interactive",
@@ -3997,7 +4137,10 @@ const sitesData = [
     },
     {
         "id": "05b92df2",
-        "evades_blocks_in": ["Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "Freeuse Porn",
         "url": "https://www.freeuseporn.com",
         "category": "Hentai Streaming",
@@ -4038,7 +4181,9 @@ const sitesData = [
     },
     {
         "id": "7eb64ad2",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Real Amateur Porn ♦️ 777.Porn",
         "url": "https://777.porn",
         "category": "Hentai Streaming",
@@ -4099,7 +4244,9 @@ const sitesData = [
     },
     {
         "id": "7d6f407f",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "https://meuhentai.com",
         "url": "https://meuhentai.com",
         "category": "Hentai Streaming",
@@ -4140,7 +4287,9 @@ const sitesData = [
     },
     {
         "id": "efb2bd2e",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "https://hentais.blog",
         "url": "https://hentais.blog",
         "category": "Hentai Streaming",
@@ -4239,7 +4388,11 @@ const sitesData = [
     },
     {
         "id": "873968dd",
-        "evades_blocks_in": ["India", "Russia", "Australia"],
+        "evades_blocks_in": [
+            "India",
+            "Russia",
+            "Australia"
+        ],
         "name": "Porno Espanol",
         "url": "https://pornoespanol.blog",
         "category": "Hentai Streaming",
@@ -4287,7 +4440,7 @@ const sitesData = [
         "description_es": "Inicio - ¡Campeones sexys de League of Legends! Explore nuestra gran colección de álbumes, vídeos, gifs, juegos y cómics de LoLHentai | Crea y comparte tu",
         "description_jp": "ホーム - セクシーなリーグ・オブ・レジェンドのチャンピオン！ LoLHentai アルバム、ビデオ、Gif、ゲーム、コミックの膨大なコレクションを閲覧 |を作成して共有",
         "addedAt": "2026-05-17",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Scouted",
             "Active",
@@ -4320,7 +4473,10 @@ const sitesData = [
     },
     {
         "id": "babesdirectory",
-        "evades_blocks_in": ["Germany", "United Kingdom"],
+        "evades_blocks_in": [
+            "Germany",
+            "United Kingdom"
+        ],
         "name": "Babes Directory",
         "url": "https://babesdirectory.online",
         "category": "Communities & Forums",
@@ -4399,7 +4555,11 @@ const sitesData = [
     },
     {
         "id": "1a36119d",
-        "evades_blocks_in": ["Australia", "Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "HQ Porno",
         "url": "https://hqporno.com.br",
         "category": "Hentai Streaming",
@@ -4427,7 +4587,7 @@ const sitesData = [
         "description_es": "Descubre el mejor contenido brasileño gratis en Onlyfans y Xvideos. ❌ Conoce a las chicas calientes de Onlyfans Leaked de Brasil y disfruta de videos desnudos",
         "description_jp": "OnlyFans と Xvideos で最高の無料ブラジル コンテンツを見つけてください。 ❌ ブラジルから流出した OnlyFans のホットな女の子と出会い、ヌードビデオをお楽しみください",
         "addedAt": "2026-05-17",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Scouted",
             "Active",
@@ -4518,7 +4678,11 @@ const sitesData = [
     },
     {
         "id": "f215d85e",
-        "evades_blocks_in": ["United States", "Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "United States",
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "https://www.hentaibrasil.org",
         "url": "https://www.hentaibrasil.org",
         "category": "Hentai Streaming",
@@ -4579,7 +4743,9 @@ const sitesData = [
     },
     {
         "id": "360ee978",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "https://www.nutaku.net/signup/landing/booty-calls/",
         "url": "https://www.nutaku.net/signup/landing/booty-calls/20",
         "category": "Immersive & Interactive",
@@ -4600,7 +4766,11 @@ const sitesData = [
     },
     {
         "id": "24a6ed7e",
-        "evades_blocks_in": ["Brazil", "India", "United Kingdom"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "United Kingdom"
+        ],
         "name": "SF Girls",
         "url": "https://www.nutaku.net/signup/landing/sf-girls/2",
         "category": "Immersive & Interactive",
@@ -4661,7 +4831,11 @@ const sitesData = [
     },
     {
         "id": "tokyotosho",
-        "evades_blocks_in": ["Brazil", "Germany", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Germany",
+            "India"
+        ],
         "name": "TokyoTosho",
         "url": "https://www.tokyotosho.info",
         "category": "Downloads & Torrents",
@@ -4714,7 +4888,11 @@ const sitesData = [
     },
     {
         "id": "fleshlight",
-        "evades_blocks_in": ["Germany", "United States", "United Kingdom"],
+        "evades_blocks_in": [
+            "Germany",
+            "United States",
+            "United Kingdom"
+        ],
         "name": "Fleshlight",
         "url": "https://www.fleshlight.com",
         "category": "Immersive & Interactive",
@@ -4801,7 +4979,9 @@ const sitesData = [
     },
     {
         "id": "tubianime",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Tubi Anime",
         "url": "https://tubitv.com/category/anime",
         "category": "Anime Streaming",
@@ -4870,7 +5050,9 @@ const sitesData = [
     },
     {
         "id": "sevenseas",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "Seven Seas",
         "url": "https://sevenseasentertainment.com",
         "category": "Manga & Doujinshi",
@@ -4905,7 +5087,11 @@ const sitesData = [
     },
     {
         "id": "denpasoft",
-        "evades_blocks_in": ["India", "Russia", "Germany"],
+        "evades_blocks_in": [
+            "India",
+            "Russia",
+            "Germany"
+        ],
         "name": "Denpasoft",
         "url": "https://denpasoft.com",
         "category": "Games & Visual Novels",
@@ -4940,7 +5126,10 @@ const sitesData = [
     },
     {
         "id": "sekaiproject",
-        "evades_blocks_in": ["United Kingdom", "Australia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Australia"
+        ],
         "name": "Sekai Project",
         "url": "https://sekaiproject.com",
         "category": "Games & Visual Novels",
@@ -5043,7 +5232,9 @@ const sitesData = [
     },
     {
         "id": "tokyootakumode",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "Tokyo Otaku Mode",
         "url": "https://otakumode.com",
         "category": "Communities & Forums",
@@ -5112,7 +5303,10 @@ const sitesData = [
     },
     {
         "id": "anidl",
-        "evades_blocks_in": ["Russia", "India"],
+        "evades_blocks_in": [
+            "Russia",
+            "India"
+        ],
         "name": "AniDL",
         "url": "https://anidl.org",
         "category": "Downloads & Torrents",
@@ -5185,7 +5379,11 @@ const sitesData = [
     },
     {
         "id": "vntls",
-        "evades_blocks_in": ["India", "United Kingdom", "Germany"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom",
+            "Germany"
+        ],
         "name": "VN TLS",
         "url": "https://vntls.org",
         "category": "Games & Visual Novels",
@@ -5240,7 +5438,10 @@ const sitesData = [
     },
     {
         "id": "disney",
-        "evades_blocks_in": ["Brazil", "Germany"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Germany"
+        ],
         "name": "Disney+",
         "url": "https://www.disneyplus.com",
         "category": "Anime Streaming",
@@ -5475,7 +5676,10 @@ const sitesData = [
     },
     {
         "id": "patreon",
-        "evades_blocks_in": ["India", "Russia"],
+        "evades_blocks_in": [
+            "India",
+            "Russia"
+        ],
         "name": "Patreon",
         "url": "https://www.patreon.com",
         "category": "Communities & Forums",
@@ -5530,7 +5734,10 @@ const sitesData = [
     },
     {
         "id": "playasia",
-        "evades_blocks_in": ["Russia", "United Kingdom"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom"
+        ],
         "name": "Play-Asia",
         "url": "https://www.play-asia.com",
         "category": "Communities & Forums",
@@ -5549,7 +5756,9 @@ const sitesData = [
     },
     {
         "id": "animenewsnetwork",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Anime News Network",
         "url": "https://www.animenewsnetwork.com",
         "category": "Communities & Forums",
@@ -5604,7 +5813,9 @@ const sitesData = [
     },
     {
         "id": "chaturbate",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Chaturbate",
         "url": "https://chaturbate.com",
         "category": "Immersive & Interactive",
@@ -5641,7 +5852,9 @@ const sitesData = [
     },
     {
         "id": "myfreecams",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "MyFreeCams",
         "url": "https://myfreecams.com",
         "category": "Immersive & Interactive",
@@ -5660,7 +5873,11 @@ const sitesData = [
     },
     {
         "id": "camsoda",
-        "evades_blocks_in": ["Germany", "Australia", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "Australia",
+            "Russia"
+        ],
         "name": "CamSoda",
         "url": "https://www.camsoda.com",
         "category": "Immersive & Interactive",
@@ -5715,7 +5932,10 @@ const sitesData = [
     },
     {
         "id": "pornhub",
-        "evades_blocks_in": ["Australia", "United States"],
+        "evades_blocks_in": [
+            "Australia",
+            "United States"
+        ],
         "name": "Pornhub",
         "url": "https://www.pornhub.com",
         "category": "Adult Tubes & Studios",
@@ -5770,7 +5990,11 @@ const sitesData = [
     },
     {
         "id": "spankbang",
-        "evades_blocks_in": ["Australia", "Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "SpankBang",
         "url": "https://spankbang.com",
         "category": "Adult Tubes & Studios",
@@ -5825,7 +6049,11 @@ const sitesData = [
     },
     {
         "id": "youporn",
-        "evades_blocks_in": ["Germany", "United Kingdom", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "United Kingdom",
+            "Russia"
+        ],
         "name": "YouPorn",
         "url": "https://www.youporn.com",
         "category": "Adult Tubes & Studios",
@@ -5844,7 +6072,9 @@ const sitesData = [
     },
     {
         "id": "adulttime",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Adult Time",
         "url": "https://www.adulttime.com",
         "category": "Adult Tubes & Studios",
@@ -5863,7 +6093,10 @@ const sitesData = [
     },
     {
         "id": "brazzers",
-        "evades_blocks_in": ["United Kingdom", "Russia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Russia"
+        ],
         "name": "Brazzers",
         "url": "https://www.brazzers.com",
         "category": "Adult Tubes & Studios",
@@ -5900,7 +6133,10 @@ const sitesData = [
     },
     {
         "id": "bangbros",
-        "evades_blocks_in": ["India", "Brazil"],
+        "evades_blocks_in": [
+            "India",
+            "Brazil"
+        ],
         "name": "BangBros",
         "url": "https://bangbros.com",
         "category": "Adult Tubes & Studios",
@@ -5937,7 +6173,11 @@ const sitesData = [
     },
     {
         "id": "sexlikereal",
-        "evades_blocks_in": ["India", "Russia", "Brazil"],
+        "evades_blocks_in": [
+            "India",
+            "Russia",
+            "Brazil"
+        ],
         "name": "SexLikeReal",
         "url": "https://www.sexlikereal.com",
         "category": "Immersive & Interactive",
@@ -5974,7 +6214,10 @@ const sitesData = [
     },
     {
         "id": "eporner",
-        "evades_blocks_in": ["Russia", "Brazil"],
+        "evades_blocks_in": [
+            "Russia",
+            "Brazil"
+        ],
         "name": "Eporner",
         "url": "https://www.eporner.com",
         "category": "Adult Tubes & Studios",
@@ -5993,7 +6236,11 @@ const sitesData = [
     },
     {
         "id": "tube8",
-        "evades_blocks_in": ["United States", "Australia", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia",
+            "Germany"
+        ],
         "name": "Tube8",
         "url": "https://www.tube8.com",
         "category": "Adult Tubes & Studios",
@@ -6012,7 +6259,9 @@ const sitesData = [
     },
     {
         "id": "keezmovies",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "KeezMovies",
         "url": "https://www.keezmovies.com",
         "category": "Adult Tubes & Studios",
@@ -6031,7 +6280,10 @@ const sitesData = [
     },
     {
         "id": "hclips",
-        "evades_blocks_in": ["India", "United States"],
+        "evades_blocks_in": [
+            "India",
+            "United States"
+        ],
         "name": "Hclips",
         "url": "https://www.hclips.com",
         "category": "Adult Tubes & Studios",
@@ -6050,7 +6302,9 @@ const sitesData = [
     },
     {
         "id": "daftsex",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "DaftSex",
         "url": "https://daftsex.com",
         "category": "Adult Tubes & Studios",
@@ -6087,7 +6341,11 @@ const sitesData = [
     },
     {
         "id": "beeg",
-        "evades_blocks_in": ["Australia", "Brazil", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil",
+            "Germany"
+        ],
         "name": "Beeg",
         "url": "https://beeg.com",
         "category": "Adult Tubes & Studios",
@@ -6160,7 +6418,9 @@ const sitesData = [
     },
     {
         "id": "blacked",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "Blacked",
         "url": "https://www.blacked.com",
         "category": "Adult Tubes & Studios",
@@ -6179,7 +6439,11 @@ const sitesData = [
     },
     {
         "id": "tushy",
-        "evades_blocks_in": ["United Kingdom", "Russia", "Germany"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Russia",
+            "Germany"
+        ],
         "name": "Tushy",
         "url": "https://www.tushy.com",
         "category": "Adult Tubes & Studios",
@@ -6198,7 +6462,10 @@ const sitesData = [
     },
     {
         "id": "deeper",
-        "evades_blocks_in": ["Australia", "United States"],
+        "evades_blocks_in": [
+            "Australia",
+            "United States"
+        ],
         "name": "Deeper",
         "url": "https://www.deeper.com",
         "category": "Adult Tubes & Studios",
@@ -6235,7 +6502,10 @@ const sitesData = [
     },
     {
         "id": "digitalplayground",
-        "evades_blocks_in": ["Russia", "Brazil"],
+        "evades_blocks_in": [
+            "Russia",
+            "Brazil"
+        ],
         "name": "Digital Playground",
         "url": "https://www.digitalplayground.com",
         "category": "Adult Tubes & Studios",
@@ -6272,7 +6542,9 @@ const sitesData = [
     },
     {
         "id": "girlsway",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "Girlsway",
         "url": "https://www.girlsway.com",
         "category": "Adult Tubes & Studios",
@@ -6327,7 +6599,10 @@ const sitesData = [
     },
     {
         "id": "twistys",
-        "evades_blocks_in": ["Brazil", "United States"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United States"
+        ],
         "name": "Twistys",
         "url": "https://www.twistys.com",
         "category": "Adult Tubes & Studios",
@@ -6346,7 +6621,10 @@ const sitesData = [
     },
     {
         "id": "puretaboo",
-        "evades_blocks_in": ["India", "United States"],
+        "evades_blocks_in": [
+            "India",
+            "United States"
+        ],
         "name": "Pure Taboo",
         "url": "https://www.puretaboo.com",
         "category": "Adult Tubes & Studios",
@@ -6527,7 +6805,11 @@ const sitesData = [
     },
     {
         "id": "caribbeancom",
-        "evades_blocks_in": ["Russia", "Australia", "India"],
+        "evades_blocks_in": [
+            "Russia",
+            "Australia",
+            "India"
+        ],
         "name": "Caribbeancom",
         "url": "https://www.caribbeancom.com",
         "category": "Adult Tubes & Studios",
@@ -6600,7 +6882,11 @@ const sitesData = [
     },
     {
         "id": "fc2adult",
-        "evades_blocks_in": ["Australia", "India", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "India",
+            "United Kingdom"
+        ],
         "name": "FC2 Adult",
         "url": "https://video.fc2.com/adult/",
         "category": "Creator Platforms",
@@ -6655,7 +6941,10 @@ const sitesData = [
     },
     {
         "id": "unextadult",
-        "evades_blocks_in": ["Australia", "Brazil"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil"
+        ],
         "name": "U-NEXT Adult",
         "url": "https://video.unext.jp/genre/adult",
         "category": "Adult Tubes & Studios",
@@ -6728,7 +7017,11 @@ const sitesData = [
     },
     {
         "id": "imlive",
-        "evades_blocks_in": ["United States", "Germany", "India"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany",
+            "India"
+        ],
         "name": "ImLive",
         "url": "https://www.imlive.com",
         "category": "Immersive & Interactive",
@@ -6765,7 +7058,10 @@ const sitesData = [
     },
     {
         "id": "camster",
-        "evades_blocks_in": ["Germany", "Brazil"],
+        "evades_blocks_in": [
+            "Germany",
+            "Brazil"
+        ],
         "name": "Camster",
         "url": "https://www.camster.com",
         "category": "Immersive & Interactive",
@@ -6784,7 +7080,9 @@ const sitesData = [
     },
     {
         "id": "streamate",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Streamate",
         "url": "https://www.streamate.com",
         "category": "Immersive & Interactive",
@@ -6839,7 +7137,11 @@ const sitesData = [
     },
     {
         "id": "justforfans",
-        "evades_blocks_in": ["United States", "Brazil", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Brazil",
+            "Germany"
+        ],
         "name": "JustFor.Fans",
         "url": "https://justfor.fans",
         "category": "Creator Platforms",
@@ -6858,7 +7160,10 @@ const sitesData = [
     },
     {
         "id": "pocketstars",
-        "evades_blocks_in": ["United States", "Russia"],
+        "evades_blocks_in": [
+            "United States",
+            "Russia"
+        ],
         "name": "PocketStars",
         "url": "https://pocketstars.com",
         "category": "Creator Platforms",
@@ -6877,7 +7182,9 @@ const sitesData = [
     },
     {
         "id": "kinkcom",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Kink.com",
         "url": "https://www.kink.com",
         "category": "Adult Tubes & Studios",
@@ -6896,7 +7203,9 @@ const sitesData = [
     },
     {
         "id": "bdsmcom",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "BDSM.com",
         "url": "https://bdsm.com",
         "category": "Adult Tubes & Studios",
@@ -6915,7 +7224,11 @@ const sitesData = [
     },
     {
         "id": "inthecrack",
-        "evades_blocks_in": ["United States", "India", "Brazil"],
+        "evades_blocks_in": [
+            "United States",
+            "India",
+            "Brazil"
+        ],
         "name": "InTheCrack",
         "url": "https://inthecrack.com",
         "category": "Adult Tubes & Studios",
@@ -6970,7 +7283,10 @@ const sitesData = [
     },
     {
         "id": "dogfartnetwork",
-        "evades_blocks_in": ["Brazil", "United States"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United States"
+        ],
         "name": "Dogfart Network",
         "url": "https://www.dogfartnetwork.com",
         "category": "Adult Tubes & Studios",
@@ -6989,7 +7305,9 @@ const sitesData = [
     },
     {
         "id": "wankzvr",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "WankzVR",
         "url": "https://www.wankzvr.com",
         "category": "Immersive & Interactive",
@@ -7008,7 +7326,10 @@ const sitesData = [
     },
     {
         "id": "badoinkvr",
-        "evades_blocks_in": ["Australia", "Brazil"],
+        "evades_blocks_in": [
+            "Australia",
+            "Brazil"
+        ],
         "name": "BadoinkVR",
         "url": "https://badoinkvr.com",
         "category": "Immersive & Interactive",
@@ -7153,7 +7474,10 @@ const sitesData = [
     },
     {
         "id": "lovehoney",
-        "evades_blocks_in": ["Germany", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "Russia"
+        ],
         "name": "Lovehoney",
         "url": "https://www.lovehoney.com",
         "category": "Immersive & Interactive",
@@ -7208,7 +7532,11 @@ const sitesData = [
     },
     {
         "id": "girlfriendsfilms",
-        "evades_blocks_in": ["United States", "Brazil", "India"],
+        "evades_blocks_in": [
+            "United States",
+            "Brazil",
+            "India"
+        ],
         "name": "Girlfriends Films",
         "url": "https://www.girlfriendsfilms.com",
         "category": "Adult Tubes & Studios",
@@ -7245,7 +7573,10 @@ const sitesData = [
     },
     {
         "id": "milehighmedia",
-        "evades_blocks_in": ["Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Australia"
+        ],
         "name": "MileHigh Media",
         "url": "https://www.milehighmedia.com",
         "category": "Adult Tubes & Studios",
@@ -7318,7 +7649,10 @@ const sitesData = [
     },
     {
         "id": "xart",
-        "evades_blocks_in": ["United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "United States"
+        ],
         "name": "X-Art",
         "url": "https://www.x-art.com",
         "category": "Adult Tubes & Studios",
@@ -7391,7 +7725,10 @@ const sitesData = [
     },
     {
         "id": "vivthomas",
-        "evades_blocks_in": ["Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Australia"
+        ],
         "name": "VivThomas",
         "url": "https://www.vivthomas.com",
         "category": "Adult Tubes & Studios",
@@ -7410,7 +7747,10 @@ const sitesData = [
     },
     {
         "id": "tnaflix",
-        "evades_blocks_in": ["Russia", "Australia"],
+        "evades_blocks_in": [
+            "Russia",
+            "Australia"
+        ],
         "name": "TNAFlix",
         "url": "https://www.tnaflix.com",
         "category": "Adult Tubes & Studios",
@@ -7465,7 +7805,10 @@ const sitesData = [
     },
     {
         "id": "slutload",
-        "evades_blocks_in": ["United States", "Russia"],
+        "evades_blocks_in": [
+            "United States",
+            "Russia"
+        ],
         "name": "SlutLoad",
         "url": "https://www.slutload.com",
         "category": "Adult Tubes & Studios",
@@ -7502,7 +7845,10 @@ const sitesData = [
     },
     {
         "id": "tubev",
-        "evades_blocks_in": ["Germany", "United Kingdom"],
+        "evades_blocks_in": [
+            "Germany",
+            "United Kingdom"
+        ],
         "name": "TubeV",
         "url": "https://www.tubev.sex",
         "category": "Adult Tubes & Studios",
@@ -7575,7 +7921,9 @@ const sitesData = [
     },
     {
         "id": "adultwork",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "AdultWork",
         "url": "https://www.adultwork.com",
         "category": "Immersive & Interactive",
@@ -7594,7 +7942,10 @@ const sitesData = [
     },
     {
         "id": "cherrytv",
-        "evades_blocks_in": ["Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Australia"
+        ],
         "name": "CherryTV",
         "url": "https://cherry.tv",
         "category": "Immersive & Interactive",
@@ -7613,7 +7964,9 @@ const sitesData = [
     },
     {
         "id": "amateurtv",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "AmateurTV",
         "url": "https://amateurtv.com",
         "category": "Immersive & Interactive",
@@ -7632,7 +7985,9 @@ const sitesData = [
     },
     {
         "id": "fanzadoujin",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "Fanza Doujin",
         "url": "https://www.dmm.co.jp/dc/doujin/",
         "category": "Manga & Doujinshi",
@@ -7705,7 +8060,9 @@ const sitesData = [
     },
     {
         "id": "xbiz",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "XBIZ",
         "url": "https://www.xbiz.com",
         "category": "Communities & Forums",
@@ -7724,7 +8081,10 @@ const sitesData = [
     },
     {
         "id": "vodempire",
-        "evades_blocks_in": ["Brazil", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India"
+        ],
         "name": "VOD Empire",
         "url": "https://www.vodempire.com",
         "category": "Immersive & Interactive",
@@ -7761,7 +8121,9 @@ const sitesData = [
     },
     {
         "id": "seancody",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Sean Cody",
         "url": "https://www.seancody.com",
         "category": "Adult Tubes & Studios",
@@ -7816,7 +8178,11 @@ const sitesData = [
     },
     {
         "id": "helixstudios",
-        "evades_blocks_in": ["Brazil", "India", "Russia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "Russia"
+        ],
         "name": "Helix Studios",
         "url": "https://www.helixstudios.com",
         "category": "Adult Tubes & Studios",
@@ -7853,7 +8219,11 @@ const sitesData = [
     },
     {
         "id": "belami",
-        "evades_blocks_in": ["Germany", "India", "Russia"],
+        "evades_blocks_in": [
+            "Germany",
+            "India",
+            "Russia"
+        ],
         "name": "BelAmi",
         "url": "https://www.belamionline.com",
         "category": "Adult Tubes & Studios",
@@ -7890,7 +8260,9 @@ const sitesData = [
     },
     {
         "id": "blackedraw",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Blacked Raw",
         "url": "https://www.blackedraw.com",
         "category": "Adult Tubes & Studios",
@@ -7963,7 +8335,9 @@ const sitesData = [
     },
     {
         "id": "hegreart",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Hegre Art",
         "url": "https://www.hegre.com",
         "category": "Adult Tubes & Studios",
@@ -7982,7 +8356,11 @@ const sitesData = [
     },
     {
         "id": "watch4beauty",
-        "evades_blocks_in": ["Germany", "Russia", "Australia"],
+        "evades_blocks_in": [
+            "Germany",
+            "Russia",
+            "Australia"
+        ],
         "name": "Watch4Beauty",
         "url": "https://www.watch4beauty.com",
         "category": "Adult Tubes & Studios",
@@ -8127,7 +8505,10 @@ const sitesData = [
     },
     {
         "id": "xxxbunker",
-        "evades_blocks_in": ["India", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom"
+        ],
         "name": "XXXbunker",
         "url": "https://xxxbunker.com",
         "category": "Adult Tubes & Studios",
@@ -8164,7 +8545,10 @@ const sitesData = [
     },
     {
         "id": "drtuber",
-        "evades_blocks_in": ["United States", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany"
+        ],
         "name": "DrTuber",
         "url": "https://www.drtuber.com",
         "category": "Adult Tubes & Studios",
@@ -8183,7 +8567,11 @@ const sitesData = [
     },
     {
         "id": "porngo",
-        "evades_blocks_in": ["Brazil", "India", "United States"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "United States"
+        ],
         "name": "PornGo",
         "url": "https://www.porngo.com",
         "category": "Adult Tubes & Studios",
@@ -8202,7 +8590,11 @@ const sitesData = [
     },
     {
         "id": "eros",
-        "evades_blocks_in": ["India", "Germany", "Brazil"],
+        "evades_blocks_in": [
+            "India",
+            "Germany",
+            "Brazil"
+        ],
         "name": "Eros",
         "url": "https://www.eros.com",
         "category": "Immersive & Interactive",
@@ -8221,7 +8613,11 @@ const sitesData = [
     },
     {
         "id": "subscribestaradult",
-        "evades_blocks_in": ["India", "Germany", "United States"],
+        "evades_blocks_in": [
+            "India",
+            "Germany",
+            "United States"
+        ],
         "name": "SubscribeStar Adult",
         "url": "https://www.subscribestar.adult",
         "category": "Creator Platforms",
@@ -8258,7 +8654,11 @@ const sitesData = [
     },
     {
         "id": "sexcamvideo",
-        "evades_blocks_in": ["United Kingdom", "Australia", "Germany"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Australia",
+            "Germany"
+        ],
         "name": "SexCamVideo",
         "url": "https://www.sexcamvideo.com",
         "category": "Immersive & Interactive",
@@ -8295,7 +8695,9 @@ const sitesData = [
     },
     {
         "id": "quinn",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Quinn",
         "url": "https://www.tryquinn.com",
         "category": "Immersive & Interactive",
@@ -8350,7 +8752,11 @@ const sitesData = [
     },
     {
         "id": "bellesa",
-        "evades_blocks_in": ["Australia", "Russia", "India"],
+        "evades_blocks_in": [
+            "Australia",
+            "Russia",
+            "India"
+        ],
         "name": "Bellesa",
         "url": "https://www.bellesa.co",
         "category": "Adult Tubes & Studios",
@@ -8387,7 +8793,10 @@ const sitesData = [
     },
     {
         "id": "adultdvdtalk",
-        "evades_blocks_in": ["Australia", "Russia"],
+        "evades_blocks_in": [
+            "Australia",
+            "Russia"
+        ],
         "name": "AdultDVDTalk",
         "url": "https://www.adultdvdtalk.com",
         "category": "Communities & Forums",
@@ -8406,7 +8815,10 @@ const sitesData = [
     },
     {
         "id": "jastblue",
-        "evades_blocks_in": ["Australia", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "United Kingdom"
+        ],
         "name": "JAST Blue",
         "url": "https://jastblue.com",
         "category": "Games & Visual Novels",
@@ -8425,7 +8837,10 @@ const sitesData = [
     },
     {
         "id": "realitylovers",
-        "evades_blocks_in": ["Brazil", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India"
+        ],
         "name": "Reality Lovers",
         "url": "https://realitylovers.com",
         "category": "Immersive & Interactive",
@@ -8444,7 +8859,10 @@ const sitesData = [
     },
     {
         "id": "virtualrealporn",
-        "evades_blocks_in": ["Australia", "United States"],
+        "evades_blocks_in": [
+            "Australia",
+            "United States"
+        ],
         "name": "VirtualRealPorn",
         "url": "https://virtualrealporn.com",
         "category": "Immersive & Interactive",
@@ -8463,7 +8881,9 @@ const sitesData = [
     },
     {
         "id": "kinkvr",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "KinkVR",
         "url": "https://www.kinkvr.com",
         "category": "Immersive & Interactive",
@@ -8518,7 +8938,9 @@ const sitesData = [
     },
     {
         "id": "pornstarplatinum",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Pornstar Platinum",
         "url": "https://www.pornstarplatinum.com",
         "category": "Adult Tubes & Studios",
@@ -8571,7 +8993,11 @@ const sitesData = [
     },
     {
         "id": "hentaihaven",
-        "evades_blocks_in": ["Brazil", "Russia", "United States"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Russia",
+            "United States"
+        ],
         "name": "HentaiHaven",
         "url": "https://hentaihaven.org",
         "category": "Hentai Streaming",
@@ -8696,7 +9122,11 @@ const sitesData = [
     },
     {
         "id": "hentaipure",
-        "evades_blocks_in": ["Brazil", "Germany", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Germany",
+            "India"
+        ],
         "name": "HentaiPure",
         "url": "https://hentaipure.com",
         "category": "Hentai Streaming",
@@ -8751,7 +9181,10 @@ const sitesData = [
     },
     {
         "id": "erodoujins",
-        "evades_blocks_in": ["United Kingdom", "Australia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Australia"
+        ],
         "name": "EroDoujins",
         "url": "https://erodoujins.com",
         "category": "Hentai Streaming",
@@ -8806,7 +9239,11 @@ const sitesData = [
     },
     {
         "id": "yts",
-        "evades_blocks_in": ["Russia", "United Kingdom", "Brazil"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom",
+            "Brazil"
+        ],
         "name": "YTS",
         "url": "https://yts.mx",
         "category": "Downloads & Torrents",
@@ -8825,7 +9262,10 @@ const sitesData = [
     },
     {
         "id": "1337x",
-        "evades_blocks_in": ["Russia", "Brazil"],
+        "evades_blocks_in": [
+            "Russia",
+            "Brazil"
+        ],
         "name": "1337x",
         "url": "https://1337x.to",
         "category": "Downloads & Torrents",
@@ -8862,7 +9302,11 @@ const sitesData = [
     },
     {
         "id": "itazuraneko",
-        "evades_blocks_in": ["United Kingdom", "Brazil", "Australia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Brazil",
+            "Australia"
+        ],
         "name": "Itazuraneko",
         "url": "https://itazuraneko.neocities.org",
         "category": "Downloads & Torrents",
@@ -8917,7 +9361,9 @@ const sitesData = [
     },
     {
         "id": "danbooru",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Danbooru",
         "url": "https://danbooru.donmai.us",
         "category": "Image Boards (Boorus)",
@@ -8982,7 +9428,11 @@ const sitesData = [
     },
     {
         "id": "safebooru",
-        "evades_blocks_in": ["Russia", "United Kingdom", "Germany"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom",
+            "Germany"
+        ],
         "name": "Safebooru",
         "url": "https://safebooru.org",
         "category": "Image Boards (Boorus)",
@@ -9019,7 +9469,10 @@ const sitesData = [
     },
     {
         "id": "e621",
-        "evades_blocks_in": ["India", "Germany"],
+        "evades_blocks_in": [
+            "India",
+            "Germany"
+        ],
         "name": "E621",
         "url": "https://e621.net",
         "category": "Image Boards (Boorus)",
@@ -9056,7 +9509,11 @@ const sitesData = [
     },
     {
         "id": "sankakuchan",
-        "evades_blocks_in": ["Russia", "United States", "United Kingdom"],
+        "evades_blocks_in": [
+            "Russia",
+            "United States",
+            "United Kingdom"
+        ],
         "name": "Sankaku Channel",
         "url": "https://chan.sankakucomplex.com",
         "category": "Image Boards (Boorus)",
@@ -9075,7 +9532,11 @@ const sitesData = [
     },
     {
         "id": "animepictures",
-        "evades_blocks_in": ["India", "United States", "Germany"],
+        "evades_blocks_in": [
+            "India",
+            "United States",
+            "Germany"
+        ],
         "name": "Anime-Pictures",
         "url": "https://anime-pictures.net",
         "category": "Image Boards (Boorus)",
@@ -9184,7 +9645,9 @@ const sitesData = [
     },
     {
         "id": "animedao",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "AnimeDao",
         "url": "https://animedao.to",
         "category": "Anime Streaming",
@@ -9274,7 +9737,9 @@ const sitesData = [
     },
     {
         "id": "bato",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Bato.to",
         "url": "https://bato.to",
         "category": "Manga & Doujinshi",
@@ -9401,7 +9866,9 @@ const sitesData = [
     },
     {
         "id": "insanelygames",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "Insanely Games",
         "url": "https://insanelygames.net",
         "category": "Games & Visual Novels",
@@ -9420,7 +9887,10 @@ const sitesData = [
     },
     {
         "id": "hentaifoundry",
-        "evades_blocks_in": ["Germany", "United Kingdom"],
+        "evades_blocks_in": [
+            "Germany",
+            "United Kingdom"
+        ],
         "name": "Hentai Foundry",
         "url": "https://www.hentai-foundry.com",
         "category": "Communities & Forums",
@@ -9457,7 +9927,9 @@ const sitesData = [
     },
     {
         "id": "newgrounds",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "Newgrounds",
         "url": "https://www.newgrounds.com",
         "category": "Communities & Forums",
@@ -9530,7 +10002,11 @@ const sitesData = [
     },
     {
         "id": "xmodels",
-        "evades_blocks_in": ["Germany", "United States", "Australia"],
+        "evades_blocks_in": [
+            "Germany",
+            "United States",
+            "Australia"
+        ],
         "name": "XModels",
         "url": "https://xmodels.com",
         "category": "Immersive & Interactive",
@@ -9549,7 +10025,9 @@ const sitesData = [
     },
     {
         "id": "babestation",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "BabeStation",
         "url": "https://babestation.tv",
         "category": "Immersive & Interactive",
@@ -9586,7 +10064,9 @@ const sitesData = [
     },
     {
         "id": "sextpanther",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "SextPanther",
         "url": "https://sextpanther.com",
         "category": "Creator Platforms",
@@ -9605,7 +10085,9 @@ const sitesData = [
     },
     {
         "id": "camcontacts",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "CamContacts",
         "url": "https://camcontacts.com",
         "category": "Immersive & Interactive",
@@ -9624,7 +10106,9 @@ const sitesData = [
     },
     {
         "id": "bravotube",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "BravoTube",
         "url": "https://bravotube.net",
         "category": "Adult Tubes & Studios",
@@ -9661,7 +10145,10 @@ const sitesData = [
     },
     {
         "id": "archangel",
-        "evades_blocks_in": ["Russia", "United Kingdom"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom"
+        ],
         "name": "ArchAngel",
         "url": "https://archangelvideo.com",
         "category": "Adult Tubes & Studios",
@@ -9716,7 +10203,9 @@ const sitesData = [
     },
     {
         "id": "ftvgirls",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "FTV Girls",
         "url": "https://ftvgirls.com",
         "category": "Adult Tubes & Studios",
@@ -9753,7 +10242,11 @@ const sitesData = [
     },
     {
         "id": "passionhd",
-        "evades_blocks_in": ["India", "United Kingdom", "Australia"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom",
+            "Australia"
+        ],
         "name": "Passion HD",
         "url": "https://passion-hd.com",
         "category": "Adult Tubes & Studios",
@@ -9808,7 +10301,9 @@ const sitesData = [
     },
     {
         "id": "spizoo",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "Spizoo",
         "url": "https://spizoo.com",
         "category": "Adult Tubes & Studios",
@@ -9827,7 +10322,9 @@ const sitesData = [
     },
     {
         "id": "suicidegirls",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "SuicideGirls",
         "url": "https://suicidegirls.com",
         "category": "Creator Platforms",
@@ -9846,7 +10343,9 @@ const sitesData = [
     },
     {
         "id": "altporn",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "AltPorn",
         "url": "https://altporn.net",
         "category": "Communities & Forums",
@@ -9865,7 +10364,11 @@ const sitesData = [
     },
     {
         "id": "boundhub",
-        "evades_blocks_in": ["India", "Russia", "United States"],
+        "evades_blocks_in": [
+            "India",
+            "Russia",
+            "United States"
+        ],
         "name": "BoundHub",
         "url": "https://boundhub.com",
         "category": "Communities & Forums",
@@ -9884,7 +10387,10 @@ const sitesData = [
     },
     {
         "id": "heavyr",
-        "evades_blocks_in": ["Brazil", "India"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India"
+        ],
         "name": "Heavy-R",
         "url": "https://heavy-r.com",
         "category": "Communities & Forums",
@@ -9903,7 +10409,9 @@ const sitesData = [
     },
     {
         "id": "txxx",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "TXXX",
         "url": "https://txxx.com",
         "category": "Communities & Forums",
@@ -9940,7 +10448,10 @@ const sitesData = [
     },
     {
         "id": "babepedia",
-        "evades_blocks_in": ["United States", "Australia"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia"
+        ],
         "name": "Babepedia",
         "url": "https://babepedia.com",
         "category": "Communities & Forums",
@@ -9959,7 +10470,11 @@ const sitesData = [
     },
     {
         "id": "dirty",
-        "evades_blocks_in": ["United States", "Australia", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia",
+            "Germany"
+        ],
         "name": "Dirty.com",
         "url": "https://dirty.com",
         "category": "Creator Platforms",
@@ -9978,7 +10493,10 @@ const sitesData = [
     },
     {
         "id": "centerfold",
-        "evades_blocks_in": ["Australia", "India"],
+        "evades_blocks_in": [
+            "Australia",
+            "India"
+        ],
         "name": "Centerfold",
         "url": "https://centerfold.com",
         "category": "Creator Platforms",
@@ -10051,7 +10569,11 @@ const sitesData = [
     },
     {
         "id": "hianime",
-        "evades_blocks_in": ["United States", "India", "Australia"],
+        "evades_blocks_in": [
+            "United States",
+            "India",
+            "Australia"
+        ],
         "name": "HiAnime",
         "url": "https://hianime.to",
         "category": "Anime Streaming",
@@ -10070,7 +10592,10 @@ const sitesData = [
     },
     {
         "id": "allanime",
-        "evades_blocks_in": ["Russia", "India"],
+        "evades_blocks_in": [
+            "Russia",
+            "India"
+        ],
         "name": "AllAnime",
         "url": "https://allanime.to",
         "category": "Anime Streaming",
@@ -10089,7 +10614,9 @@ const sitesData = [
     },
     {
         "id": "kickassanime1",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "KickAssAnime",
         "url": "https://kickassanime.mx",
         "category": "Anime Streaming",
@@ -10108,7 +10635,10 @@ const sitesData = [
     },
     {
         "id": "twistmoe",
-        "evades_blocks_in": ["United States", "India"],
+        "evades_blocks_in": [
+            "United States",
+            "India"
+        ],
         "name": "Twist.moe",
         "url": "https://twist.moe",
         "category": "Anime Streaming",
@@ -10127,7 +10657,10 @@ const sitesData = [
     },
     {
         "id": "subsplease",
-        "evades_blocks_in": ["Brazil", "Germany"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Germany"
+        ],
         "name": "SubsPlease",
         "url": "https://subsplease.org",
         "category": "Anime Streaming",
@@ -10164,7 +10697,9 @@ const sitesData = [
     },
     {
         "id": "hentaiworld",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "HentaiWorld",
         "url": "https://hentaiworld.tv",
         "category": "Hentai Streaming",
@@ -10183,7 +10718,10 @@ const sitesData = [
     },
     {
         "id": "koharu",
-        "evades_blocks_in": ["India", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom"
+        ],
         "name": "Koharu.to",
         "url": "https://koharu.to",
         "category": "Hentai Streaming",
@@ -10201,7 +10739,11 @@ const sitesData = [
     },
     {
         "id": "hentaifreak",
-        "evades_blocks_in": ["India", "United States", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "United States",
+            "United Kingdom"
+        ],
         "name": "HentaiFREAK",
         "url": "https://hentaifreak.org",
         "category": "Hentai Streaming",
@@ -10211,7 +10753,7 @@ const sitesData = [
             "Adult (18+)",
             "Subbed"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Extensa biblioteca de episódios hentai classificados por gênero e série.",
         "description_hi": "शैली और श्रृंखला के आधार पर क्रमबद्ध हेनतई एपिसोड की विस्तृत लाइब्रेरी।",
@@ -10220,7 +10762,11 @@ const sitesData = [
     },
     {
         "id": "comick",
-        "evades_blocks_in": ["Australia", "Russia", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Russia",
+            "Germany"
+        ],
         "name": "Comick.io",
         "url": "https://comick.io",
         "category": "Manga & Doujinshi",
@@ -10308,7 +10854,11 @@ const sitesData = [
     },
     {
         "id": "livechart",
-        "evades_blocks_in": ["United States", "Russia", "Australia"],
+        "evades_blocks_in": [
+            "United States",
+            "Russia",
+            "Australia"
+        ],
         "name": "LiveChart.me",
         "url": "https://www.livechart.me",
         "category": "Communities & Forums",
@@ -10345,7 +10895,9 @@ const sitesData = [
     },
     {
         "id": "erairaw",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "Erai-raws",
         "url": "https://www.erai-raws.info",
         "category": "Downloads & Torrents",
@@ -10382,7 +10934,11 @@ const sitesData = [
     },
     {
         "id": "animeultima",
-        "evades_blocks_in": ["United States", "Germany", "Australia"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany",
+            "Australia"
+        ],
         "name": "AnimeUltima",
         "url": "https://animeultima.to",
         "category": "Anime Streaming",
@@ -10429,7 +10985,7 @@ const sitesData = [
             "Subbed",
             "Dubbed"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Site veterano de streaming de anime com um catálogo muito grande.",
         "description_hi": "बहुत बड़े बैक कैटलॉग के साथ अनुभवी एनीमे स्ट्रीमिंग साइट।",
@@ -10563,7 +11119,10 @@ const sitesData = [
     },
     {
         "id": "hentaihere",
-        "evades_blocks_in": ["Australia", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Germany"
+        ],
         "name": "HentaiHere",
         "url": "https://hentaihere.com",
         "category": "Hentai Streaming",
@@ -10573,7 +11132,7 @@ const sitesData = [
             "Adult (18+)",
             "Subbed"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Leitor de mangá Hentai e streaming híbrido com sistema de marcação.",
         "description_hi": "टैगिंग सिस्टम के साथ हेनतई मंगा रीडर और स्ट्रीमिंग हाइब्रिड।",
@@ -10582,7 +11141,11 @@ const sitesData = [
     },
     {
         "id": "bestahentai",
-        "evades_blocks_in": ["United Kingdom", "India", "Brazil"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "India",
+            "Brazil"
+        ],
         "name": "BestAHentai",
         "url": "https://bestahentai.com",
         "category": "Hentai Streaming",
@@ -10608,7 +11171,7 @@ const sitesData = [
             "Free",
             "Adult (18+)"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Site de streaming hentai simples com servidores de vídeo rápidos.",
         "description_hi": "तेज़ वीडियो सर्वर के साथ सरल हेनतई स्ट्रीमिंग साइट।",
@@ -10617,7 +11180,11 @@ const sitesData = [
     },
     {
         "id": "mangafire",
-        "evades_blocks_in": ["United States", "Australia", "Russia"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia",
+            "Russia"
+        ],
         "name": "MangaFire",
         "url": "https://mangafire.to",
         "category": "Manga & Doujinshi",
@@ -10651,7 +11218,11 @@ const sitesData = [
     },
     {
         "id": "toonily",
-        "evades_blocks_in": ["Australia", "India", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "India",
+            "Germany"
+        ],
         "name": "Toonily",
         "url": "https://toonily.com",
         "category": "Manga & Doujinshi",
@@ -10670,7 +11241,10 @@ const sitesData = [
     },
     {
         "id": "mangapanda",
-        "evades_blocks_in": ["Australia", "Germany"],
+        "evades_blocks_in": [
+            "Australia",
+            "Germany"
+        ],
         "name": "MangaPanda",
         "url": "https://mangapanda.onl",
         "category": "Manga & Doujinshi",
@@ -10678,7 +11252,7 @@ const sitesData = [
         "tags": [
             "Free"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Leitor de mangá de estilo clássico com extenso arquivo.",
         "description_hi": "व्यापक संग्रह के साथ क्लासिक शैली का मंगा रीडर।",
@@ -10687,7 +11261,10 @@ const sitesData = [
     },
     {
         "id": "myreadingmanga",
-        "evades_blocks_in": ["United Kingdom", "Australia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Australia"
+        ],
         "name": "MyReadingManga",
         "url": "https://myreadingmanga.info",
         "category": "Manga & Doujinshi",
@@ -10743,9 +11320,13 @@ const sitesData = [
     },
     {
         "id": "behoimi",
-        "evades_blocks_in": ["Australia", "United States", "United Kingdom"],
+        "evades_blocks_in": [
+            "Australia",
+            "United States",
+            "United Kingdom"
+        ],
         "name": "Beh.oimi",
-        "url": "http://behoimi.org",
+        "url": "https://behoimi.org",
         "category": "Image Boards (Boorus)",
         "description": "Niche booru focused on cosplay photography.",
         "tags": [
@@ -10753,7 +11334,7 @@ const sitesData = [
             "Images",
             "Cosplay"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Nicho booru focado em fotografia de cosplay.",
         "description_hi": "आला बूरु ने कॉस्प्ले फोटोग्राफी पर ध्यान केंद्रित किया।",
@@ -10780,7 +11361,10 @@ const sitesData = [
     },
     {
         "id": "jlist",
-        "evades_blocks_in": ["Russia", "United Kingdom"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom"
+        ],
         "name": "J-List",
         "url": "https://www.jlist.com",
         "category": "Games & Visual Novels",
@@ -10799,7 +11383,9 @@ const sitesData = [
     },
     {
         "id": "erogames",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "EroGames",
         "url": "https://erogames.com",
         "category": "Games & Visual Novels",
@@ -10809,7 +11395,7 @@ const sitesData = [
             "Paid",
             "Adult (18+)"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "Loja de jogos de anime adultos com títulos gratuitos e pagos.",
         "description_hi": "मुफ़्त-टू-प्ले और सशुल्क शीर्षक वाले वयस्क एनीमे गेम्स के लिए स्टोरफ्रंट।",
@@ -10844,7 +11430,7 @@ const sitesData = [
             "Free",
             "Community"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "O quadro de imagens original do anime. Discussão não filtrada e origem do meme.",
         "description_hi": "मूल एनीमे इमेजबोर्ड। अनफ़िल्टर्ड चर्चा और मेम उत्पत्ति।",
@@ -10890,7 +11476,10 @@ const sitesData = [
     },
     {
         "id": "animechardb",
-        "evades_blocks_in": ["Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "Anime Characters DB",
         "url": "https://www.animecharactersdatabase.com",
         "category": "Communities & Forums",
@@ -10909,7 +11498,11 @@ const sitesData = [
     },
     {
         "id": "nautiljon",
-        "evades_blocks_in": ["Australia", "United Kingdom", "Russia"],
+        "evades_blocks_in": [
+            "Australia",
+            "United Kingdom",
+            "Russia"
+        ],
         "name": "Nautiljon",
         "url": "https://www.nautiljon.com",
         "category": "Communities & Forums",
@@ -10966,7 +11559,10 @@ const sitesData = [
     },
     {
         "id": "reddit_hentai",
-        "evades_blocks_in": ["Germany", "Brazil"],
+        "evades_blocks_in": [
+            "Germany",
+            "Brazil"
+        ],
         "name": "r/hentai",
         "url": "https://www.reddit.com/r/hentai",
         "category": "Communities & Forums",
@@ -11039,7 +11635,10 @@ const sitesData = [
     },
     {
         "id": "animuzip",
-        "evades_blocks_in": ["United States", "Russia"],
+        "evades_blocks_in": [
+            "United States",
+            "Russia"
+        ],
         "name": "Animu.rip",
         "url": "https://animu.rip",
         "category": "Downloads & Torrents",
@@ -11057,7 +11656,11 @@ const sitesData = [
     },
     {
         "id": "fuwanovel",
-        "evades_blocks_in": ["India", "Germany", "Australia"],
+        "evades_blocks_in": [
+            "India",
+            "Germany",
+            "Australia"
+        ],
         "name": "Fuwanovel",
         "url": "https://fuwanovel.net",
         "category": "Games & Visual Novels",
@@ -11112,7 +11715,11 @@ const sitesData = [
     },
     {
         "id": "keyvisual",
-        "evades_blocks_in": ["Australia", "Germany", "United States"],
+        "evades_blocks_in": [
+            "Australia",
+            "Germany",
+            "United States"
+        ],
         "name": "Key Visual Arts",
         "url": "https://key.visualarts.gr.jp",
         "category": "Games & Visual Novels",
@@ -11138,7 +11745,7 @@ const sitesData = [
         "tags": [
             "Community Submitted"
         ],
-        "rating": 4.0,
+        "rating": 4,
         "addedAt": "2026-05-09",
         "description_pt": "nenhum, nenhum, nenhum, nenhum, nenhum, nenhum",
         "description_hi": "कोई नहीं कोई नहीं कोई नहीं कोई नहीं",
@@ -11147,7 +11754,9 @@ const sitesData = [
     },
     {
         "id": "yugenanime",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "YugenAnime",
         "url": "https://yugenanime.tv",
         "category": "Anime Streaming",
@@ -11184,7 +11793,11 @@ const sitesData = [
     },
     {
         "id": "hentaihaven2",
-        "evades_blocks_in": ["United States", "Brazil", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Brazil",
+            "Germany"
+        ],
         "name": "HentaiHaven",
         "url": "https://hentaihaven.xxx",
         "category": "Hentai Streaming",
@@ -11203,7 +11816,9 @@ const sitesData = [
     },
     {
         "id": "muchodoujin",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "MuchoDoujin",
         "url": "https://muchodoujin.com",
         "category": "Hentai Streaming",
@@ -11275,7 +11890,11 @@ const sitesData = [
     },
     {
         "id": "asurascans",
-        "evades_blocks_in": ["United States", "Australia", "United Kingdom"],
+        "evades_blocks_in": [
+            "United States",
+            "Australia",
+            "United Kingdom"
+        ],
         "name": "Asura Scans",
         "url": "https://asuratoon.com",
         "category": "Manga & Doujinshi",
@@ -11329,7 +11948,10 @@ const sitesData = [
     },
     {
         "id": "luscious",
-        "evades_blocks_in": ["India", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "United Kingdom"
+        ],
         "name": "Luscious",
         "url": "https://luscious.net",
         "category": "Manga & Doujinshi",
@@ -11474,7 +12096,9 @@ const sitesData = [
     },
     {
         "id": "gigaden4",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "GigaDen4",
         "url": "https://gigaden4.tv",
         "category": "Communities & Forums",
@@ -11493,7 +12117,10 @@ const sitesData = [
     },
     {
         "id": "hentaihub5",
-        "evades_blocks_in": ["United Kingdom", "Brazil"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Brazil"
+        ],
         "name": "HentaiHub5",
         "url": "https://hentaihub5.tv",
         "category": "Communities & Forums",
@@ -11530,7 +12157,9 @@ const sitesData = [
     },
     {
         "id": "megavault7",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "MegaVault7",
         "url": "https://megavault7.io",
         "category": "Hentai Streaming",
@@ -11567,7 +12196,11 @@ const sitesData = [
     },
     {
         "id": "tokyostream9",
-        "evades_blocks_in": ["United Kingdom", "Germany", "India"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Germany",
+            "India"
+        ],
         "name": "TokyoStream9",
         "url": "https://tokyostream9.to",
         "category": "Communities & Forums",
@@ -11622,7 +12255,10 @@ const sitesData = [
     },
     {
         "id": "tokyohub12",
-        "evades_blocks_in": ["Australia", "United States"],
+        "evades_blocks_in": [
+            "Australia",
+            "United States"
+        ],
         "name": "TokyoHub12",
         "url": "https://tokyohub12.me",
         "category": "Hentai Streaming",
@@ -11677,7 +12313,11 @@ const sitesData = [
     },
     {
         "id": "hentaihub15",
-        "evades_blocks_in": ["India", "Australia", "Brazil"],
+        "evades_blocks_in": [
+            "India",
+            "Australia",
+            "Brazil"
+        ],
         "name": "HentaiHub15",
         "url": "https://hentaihub15.to",
         "category": "Manga & Doujinshi",
@@ -11714,7 +12354,10 @@ const sitesData = [
     },
     {
         "id": "giganexus17",
-        "evades_blocks_in": ["United States", "Germany"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany"
+        ],
         "name": "GigaNexus17",
         "url": "https://giganexus17.to",
         "category": "Communities & Forums",
@@ -11751,7 +12394,11 @@ const sitesData = [
     },
     {
         "id": "superspace19",
-        "evades_blocks_in": ["United Kingdom", "Australia", "Russia"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "Australia",
+            "Russia"
+        ],
         "name": "SuperSpace19",
         "url": "https://superspace19.to",
         "category": "Hentai Streaming",
@@ -11770,7 +12417,9 @@ const sitesData = [
     },
     {
         "id": "hentaistream20",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "HentaiStream20",
         "url": "https://hentaistream20.moe",
         "category": "Image Boards (Boorus)",
@@ -11789,7 +12438,9 @@ const sitesData = [
     },
     {
         "id": "megavault21",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "MegaVault21",
         "url": "https://megavault21.to",
         "category": "Games & Visual Novels",
@@ -11826,7 +12477,9 @@ const sitesData = [
     },
     {
         "id": "ultrahub23",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "UltraHub23",
         "url": "https://ultrahub23.tv",
         "category": "Games & Visual Novels",
@@ -11935,7 +12588,11 @@ const sitesData = [
     },
     {
         "id": "hentaizone29",
-        "evades_blocks_in": ["Brazil", "India", "Germany"],
+        "evades_blocks_in": [
+            "Brazil",
+            "India",
+            "Germany"
+        ],
         "name": "HentaiZone29",
         "url": "https://hentaizone29.net",
         "category": "Downloads & Torrents",
@@ -11990,7 +12647,10 @@ const sitesData = [
     },
     {
         "id": "gigaden32",
-        "evades_blocks_in": ["Russia", "India"],
+        "evades_blocks_in": [
+            "Russia",
+            "India"
+        ],
         "name": "GigaDen32",
         "url": "https://gigaden32.moe",
         "category": "Games & Visual Novels",
@@ -12117,7 +12777,9 @@ const sitesData = [
     },
     {
         "id": "ultrazone39",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "UltraZone39",
         "url": "https://ultrazone39.com",
         "category": "Communities & Forums",
@@ -12136,7 +12798,10 @@ const sitesData = [
     },
     {
         "id": "tokyoden40",
-        "evades_blocks_in": ["United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "United States"
+        ],
         "name": "TokyoDen40",
         "url": "https://tokyoden40.io",
         "category": "Manga & Doujinshi",
@@ -12173,7 +12838,9 @@ const sitesData = [
     },
     {
         "id": "gigaworld42",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "GigaWorld42",
         "url": "https://gigaworld42.tv",
         "category": "Communities & Forums",
@@ -12210,7 +12877,9 @@ const sitesData = [
     },
     {
         "id": "giganexus44",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "GigaNexus44",
         "url": "https://giganexus44.me",
         "category": "Anime Streaming",
@@ -12247,7 +12916,11 @@ const sitesData = [
     },
     {
         "id": "megazone46",
-        "evades_blocks_in": ["India", "Brazil", "United Kingdom"],
+        "evades_blocks_in": [
+            "India",
+            "Brazil",
+            "United Kingdom"
+        ],
         "name": "MegaZone46",
         "url": "https://megazone46.io",
         "category": "Games & Visual Novels",
@@ -12284,7 +12957,11 @@ const sitesData = [
     },
     {
         "id": "neozone48",
-        "evades_blocks_in": ["Russia", "United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "Russia",
+            "United Kingdom",
+            "United States"
+        ],
         "name": "NeoZone48",
         "url": "https://neozone48.io",
         "category": "Manga & Doujinshi",
@@ -12303,7 +12980,9 @@ const sitesData = [
     },
     {
         "id": "otakuplanet49",
-        "evades_blocks_in": ["Russia"],
+        "evades_blocks_in": [
+            "Russia"
+        ],
         "name": "OtakuPlanet49",
         "url": "https://otakuplanet49.com",
         "category": "Hentai Streaming",
@@ -12394,7 +13073,11 @@ const sitesData = [
     },
     {
         "id": "hentaistream54",
-        "evades_blocks_in": ["Germany", "United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "Germany",
+            "United Kingdom",
+            "United States"
+        ],
         "name": "HentaiStream54",
         "url": "https://hentaistream54.tv",
         "category": "Manga & Doujinshi",
@@ -12413,7 +13096,10 @@ const sitesData = [
     },
     {
         "id": "megaworld55",
-        "evades_blocks_in": ["Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Australia"
+        ],
         "name": "MegaWorld55",
         "url": "https://megaworld55.tv",
         "category": "Games & Visual Novels",
@@ -12437,7 +13123,7 @@ const sitesData = [
         "category": "Communities & Forums",
         "description": "A fantastic new communities destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 56 in our massive expansion.",
         "addedAt": "2026-03-12",
-        "rating": 5.0,
+        "rating": 5,
         "tags": [
             "Community Submitted",
             "New",
@@ -12504,7 +13190,9 @@ const sitesData = [
     },
     {
         "id": "animezone60",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "AnimeZone60",
         "url": "https://animezone60.me",
         "category": "Downloads & Torrents",
@@ -12631,7 +13319,10 @@ const sitesData = [
     },
     {
         "id": "neonexus67",
-        "evades_blocks_in": ["Brazil", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "Australia"
+        ],
         "name": "NeoNexus67",
         "url": "https://neonexus67.net",
         "category": "Anime Streaming",
@@ -12668,7 +13359,11 @@ const sitesData = [
     },
     {
         "id": "tokyovault69",
-        "evades_blocks_in": ["Brazil", "United Kingdom", "Australia"],
+        "evades_blocks_in": [
+            "Brazil",
+            "United Kingdom",
+            "Australia"
+        ],
         "name": "TokyoVault69",
         "url": "https://tokyovault69.tv",
         "category": "Manga & Doujinshi",
@@ -12687,7 +13382,9 @@ const sitesData = [
     },
     {
         "id": "giganexus70",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "GigaNexus70",
         "url": "https://giganexus70.me",
         "category": "Anime Streaming",
@@ -12724,7 +13421,9 @@ const sitesData = [
     },
     {
         "id": "gigahub72",
-        "evades_blocks_in": ["United Kingdom"],
+        "evades_blocks_in": [
+            "United Kingdom"
+        ],
         "name": "GigaHub72",
         "url": "https://gigahub72.me",
         "category": "Hentai Streaming",
@@ -12815,7 +13514,9 @@ const sitesData = [
     },
     {
         "id": "supervault77",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "SuperVault77",
         "url": "https://supervault77.to",
         "category": "Communities & Forums",
@@ -12834,13 +13535,15 @@ const sitesData = [
     },
     {
         "id": "hentaihub78",
-        "evades_blocks_in": ["United States"],
+        "evades_blocks_in": [
+            "United States"
+        ],
         "name": "HentaiHub78",
         "url": "https://hentaihub78.moe",
         "category": "Manga & Doujinshi",
         "description": "A fantastic new manga/doujin destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 78 in our massive expansion.",
         "addedAt": "2026-02-08",
-        "rating": 4.0,
+        "rating": 4,
         "tags": [
             "Community Submitted",
             "New",
@@ -12871,7 +13574,9 @@ const sitesData = [
     },
     {
         "id": "weebden80",
-        "evades_blocks_in": ["Australia"],
+        "evades_blocks_in": [
+            "Australia"
+        ],
         "name": "WeebDen80",
         "url": "https://weebden80.tv",
         "category": "Anime Streaming",
@@ -12890,7 +13595,9 @@ const sitesData = [
     },
     {
         "id": "tokyonexus81",
-        "evades_blocks_in": ["Brazil"],
+        "evades_blocks_in": [
+            "Brazil"
+        ],
         "name": "TokyoNexus81",
         "url": "https://tokyonexus81.io",
         "category": "Manga & Doujinshi",
@@ -12909,7 +13616,10 @@ const sitesData = [
     },
     {
         "id": "superworld82",
-        "evades_blocks_in": ["India", "Russia"],
+        "evades_blocks_in": [
+            "India",
+            "Russia"
+        ],
         "name": "SuperWorld82",
         "url": "https://superworld82.net",
         "category": "Hentai Streaming",
@@ -12946,7 +13656,11 @@ const sitesData = [
     },
     {
         "id": "megaspace84",
-        "evades_blocks_in": ["India", "Russia", "Brazil"],
+        "evades_blocks_in": [
+            "India",
+            "Russia",
+            "Brazil"
+        ],
         "name": "MegaSpace84",
         "url": "https://megaspace84.me",
         "category": "Anime Streaming",
@@ -13060,7 +13774,7 @@ const sitesData = [
         "category": "Hentai Streaming",
         "description": "A fantastic new hentai streaming destination. Enjoy high quality content, an active community, and fast updates all in one place. Number 90 in our massive expansion.",
         "addedAt": "2026-01-27",
-        "rating": 3.0,
+        "rating": 3,
         "tags": [
             "Community Submitted",
             "New",
@@ -13091,7 +13805,10 @@ const sitesData = [
     },
     {
         "id": "tokyozone92",
-        "evades_blocks_in": ["United Kingdom", "United States"],
+        "evades_blocks_in": [
+            "United Kingdom",
+            "United States"
+        ],
         "name": "TokyoZone92",
         "url": "https://tokyozone92.me",
         "category": "Games & Visual Novels",
@@ -13146,7 +13863,11 @@ const sitesData = [
     },
     {
         "id": "megasanctuary95",
-        "evades_blocks_in": ["United States", "Germany", "Russia"],
+        "evades_blocks_in": [
+            "United States",
+            "Germany",
+            "Russia"
+        ],
         "name": "MegaSanctuary95",
         "url": "https://megasanctuary95.io",
         "category": "Games & Visual Novels",
@@ -13219,7 +13940,9 @@ const sitesData = [
     },
     {
         "id": "ultrastream99",
-        "evades_blocks_in": ["India"],
+        "evades_blocks_in": [
+            "India"
+        ],
         "name": "UltraStream99",
         "url": "https://ultrastream99.me",
         "category": "Communities & Forums",
@@ -20399,9 +21122,5 @@ const sitesData = [
     }
 ];
 
-// Extract unique categories and tags for the UI filters
 const ALL_CATEGORIES = [...new Set(sitesData.map(site => site.category))].sort();
-
-const allTagsRaw = [];
-sitesData.forEach(site => site.tags.forEach(tag => allTagsRaw.push(tag)));
-const ALL_TAGS = [...new Set(allTagsRaw)].sort();
+const ALL_TAGS = [...new Set(sitesData.flatMap(site => site.tags))].sort();

@@ -15,3 +15,9 @@ scripts/
 src/
 wrangler.jsonc
 .wrangler-state/
+.assetsignore
+package.json
+package-lock.json
+*.js
+!sw.js
+temp_data.js

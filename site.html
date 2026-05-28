@@ -163,9 +163,14 @@
 
     </style>
 
-    <script src="js/data.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/app.js"></script>
+    <script defer src="js/data.js"></script>
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/app.js"></script>
+
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://hentaivault.me/assets/favicon.png">
 
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#09090b">
@@ -514,9 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${labels.conclusionText}</p>
 
                     <!-- Mid-Review 300x250 Ad (high-intent placement before CTA) -->
-                    <div style="display:flex; justify-content:center; margin: 30px 0;" aria-hidden="true">
-                        <script>atOptions = {'key':'384264be4aaafb8eb28962829e409253','format':'iframe','height':250,'width':300,'params':{}}<\/script>
-                        <script src="https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js"><\/script>
+                    <div id="mid-review-ad-container" style="display:flex; justify-content:center; margin: 30px 0;" aria-hidden="true">
                     </div>
 
                     <div class="cta-box">
@@ -557,6 +560,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 .slice(0, 3);
 
             
+
+            // Inject mid-review ad safely
+            const adContainer = document.getElementById('mid-review-ad-container');
+            if (adContainer) {
+                const confScript = document.createElement('script');
+                confScript.innerHTML = "atOptions = {'key':'384264be4aaafb8eb28962829e409253','format':'iframe','height':250,'width':300,'params':{}};";
+                const invokeScript = document.createElement('script');
+                invokeScript.src = "https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js";
+                adContainer.appendChild(confScript);
+                adContainer.appendChild(invokeScript);
+            }
 
             const relatedGrid = document.getElementById('relatedGrid');
 
@@ -603,17 +617,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (schemaEl && site) {
                 const reviewSchema = {
                     "@context": "https://schema.org",
-                    "@type": "SoftwareApplication",
-                    "name": site.name,
-                    "applicationCategory": "EntertainmentApplication",
-                    "operatingSystem": "Web",
+                    "@type": "Article",
+                    "headline": site.name + " Review",
                     "url": site.url,
-                    "aggregateRating": {
-                        "@type": "AggregateRating",
-                        "ratingValue": String(site.rating),
-                        "reviewCount": String(Math.floor(site.rating * 200 + 42)),
-                        "bestRating": "5",
-                        "worstRating": "1"
+                    "review": {
+                        "@type": "Review",
+                        "itemReviewed": {
+                            "@type": "WebSite",
+                            "name": site.name
+                        },
+                        "reviewRating": {
+                            "@type": "Rating",
+                            "ratingValue": String(site.rating),
+                            "bestRating": "5",
+                            "worstRating": "1"
+                        },
+                        "author": {
+                            "@type": "Organization",
+                            "name": "HentaiVault"
+                        }
                     }
                 };
                 schemaEl.textContent = JSON.stringify(reviewSchema);
@@ -644,9 +666,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
     </div>
 
-    <div id="qr-widget" title="Scan to visit on mobile">
-        <div id="qr-label">📱 Scan Me</div>
-
     <!-- PWA Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
@@ -675,8 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
 
-    <!-- Adsterra SocialBar & Popunder -->
+    <!-- Adsterra SocialBar -->
     <script type="text/javascript" src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script type="text/javascript" src="https://pl29414985.effectivecpmnetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
 </body>
 </html>
