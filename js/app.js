@@ -1,5 +1,16 @@
 // app.js
 
+window.escapeHTML = window.escapeHTML || ((str) => {
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag] || tag));
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     try {
         initTheme();

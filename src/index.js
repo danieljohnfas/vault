@@ -16,6 +16,7 @@ const GITHUB_API  = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITH
 const ALLOWED_CATEGORIES = [
   'Anime Streaming', 'Hentai Streaming', 'Manga/Doujin',
   'Images/Boorus', 'Games', 'Communities', 'Downloads', 'Visual Novels',
+  'Adult Studios', 'Adult VR', 'Premium Creators',
 ];
 
 
@@ -26,6 +27,12 @@ const MAX_REQS = 2;
 
 function isRateLimited(ip) {
   if (!ip) return false;
+  if (rateLimitMap.size > 10000) {
+    const now = Date.now();
+    for (const [key, record] of rateLimitMap.entries()) {
+      if (now > record.resetAt) rateLimitMap.delete(key);
+    }
+  }
   const now = Date.now();
   let record = rateLimitMap.get(ip);
   if (!record) {
@@ -623,7 +630,11 @@ function makeId(name) {
 }
 
 function decodeB64(b64) {
-  return atob(b64.replace(/\n/g, ''));
+  try {
+    return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+  } catch (e) {
+    return atob(b64.replace(/\n/g, ''));
+  }
 }
 
 function encodeB64(str) {

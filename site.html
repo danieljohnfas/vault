@@ -1,19 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Fallback Meta Tags for Social Scrapers -->
     <meta property="og:title" content="HentaiVault | Site Review">
     <meta property="og:description" content="Read our detailed review and stats for this doujin/hentai site on HentaiVault.">
     <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
     <meta name="twitter:card" content="summary_large_image">
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Review | HentaiVault</title>
     <meta name="description" content="Read expert reviews, ratings, pros and cons for top hentai and doujin sites. Find the best alternatives and working links on HentaiVault.">
 
@@ -500,8 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <ul class="pc-list">
 
-                                ${ (site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li>${p}</li>`).join('') }
-
+                                ${ (site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li>${window.escapeHTML(p)}</li>`).join('') }
                             </ul>
 
                         </div>
@@ -512,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <ul class="pc-list">
 
-                                ${ (site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li>${c}</li>`).join('') }
+                                ${ (site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li>${window.escapeHTML(c)}</li>`).join('') }
 
                             </ul>
 

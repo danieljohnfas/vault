@@ -5,9 +5,9 @@ const CACHE_NAME = 'hv-cache-v1';
 const STATIC_ASSETS = [
     '/',
     '/index.html',
-    '/css/style.css',
+    '/css/style.css?v=2',
     '/js/i18n.js',
-    '/js/app.js',
+    '/js/app.js?v=2',
     '/assets/favicon.png',
     '/manifest.json'
 ];

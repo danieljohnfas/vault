@@ -27,6 +27,7 @@
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
+    --radius-xl: 24px;
     --radius-pill: 999px;
 
     /* Shadows */
@@ -1499,7 +1500,3 @@ html[lang]:not([lang='de']) .i18n-de {
     }
 }
 
-/* Missing variable: --radius-xl */
-:root {
-    --radius-xl: 24px;
-}
