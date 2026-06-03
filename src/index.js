@@ -354,18 +354,9 @@ export default {
 
     const effectiveLang = url.searchParams.get('lang') || cookieLang || detectedLang;
 
-    // Geo-Routing for top-level pages if no cookie and no query param exists
-    const isHtml = url.pathname === '/' || url.pathname.endsWith('.html') || url.pathname.includes('/category/') || url.pathname.includes('/blog/');
-    if (isHtml && !cookieLang && !url.searchParams.has('lang')) {
-        url.searchParams.set('lang', effectiveLang);
-        return new Response(null, {
-            status: 302,
-            headers: {
-                'Location': url.toString(),
-                'Set-Cookie': `hv_lang=${effectiveLang}; Path=/; Max-Age=31536000`
-            }
-        });
-    }
+    // Geo-Routing/Redirect removed for SEO compliance.
+    // The client-side i18n.js script will handle default language rendering 
+    // without forcing a 302 redirect, ensuring search engines can index the canonical URLs.
 
     // ── Route: IndexNow key verification ────────────────────────────────────
     if (env.INDEXNOW_KEY && url.pathname === `/${env.INDEXNOW_KEY}.txt`) {
