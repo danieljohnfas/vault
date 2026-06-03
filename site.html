@@ -379,11 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const cleanUrl = new URL(window.location.origin + window.location.pathname);
             cleanUrl.searchParams.set('id', siteId);
             
-            const canonicalUrl = new URL(cleanUrl.toString());
-            if (currentLang !== 'en') {
-                canonicalUrl.searchParams.set('lang', currentLang);
-            }
-            setLink('canonical', canonicalUrl.toString());
+            // Canonical always points to the clean URL without ?lang= 
+            // Language variants are hreflang alternates, NOT the canonical
+            const canonicalUrl = cleanUrl.toString();
+            setLink('canonical', canonicalUrl);
 
             const getLangUrl = (langParamVal) => {
                 const u = new URL(cleanUrl.toString());
@@ -612,33 +611,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             });
 
-            // === Inject Review Schema (fixes GSC 'invalid itemReviewed' errors) ===
+            // === Inject WebPage + AggregateRating Schema (fixes GSC schema errors) ===
             const schemaEl = document.getElementById('review-schema');
             if (schemaEl && site) {
-                const reviewSchema = {
+                const pageSchema = {
                     "@context": "https://schema.org",
-                    "@type": "Article",
-                    "headline": site.name + " Review",
-                    "url": site.url,
-                    "review": {
-                        "@type": "Review",
-                        "itemReviewed": {
-                            "@type": "Thing",
-                            "name": site.name
-                        },
-                        "reviewRating": {
-                            "@type": "Rating",
-                            "ratingValue": String(site.rating),
-                            "bestRating": "5",
-                            "worstRating": "1"
-                        },
-                        "author": {
-                            "@type": "Organization",
-                            "name": "HentaiVault"
-                        }
+                    "@type": "WebPage",
+                    "name": site.name + " Review | HentaiVault",
+                    "url": `https://hentaivault.me/site?id=${site.id}`,
+                    "description": `Expert review of ${site.name} — ratings, pros, cons, and alternatives.`,
+                    "about": {
+                        "@type": "WebSite",
+                        "name": site.name,
+                        "url": site.url
+                    },
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": String(site.rating),
+                        "bestRating": "5",
+                        "worstRating": "1",
+                        "ratingCount": "1"
+                    },
+                    "author": {
+                        "@type": "Organization",
+                        "name": "HentaiVault",
+                        "url": "https://hentaivault.me"
                     }
                 };
-                schemaEl.textContent = JSON.stringify(reviewSchema);
+                schemaEl.textContent = JSON.stringify(pageSchema);
             }
 
         });

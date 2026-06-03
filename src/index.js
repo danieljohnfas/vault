@@ -105,17 +105,20 @@ class HeadHandler {
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
     
-    // JSON-LD Review Schema
+    // JSON-LD WebPage + AggregateRating Schema (replaces Review to fix GSC schema errors)
     const schema = {
       "@context": "https://schema.org/",
-      "@type": "Review",
-      "itemReviewed": {
+      "@type": "WebPage",
+      "name": `${this.site.name} Review | HentaiVault`,
+      "url": this.canonicalUrl,
+      "description": `Read our expert review of ${this.site.name}. Category: ${this.site.category}.`,
+      "about": {
         "@type": "WebSite",
         "name": this.site.name,
         "url": this.site.url
       },
-      "reviewRating": {
-        "@type": "Rating",
+      "aggregateRating": {
+        "@type": "AggregateRating",
         "ratingValue": this.site.rating || 4.5,
         "bestRating": "5",
         "worstRating": "1"
@@ -333,9 +336,43 @@ class ReviewBodyHandler {
   }
 }
 
+// Injects a canonical <link> tag pointing to the clean URL (without ?lang= param)
+class CanonicalInjector {
+  constructor(canonicalUrl) {
+    this.canonicalUrl = canonicalUrl;
+  }
+  element(element) {
+    // Remove any existing canonical tags first via attribute selector workaround not available;
+    // We append ours — the first one wins in most SEO tools, so we prepend to head.
+    element.prepend(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+    // hreflang: tell Google that lang variants are alternates of the canonical
+    element.prepend(`<link rel="alternate" hreflang="x-default" href="${this.canonicalUrl}">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="en" href="${this.canonicalUrl}">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="es" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=es">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="ja" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=jp">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="fr" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=fr">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="pt" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=pt">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="de" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=de">`, { html: true });
+    element.prepend(`<link rel="alternate" hreflang="hi" href="${this.canonicalUrl}${this.canonicalUrl.includes('?') ? '&' : '?'}lang=hi">`, { html: true });
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC) ────────────
+    if (url.protocol === 'http:') {
+      const httpsUrl = new URL(request.url);
+      httpsUrl.protocol = 'https:';
+      return new Response(null, {
+        status: 301,
+        headers: {
+          'Location': httpsUrl.toString(),
+          'Cache-Control': 'public, max-age=31536000'
+        }
+      });
+    }
 
     // Detect Geo Lang
     const cookieHeader = request.headers.get('Cookie') || '';
@@ -355,8 +392,7 @@ export default {
     const effectiveLang = url.searchParams.get('lang') || cookieLang || detectedLang;
 
     // Geo-Routing/Redirect removed for SEO compliance.
-    // The client-side i18n.js script will handle default language rendering 
-    // without forcing a 302 redirect, ensuring search engines can index the canonical URLs.
+    // The client-side i18n.js script handles language rendering client-side.
 
     // ── Route: IndexNow key verification ────────────────────────────────────
     if (env.INDEXNOW_KEY && url.pathname === `/${env.INDEXNOW_KEY}.txt`) {
@@ -446,7 +482,36 @@ export default {
       return rewriter.transform(response);
     }
 
-    // ── Everything else: serve static assets ────────────────────────────────
+    // ── Everything else: serve static assets — with canonical injection ───────
+    // Build the canonical URL (strip ?lang= and other UI params, keep only meaningful params)
+    const isHtmlPage = url.pathname === '/' || url.pathname.endsWith('.html') ||
+                       url.pathname.includes('/category/') || url.pathname.includes('/blog/');
+    
+    if (isHtmlPage) {
+      const canonicalUrl = (() => {
+        const clean = new URL(url.toString());
+        // Keep only ?id= and ?q= query params — strip ?lang= and other UI state
+        const id = clean.searchParams.get('id');
+        const q = clean.searchParams.get('q');
+        clean.search = '';
+        if (id) clean.searchParams.set('id', id);
+        if (q) clean.searchParams.set('q', q);
+        // Always use https
+        clean.protocol = 'https:';
+        return clean.toString();
+      })();
+
+      const response = await env.ASSETS.fetch(request);
+      if (!response.ok || !response.headers.get('content-type')?.includes('text/html')) {
+        return response;
+      }
+
+      const rewriter = new HTMLRewriter()
+        .on('head', new CanonicalInjector(canonicalUrl));
+
+      return rewriter.transform(response);
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
