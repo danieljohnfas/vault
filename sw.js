@@ -15,7 +15,9 @@ const STATIC_ASSETS = [
 // Ad domains — never cache these, always fresh
 const AD_DOMAINS = [
     'revolthem.com',
-    'effectivecpmnetwork.com',
+    'pl29414985.profitablecpmratenetwork.com',
+    'pl29414982.profitablecpmratenetwork.com',
+    'pl29414983.profitablecpmratenetwork.com',
     'googletagmanager.com',
     'challenges.cloudflare.com',
     'hitscounter.dev',
