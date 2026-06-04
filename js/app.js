@@ -47,16 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let searchQuery = "";
     let currentSort = "random";
     let currentPage = 1;
-
-    try {
-        // Assign a random order to each site on page load for consistent shuffling
-        if (typeof sitesData !== 'undefined' && Array.isArray(sitesData)) {
-            sitesData.forEach(site => { site.randomOrder = Math.random(); });
-            currentSites = [...sitesData];
-        } else {
-            console.error("sitesData is not defined or not an array");
-        }
-    } catch (e) { console.error("State init failed", e); }
+    let isLoading = false;
+    let hasMoreSites = true;
+    let loadedSiteIds = []; // For exclusion pagination to avoid duplicates in random sort
 
     // --- Favorites Logic ---
     let favorites = [];
@@ -131,15 +124,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Surprise Me Button ---
     const btnSurpriseMe = document.getElementById('btnSurpriseMe');
     if (btnSurpriseMe) {
-        btnSurpriseMe.addEventListener('click', () => {
-            const randomSite = sitesData[Math.floor(Math.random() * sitesData.length)];
-            // Visual feedback
+        btnSurpriseMe.addEventListener('click', async () => {
             const originalText = btnSurpriseMe.innerHTML;
             btnSurpriseMe.innerHTML = '<span style="font-size: 1.2rem;">✨</span> Opening...';
-            setTimeout(() => { btnSurpriseMe.innerHTML = originalText; }, 1000);
-            
-            // Route to review page to capture pageviews and ads
-            window.location.href = `/site?id=${randomSite.id}`;
+            try {
+                const res = await fetch('/api/sites?sort=random&limit=1');
+                const data = await res.json();
+                if (data && data.sites && data.sites.length > 0) {
+                    window.location.href = `/site?id=${data.sites[0].id}`;
+                } else {
+                    btnSurpriseMe.innerHTML = originalText;
+                }
+            } catch (e) {
+                btnSurpriseMe.innerHTML = originalText;
+            }
         });
     }
 
@@ -186,11 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Recently Viewed Tracker ---
     try {
         const uParams = new URLSearchParams(window.location.search);
         const sId = uParams.get('id');
-        if (window.location.pathname === '/site' && sId && typeof sitesData !== 'undefined') {
+        if (window.location.pathname === '/site' && sId) {
             let recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
             recent = recent.filter(id => id !== sId);
             recent.unshift(sId);
@@ -200,17 +197,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const recentContainer = document.getElementById('recentlyViewedContainer');
         const recentShelf = document.getElementById('recentlyViewedShelf');
-        if (recentContainer && recentShelf && typeof sitesData !== 'undefined') {
+        if (recentContainer && recentShelf) {
             const recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
             if (recent.length > 0) {
                 recentContainer.style.display = 'block';
-                const recentSites = recent.map(id => sitesData.find(s => s.id === id)).filter(Boolean);
-                recentShelf.innerHTML = recentSites.map(site => `
-                    <a href="/site?id=${site.id}" style="display:flex; flex-direction:column; align-items:center; min-width: 80px; text-align:center; text-decoration:none; gap:6px; transition:transform 0.2s;">
-                        <img src="https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
-                        <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${escapeHTML(site.name)}</span>
-                    </a>
-                `).join('');
+                Promise.all(recent.map(id => fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null)))
+                .then(sites => {
+                    const recentSites = sites.filter(Boolean);
+                    if (recentSites.length > 0) {
+                        recentShelf.innerHTML = recentSites.map(site => `
+                            <a href="/site?id=${site.id}" style="display:flex; flex-direction:column; align-items:center; min-width: 80px; text-align:center; text-decoration:none; gap:6px; transition:transform 0.2s;">
+                                <img src="https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
+                                <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${escapeHTML(site.name)}</span>
+                            </a>
+                        `).join('');
+                    } else {
+                        recentContainer.style.display = 'none';
+                    }
+                }).catch(e => {
+                    recentContainer.style.display = 'none';
+                });
             }
         }
     } catch (e) { console.error("Recently viewed failed", e); }
@@ -477,59 +483,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function applyFiltersAndSort() {
-        // Filter
-        currentSites = sitesData.filter(site => {
-            // Favorites filter
-            if (showFavoritesOnly && !favorites.includes(site.id)) return false;
+    async function applyFiltersAndSort(append = false) {
+        if (isLoading) return;
+        isLoading = true;
 
-            // Search filter
-            const matchesSearch = searchQuery === "" || 
-                                  site.name.toLowerCase().includes(searchQuery) || 
-                                  site.description.toLowerCase().includes(searchQuery) ||
-                                  site.category.toLowerCase().includes(searchQuery) ||
-                                  site.tags.some(t => t.toLowerCase().includes(searchQuery));
+        if (!append) {
+            currentPage = 1;
+            currentSites = [];
+            loadedSiteIds = [];
+            siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading sites...</div>';
+            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        }
+
+        const params = new URLSearchParams();
+        params.set('page', currentPage);
+        params.set('limit', ITEMS_PER_PAGE);
+        
+        if (searchQuery) params.set('q', searchQuery);
+        if (activeCategories.length > 0) params.set('category', activeCategories[0]);
+        if (activeTags.length > 0) params.set('tags', activeTags.join(','));
+        params.set('sort', currentSort);
+
+        // Region filter (if active on the page)
+        const regionSelect = document.getElementById('regionSelect');
+        if (regionSelect && regionSelect.value !== 'All') {
+            // Note: Region filtering on the backend isn't natively supported yet. We will just pass tags for now, or it will filter nothing on backend.
+        }
+
+        // Exclusion for stable random sorting
+        if (currentSort === 'random' && loadedSiteIds.length > 0 && loadedSiteIds.length < 200) {
+            params.set('exclude', loadedSiteIds.join(','));
+        }
+
+        try {
+            const res = await fetch('/api/sites?' + params.toString());
+            const data = await res.json();
             
-            // Category filter (Match Any - OR logic for categories makes sense for UX)
-            const matchesCategory = activeCategories.length === 0 || activeCategories.includes(site.category);
-            
-            // Tags filter (Match ALL - AND logic for power users)
-            const matchesTags = activeTags.length === 0 || activeTags.every(t => site.tags.includes(t));
+            if (data && data.sites) {
+                let fetchedSites = data.sites;
+                // Client-side favorites filter if active
+                if (showFavoritesOnly) {
+                    fetchedSites = fetchedSites.filter(s => favorites.includes(s.id));
+                }
 
-            // Region filter (if active on the page)
-            const regionSelect = document.getElementById('regionSelect');
-            let matchesRegion = true;
-            if (regionSelect && regionSelect.value !== 'All') {
-                matchesRegion = site.evades_blocks_in && site.evades_blocks_in.includes(regionSelect.value);
+                if (!append) {
+                    currentSites = fetchedSites;
+                } else {
+                    currentSites = [...currentSites, ...fetchedSites];
+                }
+                
+                fetchedSites.forEach(s => {
+                    if (!loadedSiteIds.includes(s.id)) loadedSiteIds.push(s.id);
+                });
+
+                hasMoreSites = (data.sites.length === ITEMS_PER_PAGE);
+                renderSites(append, data.total);
             }
-
-            return matchesSearch && matchesCategory && matchesTags && matchesRegion;
-        });
-
-        // Sort
-        currentSites.sort((a, b) => {
-            // Priority 0: Promoted sites always first
-            if (a.promoted && !b.promoted) return -1;
-            if (!a.promoted && b.promoted) return 1;
-
-            if (currentSort === 'random') {
-                return a.randomOrder - b.randomOrder;
-            } else if (currentSort === 'popular') {
-                const scoreA = a.rating * 2 + (new Date(a.addedAt) / 1e11);
-                const scoreB = b.rating * 2 + (new Date(b.addedAt) / 1e11);
-                return scoreB - scoreA;
-            } else if (currentSort === 'rating') {
-                return b.rating - a.rating;
-            } else if (currentSort === 'alpha') {
-                return a.name.localeCompare(b.name);
-            } else if (currentSort === 'newest') {
-                return new Date(b.addedAt) - new Date(a.addedAt);
-            }
-            return 0;
-        });
-
-        currentPage = 1;
-        renderSites(false);
+        } catch (e) {
+            console.error('API Fetch Failed', e);
+            siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Failed to load sites. Please try again.</div>';
+        } finally {
+            isLoading = false;
+        }
     }
 
     // In-feed ad HTML (uses existing leaderboard ad key for in-feed placement)
@@ -539,10 +554,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
         </div>`;
 
-    function renderSites(append = false) {
+    function renderSites(append = false, apiTotal = null) {
         if (!append) siteGrid.innerHTML = '';
 
-        const total = currentSites.length;
+        const total = apiTotal !== null ? apiTotal : currentSites.length;
         const pageItems = append 
             ? currentSites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
             : currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
@@ -700,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Keep loadMore as invisible sentinel for IntersectionObserver
-        if (loadMoreBtn) loadMoreBtn.style.display = (visible.length < total) ? 'block' : 'none';
+        if (loadMoreBtn) loadMoreBtn.style.display = hasMoreSites ? 'block' : 'none';
     }
 
     function toggleFavorite(id, btn) {
@@ -725,9 +740,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Users never see the button; cards load seamlessly as they scroll
     if (loadMoreBtn) {
         const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none') {
+            if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none' && !isLoading) {
                 currentPage++;
-                renderSites(true);
+                applyFiltersAndSort(true);
             }
         }, { rootMargin: '400px' }); // Trigger 400px before reaching bottom
 
@@ -735,8 +750,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Keep click as fallback
         loadMoreBtn.addEventListener('click', () => {
-            currentPage++;
-            renderSites(true);
+            if (!isLoading) {
+                currentPage++;
+                applyFiltersAndSort(true);
+            }
         });
     }
 
@@ -817,37 +834,46 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
     function initAutocomplete() {
-        const input = document.getElementById("searchInput");
-        const tray = document.getElementById("searchAutocomplete");
-        if (!input || !tray) return;
-        input.addEventListener('input', (e) => {
+        const searchInput = document.getElementById("searchInput");
+        const autocompleteBox = document.getElementById("searchAutocomplete");
+        if (!searchInput || !autocompleteBox) return;
+        let debounceTimer;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
             const val = e.target.value.toLowerCase().trim();
-            if (val.length < 2) {
-                tray.classList.remove("active");
+            if (!val) {
+                autocompleteBox.classList.remove("active");
                 return;
             }
-            const matches = sitesData.filter(s => 
-                s.name.toLowerCase().includes(val) || 
-                s.category.toLowerCase().includes(val)
-            ).slice(0, 6);
-            if (matches.length > 0) {
-                tray.innerHTML = matches.map(s => `
-                    <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">
-                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
-                        <div class="autocomplete-info">
-                            <div class="autocomplete-name">${s.name}</div>
-                            <div class="autocomplete-cat">${s.category}</div>
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const res = await fetch(`/api/sites?q=${encodeURIComponent(val)}&limit=5`);
+                    const data = await res.json();
+                    const matches = data.sites || [];
+                    
+                    if (matches.length === 0) {
+                        autocompleteBox.classList.remove("active");
+                        return;
+                    }
+                    
+                    autocompleteBox.innerHTML = matches.slice(0,5).map(s => `
+                        <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">
+                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
+                            <div class="autocomplete-info">
+                                <div class="autocomplete-name">${escapeHTML(s.name)}</div>
+                                <div class="autocomplete-cat">${s.category}</div>
+                            </div>
                         </div>
-                    </div>
-                `).join("");
-                tray.classList.add("active");
-            } else {
-                tray.classList.remove("active");
-            }
+                    `).join("");
+                    autocompleteBox.classList.add("active");
+                } catch (err) {
+                    autocompleteBox.classList.remove("active");
+                }
+            }, 300);
         });
         document.addEventListener("click", (e) => {
-            if (!input.contains(e.target) && !tray.contains(e.target)) {
-                tray.classList.remove("active");
+            if (!searchInput.contains(e.target) && !autocompleteBox.contains(e.target)) {
+                autocompleteBox.classList.remove("active");
             }
         });
     }

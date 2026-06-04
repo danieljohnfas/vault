@@ -464,7 +464,56 @@
     </div>
 
 
-        <!-- Sticky Bottom Ad -->
+    <!-- Scripts -->
+    <script defer src="js/app.js?v=3"></script>
+    <script defer src="js/i18n.js"></script>
+
+    <!-- Unique Visitor Hit Tracker -->
+    <script>
+        if (!localStorage.getItem("hv_counted")) {
+            localStorage.setItem("hv_counted", "true");
+            new Image().src = "https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23002d72&style=flat-square&tz=UTC";
+        }
+    </script>
+
+    <!-- QR Code Widget -->
+    <div id="qr-widget" title="Scan to visit on mobile">
+        <div id="qr-label">📱 Scan Me</div>
+        <img id="qr-img"
+             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
+             alt="QR Code — HentaiVault.me"
+             width="160" height="160">
+        <p id="qr-caption">hentaivault.me</p>
+    </div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(reg) { console.log('SW registered'); })
+                    .catch(function(err) { console.log('SW error:', err); });
+            });
+        }
+    </script>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+            <h3>Share this link</h3>
+            <div class="share-qr-container">
+                <img id="shareQrImg" src="" alt="QR Code">
+            </div>
+            <div class="share-actions">
+                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Ad -->
     <div id="sticky-bottom-ad">
         <div class="sticky-ad-inner">
             <script type="text/javascript">

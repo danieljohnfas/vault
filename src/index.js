@@ -398,6 +398,115 @@ export default {
       }
     }
 
+    // ── Route: /api/site ───────────────────────────────────────────────────────
+    if (url.pathname === '/api/site') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      const id = url.searchParams.get('id');
+      if (!id) return jsonError('Missing site id', 400);
+      try {
+        const result = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+        if (!result) return jsonError('Site not found', 404);
+        return new Response(
+          result.data_json,
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } }
+        );
+      } catch (err) {
+        return jsonError('Database error', 500);
+      }
+    }
+
+    // ── Route: /api/sites ────────────────────────────────────────────────────
+    if (url.pathname === '/api/sites') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      try {
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = parseInt(url.searchParams.get('limit')) || 24;
+        const offset = (page - 1) * limit;
+        
+        let query = 'SELECT data_json FROM sites';
+        let params = [];
+        let conditions = [];
+        
+        const q = url.searchParams.get('q');
+        if (q) {
+          conditions.push('(name LIKE ? OR description LIKE ? OR data_json LIKE ?)');
+          const likeQuery = `%${q}%`;
+          params.push(likeQuery, likeQuery, likeQuery);
+        }
+        
+        const category = url.searchParams.get('category');
+        if (category) {
+          conditions.push('category = ?');
+          params.push(category);
+        }
+
+        const tagsStr = url.searchParams.get('tags');
+        if (tagsStr) {
+          const tagsArray = tagsStr.split(',');
+          // If any tag matches
+          const tagConditions = tagsArray.map(tag => {
+            params.push(`%"${tag}"%`);
+            return 'data_json LIKE ?';
+          });
+          conditions.push(`(${tagConditions.join(' OR ')})`);
+        }
+        
+        if (conditions.length > 0) {
+          query += ' WHERE ' + conditions.join(' AND ');
+        }
+        
+        const excludeStr = url.searchParams.get('exclude');
+        if (excludeStr) {
+          const excludeArray = excludeStr.split(',');
+          if (excludeArray.length > 0) {
+            const placeholders = excludeArray.map(() => '?').join(',');
+            conditions.push(`id NOT IN (${placeholders})`);
+            params.push(...excludeArray);
+          }
+        }
+
+        let countQuery = 'SELECT COUNT(*) as count FROM sites';
+        if (conditions.length > 0) {
+          countQuery += ' WHERE ' + conditions.join(' AND ');
+        }
+        const countResult = await env.hv_directory.prepare(countQuery).bind(...params).first();
+        const total = countResult ? countResult.count : 0;
+
+        const sort = url.searchParams.get('sort') || 'random';
+        if (sort === 'rating' || sort === 'popular') {
+          query += ' ORDER BY rating DESC';
+        } else if (sort === 'newest') {
+          query += ' ORDER BY added_at DESC';
+        } else if (sort === 'random') {
+          query += ' ORDER BY RANDOM()';
+        } else if (sort === 'alphabetical') {
+          query += ' ORDER BY name ASC';
+        } else {
+          query += ' ORDER BY RANDOM()';
+        }
+        
+        query += ' LIMIT ? OFFSET ?';
+        params.push(limit, offset);
+        
+        const result = await env.hv_directory.prepare(query).bind(...params).all();
+        const sites = result.results.map(row => JSON.parse(row.data_json));
+        
+        return new Response(
+          JSON.stringify({ total, sites }),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } }
+        );
+      } catch (err) {
+        console.error("Error fetching sites from D1:", err);
+        return jsonError('Database error', 500);
+      }
+    }
+
     // ── Route: /api/submit ──────────────────────────────────────────────────
     if (url.pathname === '/api/submit') {
       if (request.method === 'OPTIONS') {
