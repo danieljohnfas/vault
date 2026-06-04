@@ -227,8 +227,13 @@ a:hover {
 /* ==========================================================================
    Hero Section
    ========================================================================== */
+/* Leaderboard ad: push below the 70px fixed navbar + 20px breathing room */
+.ad-container.leaderboard {
+    margin-top: 90px !important;
+}
+
 .hero {
-    margin-top: 70px;
+    margin-top: 0;
     padding: 80px 24px 60px;
     text-align: center;
     background: radial-gradient(circle at top, rgba(255, 42, 95, 0.15) 0%, rgba(9, 9, 11, 1) 70%);
