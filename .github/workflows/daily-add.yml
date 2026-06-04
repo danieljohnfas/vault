@@ -63,6 +63,9 @@ jobs:
           
           echo "==== 3. UPDATING HTML COUNTS ===="
           node scripts/update-html-counts.js
+          
+          echo "==== 4. PINGING BING INDEXNOW ===="
+          node scripts/ping-indexnow.js
 
       - name: Report queue status
         if: always()
