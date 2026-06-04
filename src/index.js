@@ -71,7 +71,23 @@ async function getSitesData(urlOrigin, env) {
     const bust = `?v=${cachedSitesVersion}_${Date.now()}`;
     const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js' + bust));
     if (!dataRes.ok) return [];
+
+    // Guard against oversized data.js — Cloudflare Workers have tight CPU limits.
+    // If data.js exceeds 6MB, we skip the in-Worker parse and return empty (client will load it directly).
+    const contentLength = dataRes.headers.get('content-length');
+    if (contentLength && parseInt(contentLength) > 6_000_000) {
+      console.warn('data.js too large for Worker parse (' + contentLength + ' bytes) — skipping in-Worker cache.');
+      return [];
+    }
+
     const dataText = await dataRes.text();
+
+    // Bail out if the text is too large to safely parse in-Worker
+    if (dataText.length > 6_000_000) {
+      console.warn('data.js text too large (' + dataText.length + ' chars) — skipping in-Worker cache.');
+      return [];
+    }
+
     const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
     if (arrayMatch) {
       const jsonString = arrayMatch[1]
@@ -499,6 +515,44 @@ export default {
         .on('head', new HeadHandler(site, canonicalUrl))
         .on('div#reviewContent', new ReviewBodyHandler(site, lang, sites));
 
+      return rewriter.transform(response);
+    }
+
+    // ── Clean URL routing — map extension-less paths to their .html files ─────
+    // e.g. /about → /about.html, /blog/post-name → /blog/post-name.html
+    const CLEAN_URL_MAP = {
+      '/about':                            '/about.html',
+      '/disclaimer':                       '/disclaimer.html',
+      '/terms':                            '/terms.html',
+      '/privacy':                          '/privacy.html',
+      '/dmca':                             '/dmca.html',
+      '/contact':                          '/contact.html',
+      '/region-unblocked':                 '/region-unblocked.html',
+      '/blog':                             '/blog/index.html',
+      '/blog/best-doujin-sites-2026':      '/blog/best-doujin-sites-2026.html',
+      '/blog/best-streaming-2026':         '/blog/best-streaming-2026.html',
+      '/blog/free-manga-guide':            '/blog/free-manga-guide.html',
+      '/blog/hanime-alternatives-2026':    '/blog/hanime-alternatives-2026.html',
+      '/blog/nhentai-alternatives-2026':   '/blog/nhentai-alternatives-2026.html',
+      '/blog/privacy-safety-guide':        '/blog/privacy-safety-guide.html',
+      '/blog/top-10-sites-may-2026':       '/blog/top-10-sites-may-2026.html',
+      '/category/anime-streaming':         '/category/anime-streaming.html',
+      '/category/manga-doujin':            '/category/manga-doujin.html',
+      '/category/hentai-streaming':        '/category/hentai-streaming.html',
+      '/category/images-boorus':           '/category/images-boorus.html',
+      '/category/games':                   '/category/games.html',
+      '/category/communities':             '/category/communities.html',
+      '/category/downloads':              '/category/downloads.html',
+      '/category/visual-novels':           '/category/visual-novels.html',
+    };
+
+    const mappedPath = CLEAN_URL_MAP[url.pathname];
+    if (mappedPath) {
+      const canonicalUrl = `https://hentaivault.me${url.pathname}`;
+      const mappedRequest = new Request(url.origin + mappedPath, request);
+      const response = await env.ASSETS.fetch(mappedRequest);
+      if (!response.ok) return response;
+      const rewriter = new HTMLRewriter().on('head', new CanonicalInjector(canonicalUrl));
       return rewriter.transform(response);
     }
 
