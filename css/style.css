@@ -681,6 +681,34 @@ select {
     object-fit: contain;
 }
 
+.status-dot {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #555;
+    border: 2px solid var(--bg-surface-elevated);
+    z-index: 2;
+    transition: background 0.3s ease;
+}
+.status-loading {
+    background: #ffb86c;
+    animation: pulse 1s infinite alternate;
+}
+.status-up {
+    background: #50fa7b;
+    box-shadow: 0 0 8px rgba(80, 250, 123, 0.4);
+}
+.status-down {
+    background: #ff5555;
+    box-shadow: 0 0 8px rgba(255, 85, 85, 0.4);
+}
+.status-unknown {
+    background: #6272a4;
+}
+
 .card-title {
     font-size: 1.25rem;
     font-weight: 600;

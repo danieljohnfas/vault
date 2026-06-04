@@ -399,6 +399,38 @@ export default {
       }
     }
 
+    // ── Route: /api/status ──────────────────────────────────────────────────────
+    if (url.pathname === '/api/status') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      const targetUrl = url.searchParams.get('url');
+      if (!targetUrl) return jsonError('Missing url', 400);
+
+      try {
+        const start = Date.now();
+        const res = await fetch(targetUrl, { 
+          method: 'HEAD', 
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' },
+          signal: AbortSignal.timeout(3500)
+        });
+        
+        const latency = Date.now() - start;
+        // Consider anything < 500 as "up", some sites return 403 for bots which means their server is UP
+        const up = res.status >= 200 && res.status < 500 && res.status !== 404;
+        
+        return new Response(
+          JSON.stringify({ up, latency, status: res.status }),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
+        );
+      } catch (err) {
+        return new Response(
+          JSON.stringify({ up: false, latency: 0, status: 0 }),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=120' } }
+        );
+      }
+    }
+
     // ── Route: /api/site ───────────────────────────────────────────────────────
     if (url.pathname === '/api/site') {
       if (request.method === 'OPTIONS') {

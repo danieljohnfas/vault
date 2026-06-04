@@ -58,6 +58,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const ageGate = document.getElementById('ageGate');
     const btnEnter = document.getElementById('btnEnter');
     const btnSearchMobile = document.getElementById('btnSearchMobile');
+
+    // Uptime Status Observer
+    const statusObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const dot = entry.target;
+                const url = dot.dataset.url;
+                observer.unobserve(dot);
+                dot.classList.add('status-loading');
+                fetch(`/api/status?url=${encodeURIComponent(url)}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        dot.classList.remove('status-loading');
+                        if (data.up) {
+                            dot.classList.add('status-up');
+                            dot.title = `Online (${data.latency}ms)`;
+                        } else {
+                            dot.classList.add('status-down');
+                            dot.title = `Offline / Unreachable (HTTP ${data.status})`;
+                        }
+                    }).catch(() => {
+                        dot.classList.remove('status-loading');
+                        dot.classList.add('status-unknown');
+                        dot.title = `Status check failed`;
+                    });
+            }
+        });
+    }, { rootMargin: '100px' });
+
     const searchBar = document.querySelector('.search-bar');
 
     // --- Constants ---
@@ -680,7 +709,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     >
                 </div>
                 <div class="card-header">
-                    <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                    <div style="position:relative; display:inline-block; line-height: 0;">
+                        <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                        <div class="status-dot" data-url="${site.url}"></div>
+                    </div>
                     <div>
                         <a href="/site?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;">
                             <div class="card-title">${localName}</div>
@@ -716,6 +748,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 toggleFavorite(site.id, favBtn);
             };
+
+            const dot = card.querySelector('.status-dot');
+            if (dot) statusObserver.observe(dot);
 
             siteGrid.appendChild(card);
 
