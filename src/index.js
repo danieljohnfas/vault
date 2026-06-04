@@ -76,7 +76,7 @@ async function getSitesData(urlOrigin, env) {
     // Regex matching + JSON.parse on large files will blow past this and return 503s.
     // If data.js exceeds 2MB, skip in-Worker parse — client loads it directly via <script> tag.
     const contentLength = dataRes.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > 2_000_000) {
+    if (contentLength && parseInt(contentLength) > 1_000_000) {
       console.warn('data.js too large for Worker parse (' + contentLength + ' bytes) — skipping in-Worker cache.');
       return [];
     }
@@ -84,7 +84,7 @@ async function getSitesData(urlOrigin, env) {
     const dataText = await dataRes.text();
 
     // Secondary guard on actual text length
-    if (dataText.length > 2_000_000) {
+    if (dataText.length > 1_000_000) {
       console.warn('data.js text too large (' + dataText.length + ' chars) — skipping in-Worker cache.');
       return [];
     }
