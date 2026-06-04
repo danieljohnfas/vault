@@ -483,9 +483,10 @@ export default {
           query += ' ORDER BY rating DESC';
         } else if (sort === 'newest') {
           query += ' ORDER BY added_at DESC';
-        } else if (sort === 'alphabetical') {
+        } else if (sort === 'alphabetical' || sort === 'alpha') {
           query += ' ORDER BY name ASC';
         } else {
+          // Default and 'random': fresh shuffle every request
           query += ' ORDER BY RANDOM()';
         }
         
