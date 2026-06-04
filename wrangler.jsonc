@@ -26,10 +26,5 @@
       "database_name": "hv-directory",
       "database_id": "3dc06028-c9b1-4e4a-a3c3-11f92209baab"
     }
-  ],
-  "triggers": {
-    "crons": [
-      "0 * * * *"
-    ]
-  }
+  ]
 }

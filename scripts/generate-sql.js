@@ -19,6 +19,11 @@ let fileIndex = 1;
 
 function writeBatch() {
   if (currentStmts.length === 0) return;
+  
+  if (fileIndex === 1) {
+    currentStmts.unshift('DELETE FROM sites;');
+  }
+
   const sql = currentStmts.join('\n');
   const filename = path.join(__dirname, `../insert_${fileIndex}.sql`);
   fs.writeFileSync(filename, sql, 'utf8');

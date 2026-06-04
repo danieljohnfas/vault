@@ -653,10 +653,47 @@ async function handleSubmit(request, env, ctx) {
       'INSERT INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, ?, ?)'
     ).bind(id, catClean, urlClean, 4.0, today, dataJson).run();
 
+    // ── 6. Also Commit to GitHub so data.js stays the Master ───────────────
+    try {
+      const ghHeaders = {
+        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+        'Accept':        'application/vnd.github+json',
+        'User-Agent':    'HentaiVault-Worker',
+      };
+      
+      const fileRes = await fetch(GITHUB_API, { headers: ghHeaders });
+      if (fileRes.ok) {
+        const fileData = await fileRes.json();
+        const sha = fileData.sha;
+        const rawContent = decodeB64(fileData.content);
+        const arrayMatch = rawContent.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
+        
+        if (arrayMatch) {
+          const jsonString = arrayMatch[1].replace(/,\s*([\]}])/g, '$1');
+          const sitesArray = JSON.parse(jsonString);
+          sitesArray.push(newEntry);
+          
+          const newSitesStr = JSON.stringify(sitesArray, null, 4);
+          const updated = `const sitesData = ${newSitesStr};`;
+          
+          await fetch(GITHUB_API, {
+            method:  'PUT',
+            headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: `Add site: ${nameClean}`,
+              content: encodeB64(updated),
+              sha,
+            }),
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Failed to push submission to GitHub data.js", err);
+      // Non-fatal, D1 is updated
+    }
+
     // Ping Bing IndexNow in the background (non-blocking)
     ctx.waitUntil(pingIndexNow(env));
-    // Trigger an immediate GitHub sync in the background
-    ctx.waitUntil(syncD1ToGitHub(env));
 
     return new Response(
       JSON.stringify({
@@ -669,50 +706,6 @@ async function handleSubmit(request, env, ctx) {
   } catch (err) {
     console.error('Unexpected error:', err);
     return jsonError('An unexpected error occurred.', 500);
-  }
-}
-
-// ─── Cron Scheduled Handler ───────────────────────────────────────────────────
-
-export async function scheduled(event, env, ctx) {
-  // Sync the D1 database to the GitHub data.js file every hour
-  ctx.waitUntil(syncD1ToGitHub(env));
-}
-
-async function syncD1ToGitHub(env) {
-  if (!env.hv_directory || !env.GITHUB_TOKEN) return;
-  try {
-    const { results } = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY added_at DESC').all();
-    if (!results || results.length === 0) return;
-    
-    const sitesArray = results.map(row => JSON.parse(row.data_json));
-    const newSitesStr = JSON.stringify(sitesArray, null, 4);
-    const updated = `const sitesData = ${newSitesStr};`;
-    
-    // Fetch current SHA
-    const ghHeaders = {
-      'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-      'Accept':        'application/vnd.github+json',
-      'User-Agent':    'HentaiVault-Worker',
-    };
-    const fileRes = await fetch(GITHUB_API, { headers: ghHeaders });
-    if (!fileRes.ok) return;
-    const fileData = await fileRes.json();
-    const sha = fileData.sha;
-    
-    // Only commit if content changed (by checking size roughly, or just committing and letting Git figure it out)
-    await fetch(GITHUB_API, {
-      method:  'PUT',
-      headers: { ...ghHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `chore(db): sync D1 database to data.js (${sitesArray.length} sites)`,
-        content: encodeB64(updated),
-        sha,
-      }),
-    });
-    console.log('Successfully synced D1 to GitHub');
-  } catch (err) {
-    console.error('Failed to sync D1 to GitHub:', err);
   }
 }
 
