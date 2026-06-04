@@ -15,6 +15,8 @@ jobs:
   sync:
     name: Sync data.js to Cloudflare D1
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -23,7 +25,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Generate SQL Scripts
         run: node scripts/generate-sql.js
