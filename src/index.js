@@ -90,7 +90,7 @@ class HeadHandler {
     const schema = {
       "@context": "https://schema.org/",
       "@type": "WebPage",
-      "name": `${this.site.name} Review | HentaiVault`,
+      "name": title,
       "url": this.canonicalUrl,
       "description": `Read our expert review of ${this.site.name}. Category: ${this.site.category}.`,
       "about": {
@@ -104,7 +104,6 @@ class HeadHandler {
         "bestRating": "5",
         "worstRating": "1"
       },
-      "name": title,
       "author": {
         "@type": "Organization",
         "name": "HentaiVault"
