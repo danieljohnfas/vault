@@ -85,6 +85,7 @@ def generate():
     # Blog posts
     blog_posts = [
         "nhentai-alternatives-2026",
+        "hanime-alternatives-2026",
         "privacy-safety-guide",
         "best-doujin-sites-2026",
         "free-manga-guide",
