@@ -1,0 +1,72 @@
+name: 🗓️ Daily Site Addition
+
+on:
+  schedule:
+    # Runs every day at 06:00 UTC (9:00 AM Riyadh / Istanbul time)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Number of sites to add'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Dry run (no commits)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  daily-add:
+    name: Add Sites to Directory
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Set up Python (for sitemap regeneration)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure Git
+        run: |
+          git config user.name "HentaiVault Bot"
+          git config user.email "bot@hentaivault.me"
+
+      - name: Run daily site addition
+        run: |
+          COUNT="${{ github.event.inputs.count || '100' }}"
+          DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/daily-add.js --count "$COUNT" --dry-run
+          else
+            node scripts/daily-add.js --count "$COUNT"
+          fi
+
+      - name: Report queue status
+        if: always()
+        run: |
+          QUEUE_LEN=$(node -e "const q=require('./scripts/sites-queue.json'); console.log(q.length)")
+          DATA_LEN=$(node -e "
+            const fs=require('fs');
+            const raw=fs.readFileSync('js/data.js','utf8');
+            const m=raw.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
+            const d=JSON.parse(m[1].replace(/,\s*([\]}])/g,'\$1'));
+            console.log(d.length);
+          ")
+          echo "📊 Database: $DATA_LEN sites"
+          echo "📋 Queue remaining: $QUEUE_LEN sites"
+          echo "📅 Days until queue empty: $((QUEUE_LEN / 100))"
