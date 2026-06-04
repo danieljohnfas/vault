@@ -374,7 +374,20 @@
             return false;
         }
 
-        const allSites = typeof sitesData !== 'undefined' ? sitesData : [];
+        let allSites = [];
+        scanStatus.textContent = "Fetching sites from vault...";
+        try {
+            // Fetch a random sample of 100 sites to scan (scanning 1000+ takes too long)
+            const seed = Math.floor(Math.random() * 2000000000) + 1;
+            const res = await fetch(`/api/sites?sort=random&limit=100&seed=${seed}`);
+            const data = await res.json();
+            if (data && data.sites) {
+                allSites = data.sites;
+            }
+        } catch (e) {
+            console.error("Failed to fetch sites for scanner:", e);
+        }
+
         if (allSites.length === 0) {
             scanStatus.textContent = "No sites found in database.";
             scanBar.style.width = "100%";
