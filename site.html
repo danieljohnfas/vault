@@ -370,6 +370,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <button onclick="window.openShareModal('https://hentaivault.me/site?id=${site.id}', '${localName} | HentaiVault', 'Check out ${localName} - The best ${localCat} site! Found on HentaiVault.')" class="btn-outline" style="font-size:1.2rem; padding:15px 30px; margin-right: 15px;">📤 Share</button>
                         <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${labels.visitSite}</a>
                     </div>
+                    <div class="user-reviews-section" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                        <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
+                            <span>💬</span> User Reviews
+                        </h2>
+                        
+                        <!-- Review Submission Form -->
+                        <div class="review-form-container" style="background: var(--bg-surface-elevated); padding: 24px; border-radius: var(--radius-lg); margin-bottom: 30px;">
+                            <h3 style="margin-bottom: 15px; font-size: 1.2rem;">Write a Review</h3>
+                            <form id="reviewForm" onsubmit="submitReview(event, '${site.id}')">
+                                <div style="display:flex; gap: 15px; margin-bottom: 15px;">
+                                    <input type="text" id="reviewName" placeholder="Your Name (optional)" style="flex:1; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-surface); color: white;">
+                                    <select id="reviewRating" required style="padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-surface); color: white;">
+                                        <option value="5">5 Stars - Excellent</option>
+                                        <option value="4">4 Stars - Good</option>
+                                        <option value="3">3 Stars - Average</option>
+                                        <option value="2">2 Stars - Poor</option>
+                                        <option value="1">1 Star - Terrible</option>
+                                    </select>
+                                </div>
+                                <textarea id="reviewComment" placeholder="Share your experience with this site..." required rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-surface); color: white; margin-bottom: 15px; resize: vertical;"></textarea>
+                                <button type="submit" class="btn-outline" style="background: var(--primary); color: white; border:none; padding: 10px 20px;">Submit Review</button>
+                                <div id="reviewStatus" style="margin-top: 10px; font-size: 0.9rem;"></div>
+                            </form>
+                        </div>
+
+                        <!-- Review List -->
+                        <div id="reviewsList" style="display:flex; flex-direction: column; gap: 20px;">
+                            <div style="color: var(--text-muted);">Loading reviews...</div>
+                        </div>
+                    </div>
+
                     <div class="related-sites" style="margin-top: 60px;">
                         <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
                             <span>🔗</span> ${labels.similar}
@@ -380,6 +411,62 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>
             `;
+            
+            // Define global submitReview function
+            window.submitReview = async (e, id) => {
+                e.preventDefault();
+                const statusEl = document.getElementById('reviewStatus');
+                statusEl.textContent = "Submitting...";
+                statusEl.style.color = "var(--text-muted)";
+                
+                const payload = {
+                    user_name: document.getElementById('reviewName').value,
+                    rating: parseInt(document.getElementById('reviewRating').value),
+                    comment: document.getElementById('reviewComment').value
+                };
+
+                try {
+                    const res = await fetch('/api/reviews?id=' + id, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) throw new Error('Submission failed');
+                    statusEl.textContent = "Review submitted successfully!";
+                    statusEl.style.color = "#22c55e";
+                    document.getElementById('reviewForm').reset();
+                    loadReviews(id); // Reload list
+                } catch (err) {
+                    statusEl.textContent = "Failed to submit review. Please try again.";
+                    statusEl.style.color = "#ff2a5f";
+                }
+            };
+
+            // Fetch and render reviews
+            const loadReviews = async (id) => {
+                const listEl = document.getElementById('reviewsList');
+                try {
+                    const res = await fetch('/api/reviews?id=' + id);
+                    const data = await res.json();
+                    if (data.reviews && data.reviews.length > 0) {
+                        listEl.innerHTML = data.reviews.map(r => `
+                            <div style="background: var(--bg-surface); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                                <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <strong style="color: white;">${window.escapeHTML(r.user_name || 'Anonymous')}</strong>
+                                    <span style="color: #f59e0b;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+                                </div>
+                                <p style="margin:0; font-size:0.95rem; line-height: 1.5; color: #d4d4d8;">${window.escapeHTML(r.comment)}</p>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">${new Date(r.created_at).toLocaleDateString()}</div>
+                            </div>
+                        `).join('');
+                    } else {
+                        listEl.innerHTML = '<div style="color: var(--text-muted);">No reviews yet. Be the first to review!</div>';
+                    }
+                } catch (e) {
+                    listEl.innerHTML = '<div style="color: #ff2a5f;">Failed to load reviews.</div>';
+                }
+            };
+            loadReviews(site.id);
             // Inject Related Sites
             let related = [];
             try {

@@ -481,6 +481,49 @@ export default {
       }
     }
 
+    // ── Route: /api/reviews ────────────────────────────────────────────────
+    if (url.pathname === '/api/reviews') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      
+      const site_id = url.searchParams.get('id');
+      if (!site_id) return jsonError('Missing site id', 400);
+
+      if (request.method === 'GET') {
+        try {
+          const result = await env.hv_directory.prepare('SELECT user_name, rating, comment, created_at FROM reviews WHERE site_id = ? ORDER BY created_at DESC').bind(site_id).all();
+          return new Response(
+            JSON.stringify({ reviews: result.results }),
+            { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } }
+          );
+        } catch (err) {
+          return jsonError('Database error', 500);
+        }
+      }
+
+      if (request.method === 'POST') {
+        try {
+          const body = await request.json();
+          if (!body.rating || !body.comment) return jsonError('Missing required fields', 400);
+          
+          await env.hv_directory.prepare(
+            'INSERT INTO reviews (site_id, user_name, rating, comment) VALUES (?, ?, ?, ?)'
+          ).bind(site_id, body.user_name || 'Anonymous', body.rating, body.comment).run();
+
+          return new Response(
+            JSON.stringify({ success: true }),
+            { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } }
+          );
+        } catch (err) {
+          return jsonError('Failed to submit review', 500);
+        }
+      }
+      
+      return jsonError('Method not allowed', 405);
+    }
+
     // ── Route: /api/sites ────────────────────────────────────────────────────
     if (url.pathname === '/api/sites') {
       if (request.method === 'OPTIONS') {
