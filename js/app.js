@@ -512,12 +512,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isLoading) return;
         isLoading = true;
 
+        const loadingBar = document.getElementById('loadingBar');
+        if (loadingBar) loadingBar.classList.add('loading');
+
         if (!append) {
             currentPage = 1;
             currentSites = [];
             // Regenerate seed so each new filter/sort combo gets a fresh shuffle
             randomSeed = Math.floor(Math.random() * 2000000000) + 1;
-            siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading sites...</div>';
+            
+            // Render skeleton loading cards
+            siteGrid.innerHTML = Array(12).fill(`
+                <div class="skeleton-card">
+                    <div class="skeleton-header">
+                        <div class="skeleton-icon skeleton-line"></div>
+                        <div style="flex:1">
+                            <div class="skeleton-title skeleton-line"></div>
+                            <div class="skeleton-cat skeleton-line"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-desc1 skeleton-line"></div>
+                    <div class="skeleton-desc2 skeleton-line"></div>
+                    <div class="skeleton-tags skeleton-line"></div>
+                    <div class="skeleton-footer skeleton-line"></div>
+                </div>
+            `).join('');
             // Keep sentinel in DOM but visually hidden — removing it from flow breaks the observer
             if (loadMoreBtn) {
                 loadMoreBtn.style.opacity = '0';
@@ -565,6 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
             siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Failed to load sites. Please try again.</div>';
         } finally {
             isLoading = false;
+            if (loadingBar) loadingBar.classList.remove('loading');
         }
     }
 
@@ -633,7 +653,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const lastAddedLabel = `${t.added}: ${addedDate}`;
 
             const card = document.createElement('div');
-            card.className = `card ${site.promoted ? 'promoted' : ''}`;
+            card.className = `card card-entering ${site.promoted ? 'promoted' : ''}`;
+            card.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
             // Tracking & Linkbacks
             const trackedUrl = (() => {
                 try {

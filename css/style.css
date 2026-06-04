@@ -495,6 +495,101 @@ select {
     to { box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
 }
 
+/* ==========================================================================
+   Card Entrance Animation
+   ========================================================================== */
+@keyframes cardFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-entering {
+    animation: cardFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ==========================================================================
+   Skeleton Loading Cards
+   ========================================================================== */
+@keyframes shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+}
+
+.skeleton-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    overflow: hidden;
+}
+
+.skeleton-line {
+    border-radius: var(--radius-pill);
+    background: linear-gradient(
+        90deg,
+        var(--bg-surface-elevated) 25%,
+        rgba(255,255,255,0.04) 50%,
+        var(--bg-surface-elevated) 75%
+    );
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+}
+
+.skeleton-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.skeleton-title  { height: 18px; width: 55%; margin-bottom: 8px; }
+.skeleton-cat    { height: 13px; width: 35%; }
+.skeleton-desc1  { height: 13px; width: 100%; margin-bottom: 8px; }
+.skeleton-desc2  { height: 13px; width: 80%; margin-bottom: 20px; }
+.skeleton-tags   { height: 26px; width: 70%; margin-bottom: 20px; border-radius: var(--radius-pill); }
+.skeleton-footer { height: 36px; width: 100%; border-radius: var(--radius-pill); }
+
+/* ==========================================================================
+   Top Loading Progress Bar
+   ========================================================================== */
+#loadingBar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    background-size: 200% 100%;
+    z-index: 999;
+    transition: width 0.3s ease, opacity 0.4s ease;
+    box-shadow: 0 0 10px var(--primary);
+    pointer-events: none;
+    opacity: 0;
+}
+
+#loadingBar.loading {
+    opacity: 1;
+    animation: barPulse 1s infinite linear;
+}
+
+@keyframes barPulse {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: -200% 0%; }
+}
+
 .card::before {
     content: '';
     position: absolute;
