@@ -224,29 +224,6 @@ a:hover {
     background: var(--primary-hover);
     transform: translateY(-2px);
 }
-
-.btn-bmc {
-    background: #FFDD00;
-    color: #000000 !important;
-    padding: 10px 16px;
-    border-radius: var(--radius-pill);
-    font-weight: 800;
-    text-decoration: none;
-    transition: var(--transition-normal);
-    box-shadow: 0 4px 15px rgba(255, 221, 0, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.btn-bmc:hover {
-    background: #ffea00;
-    transform: translateY(-2px);
-}
-@media (max-width: 768px) {
-    .bmc-text { display: none; }
-    .btn-bmc { padding: 10px 14px; gap: 0; }
-}
-
 /* ==========================================================================
    Hero Section
    ========================================================================== */
