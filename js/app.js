@@ -917,11 +917,30 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Live Site Count ─────────────────────────────────────────────────────────
 (function updateSiteCount() {
     const targets = document.querySelectorAll('[data-site-count]');
-    if (!targets.length) return;
+    
     function applyCount(n) {
         const label = n.toLocaleString() + '+';
-        targets.forEach(el => { el.textContent = label; });
+        
+        // Update direct DOM nodes
+        if (targets.length) {
+            targets.forEach(el => { el.textContent = label; });
+        }
+        
+        // Update i18n translation strings dynamically for search placeholders
+        if (typeof TRANSLATIONS !== 'undefined') {
+            Object.keys(TRANSLATIONS).forEach(lang => {
+                if (TRANSLATIONS[lang] && TRANSLATIONS[lang].search_placeholder) {
+                    // Replace existing numbers (like 1,004+ or 500+) with the new dynamic label
+                    TRANSLATIONS[lang].search_placeholder = TRANSLATIONS[lang].search_placeholder.replace(/(?:\d{1,3}(?:,\d{3})+|\d+)\+?/, label);
+                }
+            });
+            // Re-trigger the UI translation update if it exists
+            if (typeof updateUIText === 'function') {
+                updateUIText();
+            }
+        }
     }
+
     fetch('/api/site-count')
         .then(r => r.ok ? r.json() : null)
         .then(data => { if (data && data.count) applyCount(data.count); })

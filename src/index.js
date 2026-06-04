@@ -462,9 +462,12 @@ export default {
         if (excludeStr) {
           const excludeArray = excludeStr.split(',').filter(Boolean);
           if (excludeArray.length > 0) {
-            const placeholders = excludeArray.map(() => '?').join(',');
-            conditions.push(`id NOT IN (${placeholders})`);
-            params.push(...excludeArray);
+            // Filter to valid UUIDs/alphanumeric strings to prevent SQL injection
+            const validIds = excludeArray.filter(id => /^[a-zA-Z0-9_-]+$/.test(id));
+            if (validIds.length > 0) {
+              const quotedIds = validIds.map(id => `'${id}'`).join(',');
+              conditions.push(`id NOT IN (${quotedIds})`);
+            }
           }
         }
 
