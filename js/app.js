@@ -518,13 +518,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Regenerate seed so each new filter/sort combo gets a fresh shuffle
             randomSeed = Math.floor(Math.random() * 2000000000) + 1;
             siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading sites...</div>';
-            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+            // Keep sentinel in DOM but visually hidden — removing it from flow breaks the observer
+            if (loadMoreBtn) {
+                loadMoreBtn.style.opacity = '0';
+                loadMoreBtn.style.pointerEvents = 'none';
+            }
         }
 
         const params = new URLSearchParams();
-        // For all sort modes, use normal OFFSET-based pagination.
-        // For random sort, we use a seeded deterministic shuffle on the backend
-        // so OFFSET is stable across pages — no URL-growing exclude list needed.
         params.set('page', currentPage);
         params.set('limit', ITEMS_PER_PAGE);
         
@@ -533,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeTags.length > 0) params.set('tags', activeTags.join(','));
         params.set('sort', currentSort);
 
-        // Pass seed for random sort so backend ordering is stable across pages
         if (currentSort === 'random') {
             params.set('seed', randomSeed);
         }
@@ -555,6 +555,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentSites = [...currentSites, ...fetchedSites];
                 }
 
+                // Use raw API count (before client-side favorites filter) so hasMoreSites
+                // reflects DB pagination, not the locally-filtered subset
                 hasMoreSites = (data.sites.length === ITEMS_PER_PAGE);
                 renderSites(fetchedSites, append, data.total);
             }
@@ -730,8 +732,16 @@ document.addEventListener('DOMContentLoaded', () => {
             batchIndex++;
         });
 
-        // Keep loadMore as invisible sentinel for IntersectionObserver
-        if (loadMoreBtn) loadMoreBtn.style.display = hasMoreSites ? 'block' : 'none';
+        // Show/hide sentinel using opacity — keeping it in DOM so observer keeps tracking it
+        if (loadMoreBtn) {
+            if (hasMoreSites) {
+                loadMoreBtn.style.opacity = '0';
+                loadMoreBtn.style.pointerEvents = 'none';
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
     }
 
     function toggleFavorite(id, btn) {
@@ -752,19 +762,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Infinite Scroll — fully automatic, button is invisible sentinel
-    // Users never see the button; cards load seamlessly as they scroll
+    // Infinite Scroll — loadMoreBtn is an invisible sentinel element at the bottom of the grid
+    // The IntersectionObserver fires when it enters the viewport (+ 200px buffer)
+    // We use a debounce guard so rapid scroll events don't queue multiple fetches
     if (loadMoreBtn) {
+        let scrollDebounce = null;
         const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && loadMoreBtn.style.display !== 'none' && !isLoading) {
-                currentPage++;
-                applyFiltersAndSort(true);
-            }
-        }, { rootMargin: '400px' }); // Trigger 400px before reaching bottom
+            if (!entries[0].isIntersecting) return;
+            if (isLoading) return;
+            if (loadMoreBtn.style.display === 'none') return;
+
+            // Debounce: ignore repeated triggers within 200ms
+            clearTimeout(scrollDebounce);
+            scrollDebounce = setTimeout(() => {
+                if (!isLoading) {
+                    currentPage++;
+                    applyFiltersAndSort(true);
+                }
+            }, 150);
+        }, { rootMargin: '300px' });
 
         observer.observe(loadMoreBtn);
 
-        // Keep click as fallback
+        // Visible fallback button (CSS keeps it hidden, but it works if JS observer fails)
         loadMoreBtn.addEventListener('click', () => {
             if (!isLoading) {
                 currentPage++;
