@@ -457,12 +457,18 @@ export default {
           conditions.push(`(${tagConditions.join(' OR ')})`);
         }
         
-        // Collect exclude BEFORE building WHERE so it applies to the data query too
+        // Build WHERE for the count query BEFORE adding pagination exclude
+        const countWhereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
+        const countResult = await env.hv_directory.prepare(
+          'SELECT COUNT(*) as count FROM sites' + countWhereClause
+        ).bind(...params).first();
+        const total = countResult ? countResult.count : 0;
+
+        // Now add exclude for the actual data query
         const excludeStr = url.searchParams.get('exclude');
         if (excludeStr) {
           const excludeArray = excludeStr.split(',').filter(Boolean);
           if (excludeArray.length > 0) {
-            // Filter to valid UUIDs/alphanumeric strings to prevent SQL injection
             const validIds = excludeArray.filter(id => /^[a-zA-Z0-9_-]+$/.test(id));
             if (validIds.length > 0) {
               const quotedIds = validIds.map(id => `'${id}'`).join(',');
@@ -471,15 +477,8 @@ export default {
           }
         }
 
-        // Build WHERE once — shared by count + data query
-        const whereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
-
-        const countResult = await env.hv_directory.prepare(
-          'SELECT COUNT(*) as count FROM sites' + whereClause
-        ).bind(...params).first();
-        const total = countResult ? countResult.count : 0;
-
-        query += whereClause;
+        const dataWhereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
+        query += dataWhereClause;
 
         const sort = url.searchParams.get('sort') || 'random';
         if (sort === 'rating' || sort === 'popular') {
@@ -605,43 +604,8 @@ export default {
       return rewriter.transform(response);
     }
 
-    // ── Clean URL routing — map extension-less paths to their .html files ─────
-    // e.g. /about → /about.html, /blog/post-name → /blog/post-name.html
-    const CLEAN_URL_MAP = {
-      '/about':                            '/about.html',
-      '/disclaimer':                       '/disclaimer.html',
-      '/terms':                            '/terms.html',
-      '/privacy':                          '/privacy.html',
-      '/dmca':                             '/dmca.html',
-      '/contact':                          '/contact.html',
-      '/region-unblocked':                 '/region-unblocked.html',
-      '/blog':                             '/blog/index.html',
-      '/blog/best-doujin-sites-2026':      '/blog/best-doujin-sites-2026.html',
-      '/blog/best-streaming-2026':         '/blog/best-streaming-2026.html',
-      '/blog/free-manga-guide':            '/blog/free-manga-guide.html',
-      '/blog/hanime-alternatives-2026':    '/blog/hanime-alternatives-2026.html',
-      '/blog/nhentai-alternatives-2026':   '/blog/nhentai-alternatives-2026.html',
-      '/blog/privacy-safety-guide':        '/blog/privacy-safety-guide.html',
-      '/blog/top-10-sites-may-2026':       '/blog/top-10-sites-may-2026.html',
-      '/category/anime-streaming':         '/category/anime-streaming.html',
-      '/category/manga-doujin':            '/category/manga-doujin.html',
-      '/category/hentai-streaming':        '/category/hentai-streaming.html',
-      '/category/images-boorus':           '/category/images-boorus.html',
-      '/category/games':                   '/category/games.html',
-      '/category/communities':             '/category/communities.html',
-      '/category/downloads':              '/category/downloads.html',
-      '/category/visual-novels':           '/category/visual-novels.html',
-    };
-
-    const mappedPath = CLEAN_URL_MAP[url.pathname];
-    if (mappedPath) {
-      const canonicalUrl = `https://hentaivault.me${url.pathname}`;
-      const mappedRequest = new Request(url.origin + mappedPath, request);
-      const response = await env.ASSETS.fetch(mappedRequest);
-      if (!response.ok) return response;
-      const rewriter = new HTMLRewriter().on('head', new CanonicalInjector(canonicalUrl));
-      return rewriter.transform(response);
-    }
+    // Native Cloudflare ASSETS handles clean URLs (e.g., /about -> about.html) automatically.
+    // Explicitly mapping to .html causes an infinite 307 redirect loop.
 
     // ── Everything else: serve static assets — with canonical injection ───────
     // Build the canonical URL (strip ?lang= and other UI params, keep only meaningful params)
