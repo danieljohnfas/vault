@@ -671,6 +671,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${isRecentlyAdded ? '<div class="new-badge">New</div>' : ''}
                     ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
                 </div>
+                <div class="card-banner">
+                    <img
+                        src="https://image.thum.io/get/width/400/crop/220/noanimate/${site.url}"
+                        alt="${localName} screenshot"
+                        loading="lazy"
+                        onerror="this.parentElement.classList.add('card-banner--fallback'); this.remove();"
+                    >
+                </div>
                 <div class="card-header">
                     <img src="${faviconUrl}" alt="${localName} icon" class="card-icon" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
                     <div>

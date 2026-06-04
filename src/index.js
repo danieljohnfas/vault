@@ -412,7 +412,7 @@ export default {
         if (!result) return jsonError('Site not found', 404);
         return new Response(
           result.data_json,
-          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } }
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
         );
       } catch (err) {
         return jsonError('Database error', 500);
@@ -490,7 +490,7 @@ export default {
         
         return new Response(
           JSON.stringify({ total, sites }),
-          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } }
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
         );
       } catch (err) {
         console.error("Error fetching sites from D1:", err);

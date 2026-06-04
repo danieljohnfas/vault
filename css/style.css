@@ -612,6 +612,59 @@ select {
     opacity: 1;
 }
 
+/* ==========================================================================
+   Card Banner (Site Screenshot)
+   ========================================================================== */
+.card-banner {
+    margin: -24px -24px 16px -24px; /* bleed to card edges */
+    height: 150px;
+    overflow: hidden;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: linear-gradient(
+        135deg,
+        var(--bg-surface-elevated) 0%,
+        var(--bg-base) 100%
+    );
+    position: relative;
+    /* shimmer while loading */
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+}
+
+.card-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+    animation: none; /* override parent shimmer once loaded */
+}
+
+.card:hover .card-banner img {
+    transform: scale(1.04);
+}
+
+/* Fallback: gradient banner when screenshot fails */
+.card-banner--fallback {
+    background: linear-gradient(
+        135deg,
+        var(--bg-surface-elevated) 0%,
+        hsl(260, 20%, 14%) 100%
+    );
+    animation: none;
+}
+
+.card-banner--fallback::after {
+    content: '🌐';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    opacity: 0.2;
+}
+
 .card-header {
     display: flex;
     align-items: center;
