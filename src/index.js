@@ -55,13 +55,21 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
-// Global V8 isolate cache
+// Global V8 isolate cache — includes a version counter so submit can bust it
 let cachedSitesData = null;
+let cachedSitesVersion = 0;
+
+function bustSitesCache() {
+  cachedSitesData = null;
+  cachedSitesVersion++;
+}
 
 async function getSitesData(urlOrigin, env) {
   if (cachedSitesData) return cachedSitesData;
   try {
-    const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js'));
+    // Add version as cache-buster so we always fetch fresh after a submit
+    const bust = `?v=${cachedSitesVersion}_${Date.now()}`;
+    const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js' + bust));
     if (!dataRes.ok) return [];
     const dataText = await dataRes.text();
     const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
@@ -401,6 +409,18 @@ export default {
       });
     }
 
+    // ── Route: /api/site-count ───────────────────────────────────────────────
+    if (url.pathname === '/api/site-count') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      const sites = await getSitesData(url.origin, env);
+      return new Response(
+        JSON.stringify({ count: sites.length }),
+        { status: 200, headers: { ...CORS, 'Cache-Control': 'public, max-age=60' } }
+      );
+    }
+
     // ── Route: /api/submit ──────────────────────────────────────────────────
     if (url.pathname === '/api/submit') {
       if (request.method === 'OPTIONS') {
@@ -644,6 +664,9 @@ async function handleSubmit(request, env, ctx) {
       console.error('GitHub commit error:', await commitRes.text());
       return jsonError('Failed to publish site. Please try again.', 500);
     }
+
+    // Bust the in-memory cache so the next request sees the new entry immediately
+    bustSitesCache();
 
     // Ping Bing IndexNow in the background (non-blocking)
     ctx.waitUntil(pingIndexNow(env));

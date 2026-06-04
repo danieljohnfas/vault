@@ -867,5 +867,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+// ── Live Site Count ─────────────────────────────────────────────────────────
+// Populates all [data-site-count] elements with the real-time count from the
+// Cloudflare Worker (/api/site-count). On the main page, we can use the already-
+// loaded sitesData directly for an instant update with no extra network request.
+(function updateSiteCount() {
+    const targets = document.querySelectorAll('[data-site-count]');
+    if (!targets.length) return;
 
+    function applyCount(n) {
+        const label = n.toLocaleString() + '+';
+        targets.forEach(el => { el.textContent = label; });
+    }
 
+    // Fast path: sitesData already loaded on this page (index.html)
+    if (typeof sitesData !== 'undefined' && Array.isArray(sitesData)) {
+        applyCount(sitesData.length);
+        return;
+    }
+
+    // Slow path: fetch from API (used on pages that don't embed data.js)
+    fetch('/api/site-count')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => { if (data && data.count) applyCount(data.count); })
+        .catch(() => {});
+})();
