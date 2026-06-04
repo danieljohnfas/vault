@@ -7,11 +7,12 @@ import json
 import os
 from datetime import date
 
-VAULT_DIR = r"c:\Users\nnm\Documents\Antigravity\vault"
-DATA_FILE = os.path.join(VAULT_DIR, "js", "data.js")
+# Use the script's own location to build relative paths — works on both Windows and Linux (GitHub Actions)
+VAULT_DIR  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_FILE  = os.path.join(VAULT_DIR, "js", "data.js")
 SITEMAP_FILE = os.path.join(VAULT_DIR, "sitemap.xml")
-BASE_URL = "https://hentaivault.me"
-TODAY = date.today().isoformat()
+BASE_URL   = "https://hentaivault.me"
+TODAY      = date.today().isoformat()
 
 LANGUAGES = ['en', 'es', 'ja', 'fr', 'pt', 'hi', 'ar', 'de']
 LANG_PARAM_MAP = {

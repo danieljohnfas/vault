@@ -41,7 +41,7 @@ jobs:
         git config --global user.name 'HV-Master-Bot'
         git config --global user.email 'bot@hentaivault.me'
         git add js/data.js sitemap.xml
-        git commit -m "chore: master automation update [skip ci]" || echo "No changes"
+        git commit -m "chore: master automation update" || echo "No changes"
         git push
 
     - name: 4. Telegram Broadcast
