@@ -42,33 +42,9 @@ function readDataJs() {
   return JSON.parse(json);
 }
 
-function writeToD1(sites) {
-  let stmts = [];
-  for (const site of sites) {
-    const id = site.id || '';
-    const category = site.category || '';
-    const url = site.url || '';
-    const rating = site.rating || 0;
-    const addedAt = site.addedAt || '';
-    const dataJson = JSON.stringify(site).replace(/'/g, "''"); // Escape single quotes
-
-    stmts.push(`INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES ('${id}', '${category.replace(/'/g, "''")}', '${url.replace(/'/g, "''")}', ${rating}, '${addedAt}', '${dataJson}');`);
-  }
-  
-  const sql = stmts.join('\n');
-  const sqlFile = path.join(ROOT, 'insert_daily.sql');
-  fs.writeFileSync(sqlFile, sql, 'utf8');
-  
-  console.log(`\n☁️  Executing ${stmts.length} inserts to Cloudflare D1...`);
-  try {
-    execSync(`npx wrangler d1 execute hv-directory --remote --file=insert_daily.sql`, { cwd: ROOT, stdio: 'inherit' });
-    console.log('✅ D1 insertion successful.');
-  } catch (e) {
-    console.error('❌ D1 insertion failed:', e.message);
-    throw e;
-  } finally {
-    if (fs.existsSync(sqlFile)) fs.unlinkSync(sqlFile);
-  }
+function writeDataJs(sites) {
+  const str = `const sitesData = ${JSON.stringify(sites, null, 4)};`;
+  fs.writeFileSync(DATA_FILE, str, 'utf8');
 }
 
 function makeId(name) {
@@ -254,8 +230,10 @@ async function run() {
     process.exit(0);
   }
 
-  // 5. Insert to D1
-  writeToD1(enriched);
+  // 5. Append to data.js
+  const updated = [...existing, ...enriched];
+  writeDataJs(updated);
+  console.log(`\n💾 data.js updated — ${updated.length} total entries`);
 
   // 6. Remove processed and dead entries from queue (by URL)
   const addedUrls = new Set(batch.map(s => s.url));
@@ -271,16 +249,16 @@ async function run() {
     console.warn('⚠️  Sitemap generation failed (non-fatal):', e.message);
   }
 
-  // 8. Commit & push queue and sitemap (data.js is no longer committed here)
+  // 8. Commit & push
   try {
     console.log('\n📤 Committing to GitHub...');
-    execSync('git add sitemap.xml scripts/sites-queue.json', { cwd: ROOT, stdio: 'inherit' });
+    execSync('git add js/data.js sitemap.xml scripts/sites-queue.json', { cwd: ROOT, stdio: 'inherit' });
     execSync(
-      `git commit -m "feat(daily): push ${enriched.length} new sites to D1 [${today()}]"`,
+      `git commit -m "feat(daily): add ${enriched.length} new sites [${today()}]"`,
       { cwd: ROOT, stdio: 'inherit' }
     );
     execSync('git push', { cwd: ROOT, stdio: 'inherit' });
-    console.log(`\n✅ Done! Added ${enriched.length} sites to D1.`);
+    console.log(`\n✅ Done! Added ${enriched.length} sites. Total: ${updated.length}`);
   } catch (e) {
     console.error('❌ Git error:', e.message);
     process.exit(1);
