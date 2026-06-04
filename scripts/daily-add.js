@@ -57,6 +57,47 @@ function today() {
   return new Date().toISOString().split('T')[0];
 }
 
+// ─── Pinging & Validation ───────────────────────────────────────────────────
+async function isSiteLive(url) {
+  try {
+    const res = await fetch(url, { 
+      method: 'GET',
+      headers: { 
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+      },
+      signal: AbortSignal.timeout(6000) 
+    });
+    
+    if (!res.ok && res.status >= 400) return false;
+    
+    const text = await res.text();
+    const t = text.toLowerCase();
+    
+    // Heuristics for dead or parked sites
+    if (text.length < 500) return false; // Too small to be a real site
+    
+    const parkedPhrases = [
+      'buy this domain', 
+      'domain is for sale', 
+      'sedo parking', 
+      'hugedomains', 
+      'this domain is parked', 
+      'domain parked', 
+      'related searches', 
+      'buy domain',
+      'domain names for sale'
+    ];
+    
+    if (parkedPhrases.some(p => t.includes(p))) return false;
+    
+    return true; // Passed all checks
+  } catch (err) {
+    // Catch timeouts, DNS resolution failures, network errors
+    return false;
+  }
+}
+
 // ─── Procedural Enrichment ──────────────────────────────────────────────────
 const CAT_DESCRIPTORS = {
   'Hentai Streaming':       { adj: 'hentai streaming', niche: 'anime adult video' },
@@ -156,7 +197,7 @@ function enrich(site) {
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
-function run() {
+async function run() {
   console.log(`\n🚀 HentaiVault Daily Add — ${today()}`);
   console.log(`   Count: ${COUNT}  |  Dry-run: ${DRY_RUN}\n`);
 
@@ -187,10 +228,41 @@ function run() {
     process.exit(0);
   }
 
-  // 4. Take the next N
-  const batch    = fresh.slice(0, COUNT);
+  // 4. Take the next N valid sites by pinging them
+  const batch = [];
+  const deadUrls = new Set();
+  
+  console.log(`\n🔍 Pinging sites (concurrency=10) to find ${COUNT} valid domains...`);
+  
+  for (let i = 0; i < fresh.length; i += 10) {
+    if (batch.length >= COUNT) break;
+    
+    const chunk = fresh.slice(i, i + 10);
+    const results = await Promise.all(chunk.map(async s => {
+       return { site: s, live: await isSiteLive(s.url) };
+    }));
+    
+    for (const r of results) {
+       if (r.live) {
+         if (batch.length < COUNT) {
+           console.log(`   ✅ ${r.site.url}`);
+           batch.push(r.site);
+         }
+         // If we already hit COUNT, we leave the valid site in the queue for tomorrow
+       } else {
+         console.log(`   ❌ ${r.site.url} (Dead/Parked)`);
+         deadUrls.add(r.site.url);
+       }
+    }
+  }
+
+  if (batch.length === 0) {
+     console.log('⚠️ No live sites found in the entire remaining queue!');
+     process.exit(0);
+  }
+
   const enriched = batch.map(enrich);
-  console.log(`➕ Adding ${enriched.length} new sites`);
+  console.log(`\n➕ Adding ${enriched.length} new sites`);
   enriched.forEach(s => console.log(`   · ${s.name} (${s.category})`));
 
   if (DRY_RUN) {
@@ -203,9 +275,9 @@ function run() {
   writeDataJs(updated);
   console.log(`\n💾 data.js updated — ${updated.length} total entries`);
 
-  // 6. Remove processed entries from queue (by URL)
+  // 6. Remove processed and dead entries from queue (by URL)
   const addedUrls = new Set(batch.map(s => s.url));
-  const remaining = queue.filter(s => !addedUrls.has(s.url));
+  const remaining = queue.filter(s => !addedUrls.has(s.url) && !deadUrls.has(s.url));
   fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
   console.log(`📋 Queue remaining: ${remaining.length}`);
 
