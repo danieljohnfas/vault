@@ -451,6 +451,36 @@ export default {
       }
     }
 
+    // ── Route: /api/alternatives ────────────────────────────────────────────────
+    if (url.pathname === '/api/alternatives') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      const id = url.searchParams.get('id');
+      if (!id) return jsonError('Missing site id', 400);
+      try {
+        const target = await env.hv_directory.prepare('SELECT category FROM sites WHERE id = ?').bind(id).first();
+        if (!target) return jsonError('Site not found', 404);
+        
+        const result = await env.hv_directory.prepare(`
+          SELECT data_json 
+          FROM sites 
+          WHERE category = ? AND id != ? 
+          ORDER BY rating DESC, added_at DESC 
+          LIMIT 12
+        `).bind(target.category, id).all();
+        
+        const sites = result.results.map(row => JSON.parse(row.data_json));
+        return new Response(
+          JSON.stringify({ sites }),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
+        );
+      } catch (err) {
+        return jsonError('Database error', 500);
+      }
+    }
+
     // ── Route: /api/sites ────────────────────────────────────────────────────
     if (url.pathname === '/api/sites') {
       if (request.method === 'OPTIONS') {

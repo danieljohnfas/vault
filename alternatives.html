@@ -166,7 +166,11 @@
         <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
     </div>
     <main class="review-layout" id="reviewContainer">
-        <div id="reviewContent"><div style="text-align:center; padding:100px;">Loading Review...</div></div>
+        <div id="reviewContent">
+            <h1 id="pageTitle" style="font-size:2.5rem; text-align:center; margin-bottom: 10px;">Loading Alternatives...</h1>
+            <p id="pageDesc" style="text-align:center; color: var(--text-muted); margin-bottom: 40px; font-size:1.1rem;"></p>
+            <div id="alternativesGrid" class="site-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+        </div>
     </main>
     <script>
         const escapeHTML = (str) => {
@@ -205,23 +209,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             const localCat  = escapeHTML((t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category);
             const localReview = escapeHTML(site[`longReview_${currentLang}`] || site.longReview);
             // Dynamic localized headers and SEO meta tags
-            let titleText = `${localName} Review 2026 — Ratings & Alternatives | HentaiVault`;
-            let descText = `Read our expert review of ${localName} (${localCat}) for 2026. Learn about ratings, pros, cons, and alternatives.`;
-            let fallbackText = `${localName} has established itself as a premier destination for ${localCat.toLowerCase()} enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.`;
+            let titleText = `12 Best Alternatives to ${localName} in 2026 | HentaiVault`;
+            let descText = `Looking for sites like ${localName}? Here are the top rated ${localCat} alternatives for 2026 with high quality and active communities.`;
+            
             if (currentLang === 'fr') {
-                titleText = `Avis ${localName} 2026 — Notes et Alternatives | HentaiVault`;
-                descText = `Lire notre avis d'expert sur ${localName} (${localCat}) pour 2026. Découvrez les notes, les points forts, les points faibles et les alternatives.`;
-                fallbackText = `${localName} s'est imposé comme une destination de premier choix pour les passionnés de ${localCat.toLowerCase()}. Lors de notre audit de 2026, nous avons constaté que le site était très réactif et maintenu avec un contenu de haute qualité.`;
+                titleText = `12 Meilleures Alternatives à ${localName} en 2026 | HentaiVault`;
+                descText = `Vous cherchez des sites comme ${localName} ? Voici les meilleures alternatives ${localCat} en 2026.`;
             } else if (currentLang === 'es') {
-                titleText = `Reseña de ${localName} 2026 — Calificaciones y Alternativas | HentaiVault`;
-                descText = `Lea nuestra reseña experta de ${localName} (${localCat}) para 2026. Conozca calificaciones, pros, contras y alternativas.`;
-                fallbackText = `${localName} se ha establecido como un destino de primer nivel para los entusiastas de ${localCat.toLowerCase()}. En nuestra auditoría de 2026, encontramos que el sitio es muy receptivo y se mantiene con contenido de alta calidad.`;
+                titleText = `Las 12 Mejores Alternativas a ${localName} en 2026 | HentaiVault`;
+                descText = `¿Buscas sitios como ${localName}? Aquí están las mejores alternativas de ${localCat} para 2026.`;
             } else if (currentLang === 'jp') {
-                titleText = `${localName}のレビュー 2026 — 評価と代替サイト | HentaiVault`;
-                descText = `2026年最新の${localName} (${localCat}) に関する専門家のレビューを読む。評価、メリット、デメリット、代替サイトをご紹介。`;
-                fallbackText = `${localName}は、${localCat}ファンのための主要な目的地として定着しています。2026年の監査では、サイトの応答性が非常に高く、高品質なコンテンツが維持されていることが確認されました。`;
+                titleText = `${localName}の代替サイトトップ12 (2026年) | HentaiVault`;
+                descText = `${localName}に似たサイトをお探しですか？2026年の最高の${localCat}代替サイトはこちらです。`;
             }
             document.title = titleText;
+            document.getElementById('pageTitle').textContent = `12 Best Alternatives to ${localName}`;
+            document.getElementById('pageDesc').textContent = `Looking for sites like ${localName}? We analyzed our directory to bring you the top rated ${localCat} sites.`;
+            
             // Function helpers to set metadata
             const setMeta = (name, val) => {
                 let el = document.querySelector(`meta[name="${name}"]`);
@@ -234,191 +238,58 @@ document.addEventListener('DOMContentLoaded', async () => {
                 el.content = val;
             };
             setMeta('description', descText);
-            setMeta('keywords', `${localName} review, ${localName} 2026, ${localName} alternatives, ${localCat}`);
+            setMeta('keywords', `${localName} alternatives, sites like ${localName}, similar to ${localName}, ${localCat} sites`);
             setMetaProp('og:title', titleText);
             setMetaProp('og:description', descText);
             setMetaProp('og:url', window.location.href);
             setMeta('twitter:title', titleText);
             setMeta('twitter:description', descText);
-            // Dynamic canonical and hreflang tags for SEO
-            const setLink = (rel, href, hreflang = null) => {
-                let selector = `link[rel="${rel}"]`;
-                if (hreflang) selector += `[hreflang="${hreflang}"]`;
-                let el = document.querySelector(selector);
-                if (!el) {
-                    el = document.createElement('link');
-                    el.rel = rel;
-                    if (hreflang) el.hreflang = hreflang;
-                    document.head.appendChild(el);
-                }
-                el.href = href;
-            };
-            const cleanUrl = new URL(window.location.origin + window.location.pathname);
-            cleanUrl.searchParams.set('id', siteId);
-            // Canonical always points to the clean URL without ?lang= 
-            // Language variants are hreflang alternates, NOT the canonical
-            const canonicalUrl = cleanUrl.toString();
-            setLink('canonical', canonicalUrl);
-            const getLangUrl = (langParamVal) => {
-                const u = new URL(cleanUrl.toString());
-                u.searchParams.set('lang', langParamVal);
-                return u.toString();
-            };
-            setLink('alternate', cleanUrl.toString(), 'x-default');
-            setLink('alternate', cleanUrl.toString(), 'en');
-            setLink('alternate', getLangUrl('es'), 'es');
-            setLink('alternate', getLangUrl('jp'), 'ja');
-            setLink('alternate', getLangUrl('fr'), 'fr');
-            const localReviewText = localReview || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
-            const labels = {
-                en: {
-                    expertReview: "Expert Review",
-                    pros: "Pros",
-                    cons: "Cons",
-                    conclusion: "Conclusion",
-                    conclusionText: `If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
-                    ready: "Ready to explore?",
-                    visitBelow: "Visit the official site below.",
-                    visitSite: `Visit ${localName} &rarr;`,
-                    similar: "Similar Sites You May Like",
-                    rating: "Rating: "
-                },
-                fr: {
-                    expertReview: "Avis d'expert",
-                    pros: "Points forts",
-                    cons: "Points faibles",
-                    conclusion: "Conclusion",
-                    conclusionText: `Si vous recherchez une source fiable pour ${localCat.toLowerCase()}, ${localName} est un choix de premier ordre. Il se classe très bien dans notre annuaire pour sa facilité d'utilisation et sa variété de contenu.`,
-                    ready: "Prêt à explorer ?",
-                    visitBelow: "Visitez le site officiel ci-dessous.",
-                    visitSite: `Visiter ${localName} &rarr;`,
-                    similar: "Sites similaires que vous pourriez aimer",
-                    rating: "Note : "
-                },
-                es: {
-                    expertReview: "Reseña de expertos",
-                    pros: "Pros",
-                    cons: "Contras",
-                    conclusion: "Conclusión",
-                    conclusionText: `Si está buscando una fuente confiable para ${localCat.toLowerCase()}, ${localName} es una opción de primer nivel. Ocupa un lugar destacado en nuestro directorio por su facilidad de uso y variedad de contenido.`,
-                    ready: "¿Listo para explorar?",
-                    visitBelow: "Visite el sitio oficial a continuación.",
-                    visitSite: `Visitar ${localName} &rarr;`,
-                    similar: "Sitios similares que le pueden gustar",
-                    rating: "Calificación: "
-                },
-                jp: {
-                    expertReview: "専門家によるレビュー",
-                    pros: "メリット",
-                    cons: "デメリット",
-                    conclusion: "結論",
-                    conclusionText: `${localCat}の信頼できるソースをお探しの場合は、${localName}が最適です。使いやすさとコンテンツの多様性により、当ディレクトリで高い評価を得ています。`,
-                    ready: "探索する準備はできましたか？",
-                    visitBelow: "以下の公式サイトをご覧ください。",
-                    visitSite: `${localName}を訪問する &rarr;`,
-                    similar: "あなたにおすすめの類似サイト",
-                    rating: "評価: "
-                }
-            }[currentLang] || {
-                expertReview: "Expert Review",
-                pros: "Pros",
-                cons: "Cons",
-                conclusion: "Conclusion",
-                conclusionText: `If you are looking for a reliable source for ${localCat}, ${localName} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
-                ready: "Ready to explore?",
-                visitBelow: "Visit the official site below.",
-                visitSite: `Visit ${localName} &rarr;`,
-                similar: "Similar Sites You May Like",
-                rating: "Rating: "
-            };
-            document.getElementById('reviewContent').innerHTML = `
-                <div class="review-header">
-                    <img src="${faviconUrl}" alt="${localName}" class="review-icon">
-                    <div class="review-meta">
-                        <div class="review-badge">${localCat}</div>
-                        <h1>${localName}</h1>
-                        <div class="rating">${labels.rating}${ '★'.repeat(Math.floor(site.rating)) }☆</div>
-                    </div>
-                </div>
-                <div class="review-content">
-                    <h2>${labels.expertReview}</h2>
-                    <p>${localReviewText}</p>
-                    <div class="pros-cons">
-                        <div class="pc-box pros">
-                            <h3>${labels.pros}</h3>
-                            <ul class="pc-list">
-                                ${ (site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li>${window.escapeHTML(p)}</li>`).join('') }
-                            </ul>
-                        </div>
-                        <div class="pc-box cons">
-                            <h3>${labels.cons}</h3>
-                            <ul class="pc-list">
-                                ${ (site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li>${window.escapeHTML(c)}</li>`).join('') }
-                            </ul>
-                        </div>
-                    </div>
-                    <h2>${labels.conclusion}</h2>
-                    <p>${labels.conclusionText}</p>
-                    <!-- Mid-Review 300x250 Ad (high-intent placement before CTA) -->
-                    <div id="mid-review-ad-container" style="display:flex; justify-content:center; margin: 30px 0;" aria-hidden="true">
-                    </div>
-                    <div class="cta-box">
-                        <h3>${labels.ready}</h3>
-                        <p style="margin-bottom:20px;">${labels.visitBelow}</p>
-                        <a href="/alternatives.html?id=${site.id}" class="btn-outline" style="font-size:1.2rem; padding:15px 30px; margin-right: 15px; text-decoration:none;">🔍 View Alternatives</a>
-                        <button onclick="window.openShareModal('https://hentaivault.me/site?id=${site.id}', '${localName} | HentaiVault', 'Check out ${localName} - The best ${localCat} site! Found on HentaiVault.')" class="btn-outline" style="font-size:1.2rem; padding:15px 30px; margin-right: 15px;">📤 Share</button>
-                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${labels.visitSite}</a>
-                    </div>
-                    <div class="related-sites" style="margin-top: 60px;">
-                        <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
-                            <span>🔗</span> ${labels.similar}
-                        </h2>
-                        <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
-                            <!-- Related sites injected here -->
-                        </div>
-                    </div>
-                </div>
-            `;
-            // Inject Related Sites
-            let related = [];
+
+            // Fetch Alternatives
+            let alternatives = [];
             try {
-                const relatedRes = await fetch(`/api/sites?category=${encodeURIComponent(site.category)}&sort=random&limit=4`);
-                const relatedData = await relatedRes.json();
-                if (relatedData && relatedData.sites) {
-                    related = relatedData.sites.filter(s => s.id !== site.id).slice(0, 3);
+                const altRes = await fetch(`/api/alternatives?id=${siteId}`);
+                const altData = await altRes.json();
+                if (altData && altData.sites) {
+                    alternatives = altData.sites;
                 }
             } catch (e) {
-                console.error("Failed to load related sites");
+                console.error("Failed to load alternatives");
             }
-            // Inject mid-review ad safely
-            const adContainer = document.getElementById('mid-review-ad-container');
-            if (adContainer) {
-                const confScript = document.createElement('script');
-                confScript.innerHTML = "atOptions = {'key':'384264be4aaafb8eb28962829e409253','format':'iframe','height':250,'width':300,'params':{}};";
-                const invokeScript = document.createElement('script');
-                invokeScript.src = "https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js";
-                adContainer.appendChild(confScript);
-                adContainer.appendChild(invokeScript);
-            }
-            const relatedGrid = document.getElementById('relatedGrid');
-            related.forEach(s => {
+
+            const altGrid = document.getElementById('alternativesGrid');
+            altGrid.innerHTML = ''; // clear loading
+            
+            alternatives.forEach(s => {
                 const sUrl = new URL(s.url);
-                const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=64`;
+                const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
                 const sLocalName = escapeHTML(s[`name_${currentLang}`] || s.name);
                 const sLocalCat = (t.categories && t.categories[s.category]) ? t.categories[s.category] : s.category;
+                
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `
+                card.innerHTML = \`
+                    <div class="card-banner">
+                        <img src="https://image.thum.io/get/width/400/crop/220/noanimate/\${s.url}" alt="\${sLocalName} screenshot" loading="lazy" onerror="this.parentElement.classList.add('card-banner--fallback'); this.remove();">
+                    </div>
                     <div class="card-header">
-                        <img src="${sFavicon}" alt="" class="card-icon">
+                        <div style="position:relative; display:inline-block; line-height: 0;">
+                            <img src="\${sFavicon}" alt="" class="card-icon" loading="lazy">
+                        </div>
                         <div>
-                            <div class="card-title"><a href="/site?id=${s.id}" style="color:inherit;">${sLocalName}</a></div>
-                            <div class="card-category">${sLocalCat}</div>
+                            <div class="card-title"><a href="/site?id=\${s.id}" style="text-decoration:none; color:inherit;">\${sLocalName}</a></div>
+                            <div class="card-category">\${sLocalCat}</div>
                         </div>
                     </div>
-                    <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${escapeHTML(s[`description_${currentLang}`] || s.description)}</div>
-                `;
-                relatedGrid.appendChild(card);
+                    <div class="card-desc" style="font-size:0.9rem; -webkit-line-clamp: 3;">\${escapeHTML(s[\`description_\${currentLang}\`] || s.description)}</div>
+                    <div class="card-footer" style="margin-top:auto;">
+                        <div class="rating">Rating: \${'★'.repeat(Math.floor(s.rating))}☆</div>
+                        <div class="card-actions">
+                            <a href="\${s.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding: 6px 16px;">Visit &rarr;</a>
+                        </div>
+                    </div>
+                \`;
+                altGrid.appendChild(card);
             });
             // === Inject WebPage + AggregateRating Schema (fixes GSC schema errors) ===
             const schemaEl = document.getElementById('review-schema');
