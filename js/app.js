@@ -1,5 +1,28 @@
 // app.js
 
+// ── Static lookup constants (previously in data.js) ─────────────────────────
+const ALL_CATEGORIES = [
+    'Manga & Doujinshi',
+    'Hentai Streaming',
+    'Anime Streaming',
+    'Image Boards (Boorus)',
+    'Games & Visual Novels',
+    'Communities & Forums',
+    'Downloads & Torrents',
+    'Adult Tubes & Studios',
+    'Creator Platforms',
+    'Immersive & Interactive'
+];
+
+const ALL_TAGS = [
+    'free', 'premium', 'english', 'japanese', 'subbed', 'dubbed',
+    'HD', '4K', 'mobile-friendly', 'no-ads', 'download', 'streaming',
+    'uncensored', 'censored', 'doujin', 'manga', 'hentai', 'vanilla',
+    'NTR', 'yaoi', 'yuri', 'futanari', 'loli', 'shota', 'dark',
+    'SFW', 'community', 'forum', 'discord', 'VPN-needed', 'safe',
+    'updated-daily', 'curated', 'request', 'games', 'visual-novel'
+];
+
 window.escapeHTML = window.escapeHTML || ((str) => {
     if (!str) return '';
     return String(str).replace(/[&<>'"]/g, tag => ({
@@ -537,7 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 hasMoreSites = (data.sites.length === ITEMS_PER_PAGE);
-                renderSites(append, data.total);
+                // Pass the fresh batch directly — avoids broken page-index slicing
+                renderSites(fetchedSites, append, data.total);
             }
         } catch (e) {
             console.error('API Fetch Failed', e);
@@ -554,25 +578,22 @@ document.addEventListener('DOMContentLoaded', () => {
             <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
         </div>`;
 
-    function renderSites(append = false, apiTotal = null) {
+    function renderSites(batch, append = false, apiTotal = null) {
         if (!append) siteGrid.innerHTML = '';
 
         const total = apiTotal !== null ? apiTotal : currentSites.length;
-        const pageItems = append 
-            ? currentSites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-            : currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
-        // For counting purposes use total visible from slice(0, page*IPP)
-        const visible = currentSites.slice(0, currentPage * ITEMS_PER_PAGE);
+        // pageItems is always the fresh batch passed in — no slice drift
+        const pageItems = batch || [];
 
         const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         const startIdx = total === 0 ? 0 : 1;
-        const countText = `${t.showing} ${startIdx} - ${visible.length} ${t.of} ${total} ${t.sites}`;
+        const countText = `${t.showing} ${startIdx} - ${currentSites.length} ${t.of} ${total} ${t.sites}`;
         if (resultsCount) resultsCount.innerText = countText;
 
         const mobileCount = document.getElementById('mobileResultsCount');
         if (mobileCount) mobileCount.innerText = countText;
 
-        if (total === 0) {
+        if (!append && total === 0) {
             const emptyMsg = showFavoritesOnly 
                 ? (currentLang === 'es' ? "¡Aún no has guardado favoritos! Haz clic en el icono ❤️ para guardar." : 
                    currentLang === 'jp' ? "お気に入りはまだありません。❤️アイコンをクリックして保存してください。" :
@@ -894,25 +915,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 // ── Live Site Count ─────────────────────────────────────────────────────────
-// Populates all [data-site-count] elements with the real-time count from the
-// Cloudflare Worker (/api/site-count). On the main page, we can use the already-
-// loaded sitesData directly for an instant update with no extra network request.
 (function updateSiteCount() {
     const targets = document.querySelectorAll('[data-site-count]');
     if (!targets.length) return;
-
     function applyCount(n) {
         const label = n.toLocaleString() + '+';
         targets.forEach(el => { el.textContent = label; });
     }
-
-    // Fast path: sitesData already loaded on this page (index.html)
-    if (typeof sitesData !== 'undefined' && Array.isArray(sitesData)) {
-        applyCount(sitesData.length);
-        return;
-    }
-
-    // Slow path: fetch from API (used on pages that don't embed data.js)
     fetch('/api/site-count')
         .then(r => r.ok ? r.json() : null)
         .then(data => { if (data && data.count) applyCount(data.count); })

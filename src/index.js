@@ -457,13 +457,10 @@ export default {
           conditions.push(`(${tagConditions.join(' OR ')})`);
         }
         
-        if (conditions.length > 0) {
-          query += ' WHERE ' + conditions.join(' AND ');
-        }
-        
+        // Collect exclude BEFORE building WHERE so it applies to the data query too
         const excludeStr = url.searchParams.get('exclude');
         if (excludeStr) {
-          const excludeArray = excludeStr.split(',');
+          const excludeArray = excludeStr.split(',').filter(Boolean);
           if (excludeArray.length > 0) {
             const placeholders = excludeArray.map(() => '?').join(',');
             conditions.push(`id NOT IN (${placeholders})`);
@@ -471,20 +468,21 @@ export default {
           }
         }
 
-        let countQuery = 'SELECT COUNT(*) as count FROM sites';
-        if (conditions.length > 0) {
-          countQuery += ' WHERE ' + conditions.join(' AND ');
-        }
-        const countResult = await env.hv_directory.prepare(countQuery).bind(...params).first();
+        // Build WHERE once — shared by count + data query
+        const whereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
+
+        const countResult = await env.hv_directory.prepare(
+          'SELECT COUNT(*) as count FROM sites' + whereClause
+        ).bind(...params).first();
         const total = countResult ? countResult.count : 0;
+
+        query += whereClause;
 
         const sort = url.searchParams.get('sort') || 'random';
         if (sort === 'rating' || sort === 'popular') {
           query += ' ORDER BY rating DESC';
         } else if (sort === 'newest') {
           query += ' ORDER BY added_at DESC';
-        } else if (sort === 'random') {
-          query += ' ORDER BY RANDOM()';
         } else if (sort === 'alphabetical') {
           query += ' ORDER BY name ASC';
         } else {
