@@ -231,7 +231,9 @@
         <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;"></div>
     </div>
 
-    
+    <!-- Site of the Week Spotlight -->
+    <div id="spotlightContainer" style="display: none; max-width: 1200px; margin: 40px auto 20px; padding: 0 24px;">
+    </div>
 
     <!-- Main Layout -->
         <!-- Ad Leaderboard -->
@@ -455,6 +457,22 @@
             <div class="visitor-stats">
                 <span>Global Visitors:</span>
                 <img src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23fe2c55&style=flat-square" alt="Visitor Count" class="hit-counter">
+            </div>
+            <div class="footer-digest" style="margin: 24px 0; padding: 24px; background: rgba(255,42,95,0.06); border: 1px solid rgba(255,42,95,0.2); border-radius: 16px; display:flex; flex-wrap:wrap; align-items:center; gap: 16px; justify-content:space-between;">
+                <div>
+                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">📧 Weekly Digest</div>
+                    <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
+                </div>
+                <form id="digestForm" onsubmit="subscribeDigest(event)" style="display:flex; gap:10px; flex:1; max-width:400px;">
+                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
+                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe →</button>
+                </form>
+                <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
+                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">📋 My List</a>
+                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('📋 List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">🔗 Share My List</button>
+                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">⚖️ Compare Sites</a>
             </div>
             <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
         </div>

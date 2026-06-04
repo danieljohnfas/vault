@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My List | HentaiVault</title>
+    <meta name="description" content="Your personal collection of saved sites on HentaiVault.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/app.js"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="logo"><span class="logo-icon">💎</span> HentaiVault</a>
+        <div class="nav-actions">
+            <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
+            <a href="/" class="btn-outline" style="text-decoration:none; padding: 8px 16px; font-size:0.9rem;">← Back to Directory</a>
+        </div>
+    </div>
+</nav>
+
+<main style="max-width: 1200px; margin: 120px auto 60px; padding: 0 24px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom: 40px;">
+        <div>
+            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">📋 My List</h1>
+            <p style="color: var(--text-muted);" id="listCount">Loading your saved sites...</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button onclick="copyShareLink()" class="btn-outline" style="padding: 10px 20px;">🔗 Share This List</button>
+            <button onclick="clearList()" class="btn-outline" style="padding: 10px 20px; border-color: #ff2a5f; color: #ff2a5f;">🗑️ Clear All</button>
+        </div>
+    </div>
+
+    <div id="myListGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <div style="grid-column: 1/-1; text-align:center; padding: 60px; color: var(--text-muted);">
+            Loading...
+        </div>
+    </div>
+</main>
+
+<script>
+    const escapeHTML = (str) => {
+        if (!str) return '';
+        return String(str).replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));
+    };
+
+    async function loadMyList() {
+        let myList = [];
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+        // Check for shared list in URL
+        const sharedParam = new URLSearchParams(window.location.search).get('list');
+        if (sharedParam) {
+            try {
+                const decoded = JSON.parse(atob(sharedParam));
+                if (Array.isArray(decoded)) myList = decoded;
+            } catch(e) {}
+        }
+
+        const grid = document.getElementById('myListGrid');
+        const countEl = document.getElementById('listCount');
+
+        if (myList.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:80px 20px;">
+                <div style="font-size:4rem; margin-bottom:20px;">📋</div>
+                <h2 style="margin-bottom:12px; color: var(--text-main);">Your list is empty</h2>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Browse the directory and click 📋 on any card to add sites here.</p>
+                <a href="/" class="btn-visit" style="text-decoration:none; padding:12px 28px;">Browse Directory →</a>
+            </div>`;
+            countEl.textContent = '0 saved sites';
+            return;
+        }
+
+        countEl.textContent = `${myList.length} saved site${myList.length !== 1 ? 's' : ''}`;
+        const currentLang = localStorage.getItem('hv_lang') || 'en';
+
+        // Fetch each site from the API
+        const sitePromises = myList.map(id => 
+            fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null).catch(() => null)
+        );
+        const sites = (await Promise.all(sitePromises)).filter(Boolean);
+
+        if (sites.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted);">Could not load saved sites. They may have been removed.</div>`;
+            return;
+        }
+
+        grid.innerHTML = '';
+        sites.forEach(site => {
+            const sUrl = new URL(site.url);
+            const favicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
+            const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
+            const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-banner">
+                    <img src="https://image.thum.io/get/width/400/crop/220/noanimate/${site.url}" alt="${localName}" loading="lazy" onerror="this.parentElement.classList.add('card-banner--fallback'); this.remove();">
+                </div>
+                <div class="card-header">
+                    <div style="position:relative; display:inline-block; line-height:0;">
+                        <img src="${favicon}" alt="" class="card-icon" loading="lazy">
+                    </div>
+                    <div>
+                        <div class="card-title"><a href="/site?id=${site.id}" style="text-decoration:none; color:inherit;">${localName}</a></div>
+                        <div class="card-category">${escapeHTML(site.category)}</div>
+                    </div>
+                </div>
+                <div class="card-desc" style="-webkit-line-clamp:3;">${localDesc}</div>
+                <div class="card-footer" style="margin-top:auto;">
+                    <div class="rating" style="color:#f59e0b;">Rating: ${'★'.repeat(Math.floor(site.rating))}☆</div>
+                    <div class="card-actions">
+                        <button onclick="removeFromList('${site.id}', this)" class="mylist-btn mylist-active" title="Remove from My List">📋 Remove</button>
+                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding:6px 16px;">Visit →</a>
+                    </div>
+                </div>`;
+            grid.appendChild(card);
+        });
+    }
+
+    function removeFromList(id, btn) {
+        let myList = [];
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+        myList = myList.filter(i => i !== id);
+        localStorage.setItem('hv_mylist', JSON.stringify(myList));
+        btn.closest('.card').style.opacity = '0';
+        btn.closest('.card').style.transform = 'scale(0.95)';
+        setTimeout(() => { btn.closest('.card').remove(); loadMyList(); }, 300);
+    }
+
+    function copyShareLink() {
+        let myList = [];
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+        const url = `${window.location.origin}/mylist.html?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
+        navigator.clipboard.writeText(url).then(() => {
+            window.showToast && showToast('🔗 Share link copied to clipboard!');
+        });
+    }
+
+    function clearList() {
+        if (!confirm('Clear your entire list?')) return;
+        localStorage.removeItem('hv_mylist');
+        loadMyList();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMyList);
+</script>
+</body>
+</html>

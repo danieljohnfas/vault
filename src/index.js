@@ -481,6 +481,26 @@ export default {
       }
     }
 
+    // ── Route: /api/subscribe-digest ───────────────────────────────────────
+    if (url.pathname === '/api/subscribe-digest') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (request.method !== 'POST') return jsonError('Method not allowed', 405);
+      try {
+        const body = await request.json();
+        const email = (body.email || '').trim().toLowerCase();
+        if (!email || !email.includes('@')) return jsonError('Invalid email', 400);
+        // Store in KV using email as key, timestamped value
+        if (env.PUSH_SUBSCRIBERS) {
+          await env.PUSH_SUBSCRIBERS.put(`digest:${email}`, JSON.stringify({ email, subscribed_at: new Date().toISOString() }));
+        }
+        return new Response(JSON.stringify({ success: true }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      } catch (err) {
+        return jsonError('Subscription failed', 500);
+      }
+    }
+
     // ── Route: /api/reviews ────────────────────────────────────────────────
     if (url.pathname === '/api/reviews') {
       if (request.method === 'OPTIONS') {
@@ -520,8 +540,36 @@ export default {
           return jsonError('Failed to submit review', 500);
         }
       }
-      
       return jsonError('Method not allowed', 405);
+    }
+
+    // ── Route: /api/site-of-the-week ───────────────────────────────────────
+    if (url.pathname === '/api/site-of-the-week') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+
+      try {
+        const now = new Date();
+        const weekStr = now.getFullYear() + "-" + Math.floor(now.getTime() / (1000*60*60*24*7));
+        
+        const topSites = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY rating DESC LIMIT 50').all();
+        if (topSites.results.length === 0) return jsonError('No sites found', 404);
+        
+        let hash = 0;
+        for (let i = 0; i < weekStr.length; i++) hash += weekStr.charCodeAt(i);
+        const index = hash % topSites.results.length;
+        
+        const site = JSON.parse(topSites.results[index].data_json);
+        
+        return new Response(
+          JSON.stringify({ site }),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' } }
+        );
+      } catch (err) {
+        return jsonError('Database error', 500);
+      }
     }
 
     // ── Route: /api/sites ────────────────────────────────────────────────────

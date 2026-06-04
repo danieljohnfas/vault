@@ -195,6 +195,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Site of the Week Spotlight ---
+    const spotlightContainer = document.getElementById('spotlightContainer');
+    if (spotlightContainer) {
+        (async () => {
+            try {
+                const res = await fetch('/api/site-of-the-week');
+                if (!res.ok) return;
+                const { site } = await res.json();
+                if (!site) return;
+                const sUrl = new URL(site.url);
+                const favicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
+                const currentLang = localStorage.getItem('hv_lang') || 'en';
+                const localName = window.escapeHTML(site[`name_${currentLang}`] || site.name);
+                const localDesc = window.escapeHTML(site[`description_${currentLang}`] || site.description);
+                spotlightContainer.innerHTML = `
+                    <div style="position:relative; overflow:hidden; border-radius: 20px; border: 1px solid rgba(255,42,95,0.4); background: linear-gradient(135deg, rgba(255,42,95,0.08) 0%, rgba(123,57,220,0.08) 100%); padding: 32px; display: flex; align-items: center; gap: 28px; box-shadow: 0 0 60px rgba(255,42,95,0.1);">
+                        <div style="position:absolute; inset:0; background:url('https://image.thum.io/get/width/1200/crop/400/noanimate/${site.url}') center/cover no-repeat; opacity:0.06; border-radius: inherit;"></div>
+                        <div style="position:relative; flex-shrink:0; background:rgba(255,42,95,0.15); border-radius:14px; padding:8px; border:1px solid rgba(255,42,95,0.3);">
+                            <img src="${favicon}" alt="${localName}" style="width:80px; height:80px; border-radius:10px; display:block;">
+                        </div>
+                        <div style="position:relative; flex:1; min-width:0;">
+                            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,42,95,0.2); border:1px solid rgba(255,42,95,0.4); padding:4px 12px; border-radius:20px; margin-bottom:12px;">
+                                <span style="font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:#ff2a5f;">🏆 Site of the Week</span>
+                            </div>
+                            <h2 style="margin:0 0 8px; font-size:2rem; font-weight:800; color:white;">${localName}</h2>
+                            <p style="margin:0 0 20px; color:#a1a1aa; font-size:0.95rem; line-height:1.5; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${localDesc}</p>
+                            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                                <a href="/site?id=${site.id}" style="text-decoration:none; padding:10px 24px; background:var(--primary); color:white; border-radius:8px; font-weight:700; font-size:0.95rem;">Read Review →</a>
+                                <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; padding:10px 24px; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:8px; font-weight:600; font-size:0.95rem;">Visit Site ↗</a>
+                            </div>
+                        </div>
+                    </div>`;
+                spotlightContainer.style.display = 'block';
+            } catch (e) { /* Silently fail */ }
+        })();
+    }
+
+    // --- Collections / My List ---
+    let myList = [];
+    try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+    window.toggleMyList = (siteId, siteName) => {
+        const idx = myList.indexOf(siteId);
+        if (idx === -1) { myList.push(siteId); showToast(`➕ Added "${siteName}" to My List`); }
+        else { myList.splice(idx, 1); showToast(`✅ Removed from My List`); }
+        try { localStorage.setItem('hv_mylist', JSON.stringify(myList)); } catch(e) {}
+        document.querySelectorAll(`.mylist-btn[data-id="${siteId}"]`).forEach(btn => {
+            btn.classList.toggle('mylist-active', myList.includes(siteId));
+            btn.title = myList.includes(siteId) ? 'Remove from My List' : 'Add to My List';
+        });
+    };
+
+    window.getMyListShareUrl = () => `${window.location.origin}/?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
+
+    // Load a shared list from URL param
+    const sharedListParam = new URLSearchParams(window.location.search).get('list');
+    if (sharedListParam) {
+        try {
+            const decoded = JSON.parse(atob(sharedListParam));
+            if (Array.isArray(decoded)) {
+                myList = decoded;
+                localStorage.setItem('hv_mylist', JSON.stringify(myList));
+                showToast('📋 Shared collection loaded!');
+            }
+        } catch(e) {}
+    }
+
     // --- Push Notifications ---
     const btnSubscribePush = document.getElementById('btnSubscribePush');
     if (btnSubscribePush) {
@@ -730,6 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="btn-favorite ${isFav ? 'active' : ''}" data-id="${site.id}" title="${isFav ? 'Remove from Favorites' : 'Add to Favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </button>
+                        <button class="mylist-btn ${myList.includes(site.id) ? 'mylist-active' : ''}" data-id="${site.id}" title="${myList.includes(site.id) ? 'Remove from My List' : 'Add to My List'}">📋</button>
                         <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${escapeHTML(site.url)}">${t.visit} &rarr;</a>
                     </div>
                 </div>
@@ -748,6 +816,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 toggleFavorite(site.id, favBtn);
             };
+            const mlBtn = card.querySelector('.mylist-btn');
+            if (mlBtn) mlBtn.onclick = (e) => { e.preventDefault(); window.toggleMyList(site.id, localName); };
 
             const dot = card.querySelector('.status-dot');
             if (dot) statusObserver.observe(dot);
@@ -1025,3 +1095,44 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => { if (data && data.count) applyCount(data.count); })
         .catch(() => {});
 })();
+
+// ── Global Helpers ────────────────────────────────────────────────────────────
+window.showToast = function(msg, duration = 3000) {
+    let t = document.getElementById('hv-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'hv-toast';
+        t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1e2e;color:#fff;padding:12px 22px;border-radius:10px;font-size:0.95rem;font-weight:600;z-index:99999;opacity:0;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);pointer-events:none;white-space:nowrap;';
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(t._t);
+    t._t = setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, duration);
+};
+
+window.subscribeDigest = async function(e) {
+    e.preventDefault();
+    const emailEl = document.getElementById('digestEmail');
+    const statusEl = document.getElementById('digestStatus');
+    if (!emailEl || !statusEl) return;
+    statusEl.style.display = 'block';
+    statusEl.style.color = 'var(--text-muted)';
+    statusEl.textContent = 'Subscribing...';
+    try {
+        const res = await fetch('/api/subscribe-digest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailEl.value.trim() })
+        });
+        if (res.ok) {
+            statusEl.style.color = '#22c55e';
+            statusEl.textContent = '✅ Subscribed! Look out for your weekly digest.';
+            emailEl.value = '';
+        } else { throw new Error(); }
+    } catch {
+        statusEl.style.color = '#f59e0b';
+        statusEl.textContent = '📧 Send an email with subject "Subscribe" to digest@hentaivault.me';
+    }
+};
