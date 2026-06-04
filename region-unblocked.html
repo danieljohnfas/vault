@@ -378,9 +378,14 @@
         let allSites = [];
         scanStatus.textContent = "Fetching sites from vault...";
         try {
-            // Fetch a random sample of 100 sites to scan (scanning 1000+ takes too long)
+            // Fetch total count first to get exact number of sites
+            const countRes = await fetch('/api/site-count');
+            const countData = await countRes.json();
+            const totalSites = countData.count || 5000;
+
+            // Fetch all sites to scan
             const seed = Math.floor(Math.random() * 2000000000) + 1;
-            const res = await fetch(`/api/sites?sort=random&limit=100&seed=${seed}`);
+            const res = await fetch(`/api/sites?sort=random&limit=${totalSites}&seed=${seed}`);
             const data = await res.json();
             if (data && data.sites) {
                 allSites = data.sites;

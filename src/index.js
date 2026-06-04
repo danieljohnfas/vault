@@ -21,31 +21,22 @@ const ALLOWED_CATEGORIES = [
 
 
 // Rate Limiter
-const rateLimitMap = new Map();
-const RATE_LIMIT_MS = 60000;
+const RATE_LIMIT_SECONDS = 60;
 const MAX_REQS = 2;
 
-function isRateLimited(ip) {
-  if (!ip) return false;
-  if (rateLimitMap.size > 10000) {
-    const now = Date.now();
-    for (const [key, record] of rateLimitMap.entries()) {
-      if (now > record.resetAt) rateLimitMap.delete(key);
-    }
-  }
-  const now = Date.now();
-  let record = rateLimitMap.get(ip);
-  if (!record) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_MS });
+async function checkRateLimit(ip, env) {
+  if (!ip || !env.PUSH_SUBSCRIBERS) return false;
+  const key = `ratelimit:${ip}`;
+  try {
+    let count = await env.PUSH_SUBSCRIBERS.get(key);
+    count = count ? parseInt(count) : 0;
+    if (count >= MAX_REQS) return true;
+    
+    await env.PUSH_SUBSCRIBERS.put(key, (count + 1).toString(), { expirationTtl: RATE_LIMIT_SECONDS });
+    return false;
+  } catch (e) {
     return false;
   }
-  if (now > record.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_MS });
-    return false;
-  }
-  record.count++;
-  if (record.count > MAX_REQS) return true;
-  return false;
 }
 
 const CORS = {
@@ -501,6 +492,25 @@ export default {
       }
     }
 
+    // ── Route: /api/config ──────────────────────────────────────────────────
+    if (url.pathname === '/api/config') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      return new Response(
+        JSON.stringify({
+          ad_skyscraper: env.AD_KEY_SKYSCRAPER || '13ca4044b4b6e65ef15f10d18752754e',
+          ad_leaderboard: env.AD_KEY_LEADERBOARD || '40d623b6e8e7efa7651f8c6fbeb29bef',
+          ad_infeed: env.AD_KEY_INFEED || '40d623b6e8e7efa7651f8c6fbeb29bef',
+          ad_sticky_bottom: env.AD_KEY_STICKY_BOTTOM || '90b220b63fa3e2eb3c163fec3b34a465',
+          ad_socialbar: env.AD_KEY_SOCIALBAR || 'ba6744afc790009f7b04d7509a97ea2f',
+          ad_popunder: env.AD_KEY_POPUNDER || '994511c440490953ceb331525d9f463f',
+          ad_native: env.AD_KEY_NATIVE || 'a098db90df9a9b985c317d9ba01e155e'
+        }),
+        { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' } }
+      );
+    }
+
     // ── Route: /api/reviews ────────────────────────────────────────────────
     if (url.pathname === '/api/reviews') {
       if (request.method === 'OPTIONS') {
@@ -525,9 +535,27 @@ export default {
 
       if (request.method === 'POST') {
         try {
+          const ip = request.headers.get('cf-connecting-ip');
+          if (await checkRateLimit(ip, env)) {
+            return jsonError('Too many submissions. Please try again later.', 429);
+          }
+
           const body = await request.json();
           if (!body.rating || !body.comment) return jsonError('Missing required fields', 400);
+
+          if (!body.turnstileToken) return jsonError('Please complete the CAPTCHA.', 400);
           
+          const turnstileFormData = new FormData();
+          turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
+          turnstileFormData.append('response', body.turnstileToken);
+          if (ip) turnstileFormData.append('remoteip', ip);
+          
+          const turnstileRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST', body: turnstileFormData
+          });
+          const turnstileData = await turnstileRes.json();
+          if (!turnstileData.success) return jsonError('CAPTCHA verification failed.', 400);
+
           await env.hv_directory.prepare(
             'INSERT INTO reviews (site_id, user_name, rating, comment) VALUES (?, ?, ?, ?)'
           ).bind(site_id, body.user_name || 'Anonymous', body.rating, body.comment).run();
@@ -789,7 +817,7 @@ export default {
 async function handleSubmit(request, env, ctx) {
   try {
     const ip = request.headers.get('cf-connecting-ip');
-    if (isRateLimited(ip)) {
+    if (await checkRateLimit(ip, env)) {
       return jsonError('Too many submissions. Please try again later.', 429);
     }
 
@@ -870,44 +898,8 @@ async function handleSubmit(request, env, ctx) {
       'INSERT INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, ?, ?)'
     ).bind(id, catClean, urlClean, 4.0, today, dataJson).run();
 
-    // ── 6. Also Commit to GitHub so data.js stays the Master ───────────────
-    try {
-      const ghHeaders = {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'Accept':        'application/vnd.github+json',
-        'User-Agent':    'HentaiVault-Worker',
-      };
-      
-      const fileRes = await fetch(GITHUB_API, { headers: ghHeaders });
-      if (fileRes.ok) {
-        const fileData = await fileRes.json();
-        const sha = fileData.sha;
-        const rawContent = decodeB64(fileData.content);
-        const arrayMatch = rawContent.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
-        
-        if (arrayMatch) {
-          const jsonString = arrayMatch[1].replace(/,\s*([\]}])/g, '$1');
-          const sitesArray = JSON.parse(jsonString);
-          sitesArray.push(newEntry);
-          
-          const newSitesStr = JSON.stringify(sitesArray, null, 4);
-          const updated = `const sitesData = ${newSitesStr};`;
-          
-          await fetch(GITHUB_API, {
-            method:  'PUT',
-            headers: { ...ghHeaders, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              message: `Add site: ${nameClean}`,
-              content: encodeB64(updated),
-              sha,
-            }),
-          });
-        }
-      }
-    } catch (err) {
-      console.error("Failed to push submission to GitHub data.js", err);
-      // Non-fatal, D1 is updated
-    }
+    // ── 6. Removed GitHub Commit ──────────────────────────────────────────────
+    // D1 is now the single source of truth.
 
     // Ping Bing IndexNow in the background (non-blocking)
     ctx.waitUntil(pingIndexNow(env));

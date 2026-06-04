@@ -35,6 +35,12 @@ window.escapeHTML = window.escapeHTML || ((str) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Fetch Ad Configuration dynamically in the background
+    fetch('/api/config')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => { if (data) window.adConfig = data; })
+        .catch(e => console.error("Failed to load ad config", e));
+
     try {
         initTheme();
     } catch (e) { console.error("Theme init failed", e); }
@@ -847,18 +853,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Write the ad script into the iframe
                 const iframeDoc = iframe.contentWindow.document;
                 iframeDoc.open();
+                const adKey = (window.adConfig && window.adConfig.ad_infeed) ? window.adConfig.ad_infeed : '40d623b6e8e7efa7651f8c6fbeb29bef';
                 iframeDoc.write(`
                     <html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:transparent;}</style></head><body>
                     <script>
                         atOptions = {
-                            'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+                            'key' : '${adKey}',
                             'format' : 'iframe',
                             'height' : 90,
                             'width' : 728,
                             'params' : {}
                         };
                     <\/script>
-                    <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
+                    <script src="https://revolthem.com/${adKey}/invoke.js"><\/script>
                     </body></html>
                 `);
                 iframeDoc.close();
