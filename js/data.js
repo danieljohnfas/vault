@@ -9089,18 +9089,39 @@ const sitesData = [
         "name": "HentaiMama",
         "url": "https://hentaimama.io",
         "category": "Hentai Streaming",
-        "description": "Freemium hentai streaming with both subbed and dubbed content.",
+        "description": "HentaiMama is a freemium hentai streaming site offering both subbed and dubbed content, with a clean interface and a growing library of popular series and OVAs.",
         "tags": [
             "Free",
             "Freemium",
-            "Dubbed"
+            "Dubbed",
+            "Subbed",
+            "Streaming"
         ],
         "rating": 4.3,
         "addedAt": "2026-02-28",
-        "description_pt": "Streaming freemium hentai com conteúdo legendado e dublado.",
-        "description_hi": "सबबेड और डब दोनों सामग्री के साथ फ्रीमियम हेनतई स्ट्रीमिंग।",
-        "description_ar": "تدفق Freemium هنتاي مع كل من المحتوى الفرعي والمدبلج.",
-        "description_de": "Freemium-Hentai-Streaming mit untertitelten und synchronisierten Inhalten."
+        "longReview": "HentaiMama (hentaimama.io) is one of the more underrated entries in the hentai streaming space. The site focuses on accessibility, offering both English-subbed and English-dubbed versions of popular hentai OVAs and series — a combination that is harder to find than you might expect. The free tier gives full access to the library with ads, while the freemium tier removes ads and unlocks higher-quality streams. The interface is clean and mobile-friendly, with genre filtering and a straightforward search bar. The library, while not the largest available, is well-curated and regularly updated with new releases. If HentaiMama is currently down or unavailable in your region, check out our top alternatives below — sites like HentaiHaven, Hanime.tv, and Simply Hentai offer comparable libraries with similar accessibility.",
+        "pros": [
+            "Both subbed AND dubbed content available",
+            "Clean, ad-minimal interface on free tier",
+            "Mobile-friendly design",
+            "Regularly updated library",
+            "No account required to browse"
+        ],
+        "cons": [
+            "Library smaller than top competitors",
+            "Occasionally goes offline or changes domains",
+            "Premium features require subscription"
+        ],
+        "description_es": "HentaiMama es un sitio de streaming de hentai freemium que ofrece contenido subtitulado y doblado, con una interfaz limpia y una biblioteca en crecimiento de series y OVAs populares.",
+        "longReview_es": "HentaiMama (hentaimama.io) es una de las opciones más infravaloradas en el espacio del streaming de hentai. El sitio se centra en la accesibilidad, ofreciendo versiones en inglés subtituladas y dobladas de OVAs y series de hentai populares. Si HentaiMama está caído o no está disponible en tu región, consulta nuestras mejores alternativas a continuación.",
+        "description_jp": "HentaiMamaは、字幕付きと吹き替えの両方のコンテンツを提供するフリーミアムの変態ストリーミングサイトです。クリーンなインターフェースと人気シリーズのライブラリを備えています。",
+        "longReview_jp": "HentaiMama（hentaimama.io）は、変態ストリーミング分野で見落とされがちなサイトの一つです。人気のある変態OVAやシリーズの英語字幕版と英語吹き替え版の両方を提供しています。HentaiMamaが現在ダウンしているか、お住まいの地域でアクセスできない場合は、以下の代替サイトをご覧ください。",
+        "description_fr": "HentaiMama est un site de streaming hentai freemium proposant du contenu sous-titré et doublé, avec une interface épurée et une bibliothèque croissante de séries et d'OVAs populaires.",
+        "longReview_fr": "HentaiMama (hentaimama.io) est l'une des entrées les plus sous-estimées dans l'espace du streaming hentai. Le site se concentre sur l'accessibilité, offrant des versions sous-titrées en anglais et doublées en anglais des OVAs et séries hentai populaires. Si HentaiMama est actuellement indisponible dans votre région, consultez nos meilleures alternatives ci-dessous.",
+        "description_pt": "HentaiMama é um site de streaming de hentai freemium que oferece conteúdo legendado e dublado, com uma interface limpa e uma biblioteca crescente de séries e OVAs populares.",
+        "description_hi": "HentaiMama एक फ्रीमियम हेनतई स्ट्रीमिंग साइट है जो सब्ड और डब दोनों सामग्री प्रदान करती है, एक स्वच्छ इंटरफ़ेस और लोकप्रिय श्रृंखलाओं की बढ़ती लाइब्रेरी के साथ।",
+        "description_ar": "HentaiMama موقع بث هنتاي مجاني يقدم محتوى مترجمًا ومدبلجًا، بواجهة نظيفة ومكتبة متنامية من المسلسلات والأوفا الشهيرة.",
+        "description_de": "HentaiMama ist eine Freemium-Hentai-Streaming-Site, die sowohl untertitelte als auch synchronisierte Inhalte anbietet, mit einer übersichtlichen Benutzeroberfläche und einer wachsenden Bibliothek beliebter Serien und OVAs."
     },
     {
         "id": "hentaibros",
