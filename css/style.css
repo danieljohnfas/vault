@@ -64,6 +64,7 @@ body {
     color: var(--text-main);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    padding-top: 70px; /* Push all content below the fixed 70px navbar */
 }
 
 a {
@@ -227,11 +228,6 @@ a:hover {
 /* ==========================================================================
    Hero Section
    ========================================================================== */
-/* Leaderboard ad: push below the 70px fixed navbar + 20px breathing room */
-.ad-container.leaderboard {
-    margin-top: 90px !important;
-}
-
 .hero {
     margin-top: 0;
     padding: 80px 24px 60px;
@@ -271,7 +267,7 @@ a:hover {
     max-width: 728px;
     height: 90px;
     min-height: 90px;
-    margin: 90px auto 40px !important;
+    margin: 20px auto 40px !important;
 }
 
 .sidebar-ad {
