@@ -102,7 +102,8 @@ class HeadHandler {
         "@type": "AggregateRating",
         "ratingValue": this.site.rating || 4.5,
         "bestRating": "5",
-        "worstRating": "1"
+        "worstRating": "1",
+        "ratingCount": this.site.ratingCount || 1
       },
       "author": {
         "@type": "Organization",
