@@ -42,14 +42,39 @@
         <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 <nav class="navbar">
-    <div class="nav-container">
-        <a href="/" class="logo"><span class="logo-icon">💎</span> HentaiVault</a>
-        <div class="nav-actions">
-            <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
-            <a href="/" class="btn-outline" style="text-decoration:none; padding: 8px 16px; font-size:0.9rem;">← Back to Directory</a>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span class="logo-icon">💎</span> HentaiVault
+            </a>
+            <div class="search-bar">
+                <div class="search-container">
+                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,004+ sites..." autocomplete="off">
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
+            </div>
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
+                <div class="lang-switcher">
+                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="ar">🇲🇦 AR</option>
+                        <option value="de">🇩🇪 DE</option>
+                    </select>
+                </div>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
+                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
+                </a>
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
     <!-- Ad Leaderboard -->
     <div class="ad-container leaderboard" style="margin-top: 20px;">
         <script>atOptions = {'key':'40d623b6e8e7efa7651f8c6fbeb29bef','format':'iframe','height':90,'width':728,'params':{}};</script>
@@ -75,6 +100,55 @@
         </div>
     </div>
 </main>
+
+<footer class="site-footer">
+        <div class="footer-content">
+            <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
+            <div class="footer-links">
+                <a href="/blog" class="blog-link">Blog / Guides</a>
+                <a href="/about">About Us</a>
+                <a href="/disclaimer">Disclaimer</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/dmca">DMCA / Copyright</a>
+                <a href="/contact">Contact Us</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">☕ Buy Me A Coffee</a>
+            </div>
+            <div class="footer-links category-sitemap">
+                <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
+                <a href="/?q=Anime Streaming">Anime Streaming</a>
+                <a href="/?q=Hentai Streaming">Hentai Streaming</a>
+                <a href="/?q=Adult Tubes &amp; Studios">Adult Tubes &amp; Studios</a>
+                <a href="/?q=Games &amp; Visual Novels">Games &amp; Visual Novels</a>
+                <a href="/?q=Image Boards (Boorus)">Image Boards (Boorus)</a>
+                <a href="/?q=Communities &amp; Forums">Communities &amp; Forums</a>
+                <a href="/?q=Creator Platforms">Creator Platforms</a>
+                <a href="/?q=Downloads &amp; Torrents">Downloads &amp; Torrents</a>
+                <a href="/?q=Immersive &amp; Interactive">Immersive &amp; Interactive</a>
+            </div>
+            <div class="visitor-stats">
+                <span>Global Visitors:</span>
+                <img src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23fe2c55&style=flat-square" alt="Visitor Count" class="hit-counter">
+            </div>
+            <div class="footer-digest" style="margin: 24px 0; padding: 24px; background: rgba(255,42,95,0.06); border: 1px solid rgba(255,42,95,0.2); border-radius: 16px; display:flex; flex-wrap:wrap; align-items:center; gap: 16px; justify-content:space-between;">
+                <div>
+                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">📧 Weekly Digest</div>
+                    <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
+                </div>
+                <form id="digestForm" onsubmit="subscribeDigest(event)" style="display:flex; gap:10px; flex:1; max-width:400px;">
+                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
+                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe →</button>
+                </form>
+                <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
+                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">📋 My List</a>
+                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('📋 List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">🔗 Share My List</button>
+                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">⚖️ Compare Sites</a>
+            </div>
+            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
+        </div>
+    </footer>
 
 <script>
     const escapeHTML = (str) => {
