@@ -72,18 +72,19 @@ async function getSitesData(urlOrigin, env) {
     const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js' + bust));
     if (!dataRes.ok) return [];
 
-    // Guard against oversized data.js — Cloudflare Workers have tight CPU limits.
-    // If data.js exceeds 6MB, we skip the in-Worker parse and return empty (client will load it directly).
+    // Guard against oversized data.js — Cloudflare Workers have a 10ms CPU time limit on free plans.
+    // Regex matching + JSON.parse on large files will blow past this and return 503s.
+    // If data.js exceeds 2MB, skip in-Worker parse — client loads it directly via <script> tag.
     const contentLength = dataRes.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > 6_000_000) {
+    if (contentLength && parseInt(contentLength) > 2_000_000) {
       console.warn('data.js too large for Worker parse (' + contentLength + ' bytes) — skipping in-Worker cache.');
       return [];
     }
 
     const dataText = await dataRes.text();
 
-    // Bail out if the text is too large to safely parse in-Worker
-    if (dataText.length > 6_000_000) {
+    // Secondary guard on actual text length
+    if (dataText.length > 2_000_000) {
       console.warn('data.js text too large (' + dataText.length + ' chars) — skipping in-Worker cache.');
       return [];
     }
