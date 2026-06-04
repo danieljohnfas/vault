@@ -519,7 +519,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const params = new URLSearchParams();
-        params.set('page', currentPage);
+        // If sorting by random, we use 'exclude' to paginate. Passing page > 1 would apply an OFFSET 
+        // to a pool that is already shrinking, causing the double-pagination bug.
+        params.set('page', currentSort === 'random' ? 1 : currentPage);
         params.set('limit', ITEMS_PER_PAGE);
         
         if (searchQuery) params.set('q', searchQuery);
@@ -534,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Exclusion for stable random sorting
-        if (currentSort === 'random' && loadedSiteIds.length > 0 && loadedSiteIds.length < 200) {
+        if (currentSort === 'random' && loadedSiteIds.length > 0) {
             params.set('exclude', loadedSiteIds.join(','));
         }
 
