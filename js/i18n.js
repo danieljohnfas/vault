@@ -5,7 +5,7 @@ const TRANSLATIONS = {
         blog: "Blog",
         submit: "Submit Site",
         favorites: "My Favorites",
-        search_placeholder: "Search 500+ anime & hentai sites...",
+        search_placeholder: "Search 1,004+ anime & hentai sites...",
         sort_by: "Sort By:",
         random: "Random",
         popular: "Most Popular",
@@ -140,14 +140,14 @@ const TRANSLATIONS = {
     },
     hi: {
         vault: "वॉल्ट", directory: "निर्देशिका", blog: "ब्लॉग", submit: "साइट सबमिट करें", favorites: "मेरे पसंदीदा",
-        search_placeholder: "500+ साइटें खोजें...", sort_by: "क्रमबद्ध करें:", random: "यादृच्छिक", popular: "सबसे लोकप्रिय",
+        search_placeholder: "1,004+ साइटें खोजें...", sort_by: "क्रमबद्ध करें:", random: "यादृच्छिक", popular: "सबसे लोकप्रिय",
         rating: "शीर्ष रेटेड", newest: "नवीनतम", alpha: "A-Z", showing: "दिखा रहा है", of: "में से", sites: "साइटें",
         load_more: "अधिक साइटें लोड करें", visit: "विजिट", added: "जोड़ा गया",
         categories: { "Anime Streaming": "एनीमे स्ट्रीमिंग", "Hentai Streaming": "हेंताई स्ट्रीमिंग", "Manga/Doujin": "मंगा और डौजिन", "Images/Boorus": "छवियां और बूरस", "Games": "वयस्क खेल", "Communities": "समुदाय", "Downloads": "डाउनलोड", "Visual Novels": "विजुअल नोवेल्स", "Adult Studios": "वयस्क स्टूडियो", "Adult VR": "वयस्क वीआर", "Premium Creators": "प्रीमियम निर्माता" }
     },
     ar: {
         vault: "فولت", directory: "دليل", blog: "مدونة", submit: "إرسال موقع", favorites: "المفضلة",
-        search_placeholder: "ابحث في 500+ موقع...", sort_by: "ترتيب حسب:", random: "عشوائي", popular: "الأكثر شعبية",
+        search_placeholder: "ابحث في 1,004+ موقع...", sort_by: "ترتيب حسب:", random: "عشوائي", popular: "الأكثر شعبية",
         rating: "الأعلى تقييمًا", newest: "الأحدث", alpha: "أ-ي", showing: "عرض", of: "من", sites: "مواقع",
         load_more: "تحميل المزيد", visit: "زيارة", added: "مضاف",
         categories: { "Anime Streaming": "أنمي ستريمنج", "Hentai Streaming": "هنتاي ستريمنج", "Manga/Doujin": "مانجا ودوجين", "Images/Boorus": "صور وبوروس", "Games": "ألعاب للكبار", "Communities": "مجتمعات", "Downloads": "تحميلات", "Visual Novels": "روايات مرئية", "Adult Studios": "استوديوهات للكبار", "Adult VR": "واقع افتراضي للكبار", "Premium Creators": "صناع محتوى مميزون" }
@@ -309,7 +309,7 @@ const META_TRANSLATIONS = {
     hi: {
         homepage: {
             title: "HentaiVault — सर्वश्रेष्ठ डौजिन साइटें और हेंताई स्ट्रीमिंग 2026",
-            description: "2026 में सर्वश्रेष्ठ डौजिन और हेंताई स्ट्रीमिंग साइटों के लिए इंटरनेट की #1 निर्देशिका। 500+ साइटें क्यूरेट की गईं।",
+            description: "2026 में सर्वश्रेष्ठ डौजिन और हेंताई स्ट्रीमिंग साइटों के लिए इंटरनेट की #1 निर्देशिका। 1,004+ साइटें क्यूरेट की गईं।",
             keywords: "सर्वश्रेष्ठ डौजिन साइटें, हेंताई स्ट्रीमिंग 2026, nhentai विकल्प"
         },
         category: {

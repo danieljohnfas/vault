@@ -85,6 +85,24 @@ function walk(dir) {
           fs.writeFileSync(file, content, 'utf8');
           console.log(`   ✅ Updated ${path.relative(ROOT, file)}`);
         }
+      } else if (file.endsWith('i18n.js')) {
+        // Update the translation strings in js/i18n.js
+        let content = fs.readFileSync(file, 'utf8');
+        let modified = false;
+        
+        const i18nRegex = /search_placeholder:\s*["'].*?(?:\d+).*?["']/g;
+        // Since different languages have different phrasing, we just look for numbers like 500+ or 900+ and replace them
+        // A safer way is to replace \d+\+ with the new formattedCount.
+        
+        if (/\d+\+/.test(content)) {
+          content = content.replace(/\b\d+\+/g, formattedCount);
+          modified = true;
+        }
+
+        if (modified) {
+          fs.writeFileSync(file, content, 'utf8');
+          console.log(`   ✅ Updated ${path.relative(ROOT, file)} (i18n translations)`);
+        }
       }
     }
   }
