@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let isLoading = false;
     let hasMoreSites = true;
-    let loadedSiteIds = []; // For exclusion pagination to avoid duplicates in random sort
+    // Session seed for deterministic random shuffle — generated once per session,
+    // re-generated when filters/sort changes. Avoids the URL length cap of the old exclude approach.
+    let randomSeed = Math.floor(Math.random() * 2000000000) + 1;
 
     // --- Favorites Logic ---
     let favorites = [];
@@ -513,15 +515,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!append) {
             currentPage = 1;
             currentSites = [];
-            loadedSiteIds = [];
+            // Regenerate seed so each new filter/sort combo gets a fresh shuffle
+            randomSeed = Math.floor(Math.random() * 2000000000) + 1;
             siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading sites...</div>';
             if (loadMoreBtn) loadMoreBtn.style.display = 'none';
         }
 
         const params = new URLSearchParams();
-        // If sorting by random, we use 'exclude' to paginate. Passing page > 1 would apply an OFFSET 
-        // to a pool that is already shrinking, causing the double-pagination bug.
-        params.set('page', currentSort === 'random' ? 1 : currentPage);
+        // For all sort modes, use normal OFFSET-based pagination.
+        // For random sort, we use a seeded deterministic shuffle on the backend
+        // so OFFSET is stable across pages — no URL-growing exclude list needed.
+        params.set('page', currentPage);
         params.set('limit', ITEMS_PER_PAGE);
         
         if (searchQuery) params.set('q', searchQuery);
@@ -529,15 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeTags.length > 0) params.set('tags', activeTags.join(','));
         params.set('sort', currentSort);
 
-        // Region filter (if active on the page)
-        const regionSelect = document.getElementById('regionSelect');
-        if (regionSelect && regionSelect.value !== 'All') {
-            // Note: Region filtering on the backend isn't natively supported yet. We will just pass tags for now, or it will filter nothing on backend.
-        }
-
-        // Exclusion for stable random sorting
-        if (currentSort === 'random' && loadedSiteIds.length > 0) {
-            params.set('exclude', loadedSiteIds.join(','));
+        // Pass seed for random sort so backend ordering is stable across pages
+        if (currentSort === 'random') {
+            params.set('seed', randomSeed);
         }
 
         try {
@@ -556,13 +554,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     currentSites = [...currentSites, ...fetchedSites];
                 }
-                
-                fetchedSites.forEach(s => {
-                    if (!loadedSiteIds.includes(s.id)) loadedSiteIds.push(s.id);
-                });
 
                 hasMoreSites = (data.sites.length === ITEMS_PER_PAGE);
-                // Pass the fresh batch directly — avoids broken page-index slicing
                 renderSites(fetchedSites, append, data.total);
             }
         } catch (e) {

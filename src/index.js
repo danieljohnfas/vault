@@ -457,28 +457,14 @@ export default {
           conditions.push(`(${tagConditions.join(' OR ')})`);
         }
         
-        // Build WHERE for the count query BEFORE adding pagination exclude
-        const countWhereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
+        // WHERE clause shared by count + data query (no exclude needed)
+        const whereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
         const countResult = await env.hv_directory.prepare(
-          'SELECT COUNT(*) as count FROM sites' + countWhereClause
+          'SELECT COUNT(*) as count FROM sites' + whereClause
         ).bind(...params).first();
         const total = countResult ? countResult.count : 0;
 
-        // Now add exclude for the actual data query
-        const excludeStr = url.searchParams.get('exclude');
-        if (excludeStr) {
-          const excludeArray = excludeStr.split(',').filter(Boolean);
-          if (excludeArray.length > 0) {
-            const validIds = excludeArray.filter(id => /^[a-zA-Z0-9_-]+$/.test(id));
-            if (validIds.length > 0) {
-              const quotedIds = validIds.map(id => `'${id}'`).join(',');
-              conditions.push(`id NOT IN (${quotedIds})`);
-            }
-          }
-        }
-
-        const dataWhereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
-        query += dataWhereClause;
+        query += whereClause;
 
         const sort = url.searchParams.get('sort') || 'random';
         if (sort === 'rating' || sort === 'popular') {
@@ -488,8 +474,11 @@ export default {
         } else if (sort === 'alphabetical' || sort === 'alpha') {
           query += ' ORDER BY name ASC';
         } else {
-          // Default and 'random': fresh shuffle every request
-          query += ' ORDER BY RANDOM()';
+          // Seeded deterministic random: stable per-session shuffle, OFFSET-safe
+          // seed is a positive integer passed by the client once per session
+          const rawSeed = parseInt(url.searchParams.get('seed') || '0', 10);
+          const seed = (rawSeed > 0 && rawSeed < 2147483647) ? rawSeed : 1337;
+          query += ` ORDER BY (rowid * ${seed}) % 1000000007`;
         }
         
         query += ' LIMIT ? OFFSET ?';
