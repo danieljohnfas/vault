@@ -19,5 +19,17 @@
       "binding": "PUSH_SUBSCRIBERS",
       "id": "dced0013707d4971852abd84ef0949ba"
     }
-  ]
+  ],
+  "d1_databases": [
+    {
+      "binding": "hv_directory",
+      "database_name": "hv-directory",
+      "database_id": "3dc06028-c9b1-4e4a-a3c3-11f92209baab"
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "0 * * * *"
+    ]
+  }
 }

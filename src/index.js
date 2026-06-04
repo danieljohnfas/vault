@@ -55,52 +55,8 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
-// Global V8 isolate cache — includes a version counter so submit can bust it
-let cachedSitesData = null;
-let cachedSitesVersion = 0;
-
-function bustSitesCache() {
-  cachedSitesData = null;
-  cachedSitesVersion++;
-}
-
-async function getSitesData(urlOrigin, env) {
-  if (cachedSitesData) return cachedSitesData;
-  try {
-    // Add version as cache-buster so we always fetch fresh after a submit
-    const bust = `?v=${cachedSitesVersion}_${Date.now()}`;
-    const dataRes = await env.ASSETS.fetch(new Request(urlOrigin + '/js/data.js' + bust));
-    if (!dataRes.ok) return [];
-
-    // Guard against oversized data.js — Cloudflare Workers have a 10ms CPU time limit on free plans.
-    // Regex matching + JSON.parse on large files will blow past this and return 503s.
-    // If data.js exceeds 2MB, skip in-Worker parse — client loads it directly via <script> tag.
-    const contentLength = dataRes.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > 1_000_000) {
-      console.warn('data.js too large for Worker parse (' + contentLength + ' bytes) — skipping in-Worker cache.');
-      return [];
-    }
-
-    const dataText = await dataRes.text();
-
-    // Secondary guard on actual text length
-    if (dataText.length > 1_000_000) {
-      console.warn('data.js text too large (' + dataText.length + ' chars) — skipping in-Worker cache.');
-      return [];
-    }
-
-    const arrayMatch = dataText.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
-    if (arrayMatch) {
-      const jsonString = arrayMatch[1]
-        .replace(/,\s*([\]}])/g, '$1');
-      cachedSitesData = JSON.parse(jsonString);
-      return cachedSitesData || [];
-    }
-  } catch (err) {
-    console.error('Failed to parse sitesData:', err);
-  }
-  return [];
-}
+// We no longer load the massive data.js file into the Worker memory.
+// D1 handles all backend queries to respect the 10ms CPU limit.
 
 class HeadHandler {
   constructor(site, canonicalUrl) {
@@ -431,11 +387,16 @@ export default {
       if (request.method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: CORS });
       }
-      const sites = await getSitesData(url.origin, env);
-      return new Response(
-        JSON.stringify({ count: sites.length }),
-        { status: 200, headers: { ...CORS, 'Cache-Control': 'public, max-age=60' } }
-      );
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      try {
+        const result = await env.hv_directory.prepare('SELECT COUNT(*) as count FROM sites').first();
+        return new Response(
+          JSON.stringify({ count: result.count }),
+          { status: 200, headers: { ...CORS, 'Cache-Control': 'public, max-age=60' } }
+        );
+      } catch (err) {
+        return jsonError('Database error', 500);
+      }
     }
 
     // ── Route: /api/submit ──────────────────────────────────────────────────
@@ -496,8 +457,23 @@ export default {
         return response;
       }
 
-      const sites = await getSitesData(url.origin, env);
-      const site = sites.find(s => s.id === id);
+      let site = null;
+      let relatedSites = [];
+      
+      if (env.hv_directory) {
+        try {
+          const siteRow = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+          if (siteRow && siteRow.data_json) {
+            site = JSON.parse(siteRow.data_json);
+            // Fetch some related sites for the Jaccard similarity engine in ReviewBodyHandler
+            const relatedRows = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE category = ? AND id != ? LIMIT 15').bind(site.category, site.id).all();
+            relatedSites = relatedRows.results.map(r => JSON.parse(r.data_json));
+            relatedSites.push(site); // Ensure the site itself is in the array so the handler doesn't crash
+          }
+        } catch (err) {
+          console.error("D1 lookup error:", err);
+        }
+      }
 
       if (!site) {
         // Return 404 status code but still serve site.html so client-side rendering displays UI error
@@ -514,7 +490,7 @@ export default {
       const rewriter = new HTMLRewriter()
         .on('title', new TitleHandler(titleText))
         .on('head', new HeadHandler(site, canonicalUrl))
-        .on('div#reviewContent', new ReviewBodyHandler(site, lang, sites));
+        .on('div#reviewContent', new ReviewBodyHandler(site, lang, relatedSites));
 
       return rewriter.transform(response);
     }
@@ -650,39 +626,12 @@ async function handleSubmit(request, env, ctx) {
     if (!env.GITHUB_TOKEN)
       return jsonError('Server misconfiguration. Contact the admin.', 500);
 
-    // ── 2. Fetch current data.js from GitHub ─────────────────────────────────
-    const ghHeaders = {
-      'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-      'Accept':        'application/vnd.github+json',
-      'User-Agent':    'HentaiVault-Worker',
-    };
-
-    const fileRes = await fetch(GITHUB_API, { headers: ghHeaders });
-    if (!fileRes.ok) return jsonError('Could not read directory. Try again later.', 500);
-
-    const fileData   = await fileRes.json();
-    const sha        = fileData.sha;
-    const rawContent = decodeB64(fileData.content);
-
-    // Extract the JSON array from the file string
-    const arrayMatch = rawContent.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
-    if (!arrayMatch) {
-      return jsonError('Could not parse directory data structure.', 500);
-    }
-
-    let sitesArray;
-    try {
-      // Handle trailing commas safely before parsing
-      const jsonString = arrayMatch[1].replace(/,\s*([\]}])/g, '$1');
-      sitesArray = JSON.parse(jsonString);
-    } catch (e) {
-      console.error('Parse error on submission:', e);
-      return jsonError('Data structure is corrupted.', 500);
-    }
-
-    // ── 3. Duplicate check ───────────────────────────────────────────────────
-    if (sitesArray.some(s => s.url === urlClean))
+    // ── 3. Duplicate check via D1 ────────────────────────────────────────────
+    if (!env.hv_directory) return jsonError('Database not configured.', 500);
+    const existing = await env.hv_directory.prepare('SELECT id FROM sites WHERE url = ?').bind(urlClean).first();
+    if (existing) {
       return jsonError('This site is already listed in the directory!', 409);
+    }
 
     // ── 4. Build new entry ───────────────────────────────────────────────────
     const id    = makeId(nameClean);
@@ -698,38 +647,21 @@ async function handleSubmit(request, env, ctx) {
       addedAt: today
     };
 
-    sitesArray.push(newEntry);
-
-    // ── 5. Serialize back to file ──────────────────────────────────────────
-    const newSitesStr = JSON.stringify(sitesArray, null, 4);
-    const updated = `const sitesData = ${newSitesStr};`;
-
-    // ── 6. Commit to GitHub ──────────────────────────────────────────────────
-    const commitRes = await fetch(GITHUB_API, {
-      method:  'PUT',
-      headers: { ...ghHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `Add site: ${nameClean}`,
-        content: encodeB64(updated),
-        sha,
-      }),
-    });
-
-    if (!commitRes.ok) {
-      console.error('GitHub commit error:', await commitRes.text());
-      return jsonError('Failed to publish site. Please try again.', 500);
-    }
-
-    // Bust the in-memory cache so the next request sees the new entry immediately
-    bustSitesCache();
+    // ── 5. Insert directly into D1 ──────────────────────────────────────────
+    const dataJson = JSON.stringify(newEntry);
+    await env.hv_directory.prepare(
+      'INSERT INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(id, catClean, urlClean, 4.0, today, dataJson).run();
 
     // Ping Bing IndexNow in the background (non-blocking)
     ctx.waitUntil(pingIndexNow(env));
+    // Trigger an immediate GitHub sync in the background
+    ctx.waitUntil(syncD1ToGitHub(env));
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: `"${nameClean}" has been added to the directory! It will appear live within ~60 seconds.`,
+        message: `"${nameClean}" has been added to the directory! It will appear live shortly.`,
       }),
       { status: 200, headers: CORS }
     );
@@ -737,6 +669,50 @@ async function handleSubmit(request, env, ctx) {
   } catch (err) {
     console.error('Unexpected error:', err);
     return jsonError('An unexpected error occurred.', 500);
+  }
+}
+
+// ─── Cron Scheduled Handler ───────────────────────────────────────────────────
+
+export async function scheduled(event, env, ctx) {
+  // Sync the D1 database to the GitHub data.js file every hour
+  ctx.waitUntil(syncD1ToGitHub(env));
+}
+
+async function syncD1ToGitHub(env) {
+  if (!env.hv_directory || !env.GITHUB_TOKEN) return;
+  try {
+    const { results } = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY added_at DESC').all();
+    if (!results || results.length === 0) return;
+    
+    const sitesArray = results.map(row => JSON.parse(row.data_json));
+    const newSitesStr = JSON.stringify(sitesArray, null, 4);
+    const updated = `const sitesData = ${newSitesStr};`;
+    
+    // Fetch current SHA
+    const ghHeaders = {
+      'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+      'Accept':        'application/vnd.github+json',
+      'User-Agent':    'HentaiVault-Worker',
+    };
+    const fileRes = await fetch(GITHUB_API, { headers: ghHeaders });
+    if (!fileRes.ok) return;
+    const fileData = await fileRes.json();
+    const sha = fileData.sha;
+    
+    // Only commit if content changed (by checking size roughly, or just committing and letting Git figure it out)
+    await fetch(GITHUB_API, {
+      method:  'PUT',
+      headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `chore(db): sync D1 database to data.js (${sitesArray.length} sites)`,
+        content: encodeB64(updated),
+        sha,
+      }),
+    });
+    console.log('Successfully synced D1 to GitHub');
+  } catch (err) {
+    console.error('Failed to sync D1 to GitHub:', err);
   }
 }
 
