@@ -46,15 +46,23 @@ jobs:
           git config user.name "HentaiVault Bot"
           git config user.email "bot@hentaivault.me"
 
-      - name: Run daily site addition
+      - name: Run daily site addition pipeline
         run: |
           COUNT="${{ github.event.inputs.count || '100' }}"
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
+          
+          echo "==== 1. RUNNING AUDIT ===="
+          node scripts/daily-audit.js
+          
+          echo "==== 2. ADDING SITES ===="
           if [ "$DRY_RUN" = "true" ]; then
             node scripts/daily-add.js --count "$COUNT" --dry-run
           else
             node scripts/daily-add.js --count "$COUNT"
           fi
+          
+          echo "==== 3. UPDATING HTML COUNTS ===="
+          node scripts/update-html-counts.js
 
       - name: Report queue status
         if: always()
