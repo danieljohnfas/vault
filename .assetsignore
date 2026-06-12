@@ -24,3 +24,5 @@ temp_data.js
 node_modules/
 insert_*.sql
 sitemap.xml
+deploy.bat
+*.bat
