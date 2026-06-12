@@ -79,24 +79,26 @@
         <div class="date-str" id="dateStr"></div>
     </div>
 
-    <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchBox" placeholder="Search HentaiVault or the web..." autocomplete="off">
-        <div class="autocomplete" id="autocomplete"></div>
-    </div>
+    <main style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchBox" placeholder="Search HentaiVault or the web..." autocomplete="off">
+            <div class="autocomplete" id="autocomplete"></div>
+        </div>
 
-    <div class="section-title">⭐ Top Rated Sites</div>
-    <div class="sites-grid" id="sitesGrid">
-        <!-- Populated by JS -->
-    </div>
+        <div class="section-title">⭐ Top Rated Sites</div>
+        <div class="sites-grid" id="sitesGrid">
+            <!-- Populated by JS -->
+        </div>
 
-    <div class="section-title" id="spotlightLabel" style="display:none;">🏆 Site of the Week</div>
-    <div class="sites-grid" id="spotlightGrid" style="grid-template-columns: 1fr; max-width:640px;"></div>
+        <div class="section-title" id="spotlightLabel" style="display:none;">🏆 Site of the Week</div>
+        <div class="sites-grid" id="spotlightGrid" style="grid-template-columns: 1fr; max-width:640px;"></div>
+    </main>
 
-    <div class="footer-bar">
+    <footer class="footer-bar">
         <a href="https://hentaivault.me" target="_blank">Open Full Directory ↗</a>
         <a href="https://hentaivault.me/mylist.html" target="_blank">📋 My List</a>
-    </div>
+    </footer>
 
     <script>
         const API = 'https://hentaivault.me';
@@ -188,5 +190,19 @@
         loadTopSites();
         loadSpotlight();
     </script>
+
+
+    <!-- Sticky Bottom Ad -->
+    <div id="sticky-bottom-ad">
+        <div class="sticky-ad-inner">
+            <script type="text/javascript">
+                atOptions = {'key' : '90b220b63fa3e2eb3c163fec3b34a465', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {}};
+            </script>
+            <script async type="text/javascript" src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
+        </div>
+        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    </div>
+    <!-- Adsterra SocialBar & Popunder -->
+    <script async type="text/javascript" src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
 </body>
 </html>

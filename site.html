@@ -86,102 +86,6 @@
             border-radius: var(--radius-xl);
         }
     </style>
-    <script defer src="js/i18n.js"></script>
-    <script defer src="js/app.js"></script>
-    <meta property="og:type" content="article">
-    <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://hentaivault.me/assets/favicon.png">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Fallback Meta Tags for Social Scrapers -->
-    <meta property="og:title" content="HentaiVault | Site Review">
-    <meta property="og:description" content="Read our detailed review and stats for this doujin/hentai site on HentaiVault.">
-    <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <title>Review | HentaiVault</title>
-    <meta name="description" content="Read expert reviews, ratings, pros and cons for top hentai and doujin sites. Find the best alternatives and working links on HentaiVault.">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <!-- Canonical and hreflang are injected dynamically by JS based on ?id= param -->
-    <!-- This prevents the 281 'Duplicate without canonical' GSC errors -->
-    <!-- Review Page Schema: populated dynamically by JS -->
-    <script type="application/ld+json" id="review-schema">{}</script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        .review-layout {
-            max-width: 1000px;
-            margin: 20px auto 60px;
-            padding: 0 24px;
-        }
-        .review-header {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        .review-icon {
-            width: 120px;
-            height: 120px;
-            border-radius: var(--radius-lg);
-            background: var(--bg-surface);
-            padding: 10px;
-            object-fit: contain;
-            border: 1px solid var(--border);
-        }
-        .review-meta h1 { font-size: 3rem; margin-bottom: 8px; }
-        .review-badge {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: var(--radius-pill);
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .review-content {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 40px;
-            line-height: 1.8;
-            color: #d4d4d8;
-        }
-        .review-content h2 { color: var(--text-main); margin: 30px 0 15px; }
-        .pros-cons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: 40px 0;
-        }
-        .pc-box {
-            padding: 24px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-        }
-        .pc-box h3 { margin-bottom: 16px; font-size: 1.1rem; }
-        .pros { background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2); }
-        .cons { background: rgba(255, 42, 95, 0.05); border-color: rgba(255, 42, 95, 0.2); }
-        .pc-list { list-style: none; padding: 0; }
-        .pc-list li { margin-bottom: 8px; display: flex; gap: 8px; }
-        .pc-list li::before { content: '✓'; color: #22c55e; font-weight: bold; }
-        .cons .pc-list li::before { content: '✕'; color: #ff2a5f; }
-        .cta-box {
-            text-align: center;
-            margin-top: 40px;
-            padding: 40px;
-            background: var(--bg-surface-elevated);
-            border-radius: var(--radius-xl);
-        }
-    </style>
-    <script defer src="js/i18n.js"></script>
-    <script defer src="js/app.js"></script>
     <meta property="og:type" content="article">
     <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -195,6 +99,8 @@
     <script src="https://pl29414985.profitablecpmratenetwork.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
     <script async="async" data-cfasync="false" src="https://pl29414983.profitablecpmratenetwork.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/app.js"></script>
 </head>
 <body>
 <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
@@ -261,134 +167,132 @@
         <script src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
     </div>
 
+    <!-- Review Content — populated by app.js -->
+    <main class="review-layout">
+        <div id="reviewContent">
+            <!-- Injected by Cloudflare Worker HTMLRewriter (SSR) or app.js (CSR) -->
+        </div>
 
-                        body: JSON.stringify(payload)
-                    });
-                    if (!res.ok) throw new Error('Submission failed');
-                    statusEl.textContent = "Review submitted successfully!";
-                    statusEl.style.color = "#22c55e";
-                    document.getElementById('reviewForm').reset();
-                    loadReviews(id); // Reload list
-                } catch (err) {
-                    statusEl.textContent = "Failed to submit review. Please try again.";
-                    statusEl.style.color = "#ff2a5f";
-                }
-            };
+        <!-- User Reviews Section -->
+        <div style="margin-top: 60px;" id="userReviewsSection">
+            <h2 style="margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+                <span>💬</span> User Reviews
+            </h2>
+            <div id="reviewsList" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;"></div>
 
-            // Fetch and render reviews
-            const loadReviews = async (id) => {
-                const listEl = document.getElementById('reviewsList');
-                try {
-                    const res = await fetch('/api/reviews?id=' + id);
-                    const data = await res.json();
-                    if (data.reviews && data.reviews.length > 0) {
-                        listEl.innerHTML = data.reviews.map(r => `
-                            <div style="background: var(--bg-surface); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                                <div style="display:flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <strong style="color: white;">${window.escapeHTML(r.user_name || 'Anonymous')}</strong>
-                                    <span style="color: #f59e0b;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
-                                </div>
-                                <p style="margin:0; font-size:0.95rem; line-height: 1.5; color: #d4d4d8;">${window.escapeHTML(r.comment)}</p>
-                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">${new Date(r.created_at).toLocaleDateString()}</div>
-                            </div>
-                        `).join('');
-                    } else {
-                        listEl.innerHTML = '<div style="color: var(--text-muted);">No reviews yet. Be the first to review!</div>';
-                    }
-                } catch (e) {
-                    listEl.innerHTML = '<div style="color: #ff2a5f;">Failed to load reviews.</div>';
-                }
-            };
-            loadReviews(site.id);
-            // Inject Related Sites
-            let related = [];
-            try {
-                const relatedRes = await fetch(`/api/sites?category=${encodeURIComponent(site.category)}&sort=random&limit=4`);
-                const relatedData = await relatedRes.json();
-                if (relatedData && relatedData.sites) {
-                    related = relatedData.sites.filter(s => s.id !== site.id).slice(0, 3);
-                }
-            } catch (e) {
-                console.error("Failed to load related sites");
-            }
-            // Inject mid-review ad safely
-            const adContainer = document.getElementById('mid-review-ad-container');
-            if (adContainer) {
-                const confScript = document.createElement('script');
-                confScript.innerHTML = "atOptions = {'key':'384264be4aaafb8eb28962829e409253','format':'iframe','height':250,'width':300,'params':{}};";
-                const invokeScript = document.createElement('script');
-                invokeScript.src = "https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js";
-                adContainer.appendChild(confScript);
-                adContainer.appendChild(invokeScript);
-            }
-            const relatedGrid = document.getElementById('relatedGrid');
-            related.forEach(s => {
-                const sUrl = new URL(s.url);
-                const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=64`;
-                const sLocalName = escapeHTML(s[`name_${currentLang}`] || s.name);
-                const sLocalCat = (t.categories && t.categories[s.category]) ? t.categories[s.category] : s.category;
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="card-header">
-                        <img src="${sFavicon}" alt="" class="card-icon">
-                        <div>
-                            <div class="card-title"><a href="/site?id=${s.id}" style="color:inherit;">${sLocalName}</a></div>
-                            <div class="card-category">${sLocalCat}</div>
-                        </div>
+            <!-- Submit Review Form -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px;">
+                <h3 style="margin-bottom: 20px;">Write a Review</h3>
+                <form id="reviewForm" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label for="reviewName" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Your Name (optional)</label>
+                        <input type="text" id="reviewName" placeholder="Anonymous" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem;">
                     </div>
-                    <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${escapeHTML(s[`description_${currentLang}`] || s.description)}</div>
-                `;
-                relatedGrid.appendChild(card);
-            });
-            // === Inject WebPage + AggregateRating Schema (fixes GSC schema errors) ===
-            const schemaEl = document.getElementById('review-schema');
-            if (schemaEl && site) {
-                const pageSchema = {
-                    "@context": "https://schema.org",
-                    "@type": "WebPage",
-                    "name": site.name + " Review | HentaiVault",
-                    "url": `https://hentaivault.me/site?id=${site.id}`,
-                    "description": `Expert review of ${site.name} — ratings, pros, cons, and alternatives.`,
-                    "about": {
-                        "@type": "WebSite",
-                        "name": site.name,
-                        "url": site.url
-                    },
-                    "aggregateRating": {
-                        "@type": "AggregateRating",
-                        "ratingValue": String(site.rating),
-                        "bestRating": "5",
-                        "worstRating": "1",
-                        "ratingCount": "1"
-                    },
-                    "author": {
-                        "@type": "Organization",
-                        "name": "HentaiVault",
-                        "url": "https://hentaivault.me"
-                    }
-                };
-                schemaEl.textContent = JSON.stringify(pageSchema);
-            }
-        });
-    </script>
-    <!-- QR Code Widget --><img id="qr-img"
-             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
-             alt="QR Code — HentaiVault.me"
-             width="160" height="160">
-        <p id="qr-caption">hentaivault.me</p>
+                    <div>
+                        <label for="reviewRating" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Rating</label>
+                        <select id="reviewRating" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem;" title="Select Rating">
+                            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                            <option value="3">⭐⭐⭐ (3/5)</option>
+                            <option value="2">⭐⭐ (2/5)</option>
+                            <option value="1">⭐ (1/5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="reviewComment" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Your Review</label>
+                        <textarea id="reviewComment" rows="4" placeholder="Share your experience with this site..." style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem; resize: vertical;" required></textarea>
+                    </div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark"></div>
+                    <div id="reviewStatus" style="font-size: 0.9rem; display: none;"></div>
+                    <button type="submit" class="btn-primary" style="align-self: flex-start; padding: 12px 28px;">Submit Review</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mid-review ad -->
+        <div id="mid-review-ad-container" style="display: flex; justify-content: center; margin: 40px 0;"></div>
+
+        <!-- Related sites grid (populated by app.js) -->
+        <div class="related-sites" style="margin-top: 60px;">
+            <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                <span>🔗</span> Similar Sites You May Like
+            </h2>
+            <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
+        </div>
     </div>
-    </div>
-    <!-- PWA Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(reg) { console.log('SW registered'); })
-                    .catch(function(err) { console.log('SW error:', err); });
-            });
-        }
-    </script>
+
+    <!-- Submit Modal -->
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Submit a New Site</h2>
+            <p>Help grow the vault! Submitted sites are <strong>automatically published</strong> after basic validation.</p>
+            <form id="submitForm">
+                <div class="form-group">
+                    <label for="siteName">Website Name</label>
+                    <input type="text" id="siteName" name="site_name" placeholder="e.g. AnimeSite.tv" required>
+                </div>
+                <div class="form-group">
+                    <label for="siteUrl">URL</label>
+                    <input type="url" id="siteUrl" name="url" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label for="siteCategory">Category</label>
+                    <select name="category" id="siteCategory" title="Select Site Category" required>
+                        <option value="Manga/Doujin">Manga &amp; Doujinshi</option>
+                        <option value="Anime Streaming">Anime Streaming</option>
+                        <option value="Hentai Streaming">Hentai Streaming</option>
+                        <option value="Adult Studios">Adult Tubes &amp; Studios</option>
+                        <option value="Games">Games &amp; Visual Novels</option>
+                        <option value="Images/Boorus">Image Boards (Boorus)</option>
+                        <option value="Communities">Communities &amp; Forums</option>
+                        <option value="Premium Creators">Creator Platforms</option>
+                        <option value="Downloads">Downloads &amp; Torrents</option>
+                        <option value="Adult VR">Immersive &amp; Interactive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="siteDesc">Description</label>
+                    <textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site (at least 20 characters)..." required></textarea>
+                </div>
+                <!-- Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom: 15px;"></div>
+                <div id="submitStatus" class="submit-status hidden"></div>
+                <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
+            <div class="footer-links">
+                <a href="/blog" class="blog-link">Blog / Guides</a>
+                <a href="/about">About Us</a>
+                <a href="/disclaimer">Disclaimer</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/dmca">DMCA / Copyright</a>
+                <a href="/contact">Contact Us</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">☕ Buy Me A Coffee</a>
+            </div>
+            <div class="footer-links category-sitemap">
+                <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
+                <a href="/?q=Anime Streaming">Anime Streaming</a>
+                <a href="/?q=Hentai Streaming">Hentai Streaming</a>
+                <a href="/?q=Adult Tubes &amp; Studios">Adult Tubes &amp; Studios</a>
+                <a href="/?q=Games &amp; Visual Novels">Games &amp; Visual Novels</a>
+                <a href="/?q=Image Boards (Boorus)">Image Boards (Boorus)</a>
+                <a href="/?q=Communities &amp; Forums">Communities &amp; Forums</a>
+                <a href="/?q=Creator Platforms">Creator Platforms</a>
+                <a href="/?q=Downloads &amp; Torrents">Downloads &amp; Torrents</a>
+                <a href="/?q=Immersive &amp; Interactive">Immersive &amp; Interactive</a>
+            </div>
+            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
+        </div>
+    </footer>
+
     <!-- Share Modal -->
     <div id="shareModal" class="share-modal">
         <div class="share-modal-content">
@@ -404,17 +308,18 @@
             </div>
         </div>
     </div>
-    </div></div><!-- Sticky Bottom Ad -->
-    <div id="sticky-bottom-ad">
-        <div class="sticky-ad-inner">
-            <script type="text/javascript">
-                atOptions = {'key' : '40d623b6e8e7efa7651f8c6fbeb29bef', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {}};
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
-        </div>
-        </div>
-    <div id="qr-widget" title="Scan to visit on mobile">
-        <div id="qr-label">📱 Scan Me</div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(reg) { console.log('SW registered'); })
+                    .catch(function(err) { console.log('SW error:', err); });
+            });
+        }
+    </script>
+
     <!-- Sticky Bottom Ad -->
     <div id="sticky-bottom-ad">
         <div class="sticky-ad-inner">
