@@ -21,7 +21,8 @@ const AD_DOMAINS = [
     'googletagmanager.com',
     'challenges.cloudflare.com',
     'hitscounter.dev',
-    'api.qrserver.com'
+    'api.qrserver.com',
+    'highperformanceformat.com'
 ];
 
 function isAdRequest(url) {

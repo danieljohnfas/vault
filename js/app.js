@@ -735,11 +735,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
-            const tagsHtml = site.tags.map(t => `<span class="tag">${t}</span>`).join('');
+            const tagsHtml = (site.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
             
             const fullStars = Math.floor(site.rating);
-            const halfStar = site.rating % 1 !== 0;
-            let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - Math.ceil(site.rating));
+            const halfStar = (site.rating % 1) >= 0.5;
+            let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
 
             const isFav = favorites.includes(site.id);
 

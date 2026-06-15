@@ -232,7 +232,7 @@ class ReviewBodyHandler {
             <div class="review-meta">
                 <div class="review-badge">${localCat}</div>
                 <h1>${localName}</h1>
-                <div class="rating">${l.rating}${ '★'.repeat(Math.floor(this.site.rating)) }☆</div>
+                <div class="rating">${l.rating}${ '★'.repeat(Math.floor(this.site.rating)) }${ this.site.rating % 1 >= 0.5 ? '½' : '' }${ '☆'.repeat(5 - Math.ceil(this.site.rating)) }</div>
             </div>
         </div>
         <div class="review-content">
@@ -420,7 +420,6 @@ export default {
         headers: {
           'Content-Type': 'application/xml; charset=utf-8',
           'Cache-Control': 'public, max-age=3600',
-          'X-Robots-Tag': 'noindex'
         }
       });
     }
