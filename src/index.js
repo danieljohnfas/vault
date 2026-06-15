@@ -260,6 +260,15 @@ class ReviewBodyHandler {
                 <p style="margin-bottom:20px;">${l.visitBelow}</p>
                 <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
             </div>
+            <div class="compare-alternatives" style="margin-top: 60px;">
+                <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
+                    <span>⚔️</span> Compare ${localName}
+                </h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    ${related.map(r => `<a href="/compare?site1=${this.site.id}&site2=${r.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border);">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
+                </div>
+            </div>
+            
             <div class="related-sites" style="margin-top: 60px;">
                 <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
                     <span>🔗</span> ${l.similar}
@@ -398,11 +407,22 @@ export default {
         try {
           // Fetch all site IDs and their added_at dates — only live, real entries
           const rows = await env.hv_directory.prepare(
-            'SELECT id, added_at FROM sites ORDER BY added_at DESC'
+            'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
           ).all();
+          const topSites = rows.results.slice(0, 10);
+          
           for (const row of rows.results) {
             const lastmod = row.added_at ? row.added_at.split('T')[0] : today;
             siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+          }
+          
+          // Generate comparison URLs for top sites in same category
+          for (let i = 0; i < topSites.length; i++) {
+              for (let j = i + 1; j < topSites.length; j++) {
+                  if (topSites[i].category === topSites[j].category) {
+                      siteUrls += `  <url>\n    <loc>https://hentaivault.me/compare?site1=${topSites[i].id}&amp;site2=${topSites[j].id}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+                  }
+              }
           }
         } catch (err) {
           console.error('Sitemap D1 error:', err);
@@ -730,6 +750,24 @@ export default {
       }
     }
 
+    // ── Route: /api/random ──────────────────────────────────────────────────
+    if (url.pathname === '/api/random') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      try {
+        const result = await env.hv_directory.prepare('SELECT id, name, url, category FROM sites ORDER BY RANDOM() LIMIT 1').first();
+        if (!result) return jsonError('No sites found', 404);
+        return new Response(
+          JSON.stringify(result),
+          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' } }
+        );
+      } catch (err) {
+        return jsonError('Database error', 500);
+      }
+    }
+
     // ── Route: /api/submit ──────────────────────────────────────────────────
     if (url.pathname === '/api/submit') {
       if (request.method === 'OPTIONS') {
@@ -823,6 +861,60 @@ export default {
         .on('title', new TitleHandler(titleText))
         .on('head', new HeadHandler(site, canonicalUrl))
         .on('div#reviewContent', new ReviewBodyHandler(site, lang, relatedSites));
+
+      return rewriter.transform(response);
+    }
+
+    // ── Route: /compare ─────────────────────────────────────────────────────
+    if (url.pathname === '/compare') {
+      const site1Id = url.searchParams.get('site1');
+      const site2Id = url.searchParams.get('site2');
+      if (!site1Id || !site2Id) return Response.redirect(url.origin + '/', 302);
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/compare.html'));
+      if (!response.ok) return response;
+
+      let site1 = null;
+      let site2 = null;
+      if (env.hv_directory) {
+        try {
+          const rows = await env.hv_directory.prepare('SELECT id, data_json FROM sites WHERE id IN (?, ?)').bind(site1Id, site2Id).all();
+          for (const r of rows.results) {
+            if (r.id === site1Id) site1 = JSON.parse(r.data_json);
+            if (r.id === site2Id) site2 = JSON.parse(r.data_json);
+          }
+        } catch (e) {}
+      }
+      if (!site1 || !site2) return Response.redirect(url.origin + '/', 302);
+
+      const canonicalUrl = `https://hentaivault.me/compare?site1=${site1Id}&site2=${site2Id}`;
+      const rewriter = new HTMLRewriter()
+        .on('title', new TitleHandler(`${site1.name} vs ${site2.name} | HentaiVault`))
+        .on('head', new CompareHeadHandler(site1, site2, canonicalUrl))
+        .on('main#compareContent', new CompareBodyHandler(site1, site2));
+
+      return rewriter.transform(response);
+    }
+
+    // ── Route: /out (Interstitial Redirect) ─────────────────────────────────
+    if (url.pathname === '/out') {
+      const id = url.searchParams.get('id');
+      if (!id) return Response.redirect(url.origin + '/', 302);
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/out.html'));
+      if (!response.ok) return response;
+
+      let site = null;
+      if (env.hv_directory) {
+        try {
+          const row = await env.hv_directory.prepare('SELECT url FROM sites WHERE id = ?').bind(id).first();
+          if (row) site = { url: row.url };
+        } catch (e) {}
+      }
+      if (!site) return Response.redirect(url.origin + '/', 302);
+
+      const rewriter = new HTMLRewriter()
+        .on('div#target-url', new OutHandler(site));
 
       return rewriter.transform(response);
     }

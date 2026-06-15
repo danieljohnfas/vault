@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting... | HentaiVault</title>
+    <style>
+        body { margin: 0; padding: 0; background: #09090b; color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+        .redirect-msg { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-left-color: #ff2a5f; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 30px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .ad-container { width: 100%; max-width: 728px; margin: 20px auto; background: rgba(255,255,255,0.02); min-height: 90px; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+        #target-url { display: none; }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <div class="redirect-msg" id="msg">Redirecting you in <span id="countdown">3</span>...</div>
+    
+    <!-- Ad Space -->
+    <div class="ad-container">
+        <script>
+            atOptions = {
+                'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+            };
+        </script>
+        <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
+    </div>
+
+    <!-- Hidden target injected by worker -->
+    <div id="target-url"></div>
+
+    <script>
+        let timeLeft = 3;
+        const targetDiv = document.getElementById('target-url');
+        const timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('countdown').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                const target = targetDiv.innerText.trim();
+                if (target && target.startsWith('http')) {
+                    document.getElementById('msg').innerText = "Taking you there...";
+                    window.location.replace(target);
+                } else {
+                    document.getElementById('msg').innerText = "Invalid destination.";
+                }
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
