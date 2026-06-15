@@ -639,10 +639,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="skeleton-footer skeleton-line"></div>
                 </div>
             `).join('');
-            // Keep sentinel in DOM but visually hidden — removing it from flow breaks the observer
             if (loadMoreBtn) {
-                loadMoreBtn.style.opacity = '0';
-                loadMoreBtn.style.pointerEvents = 'none';
+                loadMoreBtn.style.display = 'none';
             }
         }
 
@@ -873,11 +871,8 @@ document.addEventListener('DOMContentLoaded', () => {
             batchIndex++;
         });
 
-        // Show/hide sentinel using opacity — keeping it in DOM so observer keeps tracking it
         if (loadMoreBtn) {
             if (hasMoreSites) {
-                loadMoreBtn.style.opacity = '0';
-                loadMoreBtn.style.pointerEvents = 'none';
                 loadMoreBtn.style.display = 'block';
             } else {
                 loadMoreBtn.style.display = 'none';

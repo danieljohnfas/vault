@@ -1,13 +1,13 @@
 // HentaiVault Service Worker
 // Cache-first for static assets, network-first for HTML pages
 
-const CACHE_NAME = 'hv-cache-v1';
+const CACHE_NAME = 'hv-cache-v3';
 const STATIC_ASSETS = [
     '/',
     '/index.html',
     '/css/style.css?v=2',
     '/js/i18n.js',
-    '/js/app.js?v=2',
+    '/js/app.js?v=3',
     '/assets/favicon.png',
     '/manifest.json'
 ];

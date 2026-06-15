@@ -808,9 +808,10 @@ export default {
       }
 
       if (!site) {
-        // Return 404 status code but still serve site.html so client-side rendering displays UI error
+        // Return 410 Gone (not 404) — tells Google the page is permanently removed,
+        // which causes it to drop the URL from its index much faster than a 404.
         return new Response(response.body, {
-          status: 404,
+          status: 410,
           headers: response.headers
         });
       }
