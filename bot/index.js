@@ -51,6 +51,8 @@ function buildRandomEmbed(site) {
     .setFooter({ text: 'HentaiVault.me — The #1 Adult Directory' })
     .setTimestamp();
 
+  const inviteLink = `https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&permissions=274877958144&scope=bot%20applications.commands`;
+
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setLabel(`Visit ${site.name} →`)
@@ -59,6 +61,10 @@ function buildRandomEmbed(site) {
     new ButtonBuilder()
       .setLabel('📖 Read Full Review')
       .setURL(reviewLink)
+      .setStyle(ButtonStyle.Link),
+    new ButtonBuilder()
+      .setLabel('➕ Add Bot')
+      .setURL(inviteLink)
       .setStyle(ButtonStyle.Link),
   );
 
@@ -86,10 +92,16 @@ function buildCategoryEmbed(sites, category) {
 
   embed.setDescription(lines.join('\n\n'));
 
+  const inviteLink = `https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&permissions=274877958144&scope=bot%20applications.commands`;
+
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setLabel(`Browse All →`)
       .setURL(`${SITE_BASE_URL}/category/${category}`)
+      .setStyle(ButtonStyle.Link),
+    new ButtonBuilder()
+      .setLabel('➕ Add Bot')
+      .setURL(inviteLink)
       .setStyle(ButtonStyle.Link),
   );
 
