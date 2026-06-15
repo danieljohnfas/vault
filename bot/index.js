@@ -146,3 +146,17 @@ client.on('interactionCreate', async (interaction) => {
 // ── Login ─────────────────────────────────────────────────────────────────────
 
 client.login(TOKEN);
+
+// ── Dummy HTTP Server for Render ──────────────────────────────────────────────
+// Render "Web Services" require the app to bind to an HTTP port, otherwise
+// it will mark the deploy as failed after 60 seconds.
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => res.send('HentaiVault Discord Bot is running!'));
+
+app.listen(port, () => {
+  console.log(`==> Dummy HTTP server listening on port ${port} for Render`);
+});
+
