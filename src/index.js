@@ -255,17 +255,52 @@ class ReviewBodyHandler {
             </div>
             <h2>${l.conclusion}</h2>
             <p>${l.conclusionText}</p>
-            <div class="cta-box">
-                <h3>${l.ready}</h3>
-                <p style="margin-bottom:20px;">${l.visitBelow}</p>
-                <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+            <div class="cta-box" id="cta-box" style="position: relative; overflow: hidden;">
+                <div id="cta-content" style="transition: all 0.3s;">
+                    <h3>${l.ready}</h3>
+                    <p style="margin-bottom:20px;">${l.visitBelow}</p>
+                    <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+                </div>
+                <div id="adblock-overlay" class="adblock-overlay" style="display: none;">
+                    <h3>🔒 Content Locked</h3>
+                    <p>Please disable your adblocker to support our directory and unlock the link to ${localName}.</p>
+                    <button class="btn-visit" onclick="window.location.reload()" style="font-size: 1rem; padding: 10px 20px;">I've disabled it, refresh</button>
+                </div>
             </div>
+            
+            <script>
+                setTimeout(function() {
+                    var testAd = document.createElement('div');
+                    testAd.innerHTML = '&nbsp;';
+                    testAd.className = 'adsbox';
+                    document.body.appendChild(testAd);
+                    window.setTimeout(function() {
+                        if (testAd.offsetHeight === 0) {
+                            document.getElementById('cta-content').classList.add('adblock-blur');
+                            document.getElementById('adblock-overlay').style.display = 'flex';
+                        }
+                        testAd.remove();
+                    }, 100);
+                }, 500);
+            </script>
             <div class="compare-alternatives" style="margin-top: 60px;">
                 <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
                     <span>⚔️</span> Compare ${localName}
                 </h2>
                 <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                     ${related.map(r => `<a href="/compare?site1=${this.site.id}&site2=${r.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border);">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
+                </div>
+            </div>
+            
+            <div class="embed-widget-container" style="margin-top: 60px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; border-radius: var(--radius-xl);">
+                <h3 style="margin-top:0; margin-bottom: 10px;">Are you the owner of ${localName}?</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.95rem;">Show off your HentaiVault rating to your users! Copy the code below to embed a badge on your site.</p>
+                <div style="position: relative;">
+                    <textarea readonly style="width: 100%; height: 60px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 12px; resize: none;"><iframe src="https://hentaivault.me/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true"></iframe></textarea>
+                </div>
+                <div style="margin-top: 15px;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Preview:</p>
+                    <iframe src="/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
                 </div>
             </div>
             
@@ -322,6 +357,31 @@ class ReviewBodyHandler {
 // - The lang variants are client-side UI state, not separate indexable pages
 // - Adding them as hreflang links caused Google to crawl them as separate pages
 //   which triggered "Page with redirect" and "Crawled not indexed" GSC errors.
+
+class EmbedHandler {
+  constructor(site) {
+    this.site = site;
+  }
+  element(element) {
+    const urlObj = new URL(this.site.url);
+    const domain = urlObj.hostname;
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+    const fullStars = Math.floor(this.site.rating);
+    const halfStar = (this.site.rating % 1) >= 0.5;
+    let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
+    
+    // Quick script to inject the values
+    const script = `
+        <script>
+            document.getElementById('embed-icon').src = "${faviconUrl}";
+            document.getElementById('embed-title').innerText = "${this.site.name}";
+            document.getElementById('embed-rating').innerText = "${starsHtml}";
+            document.getElementById('embed-link').href = "https://hentaivault.me/site?id=${this.site.id}";
+        </script>
+    `;
+    element.append(script, { html: true });
+  }
+}
 class CanonicalInjector {
   constructor(canonicalUrl) {
     this.canonicalUrl = canonicalUrl;
@@ -642,6 +702,26 @@ export default {
       return jsonError('Method not allowed', 405);
     }
 
+    // ── Route: /api/directory-export-v2-full.json (Honeypot) ────────────────
+    if (url.pathname === '/api/directory-export-v2-full.json') {
+      // Scraper Honeypot: Return infinite fake data
+      const stream = new ReadableStream({
+        async start(controller) {
+          controller.enqueue(new TextEncoder().encode('{"data":[\n'));
+          let i = 0;
+          function pushFake() {
+            if (i > 100000) { controller.close(); return; } // Cap at 100k to prevent endless server loop
+            const fakeSite = { id: `site_${Math.random().toString(36).substring(7)}`, name: `Hentai${Math.random().toString(36).substring(7)}`, url: `https://fake-${Math.random().toString(36).substring(7)}.com`, rating: (Math.random() * 5).toFixed(1) };
+            controller.enqueue(new TextEncoder().encode(JSON.stringify(fakeSite) + ',\n'));
+            i++;
+            setTimeout(pushFake, 5); // Stream slowly to tarpit
+          }
+          pushFake();
+        }
+      });
+      return new Response(stream, { headers: { 'Content-Type': 'application/json' } });
+    }
+
     // ── Route: /api/site-of-the-week ───────────────────────────────────────
     if (url.pathname === '/api/site-of-the-week') {
       if (request.method === 'OPTIONS') {
@@ -816,9 +896,23 @@ export default {
         });
       }
 
-      const id = url.searchParams.get('id');
+      let id = url.searchParams.get('id');
       if (!id) {
         return Response.redirect(url.origin + '/', 302);
+      }
+
+      // Typo-Squatting / Redirects
+      const typos = {
+        'nhentiai': 'nhentai',
+        'hanime': 'hanime.tv',
+        'fakku': 'fakku.net',
+        'sankaku': 'sankakucomplex',
+        'hitomi': 'hitomi.la',
+        'nhentai.net': 'nhentai',
+        'rule34': 'rule34.xxx'
+      };
+      if (typos[id.toLowerCase()]) {
+        return Response.redirect(`${url.origin}/site?id=${typos[id.toLowerCase()]}`, 301);
       }
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/site.html'));
@@ -915,6 +1009,29 @@ export default {
 
       const rewriter = new HTMLRewriter()
         .on('div#target-url', new OutHandler(site));
+
+      return rewriter.transform(response);
+    }
+
+    // ── Route: /embed (Ego-Bait Widget) ─────────────────────────────────────
+    if (url.pathname === '/embed') {
+      const id = url.searchParams.get('id');
+      if (!id) return new Response('Missing ID', { status: 400 });
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/embed.html'));
+      if (!response.ok) return response;
+
+      let site = null;
+      if (env.hv_directory) {
+        try {
+          const row = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+          if (row) site = JSON.parse(row.data_json);
+        } catch (e) {}
+      }
+      if (!site) return new Response('Site not found', { status: 404 });
+
+      const rewriter = new HTMLRewriter()
+        .on('body', new EmbedHandler(site));
 
       return rewriter.transform(response);
     }

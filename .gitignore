@@ -27,3 +27,7 @@ Thumbs.db
 # Scratch
 scratch/
 deploy.bat
+
+# Bot secrets & dependencies
+bot/.env
+bot/node_modules/

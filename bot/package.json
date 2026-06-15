@@ -1,0 +1,16 @@
+{
+  "name": "hentaivault-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for HentaiVault.me - serves random site roulette and comparisons.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "register": "node register.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
