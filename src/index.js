@@ -77,18 +77,15 @@ class HeadHandler {
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
     
-    // JSON-LD WebPage + AggregateRating Schema (replaces Review to fix GSC schema errors)
+    // JSON-LD SoftwareApplication + AggregateRating Schema
     const schema = {
       "@context": "https://schema.org/",
-      "@type": "WebPage",
-      "name": title,
+      "@type": "SoftwareApplication",
+      "name": this.site.name,
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
       "url": this.canonicalUrl,
       "description": `Read our expert review of ${this.site.name}. Category: ${this.site.category}.`,
-      "about": {
-        "@type": "WebSite",
-        "name": this.site.name,
-        "url": this.site.url
-      },
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": this.site.rating || 4.5,
@@ -100,7 +97,19 @@ class HeadHandler {
         "@type": "Organization",
         "name": "HentaiVault"
       },
-      "reviewBody": desc
+      "review": {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": this.site.rating || 4.5,
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "HentaiVault"
+        },
+        "reviewBody": desc
+      }
     };
     element.append(`<script type="application/ld+json">${JSON.stringify(schema)}</script>`, { html: true });
   }
