@@ -15,7 +15,7 @@
     <!-- This prevents the 281 'Duplicate without canonical' GSC errors -->
     <!-- Review Page Schema: populated dynamically by JS -->
     <script type="application/ld+json" id="review-schema">{}</script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -95,12 +95,11 @@
     <link rel="apple-touch-icon" href="/assets/icon-192.png">
     <script defer src="js/i18n.js"></script>
     <script defer src="js/app.js"></script>
+<link rel="canonical" href="https://hentaivault.me/site"/>
 </head>
 <body>
-<div class="skyscraper skyscraper-left">
-        </div>
-    <div class="skyscraper skyscraper-right">
-        </div>
+
+    
 <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="logo">
@@ -108,7 +107,7 @@
             </a>
             <div class="search-bar">
                 <div class="search-container">
-                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,004+ sites..." autocomplete="off">
+                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,903+ sites..." autocomplete="off">
                     <div id="searchAutocomplete" class="search-autocomplete"></div>
                 </div>
             </div>
@@ -133,37 +132,11 @@
             </div>
         </div>
     </nav>
-    <div class="ad-container leaderboard">
-        </div>
-
     <!-- Review Content — populated by app.js -->
-    <main class="review-layout">
+    <h1 class="sr-only">Site Detail | HentaiVault</h1>
+<main class="review-layout">
         <div id="reviewContent">
-            <!-- Footer (Injected by app.js or HTMLRewriter) -->
-    <footer>
-        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-            <!-- VPN Affiliate Banner -->
-            <div style="margin: 24px auto; max-width: 800px; padding: 22px 24px; background: linear-gradient(135deg, rgba(123,13,30,0.18) 0%, rgba(192,57,43,0.1) 100%); border: 1px solid rgba(192,57,43,0.4); border-radius: 16px; text-align: left;">
-                <div style="font-size:0.72rem; color: var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">Sponsored &middot; Recommended VPN for Adult Sites</div>
-                <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="flex:1; min-width:220px; display:flex; align-items:center; gap:16px; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.4); border-radius:12px; padding:16px 20px; text-decoration:none; transition: all 0.2s;" onmouseover="this.style.background='rgba(192,57,43,0.22)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(192,57,43,0.12)';this.style.transform=''">
-                        <div style="font-size:2.4rem; flex-shrink:0;">🛡️</div>
-                        <div style="flex:1;">
-                            <div style="font-weight:900; color:#e74c3c; font-size:1rem; line-height:1.2; margin-bottom:4px;">PureVPN &mdash; Hide From Your ISP</div>
-                            <div style="font-size:0.82rem; color:rgba(255,255,255,0.8); margin-bottom:6px;">Bypass ISP blocks, stay anonymous, access everything</div>
-                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:700;">&#10003; Best Value: 2-Year Plan</span>
-                                <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:700;">&#10003; 31-Day Money Back</span>
-                            </div>
-                        </div>
-                        <div style="background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:10px 18px; border-radius:10px; font-weight:900; font-size:0.9rem; white-space:nowrap; flex-shrink:0;">Get PureVPN &rarr;</div>
-                    </a>
-                </div>
             </div>
-            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
-        </div>
-    </footer> app.js (CSR) -->
-        </div>
 
         <!-- User Reviews Section -->
         <div style="margin-top: 60px;" id="userReviewsSection">
@@ -253,6 +226,7 @@
                 <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
             </form>
         </div>
+    </div>
     </main>
 
     <!-- Footer -->
@@ -328,10 +302,25 @@
         if (btnSubmitSite) btnSubmitSite.addEventListener('click', loadTurnstile);
     </script>
 
-    <div id="sticky-bottom-ad">
-        <div class="sticky-ad-inner">
-            </div>
-        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+    <div class="skyscraper skyscraper-left">
+        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
+            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Bypass ISP blocks &amp; stay completely anonymous.</p>
+            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">82% OFF</div>
+            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+        </a>
     </div>
-    </body>
+    <div class="skyscraper skyscraper-right">
+        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
+            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Unlock region-blocked anime &amp; content instantly.</p>
+            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">Get Deal</div>
+            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+        </a>
+    </div>
+
+</body>
 </html>

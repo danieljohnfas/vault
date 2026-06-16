@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G40QDCGTTZ');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Fallback Meta Tags for Social Scrapers -->
-    <meta property="og:title" content="HentaiVault | Site Review">
+    <meta property="og:title" content="HentaiVault | Best Alternatives">
     <meta property="og:description" content="Read our detailed review and stats for this doujin/hentai site on HentaiVault.">
     <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
     <meta name="twitter:card" content="summary_large_image">
-    <title>Review | HentaiVault</title>
+    <title>Alternatives | HentaiVault</title>
     <meta name="description" content="Read expert reviews, ratings, pros and cons for top hentai and doujin sites. Find the best alternatives and working links on HentaiVault.">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <!-- Canonical and hreflang are injected dynamically by JS based on ?id= param -->
     <!-- This prevents the 281 'Duplicate without canonical' GSC errors -->
     <!-- Review Page Schema: populated dynamically by JS -->
     <script type="application/ld+json" id="review-schema">{}</script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -98,12 +108,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HentaiVault">
     <link rel="apple-touch-icon" href="/assets/icon-192.png">
-    </head>
+    <link rel="canonical" href="https://hentaivault.me/alternatives"/>
+</head>
 <body>
-<div class="skyscraper skyscraper-left">
-        </div>
-    <div class="skyscraper skyscraper-right">
-        </div>
+
+    
 <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="logo">
@@ -111,12 +120,13 @@
             </a>
             <div class="search-bar">
                 <div class="search-container">
-                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,004+ sites..." autocomplete="off">
+                    <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,903+ sites..." autocomplete="off">
                     <div id="searchAutocomplete" class="search-autocomplete"></div>
                 </div>
             </div>
             <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
             <div class="nav-actions">
+                <a href="https://discord.gg/your_discord_invite_here" target="_blank" class="btn-theme" title="Join our Discord" style="text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">💬</a>
                 <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
@@ -137,11 +147,7 @@
             </div>
         </div>
     </nav>
-    <div class="ad-container leaderboard">
-        </div>
-
-
-<main class="review-layout" id="reviewContainer">
+    <main class="review-layout" id="reviewContainer">
         <div id="reviewContent">
             <h1 id="pageTitle" style="font-size:2.5rem; text-align:center; margin-bottom: 10px;">Loading Alternatives...</h1>
             <p id="pageDesc" style="text-align:center; color: var(--text-muted); margin-bottom: 40px; font-size:1.1rem;"></p>
@@ -163,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const siteId = params.get('id');
             if (!siteId) {
-                document.getElementById('reviewContent').innerHTML = '<h1>Site not found</h1><a href="/">Return to Home</a>';
+                document.getElementById('reviewContent').innerHTML = '<h2>Site not found</h2><a href="/">Return to Home</a>';
                 return;
             }
             let site;
@@ -172,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!res.ok) throw new Error('Not found');
                 site = await res.json();
             } catch (err) {
-                document.getElementById('reviewContent').innerHTML = '<h1>Site not found</h1><a href="/">Return to Home</a>';
+                document.getElementById('reviewContent').innerHTML = '<h2>Site not found</h2><a href="/">Return to Home</a>';
                 return;
             }
             const urlObj = new URL(site.url);
@@ -372,11 +378,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
     </footer>
 
-
-    <div id="sticky-bottom-ad">
-        <div class="sticky-ad-inner">
-            </div>
-        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad">&times;</button>
+    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+    <div class="skyscraper skyscraper-left">
+        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
+            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Bypass ISP blocks &amp; stay completely anonymous.</p>
+            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">82% OFF</div>
+            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+        </a>
     </div>
-    </body>
+    <div class="skyscraper skyscraper-right">
+        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
+            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Unlock region-blocked anime &amp; content instantly.</p>
+            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">Get Deal</div>
+            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+        </a>
+    </div>
+
+</body>
 </html>

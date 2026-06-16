@@ -295,18 +295,42 @@ a:hover {
     right: 20px;
 }
 
-/* Show only on wide screens to prevent overlapping content */
-@media (min-width: 1400px) {
+/* Show on wide screens, adjusting layout padding to prevent overlap */
+@media (min-width: 1150px) {
     .skyscraper {
         display: block;
     }
     
     .skyscraper-left {
-        left: 10px;
+        left: 5px;
     }
     
     .skyscraper-right {
-        right: 10px;
+        right: 5px;
+    }
+
+    /* Prevent overlap by forcing side padding on the main containers */
+    .main-layout {
+        padding-left: 170px !important;
+        padding-right: 170px !important;
+    }
+
+    .review-layout {
+        padding-left: 170px !important;
+        padding-right: 170px !important;
+    }
+}
+
+@media (min-width: 1450px) {
+    /* Once the screen is wide enough that left/right doesn't overlap the max-width, restore normal padding */
+    .main-layout {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    .review-layout {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
     }
 }
 
@@ -331,6 +355,16 @@ a:hover {
     grid-template-columns: 280px 1fr;
     gap: 40px;
 }
+
+/* Blog / Article centered layout */
+.review-layout {
+    max-width: 800px;
+    margin: 80px auto 80px;
+    padding: 0 24px 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 
 /* ==========================================================================
    Sidebar Filters
