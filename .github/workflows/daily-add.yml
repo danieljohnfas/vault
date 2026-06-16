@@ -23,8 +23,6 @@ jobs:
   daily-add:
     name: Add Sites to Directory
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -32,11 +30,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 1
-
-      - name: Set up Python (for sitemap regeneration)
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -48,38 +41,99 @@ jobs:
           git config user.name "HentaiVault Bot"
           git config user.email "bot@hentaivault.me"
 
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Fetch existing site URLs from D1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "==== Fetching existing URLs from D1 ===="
+          # Query all URLs from D1 and save to a file for deduplication
+          npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT url FROM sites;" \
+            --json > /tmp/d1_urls_raw.json 2>/dev/null || echo '[]' > /tmp/d1_urls_raw.json
+
+          # Extract just the URL values into a plain JSON array
+          node -e "
+            const raw = require('/tmp/d1_urls_raw.json');
+            // wrangler d1 --json returns array of result sets
+            const rows = Array.isArray(raw) && raw[0] && raw[0].results ? raw[0].results : [];
+            const urls = rows.map(r => r.url);
+            require('fs').writeFileSync('/tmp/existing_urls.json', JSON.stringify(urls));
+            console.log('Existing sites in D1: ' + urls.length);
+          "
+
       - name: Run daily site addition pipeline
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           COUNT="${{ github.event.inputs.count || '100' }}"
           DRY_RUN="${{ github.event.inputs.dry_run || 'false' }}"
-          
-          echo "==== 1. RUNNING AUDIT ===="
-          node scripts/daily-audit.js
-          
-          echo "==== 2. ADDING SITES ===="
+
+          echo "==== ADDING SITES ===="
           if [ "$DRY_RUN" = "true" ]; then
-            node scripts/daily-add.js --count "$COUNT" --dry-run
+            node scripts/daily-add.js --count "$COUNT" --dry-run \
+              --existing-urls /tmp/existing_urls.json \
+              --output-sql /tmp/new_sites.sql
           else
-            node scripts/daily-add.js --count "$COUNT"
+            node scripts/daily-add.js --count "$COUNT" \
+              --existing-urls /tmp/existing_urls.json \
+              --output-sql /tmp/new_sites.sql
           fi
-          
-          echo "==== 3. UPDATING HTML COUNTS ===="
-          node scripts/update-html-counts.js
-          
-          echo "==== 4. PINGING BING INDEXNOW ===="
+
+      - name: Insert new sites into D1
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -f /tmp/new_sites.sql ] && [ -s /tmp/new_sites.sql ]; then
+            echo "==== Inserting new sites into D1 ===="
+            # Split into batches of 200 rows and insert
+            node scripts/split-sql.js /tmp/new_sites.sql /tmp/sql_batches
+            for f in /tmp/sql_batches/batch_*.sql; do
+              echo "  Executing $f..."
+              npx wrangler d1 execute hv-directory --remote --file="$f"
+            done
+            echo "==== D1 insert complete ===="
+          else
+            echo "No new SQL to insert (dry-run or empty batch)."
+          fi
+
+      - name: Commit updated queue to GitHub
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git add scripts/sites-queue.json
+          git diff --cached --quiet && echo "No queue changes to commit." || \
+            git commit -m "chore(queue): remove processed/dead sites [$(date -u +%Y-%m-%d)]"
+          git push
+
+      - name: Ping Bing IndexNow
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          echo "==== PINGING BING INDEXNOW ===="
           node scripts/ping-indexnow.js
 
-      - name: Report queue status
+      - name: Report status
         if: always()
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           QUEUE_LEN=$(node -e "const q=require('./scripts/sites-queue.json'); console.log(q.length)")
-          DATA_LEN=$(node -e "
-            const fs=require('fs');
-            const raw=fs.readFileSync('js/data.js','utf8');
-            const m=raw.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
-            const d=JSON.parse(m[1].replace(/,\s*([\]}])/g,'\$1'));
-            console.log(d.length);
-          ")
-          echo "📊 Database: $DATA_LEN sites"
+          D1_COUNT=$(npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT COUNT(*) as count FROM sites;" \
+            --json 2>/dev/null | node -e "
+              let d=''; process.stdin.on('data',c=>d+=c).on('end',()=>{
+                try { const r=JSON.parse(d); console.log(r[0].results[0].count); }
+                catch(e){ console.log('?'); }
+              })
+            " || echo "?")
+          echo "📊 D1 Database: $D1_COUNT sites"
           echo "📋 Queue remaining: $QUEUE_LEN sites"
-          echo "📅 Days until queue empty: $((QUEUE_LEN / 100))"
+          if [ "$QUEUE_LEN" -gt 0 ] 2>/dev/null; then
+            echo "📅 Days until queue empty (at 100/day): $((QUEUE_LEN / 100))"
+          fi

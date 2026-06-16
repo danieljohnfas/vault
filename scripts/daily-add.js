@@ -4,47 +4,41 @@
  *
  * Usage:
  *   node scripts/daily-add.js [--count 100] [--dry-run]
+ *                             [--existing-urls /path/to/urls.json]
+ *                             [--output-sql /path/to/output.sql]
  *
  * What it does:
  *   1. Reads the queue from scripts/sites-queue.json
- *   2. Deduplicates against existing js/data.js
- *   3. Picks the next N sites (default: 100)
+ *   2. Deduplicates against existing URLs (from --existing-urls file or sites-queue itself)
+ *   3. Picks the next N sites (default: 100), pinging each to confirm liveness
  *   4. Procedurally enriches each site with multi-language content
- *   5. Appends them to js/data.js
- *   6. Removes them from the queue
- *   7. Regenerates sitemap.xml
- *   8. Commits & pushes everything to GitHub
+ *   5. Writes SQL INSERT statements to --output-sql (or stdout if omitted)
+ *   6. Removes processed/dead entries from the queue file
  */
 
 'use strict';
 
 const fs   = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 const isSiteLive = require('./ping-site');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
-const DATA_FILE  = path.join(ROOT, 'js', 'data.js');
 const QUEUE_FILE = path.join(ROOT, 'scripts', 'sites-queue.json');
-const SITEMAP_SCRIPT = path.join(ROOT, 'scripts', 'generate_sitemap.py');
 
 const args    = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const COUNT   = parseInt((args[args.findIndex(a => a === '--count') + 1]) || '100', 10) || 100;
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-function readDataJs() {
-  const raw   = fs.readFileSync(DATA_FILE, 'utf8').replace(/\r/g, '');
-  const match = raw.match(/const\s+sitesData\s*=\s*([\s\S]*?\]);/);
-  if (!match) throw new Error('Could not parse sitesData from data.js');
-  const json = match[1].replace(/,\s*([\]}])/g, '$1');
-  return JSON.parse(json);
-}
+const existingUrlsFlag = args.findIndex(a => a === '--existing-urls');
+const EXISTING_URLS_FILE = existingUrlsFlag !== -1 ? args[existingUrlsFlag + 1] : null;
 
-function writeDataJs(sites) {
-  const str = `const sitesData = ${JSON.stringify(sites, null, 4)};`;
-  fs.writeFileSync(DATA_FILE, str, 'utf8');
+const outputSqlFlag = args.findIndex(a => a === '--output-sql');
+const OUTPUT_SQL_FILE = outputSqlFlag !== -1 ? args[outputSqlFlag + 1] : null;
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
+function today() {
+  return new Date().toISOString().split('T')[0];
 }
 
 function makeId(name) {
@@ -54,8 +48,18 @@ function makeId(name) {
     .slice(0, 30);
 }
 
-function today() {
-  return new Date().toISOString().split('T')[0];
+function escapeSql(str) {
+  return String(str || '').replace(/'/g, "''");
+}
+
+function siteToSql(site) {
+  const id       = escapeSql(site.id);
+  const category = escapeSql(site.category);
+  const url      = escapeSql(site.url);
+  const rating   = site.rating || 0;
+  const addedAt  = escapeSql(site.addedAt || today());
+  const dataJson = escapeSql(JSON.stringify(site));
+  return `INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES ('${id}', '${category}', '${url}', ${rating}, '${addedAt}', '${dataJson}');`;
 }
 
 // ─── Procedural Enrichment ──────────────────────────────────────────────────
@@ -161,10 +165,17 @@ async function run() {
   console.log(`\n🚀 HentaiVault Daily Add — ${today()}`);
   console.log(`   Count: ${COUNT}  |  Dry-run: ${DRY_RUN}\n`);
 
-  // 1. Load existing data
-  const existing    = readDataJs();
-  const existingUrls = new Set(existing.map(s => s.url.replace(/\/$/, '').toLowerCase()));
-  console.log(`📦 Existing entries: ${existing.length}`);
+  // 1. Load existing URLs for deduplication
+  let existingUrls = new Set();
+  if (EXISTING_URLS_FILE && fs.existsSync(EXISTING_URLS_FILE)) {
+    const raw = JSON.parse(fs.readFileSync(EXISTING_URLS_FILE, 'utf8'));
+    for (const u of raw) {
+      existingUrls.add(String(u).replace(/\/$/, '').toLowerCase());
+    }
+    console.log(`📦 Existing entries in D1: ${existingUrls.size}`);
+  } else {
+    console.log(`⚠️  No --existing-urls file provided — skipping deduplication against D1.`);
+  }
 
   // 2. Load queue
   if (!fs.existsSync(QUEUE_FILE)) {
@@ -180,49 +191,48 @@ async function run() {
   }
 
   // 3. Filter out already-existing URLs
-  const fresh = queue.filter(s => !existingUrls.has(s.url.replace(/\/$/, '').toLowerCase()));
-  console.log(`✅ New (not in database): ${fresh.length}`);
+  const fresh = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()));
+  console.log(`✅ New (not in D1): ${fresh.length}`);
 
   if (fresh.length === 0) {
-    console.log('⚠️  All queue items already exist in the database. Nothing to add.');
+    console.log('⚠️  All queue items already exist in D1. Nothing to add.');
     process.exit(0);
   }
 
-  // 4. Take the next N valid sites by pinging them
+  // 4. Ping to find N live sites
   const batch = [];
   const deadUrls = new Set();
-  
+
   console.log(`\n🔍 Pinging sites (concurrency=10) to find ${COUNT} valid domains...`);
-  
+
   for (let i = 0; i < fresh.length; i += 10) {
     if (batch.length >= COUNT) break;
-    
+
     const chunk = fresh.slice(i, i + 10);
     const results = await Promise.all(chunk.map(async s => {
-       return { site: s, live: await isSiteLive(s.url) };
+      return { site: s, live: await isSiteLive(s.url) };
     }));
-    
+
     for (const r of results) {
-       if (r.live) {
-         if (batch.length < COUNT) {
-           console.log(`   ✅ ${r.site.url}`);
-           batch.push(r.site);
-         }
-         // If we already hit COUNT, we leave the valid site in the queue for tomorrow
-       } else {
-         console.log(`   ❌ ${r.site.url} (Dead/Parked)`);
-         deadUrls.add(r.site.url);
-       }
+      if (r.live) {
+        if (batch.length < COUNT) {
+          console.log(`   ✅ ${r.site.url}`);
+          batch.push(r.site);
+        }
+      } else {
+        console.log(`   ❌ ${r.site.url} (Dead/Parked)`);
+        deadUrls.add(r.site.url);
+      }
     }
   }
 
   if (batch.length === 0) {
-     console.log('⚠️ No live sites found in the entire remaining queue!');
-     process.exit(0);
+    console.log('⚠️ No live sites found in the remaining queue!');
+    process.exit(0);
   }
 
   const enriched = batch.map(enrich);
-  console.log(`\n➕ Adding ${enriched.length} new sites`);
+  console.log(`\n➕ Enriched ${enriched.length} new sites`);
   enriched.forEach(s => console.log(`   · ${s.name} (${s.category})`));
 
   if (DRY_RUN) {
@@ -230,39 +240,28 @@ async function run() {
     process.exit(0);
   }
 
-  // 5. Append to data.js
-  const updated = [...existing, ...enriched];
-  writeDataJs(updated);
-  console.log(`\n💾 data.js updated — ${updated.length} total entries`);
+  // 5. Write SQL INSERT statements
+  const sqlStatements = enriched.map(siteToSql).join('\n');
+  if (OUTPUT_SQL_FILE) {
+    fs.mkdirSync(path.dirname(OUTPUT_SQL_FILE), { recursive: true });
+    fs.writeFileSync(OUTPUT_SQL_FILE, sqlStatements, 'utf8');
+    console.log(`\n💾 SQL written to ${OUTPUT_SQL_FILE} (${enriched.length} INSERT statements)`);
+  } else {
+    console.log('\n--- SQL OUTPUT ---');
+    console.log(sqlStatements);
+    console.log('--- END SQL ---');
+  }
 
-  // 6. Remove processed and dead entries from queue (by URL)
+  // 6. Remove processed and dead entries from queue
   const addedUrls = new Set(batch.map(s => s.url));
   const remaining = queue.filter(s => !addedUrls.has(s.url) && !deadUrls.has(s.url));
   fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
-  console.log(`📋 Queue remaining: ${remaining.length}`);
+  console.log(`📋 Queue remaining: ${remaining.length} (removed ${queue.length - remaining.length} entries)`);
 
-  // 7. Regenerate sitemap
-  try {
-    console.log('\n🗺️  Regenerating sitemap...');
-    execSync(`python "${SITEMAP_SCRIPT}"`, { cwd: ROOT, stdio: 'inherit' });
-  } catch (e) {
-    console.warn('⚠️  Sitemap generation failed (non-fatal):', e.message);
-  }
-
-  // 8. Commit & push
-  try {
-    console.log('\n📤 Committing to GitHub...');
-    execSync('git add js/data.js sitemap.xml scripts/sites-queue.json', { cwd: ROOT, stdio: 'inherit' });
-    execSync(
-      `git commit -m "feat(daily): add ${enriched.length} new sites [${today()}]"`,
-      { cwd: ROOT, stdio: 'inherit' }
-    );
-    execSync('git push', { cwd: ROOT, stdio: 'inherit' });
-    console.log(`\n✅ Done! Added ${enriched.length} sites. Total: ${updated.length}`);
-  } catch (e) {
-    console.error('❌ Git error:', e.message);
-    process.exit(1);
-  }
+  console.log(`\n✅ Done! Generated SQL for ${enriched.length} new sites.`);
 }
 
-run();
+run().catch(err => {
+  console.error('❌ Fatal error:', err.message);
+  process.exit(1);
+});

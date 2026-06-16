@@ -40,7 +40,7 @@ jobs:
       run: |
         git config --global user.name 'HV-Master-Bot'
         git config --global user.email 'bot@hentaivault.me'
-        git add js/data.js sitemap.xml
+        git add sitemap.xml
         git commit -m "chore: master automation update" || echo "No changes"
         git push
 
