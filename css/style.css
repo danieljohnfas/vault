@@ -275,30 +275,25 @@ a:hover {
     height: 250px;
     min-height: 250px;
     margin-top: 30px;
-}
-
-/* Sticky Skyscraper Ads */
+}/* Skyscraper Ads (Autoresponsive) */
 .skyscraper {
-    position: fixed;
-    top: 90px; /* Below the header (70px) */
-    width: 160px;
-    height: 600px;
-    z-index: 900; /* Behind navbar (1000) but above content */
-    display: none; /* Hidden by default on mobile/tablets/narrow screens */
+    position: static;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    z-index: 900;
 }
 
-.skyscraper-left {
-    left: 20px;
-}
-
-.skyscraper-right {
-    right: 20px;
-}
-
-/* Show on wide screens, adjusting layout padding to prevent overlap */
-@media (min-width: 1150px) {
+/* On tablets and desktops, switch to fixed sidebars */
+@media (min-width: 850px) {
     .skyscraper {
+        position: fixed;
         display: block;
+        top: 90px; 
+        width: 160px;
+        height: 600px;
+        margin: 0;
     }
     
     .skyscraper-left {

@@ -24,7 +24,7 @@ for (const file of files) {
     const orig = c;
 
     // 1. Cache bust CSS
-    c = c.replace(/href="([^"]*css\/style\.css)(?:\?v=\d+)?"/g, 'href="$1?v=3"');
+    c = c.replace(/href="([^"]*css\/style\.css)(?:\?v=\d+)?"/g, 'href="$1?v=4"');
 
     // 2. Fix the inline styles for review-layout
     // Force margin: 80px auto 80px;
