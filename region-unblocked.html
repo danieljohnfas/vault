@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unblocked Sites by Region | HentaiVault</title>
-    <meta name="description" content="Find alternative domains and sites that bypass ISP blocks in your specific region or country.">
+    <title>Live ISP Block Scanner — Find Unblocked Sites | HentaiVault</title>
+    <meta name="description" content="Find alternative domains and sites that bypass ISP blocks in your specific region or country. Real-time scanner powered by HentaiVault.">
     <meta name="google-site-verification" content="1a6fa8804679f9060c20d8c1b2c56706">
     <link rel="canonical" href="https://hentaivault.me/region-unblocked">
     <link rel="alternate" hreflang="x-default" href="https://hentaivault.me">
@@ -12,59 +12,32 @@
     <link rel="alternate" hreflang="es" href="https://hentaivault.me?lang=es">
     <link rel="alternate" hreflang="ja" href="https://hentaivault.me?lang=jp">
     <link rel="alternate" hreflang="fr" href="https://hentaivault.me?lang=fr">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
-
-    <meta name="keywords" content="best doujin sites, doujinshi sites, nhentai alternatives, hanime alternatives, hentai streaming sites 2026, best hentai streaming sites 2026, booru sites, hentai booru, best hentai manga sites 2026, hentai directory, anime streaming, visual novels, hentai vault">
+    <meta name="keywords" content="ISP block bypass, unblocked hentai sites, nhentai unblocked, hanime unblocked, region block checker, hentai vault">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "HentaiVault",
-      "url": "https://hentaivault.me",
-      "description": "The ultimate anime and hentai site directory — curated, categorized and rated.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://hentaivault.me/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
+    {"@context":"https://schema.org","@type":"WebSite","name":"HentaiVault","url":"https://hentaivault.me","description":"The ultimate anime and hentai site directory — curated, categorized and rated.","potentialAction":{"@type":"SearchAction","target":"https://hentaivault.me/?q={search_term_string}","query-input":"required name=search_term_string"}}
     </script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css?v=4">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-G40QDCGTTZ');
-    </script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-G40QDCGTTZ');</script>
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hentaivault.me">
-    <meta property="og:title" content="HentaiVault — Best Doujin Sites, Hentai Streaming & nhentai Alternatives 2026">
-    <meta property="og:description" content="The internet's #1 directory for best doujin sites, hentai streaming, nhentai alternatives, hanime alternatives, and booru sites in 2026. 966+ curated, rated & free to browse.">
+    <meta property="og:url" content="https://hentaivault.me/region-unblocked">
+    <meta property="og:title" content="Live ISP Block Scanner | HentaiVault">
+    <meta property="og:description" content="Real-time scanner to find which anime & hentai sites bypass ISP blocks in your region.">
     <meta property="og:image" content="https://hentaivault.me/assets/favicon.png">
     <meta property="og:site_name" content="HentaiVault">
-
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://hentaivault.me">
-    <meta name="twitter:title" content="HentaiVault — Best Doujin Sites, Hentai Streaming & nhentai Alternatives 2026">
-    <meta name="twitter:description" content="The internet's #1 directory for best doujin sites, hentai streaming, nhentai alternatives, hanime alternatives, and booru sites in 2026. 966+ curated, rated & free to browse.">
-    <meta name="twitter:image" content="https://hentaivault.me/assets/favicon.png">
 
     <!-- Cloudflare Turnstile -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -76,52 +49,445 @@
     <link rel="apple-touch-icon" href="/assets/icon-192.png">
 
     <style>
-        .cat-pill {
-            background: var(--bg-surface-elevated);
-            border: 1px solid var(--border);
+        /* ── Scanner Page Exclusive Styles ───────────────────── */
+
+        /* Animated mesh background */
+        .scanner-page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255,42,95,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(176,38,255,0.08) 0%, transparent 55%),
+                var(--bg-base);
+        }
+        .scanner-page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,42,95,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,42,95,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+        }
+
+        /* Hero */
+        .scanner-hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+        }
+        .scanner-hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ff2a5f 0%, #b026ff 50%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+        .scanner-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        /* Region pill */
+        .region-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,42,95,0.1);
+            border: 1px solid rgba(255,42,95,0.3);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
             color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 20px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+        }
+        .region-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff2a5f;
+            box-shadow: 0 0 8px #ff2a5f;
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Stats row */
+        .scanner-stats {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .stat-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .stat-chip .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff2a5f, #b026ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-chip .label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Scanner card */
+        .scanner-card {
+            background: rgba(24,24,27,0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 680px;
+            margin: 0 auto;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .scanner-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,42,95,0.5), rgba(176,38,255,0.5), transparent);
+        }
+
+        /* Category filter pills */
+        .cat-pills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .cat-pill {
+            background: rgba(39,39,42,0.8);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 999px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            backdrop-filter: blur(4px);
         }
         .cat-pill:hover {
-            border-color: var(--primary);
+            border-color: rgba(255,42,95,0.5);
+            color: var(--text-main);
+            background: rgba(255,42,95,0.08);
+            transform: translateY(-1px);
         }
         .cat-pill.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, rgba(255,42,95,0.2), rgba(176,38,255,0.2));
+            border-color: rgba(255,42,95,0.6);
             color: #fff;
-            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(255,42,95,0.2);
+        }
+
+        /* Progress bar */
+        .scan-progress-wrap {
+            margin-top: 28px;
+        }
+        .scan-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .scan-status-text {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .scan-status-text.scanning::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #00e676;
+            box-shadow: 0 0 8px #00e676;
+            animation: pulse-dot 0.8s infinite;
+        }
+        .scan-pct {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff2a5f, #b026ff, #00e5ff);
+            background-size: 200% 100%;
+            border-radius: 999px;
+            transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+            animation: shimmer 2s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        /* Results section */
+        .results-section {
+            max-width: 1000px;
+            margin: 48px auto 0;
+            padding: 0 20px;
+        }
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .results-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .results-count-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0,230,118,0.3);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #00e676;
+        }
+
+        /* Result cards grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        /* Result card */
+        .result-card {
+            background: rgba(24,24,27,0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: card-in 0.4s ease both;
+        }
+        @keyframes card-in {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,230,118,0.4), transparent);
+        }
+        .result-card:hover {
+            border-color: rgba(0,230,118,0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,230,118,0.06);
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .result-favicon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: var(--bg-surface-elevated);
+            flex-shrink: 0;
+        }
+        .result-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+        .result-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #00e676;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        .result-status.alt { color: #b026ff; }
+
+        .result-url {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            word-break: break-all;
+            background: rgba(255,255,255,0.04);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .result-url .url-original {
+            color: #ff4444;
+            text-decoration: line-through;
+            margin-right: 4px;
+        }
+        .result-url .url-working {
+            color: #00e676;
+        }
+
+        .result-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+        .result-rating {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-visit-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(255,42,95,0.15), rgba(176,38,255,0.15));
+            border: 1px solid rgba(255,42,95,0.3);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-visit-sm:hover {
+            background: linear-gradient(135deg, rgba(255,42,95,0.3), rgba(176,38,255,0.3));
+            border-color: rgba(255,42,95,0.6);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(255,42,95,0.2);
+        }
+
+        /* Empty / loading state */
+        .scan-placeholder {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .scan-placeholder svg {
+            opacity: 0.2;
+            margin-bottom: 16px;
+        }
+
+        /* Skeleton loader */
+        .skeleton-card {
+            background: rgba(24,24,27,0.6);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .skeleton-line {
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 200% 100%;
+            border-radius: 6px;
+            animation: skeleton-shimmer 1.4s infinite;
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        /* Ad slot labels */
+        .ad-label {
+            font-size: 0.65rem;
+            color: rgba(161,161,170,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 48px auto;
+            max-width: 800px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .scanner-card { padding: 20px; border-radius: 16px; }
+            .scanner-stats { gap: 16px; }
+            .stat-chip .value { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
+<div class="scanner-page-bg"></div>
 
-    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
+    <!-- Adsterra Top Banner -->
     <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
         <div class="ad-728" style="display:none;">
-            <script>
-              atOptions = {
-                'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-              };
-            </script>
+            <script>atOptions={'key':'40d623b6e8e7efa7651f8c6fbeb29bef','format':'iframe','height':90,'width':728,'params':{}};</script>
             <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
         </div>
         <div class="ad-320" style="display:none;">
-            <script>
-              atOptions = {
-                'key' : '90b220b63fa3e2eb3c163fec3b34a465',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-              };
-            </script>
+            <script>atOptions={'key':'90b220b63fa3e2eb3c163fec3b34a465','format':'iframe','height':50,'width':320,'params':{}};</script>
             <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
         </div>
     </div>
@@ -133,9 +499,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">
-                <span class="logo-icon">💎</span> HentaiVault
-            </a>
+            <a href="/" class="logo"><span class="logo-icon">💎</span> HentaiVault</a>
             <div class="search-bar">
                 <div class="search-container">
                     <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Search across 1,903+ sites..." autocomplete="off">
@@ -144,10 +508,10 @@
             </div>
             <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
             <div class="nav-actions">
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;">
+                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height:40px!important;width:145px!important;">
                 </a>
-                <a href="https://discord.gg/your_discord_invite_here" target="_blank" class="btn-theme" title="Join our Discord" style="text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">💬</a>
+                <a href="https://discord.gg/your_discord_invite_here" target="_blank" class="btn-theme" title="Join our Discord" style="text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">💬</a>
                 <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
@@ -166,88 +530,104 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero" style="padding: 60px 20px; text-align: center;">
-        <div class="hero-content">
-            <h1 style="font-size: 2.5rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Live ISP Block Scanner</h1>
-            <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px;">
-                Find out which sites are currently evading bans in your area. This tool silently tests connection to primary and alternative domains to find working links.
-            </p>
-            <div id="scanner-ui" style="background: var(--bg-surface); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
-                <h3 id="detected-region" style="color: var(--text-main); margin-bottom: 10px;">Detecting your region...</h3>
-                <div class="scanner-categories" style="margin-top: 20px; margin-bottom: 25px;">
-                    <p style="color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem;">Filter by Category (Leave empty to scan all):</p>
-                    <div id="category-filters" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="cat-pill" data-cat="Manga/Doujin">Manga &amp; Doujinshi</button>
-                        <button class="cat-pill" data-cat="Anime Streaming">Anime Streaming</button>
-                        <button class="cat-pill" data-cat="Hentai Streaming">Hentai Streaming</button>
-                        <button class="cat-pill" data-cat="Adult Studios">Adult Tubes &amp; Studios</button>
-                        <button class="cat-pill" data-cat="Games">Games &amp; Visual Novels</button>
-                        <button class="cat-pill" data-cat="Images/Boorus">Image Boards (Boorus)</button>
-                        <button class="cat-pill" data-cat="Communities">Communities &amp; Forums</button>
-                        <button class="cat-pill" data-cat="Premium Creators">Creator Platforms</button>
-                        <button class="cat-pill" data-cat="Downloads">Downloads &amp; Torrents</button>
-                        <button class="cat-pill" data-cat="Adult VR">Immersive &amp; Interactive</button>
-                    </div>
+    <!-- Hero -->
+    <section class="scanner-hero">
+        <div id="regionBadge" class="region-badge">
+            <span class="dot"></span>
+            <span id="regionText">Detecting your region…</span>
+        </div>
+        <h1>Live ISP Block Scanner</h1>
+        <p>Real-time testing of 1,900+ anime &amp; hentai sites against your ISP's block list. Find working mirrors and alt domains instantly.</p>
+
+        <!-- Live stats -->
+        <div class="scanner-stats">
+            <div class="stat-chip">
+                <span class="value" id="statTotal">—</span>
+                <span class="label">Sites Tested</span>
+            </div>
+            <div class="stat-chip">
+                <span class="value" id="statFound" style="background:linear-gradient(135deg,#00e676,#00b0ff);-webkit-background-clip:text;background-clip:text;">—</span>
+                <span class="label">Working Now</span>
+            </div>
+            <div class="stat-chip">
+                <span class="value" id="statAlt" style="background:linear-gradient(135deg,#b026ff,#00e5ff);-webkit-background-clip:text;background-clip:text;">—</span>
+                <span class="label">Alt Domains Found</span>
+            </div>
+        </div>
+
+        <!-- Scanner UI card -->
+        <div class="scanner-card">
+            <div style="margin-bottom:16px;">
+                <p style="font-size:0.82rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;font-weight:600;">Filter by Category</p>
+                <div class="cat-pills-grid" id="category-filters">
+                    <button class="cat-pill" data-cat="Manga/Doujin">📚 Manga &amp; Doujin</button>
+                    <button class="cat-pill" data-cat="Anime Streaming">📺 Anime Streaming</button>
+                    <button class="cat-pill" data-cat="Hentai Streaming">🔥 Hentai Streaming</button>
+                    <button class="cat-pill" data-cat="Adult Studios">🎬 Adult Tubes</button>
+                    <button class="cat-pill" data-cat="Games">🎮 Games &amp; VNs</button>
+                    <button class="cat-pill" data-cat="Images/Boorus">🖼️ Image Boards</button>
+                    <button class="cat-pill" data-cat="Communities">💬 Communities</button>
+                    <button class="cat-pill" data-cat="Premium Creators">⭐ Creator Platforms</button>
+                    <button class="cat-pill" data-cat="Downloads">⬇️ Downloads</button>
+                    <button class="cat-pill" data-cat="Adult VR">🥽 Immersive &amp; VR</button>
                 </div>
-                <div id="scan-progress-container" style="display: block; margin-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem;">
-                        <span id="scan-status">Scanning...</span>
-                        <span id="scan-percentage">0%</span>
-                    </div>
-                    <div style="width: 100%; background: var(--bg-deep); border-radius: 10px; height: 10px; overflow: hidden;">
-                        <div id="scan-bar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.3s ease;"></div>
-                    </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="scan-progress-wrap">
+                <div class="scan-progress-header">
+                    <span class="scan-status-text scanning" id="scan-status">Initializing scanner…</span>
+                    <span class="scan-pct" id="scan-percentage">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="scan-bar"></div>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <!-- Adsterra Banner 468x60 (below hero) -->
-    <div style="text-align:center; margin: 30px auto; max-width:100%; overflow:hidden;">
-        <script>
-          atOptions = {
-            'key' : '4179d9cf3a579f7778ba7a09f693ca35',
-            'format' : 'iframe',
-            'height' : 60,
-            'width' : 468,
-            'params' : {}
-          };
-        </script>
+    <!-- Adsterra 468x60 Below Hero -->
+    <div style="text-align:center; margin: 28px auto 0; max-width:100%; overflow:hidden;">
+        <div class="ad-label">Advertisement</div>
+        <script>atOptions={'key':'4179d9cf3a579f7778ba7a09f693ca35','format':'iframe','height':60,'width':468,'params':{}};</script>
         <script src="https://revolthem.com/4179d9cf3a579f7778ba7a09f693ca35/invoke.js"></script>
     </div>
 
     <!-- Recently Viewed Shelf -->
-    <div id="recentlyViewedContainer" style="display: none; max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
-        <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--text-muted);">Recently Viewed</h3>
-        <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;"></div>
+    <div id="recentlyViewedContainer" style="display:none;max-width:1200px;margin:28px auto 0;padding:0 24px;">
+        <h3 style="margin-bottom:12px;font-size:1.1rem;color:var(--text-muted);">Recently Viewed</h3>
+        <div id="recentlyViewedShelf" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;"></div>
     </div>
 
-    <!-- Main Layout -->
-    <main class="main-layout" style="display: block; max-width: 800px; margin: 0 auto; padding: 40px 20px;">
-        <section class="listings" style="width: 100%;">
-            <div class="listings-header">
-                <h2>Working Sites in Your Area</h2>
-            </div>
-            <div id="scan-results" class="grid-container">
-                <p style="color: var(--text-muted); text-align: center; padding: 40px;">Run the scan above to populate this list.</p>
-            </div>
+    <div class="section-divider"></div>
 
-            <!-- Adsterra 300x250 In-Content -->
-            <div style="margin: 40px auto; text-align:center; overflow:hidden;">
-                <script>
-                  atOptions = {
-                    'key' : '384264be4aaafb8eb28962829e409253',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                  };
-                </script>
-                <script src="https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js"></script>
-            </div>
-        </section>
-    </main>
+    <!-- Results -->
+    <section class="results-section">
+        <div class="results-header">
+            <h2 class="results-title">Working Sites in Your Area</h2>
+            <span class="results-count-badge" id="resultsBadge" style="display:none;">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#00e676"/></svg>
+                <span id="resultsBadgeCount">0</span> found
+            </span>
+        </div>
+
+        <!-- Skeleton loader (shown while scanning) -->
+        <div class="results-grid" id="skeleton-grid">
+            <div class="skeleton-card"><div class="skeleton-line" style="height:40px;width:100%;border-radius:10px;"></div><div class="skeleton-line" style="height:16px;width:70%;"></div><div class="skeleton-line" style="height:28px;width:100%;"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line" style="height:40px;width:100%;border-radius:10px;"></div><div class="skeleton-line" style="height:16px;width:55%;"></div><div class="skeleton-line" style="height:28px;width:100%;"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line" style="height:40px;width:100%;border-radius:10px;"></div><div class="skeleton-line" style="height:16px;width:80%;"></div><div class="skeleton-line" style="height:28px;width:100%;"></div></div>
+        </div>
+
+        <!-- Actual results -->
+        <div class="results-grid" id="scan-results" style="margin-top:0;"></div>
+
+        <!-- Mid-content Ad (300x250) -->
+        <div id="mid-ad-slot" style="display:none;text-align:center;margin:40px auto;overflow:hidden;">
+            <div class="ad-label">Advertisement</div>
+            <script>atOptions={'key':'384264be4aaafb8eb28962829e409253','format':'iframe','height':250,'width':300,'params':{}};</script>
+            <script src="https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js"></script>
+        </div>
+    </section>
 
     <!-- Submit Modal -->
     <div class="modal" id="submitModal">
@@ -256,14 +636,8 @@
             <h2>Submit a New Site</h2>
             <p>Help grow the vault! Submitted sites are <strong>automatically published</strong> after basic validation.</p>
             <form id="submitForm">
-                <div class="form-group">
-                    <label for="siteName">Website Name</label>
-                    <input type="text" id="siteName" name="site_name" placeholder="e.g. AnimeSite.tv" required>
-                </div>
-                <div class="form-group">
-                    <label for="siteUrl">URL</label>
-                    <input type="url" id="siteUrl" name="url" placeholder="https://..." required>
-                </div>
+                <div class="form-group"><label for="siteName">Website Name</label><input type="text" id="siteName" name="site_name" placeholder="e.g. AnimeSite.tv" required></div>
+                <div class="form-group"><label for="siteUrl">URL</label><input type="url" id="siteUrl" name="url" placeholder="https://..." required></div>
                 <div class="form-group">
                     <label for="siteCategory">Category</label>
                     <select name="category" id="siteCategory" title="Select Site Category" required>
@@ -279,12 +653,8 @@
                         <option value="Adult VR">Immersive &amp; Interactive</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="siteDesc">Description</label>
-                    <textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site (at least 20 characters)..." required></textarea>
-                </div>
-                <!-- Turnstile Widget -->
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom: 15px;"></div>
+                <div class="form-group"><label for="siteDesc">Description</label><textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site…" required></textarea></div>
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom:15px;"></div>
                 <div id="submitStatus" class="submit-status hidden"></div>
                 <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
             </form>
@@ -292,17 +662,18 @@
     </div>
 
     <!-- Adsterra Native Banner (above footer) -->
-    <div style="text-align:center; margin: 40px auto; max-width: 800px; overflow: hidden;">
+    <div style="text-align:center;margin:48px auto 0;max-width:800px;overflow:hidden;padding:0 20px;">
+        <div class="ad-label">Advertisement</div>
         <script async="async" data-cfasync="false" src="https://revolthem.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
         <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
     </div>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer class="site-footer" style="margin-top:48px;">
         <div class="footer-content">
             <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
             <div class="footer-links">
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">☕ Buy Me A Coffee</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color:#ffdd00;font-weight:bold;">☕ Buy Me A Coffee</a>
                 <a href="/blog" class="blog-link">Blog / Guides</a>
                 <a href="/about">About Us</a>
                 <a href="/disclaimer">Disclaimer</a>
@@ -331,90 +702,91 @@
         </div>
     </footer>
 
+    <!-- ── Scanner Logic ─────────────────────────────────────── -->
     <script>
     document.addEventListener("DOMContentLoaded", async () => {
-        const detectedRegion = document.getElementById("detected-region");
-        const scanProgressContainer = document.getElementById("scan-progress-container");
-        const scanStatus = document.getElementById("scan-status");
-        const scanBar = document.getElementById("scan-bar");
-        const scanPercentage = document.getElementById("scan-percentage");
-        const scanResults = document.getElementById("scan-results");
+        const regionText    = document.getElementById("regionText");
+        const regionBadge   = document.getElementById("regionBadge");
+        const scanStatus    = document.getElementById("scan-status");
+        const scanBar       = document.getElementById("scan-bar");
+        const scanPct       = document.getElementById("scan-percentage");
+        const scanResults   = document.getElementById("scan-results");
+        const skeletonGrid  = document.getElementById("skeleton-grid");
+        const statTotal     = document.getElementById("statTotal");
+        const statFound     = document.getElementById("statFound");
+        const statAlt       = document.getElementById("statAlt");
+        const resultsBadge  = document.getElementById("resultsBadge");
+        const badgeCount    = document.getElementById("resultsBadgeCount");
+        const midAdSlot     = document.getElementById("mid-ad-slot");
 
-        // Clear initial text
-        scanResults.innerHTML = "";
-
-        // Cloudflare Trace endpoint to detect Country
+        // ── Region Detection ────────────────────────────────
         try {
             const resp = await fetch("/cdn-cgi/trace");
             const text = await resp.text();
-            const countryMatch = text.match(/loc=(.*)/);
-            if (countryMatch && countryMatch[1]) {
-                detectedRegion.innerHTML = `Detected Region: <strong style="color: var(--primary);">${countryMatch[1]}</strong>`;
+            const m = text.match(/loc=(.*)/);
+            if (m && m[1]) {
+                regionText.textContent = `Your Region: ${m[1]}`;
+                regionBadge.style.borderColor = 'rgba(0,230,118,0.4)';
+                regionBadge.style.background  = 'rgba(0,230,118,0.08)';
             } else {
-                detectedRegion.textContent = "Region: Unknown";
+                regionText.textContent = "Region: Unknown";
             }
-        } catch (e) {
-            detectedRegion.textContent = "Region Detection Failed (Adblocker?)";
+        } catch {
+            regionText.textContent = "Region detection blocked";
         }
 
+        // ── Site Probing ─────────────────────────────────────
         function checkImage(url) {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                const timeout = setTimeout(() => {
-                    img.src = "";
-                    resolve(false);
-                }, 3500);
+                const t = setTimeout(() => { img.src = ""; resolve(false); }, 3500);
+                img.onload  = () => { clearTimeout(t); resolve(true); };
+                img.onerror = () => { clearTimeout(t); resolve(false); };
                 img.src = url;
             });
         }
 
         async function testUrl(url) {
-            const assets = ["/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png"];
-            let works = await checkImage(url + assets[0] + "?" + Math.random());
-            if (works) return true;
-            works = await checkImage(url + assets[1] + "?" + Math.random());
-            if (works) return true;
+            for (const asset of ["/favicon.ico", "/apple-touch-icon.png"]) {
+                if (await checkImage(`${url}${asset}?${Math.random()}`)) return true;
+            }
             return false;
         }
 
+        // ── Fetch Sites ──────────────────────────────────────
         let allSites = [];
-        scanStatus.textContent = "Fetching sites from vault...";
+        scanStatus.textContent = "Fetching sites from vault…";
         try {
-            const countRes = await fetch('/api/site-count');
+            const countRes  = await fetch('/api/site-count');
             const countData = await countRes.json();
-            const totalSites = countData.count || 5000;
-            const seed = Math.floor(Math.random() * 2000000000) + 1;
-            const res = await fetch(`/api/sites?sort=random&limit=${totalSites}&seed=${seed}`);
-            const data = await res.json();
-            if (data && data.sites) {
-                allSites = data.sites;
-            }
+            const total = countData.count || 5000;
+            const seed  = Math.floor(Math.random() * 2e9) + 1;
+            const res   = await fetch(`/api/sites?sort=random&limit=${total}&seed=${seed}`);
+            const data  = await res.json();
+            if (data?.sites) allSites = data.sites;
         } catch (e) {
-            console.error("Failed to fetch sites for scanner:", e);
+            console.error("Failed to fetch sites:", e);
         }
 
+        statTotal.textContent = allSites.length || '—';
+
         if (allSites.length === 0) {
+            skeletonGrid.style.display = 'none';
             scanStatus.textContent = "No sites found in database.";
             scanBar.style.width = "100%";
             return;
         }
 
-        let foundWorking = 0;
-        const BATCH_SIZE = 10;
+        // ── Scanner State ────────────────────────────────────
+        let foundWorking = 0, foundAlt = 0;
         let currentScanId = 0;
         let selectedCategories = new Set();
+        let adInjected = false;
 
-        const catPills = document.querySelectorAll('.cat-pill');
-        catPills.forEach(pill => {
+        document.querySelectorAll('.cat-pill').forEach(pill => {
             pill.addEventListener('click', () => {
                 pill.classList.toggle('active');
-                if (pill.classList.contains('active')) {
-                    selectedCategories.add(pill.getAttribute('data-cat'));
-                } else {
-                    selectedCategories.delete(pill.getAttribute('data-cat'));
-                }
+                selectedCategories[pill.classList.contains('active') ? 'add' : 'delete'](pill.dataset.cat);
                 startNewScan();
             });
         });
@@ -423,103 +795,108 @@
             currentScanId++;
             scanResults.innerHTML = "";
             scanBar.style.width = "0%";
-            scanPercentage.textContent = "0%";
-            foundWorking = 0;
-            let filteredSites = allSites;
-            if (selectedCategories.size > 0) {
-                filteredSites = allSites.filter(s => selectedCategories.has(s.category));
-            }
-            if (filteredSites.length === 0) {
-                scanStatus.textContent = "No sites match the selected categories.";
+            scanPct.textContent = "0%";
+            foundWorking = 0; foundAlt = 0; adInjected = false;
+            statFound.textContent = '0';
+            statAlt.textContent   = '0';
+            resultsBadge.style.display = 'none';
+            midAdSlot.style.display    = 'none';
+            skeletonGrid.style.display = 'grid';
+
+            let sites = allSites;
+            if (selectedCategories.size > 0)
+                sites = allSites.filter(s => selectedCategories.has(s.category));
+
+            if (!sites.length) {
+                skeletonGrid.style.display = 'none';
+                scanStatus.textContent = "No sites in selected categories.";
                 return;
             }
-            runScan(currentScanId, filteredSites);
+
+            runScan(currentScanId, sites);
         }
 
-        async function runScan(scanId, sitesToScan) {
-            for (let i = 0; i < sitesToScan.length; i += BATCH_SIZE) {
+        async function runScan(scanId, sites) {
+            const BATCH = 10;
+            for (let i = 0; i < sites.length; i += BATCH) {
                 if (currentScanId !== scanId) return;
-                const batch = sitesToScan.slice(i, i + BATCH_SIZE);
-                const pct = Math.round((i / sitesToScan.length) * 100);
+                const batch = sites.slice(i, i + BATCH);
+                const pct = Math.round(i / sites.length * 100);
                 scanBar.style.width = pct + "%";
-                scanPercentage.textContent = pct + "%";
-                scanStatus.textContent = `Scanning sites ${i + 1} to ${Math.min(i + BATCH_SIZE, sitesToScan.length)} of ${sitesToScan.length}...`;
+                scanPct.textContent = pct + "%";
+                scanStatus.textContent = `Scanning ${i + 1}–${Math.min(i + BATCH, sites.length)} of ${sites.length}…`;
+                scanStatus.className = 'scan-status-text scanning';
 
-                const promises = batch.map(async (site) => {
+                // Hide skeletons once first results arrive
+                if (i === 0) {
+                    setTimeout(() => { skeletonGrid.style.display = 'none'; }, 1200);
+                }
+
+                await Promise.all(batch.map(async site => {
                     let works = await testUrl(site.url);
-                    let workingUrl = site.url;
-                    let isAlt = false;
+                    let workingUrl = site.url, isAlt = false;
 
-                    if (!works && site.alternativeDomains && site.alternativeDomains.length > 0) {
-                        for (const altUrl of site.alternativeDomains) {
+                    if (!works && site.alternativeDomains?.length) {
+                        for (const alt of site.alternativeDomains) {
                             if (currentScanId !== scanId) return;
-                            const altWorks = await testUrl(altUrl);
-                            if (altWorks) {
-                                works = true;
-                                workingUrl = altUrl;
-                                isAlt = true;
-                                break;
-                            }
+                            if (await testUrl(alt)) { works = true; workingUrl = alt; isAlt = true; break; }
                         }
                     }
 
-                    if (works) {
-                        if (currentScanId !== scanId) return;
+                    if (works && currentScanId === scanId) {
                         foundWorking++;
+                        if (isAlt) foundAlt++;
+                        statFound.textContent = foundWorking;
+                        statAlt.textContent   = foundAlt;
+                        badgeCount.textContent = foundWorking;
+                        resultsBadge.style.display = 'inline-flex';
 
-                        let subtitleHTML = `<p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
-                                              <span style="color: #00e676;">${workingUrl}</span>
-                                            </p>`;
-
-                        if (isAlt) {
-                            subtitleHTML = `<p style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem;">
-                                                <span style="color: #ff4444; text-decoration: line-through;">${site.url}</span> &rarr;
-                                                <span style="color: #00e676;">${workingUrl}</span> (Alt Domain)
-                                            </p>`;
+                        // Inject mid-content ad after 6 results
+                        if (foundWorking === 6 && !adInjected) {
+                            adInjected = true;
+                            midAdSlot.style.display = 'block';
                         }
 
-                        const faviconUrl = `https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64`;
-                        const tagsHtml = (site.tags || []).slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('');
-                        let displayCat = isAlt ? '✅ Verified Alt Domain' : '✅ Verified Unblocked';
+                        const favicon = `https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64`;
+                        const urlDisplay = isAlt
+                            ? `<span class="url-original">${site.url}</span> → <span class="url-working">${workingUrl}</span>`
+                            : `<span class="url-working">${workingUrl}</span>`;
 
-                        const resultHTML = `
-                            <div class="card" style="position: relative;">
-                                <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
-                                    ${isAlt ? '<div class="new-badge" style="background: var(--primary);">Alt Link</div>' : ''}
-                                </div>
-                                <div class="card-header">
-                                    <img src="${faviconUrl}" alt="${site.name} icon" class="card-icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>'">
+                        const card = `
+                            <div class="result-card">
+                                <div class="result-card-header">
+                                    <img src="${favicon}" alt="${site.name}" class="result-favicon" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%2327272a%22/></svg>'">
                                     <div>
-                                        <a href="/site?id=${site.id}" class="card-title-link" style="text-decoration:none; color:inherit;" target="_blank">
-                                            <div class="card-title">${site.name}</div>
-                                        </a>
-                                        <div class="card-category" style="color: #00e676; font-weight: bold;">${displayCat}</div>
+                                        <a href="/site?id=${site.id}" class="result-name" style="display:block;text-decoration:none;color:inherit;" target="_blank">${site.name}</a>
+                                        <div class="result-status ${isAlt ? 'alt' : ''}">
+                                            ${isAlt ? '🔄 Alt Domain Active' : '✅ Unblocked &amp; Working'}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-desc" style="margin-top: 10px;">${subtitleHTML}</div>
-                                <div class="card-tags" style="margin-top: 15px;">${tagsHtml}</div>
-                                <div class="card-footer" style="margin-top: auto; padding-top: 15px;">
-                                    <div class="rating">⭐ ${site.rating || 'N/A'}</div>
-                                    <div class="card-actions">
-                                        <a href="${workingUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site &rarr;</a>
-                                    </div>
+                                <div class="result-url">${urlDisplay}</div>
+                                <div class="result-footer">
+                                    <span class="result-rating">⭐ ${site.rating || 'N/A'}</span>
+                                    <a href="${workingUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit-sm">Visit →</a>
                                 </div>
-                            </div>
-                        `;
-                        scanResults.insertAdjacentHTML("beforeend", resultHTML);
+                            </div>`;
+                        scanResults.insertAdjacentHTML("beforeend", card);
                     }
-                });
-
-                await Promise.all(promises);
+                }));
             }
 
             if (currentScanId !== scanId) return;
-            scanBar.style.width = "100%";
-            scanPercentage.textContent = "100%";
-            scanStatus.textContent = `Scan Complete. Found ${foundWorking} working sites!`;
+            scanBar.style.width  = "100%";
+            scanPct.textContent  = "100%";
+            scanStatus.textContent = `✅ Scan complete — ${foundWorking} working sites found!`;
+            scanStatus.className = 'scan-status-text';
+            skeletonGrid.style.display = 'none';
 
             if (foundWorking === 0) {
-                scanResults.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px; grid-column: 1/-1;">No working sites found in this category at this time.</p>`;
+                scanResults.innerHTML = `
+                    <div class="scan-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p>No working sites found for this category in your region right now.</p>
+                    </div>`;
             }
         }
 
@@ -530,44 +907,20 @@
     <script defer src="js/app.js"></script>
     <script defer src="js/i18n.js"></script>
 
-    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+    <!-- Sticky Skyscraper Ads -->
     <div class="skyscraper skyscraper-left">
-        <script>
-          atOptions = {
-            'key' : '13ca4044b4b6e65ef15f10d18752754e',
-            'format' : 'iframe',
-            'height' : 600,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
+        <script>atOptions={'key':'13ca4044b4b6e65ef15f10d18752754e','format':'iframe','height':600,'width':160,'params':{}};</script>
         <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
     <div class="skyscraper skyscraper-right">
-        <script>
-          atOptions = {
-            'key' : '13ca4044b4b6e65ef15f10d18752754e',
-            'format' : 'iframe',
-            'height' : 600,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
+        <script>atOptions={'key':'13ca4044b4b6e65ef15f10d18752754e','format':'iframe','height':600,'width':160,'params':{}};</script>
         <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
-    <!-- Adsterra Sticky Bottom Banner (320x50) -->
-    <div id="sticky-bottom-ad" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); z-index:9999; text-align:center;">
+    <!-- Adsterra Sticky Bottom (320x50) -->
+    <div id="sticky-bottom-ad" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:9999;text-align:center;">
         <div class="sticky-ad-inner">
-            <script>
-              atOptions = {
-                'key' : '90b220b63fa3e2eb3c163fec3b34a465',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-              };
-            </script>
+            <script>atOptions={'key':'90b220b63fa3e2eb3c163fec3b34a465','format':'iframe','height':50,'width':320,'params':{}};</script>
             <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
         </div>
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
