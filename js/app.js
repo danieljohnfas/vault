@@ -828,38 +828,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
             siteGrid.appendChild(card);
 
-            // Inject in-feed ad every 9 cards (counting from start of full grid)
+            // Inject in-feed ad every 6 cards (counting from start of full grid)
             const globalIndex = existingCards + batchIndex + 1;
-            if (globalIndex % 9 === 0) {
+            if (globalIndex % 6 === 0) {
                 const adDiv = document.createElement('div');
-                adDiv.className = 'in-feed-ad';
+                adDiv.className = 'card in-feed-ad-card'; // Use card class to blend in
                 adDiv.setAttribute('aria-hidden', 'true');
+                adDiv.style.display = 'flex';
+                adDiv.style.flexDirection = 'column';
+                adDiv.style.justifyContent = 'center';
+                adDiv.style.alignItems = 'center';
+                adDiv.style.padding = '20px 0';
+                adDiv.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
                 
+                // Ad label
+                const adLabel = document.createElement('div');
+                adLabel.style.fontSize = '0.65rem';
+                adLabel.style.color = 'rgba(161,161,170,0.4)';
+                adLabel.style.textTransform = 'uppercase';
+                adLabel.style.letterSpacing = '0.1em';
+                adLabel.style.marginBottom = '8px';
+                adLabel.innerText = 'Advertisement';
+                adDiv.appendChild(adLabel);
+
                 // Use a local iframe to safely sandbox the ad network's document.write()
                 const iframe = document.createElement('iframe');
-                iframe.width = "728";
-                iframe.height = "90";
+                iframe.width = "300";
+                iframe.height = "250";
                 iframe.frameBorder = "0";
                 iframe.scrolling = "no";
                 iframe.style.border = "none";
                 iframe.style.overflow = "hidden";
                 iframe.style.maxWidth = "100%";
+                iframe.style.borderRadius = "8px";
                 
                 adDiv.appendChild(iframe);
                 siteGrid.appendChild(adDiv);
                 
-                // Write the ad script into the iframe
+                // Write the ad script into the iframe (300x250)
                 const iframeDoc = iframe.contentWindow.document;
                 iframeDoc.open();
-                const adKey = (window.adConfig && window.adConfig.ad_infeed) ? window.adConfig.ad_infeed : '40d623b6e8e7efa7651f8c6fbeb29bef';
+                const adKey = '384264be4aaafb8eb28962829e409253';
                 iframeDoc.write(`
                     <html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:transparent;}</style></head><body>
                     <script>
                         atOptions = {
                             'key' : '${adKey}',
                             'format' : 'iframe',
-                            'height' : 90,
-                            'width' : 728,
+                            'height' : 250,
+                            'width' : 300,
                             'params' : {}
                         };
                     <\/script>
