@@ -99,7 +99,38 @@
     </head>
 <body>
 
-    
+    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
+    <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
+        <div class="ad-728" style="display:none;">
+            <script>
+              atOptions = {
+                'key' : '40d623b6e8e7efa7651f8c6fbeb29bef',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+              };
+            </script>
+            <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
+        </div>
+        <div class="ad-320" style="display:none;">
+            <script>
+              atOptions = {
+                'key' : '90b220b63fa3e2eb3c163fec3b34a465',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+              };
+            </script>
+            <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
+        </div>
+    </div>
+    <style>
+        @media (min-width: 729px) { .ad-top-banner .ad-728 { display:block !important; } }
+        @media (max-width: 728px) { .ad-top-banner .ad-320 { display:block !important; } }
+    </style>
+
 <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -119,6 +150,87 @@
                     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
                 </a>
                 <a href="https://discord.gg/your_discord_invite_here" target="_blank" class="btn-theme" title="Join our Discord" style="text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">💬</a>
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
+                <div class="lang-switcher">
+                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="ar">🇲🇦 AR</option>
+                        <option value="de">🇩🇪 DE</option>
+                    </select>
+                </div>
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <header class="hero" style="padding: 60px 20px; text-align: center;">
+        <div class="hero-content">
+            <h1 style="font-size: 2.5rem; margin-bottom: 15px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Live ISP Block Scanner</h1>
+            <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px;">
+                Find out which sites are currently evading bans in your area. This tool silently tests connection to primary and alternative domains to find working links.
+            </p>
+            <div id="scanner-ui" style="background: var(--bg-surface); border: 1px solid var(--border); padding: 30px; border-radius: var(--radius-lg); max-width: 600px; margin: 0 auto;">
+                <h3 id="detected-region" style="color: var(--text-main); margin-bottom: 10px;">Detecting your region...</h3>
+                
+                <div class="scanner-categories" style="margin-top: 20px; margin-bottom: 25px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem;">Filter by Category (Leave empty to scan all):</p>
+                    <div id="category-filters" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="cat-pill" data-cat="Manga/Doujin">Manga & Doujinshi</button>
+                        <button class="cat-pill" data-cat="Anime Streaming">Anime Streaming</button>
+                        <button class="cat-pill" data-cat="Hentai Streaming">Hentai Streaming</button>
+                        <button class="cat-pill" data-cat="Adult Studios">Adult Tubes & Studios</button>
+                        <button class="cat-pill" data-cat="Games">Games & Visual Novels</button>
+                        <button class="cat-pill" data-cat="Images/Boorus">Image Boards (Boorus)</button>
+                        <button class="cat-pill" data-cat="Communities">Communities & Forums</button>
+                        <button class="cat-pill" data-cat="Premium Creators">Creator Platforms</button>
+                        <button class="cat-pill" data-cat="Downloads">Downloads & Torrents</button>
+                        <button class="cat-pill" data-cat="Adult VR">Immersive & Interactive</button>
+                    </div>
+                </div>
+                
+                <div id="scan-progress-container" style="display: block; margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem;">
+                        <span id="scan-status">Scanning...</span>
+                        <span id="scan-percentage">0%</span>
+                    </div>
+                    <div style="width: 100%; background: var(--bg-deep); border-radius: 10px; height: 10px; overflow: hidden;">
+                        <div id="scan-bar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</header>
+    <!-- Adsterra Banner 468x60 -->
+    <div style="text-align:center; margin: 30px auto; max-width:100%; overflow:hidden;">
+        <script>
+          atOptions = {
+            'key' : '4179d9cf3a579f7778ba7a09f693ca35',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+          };
+        </script>
+        <script src="https://revolthem.com/4179d9cf3a579f7778ba7a09f693ca35/invoke.js"></script>
+    </div>
+
+<!-- Recently Viewed Shelf -->
+    <div id="recentlyViewedContainer" style="display: none; max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
+        <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--text-muted);">Recently Viewed</h3>
+        <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;"></div>
+    </div>
+
+    
+
+    <!-- Main Layout -->
+
+<main class="main-layout" style="display: block; max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+        <section class="listings" style="width: 100%;">
                 <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
@@ -195,31 +307,8 @@
                 <p style="color: var(--text-muted); text-align: center; padding: 40px;">Run the scan above to populate this list.</p>
             </div>
 
-            <!-- PureVPN Contextual Banner — shown after scan results -->
-            <div style="margin: 40px 0; padding: 28px 28px; background: linear-gradient(135deg, rgba(123,13,30,0.22) 0%, rgba(192,57,43,0.12) 100%); border: 2px solid rgba(192,57,43,0.5); border-radius: 20px; position: relative; overflow: hidden;">
-                <div style="position:absolute; top:0; right:0; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; font-size:0.72rem; font-weight:900; padding:6px 16px; border-radius:0 20px 0 12px; letter-spacing:0.05em;">RECOMMENDED</div>
-                <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
-                    <div style="font-size:3rem; flex-shrink:0; line-height:1;">🛡️</div>
-                    <div style="flex:1; min-width:200px;">
-                        <div style="font-weight:900; color:white; font-size:1.2rem; margin-bottom:8px;">Tired of scanning? Just use a VPN.</div>
-                        <div style="color:rgba(255,255,255,0.8); font-size:0.9rem; margin-bottom:16px; line-height:1.6;">
-                            Instead of checking which sites work in your country one by one, <strong style="color:white;">PureVPN bypasses all ISP blocks instantly</strong> — nhentai, Hanime, E-Hentai, everything. One click, always works.
-                        </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
-                            <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:700;">&#10003; Unblocks all adult sites</span>
-                            <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:700;">&#10003; Hides traffic from ISP</span>
-                            <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:700;">&#10003; 31-Day Money-Back</span>
-                            <span style="background:rgba(231,76,60,0.25); color:#e74c3c; padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:700;">&#10003; Best Value: 2-Year Plan</span>
-                        </div>
-                        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:14px 28px; border-radius:12px; font-weight:900; font-size:1rem; text-decoration:none; transition:transform 0.2s, box-shadow 0.2s; box-shadow:0 4px 15px rgba(192,57,43,0.4);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(192,57,43,0.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 15px rgba(192,57,43,0.4)'">
-                            🛡️ Get PureVPN &mdash; Stop Scanning &rarr;
-                        </a>
-                        <div style="color:rgba(255,255,255,0.45); font-size:0.75rem; margin-top:10px;">Sponsored link. Affiliate disclosure: we earn a commission at no extra cost to you.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+            <!-- Adsterra 300x250 In-Content -->
+            <div style="margin: 40px auto; text-align:center;">
 
     <!-- Submit Modal -->
     <div class="modal" id="submitModal">
@@ -266,7 +355,14 @@
     </div>
 
     <!-- Footer -->
-    <footer class="site-footer">
+</div>
+</div>
+    <!-- Adsterra Native Banner -->
+    <div style="text-align:center; margin: 40px auto; max-width: 800px; overflow: hidden;">
+        <script async="async" data-cfasync="false" src="https://revolthem.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
+        <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
+    </div>
+<footer class="site-footer">
         <div class="footer-content">
             <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
             <div class="footer-links">
@@ -537,25 +633,38 @@
     <script defer src="js/app.js"></script>
     <script defer src="js/i18n.js"></script>
 
-    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+
+<script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+<script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+
+<!-- Sticky Skyscraper Ads (Wide Screens Only) -->
     <div class="skyscraper skyscraper-left">
-        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
-            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
-            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
-            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Bypass ISP blocks &amp; stay completely anonymous.</p>
-            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">82% OFF</div>
-            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
-        </a>
+        <script>
+          atOptions = {
+            'key' : '13ca4044b4b6e65ef15f10d18752754e',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
     <div class="skyscraper skyscraper-right">
-        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%); border: 1px solid rgba(231,76,60,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#e74c3c'; this.style.boxShadow='0 0 15px rgba(231,76,60,0.2)'" onmouseout="this.style.borderColor='rgba(231,76,60,0.4)'; this.style.boxShadow='none'">
-            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">🛡️</div>
-            <h3 style="color:#e74c3c; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">PureVPN</h3>
-            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 20px 0; line-height:1.5;">Unlock region-blocked anime &amp; content instantly.</p>
-            <div style="margin-top:auto; background:linear-gradient(135deg,#c0392b,#e74c3c); color:white; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">Get Deal</div>
-            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
-        </a>
+        <script>
+          atOptions = {
+            'key' : '13ca4044b4b6e65ef15f10d18752754e',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
+    <!-- Adsterra SocialBar & Popunder -->
+    <script src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
+    <script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
 </body>
 </html>
