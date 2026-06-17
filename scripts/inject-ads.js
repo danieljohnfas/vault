@@ -214,9 +214,9 @@ for (const file of files) {
   }
 
   // Sticky Bottom
-  if (!html.includes('90b220b63fa3e2eb3c163fec3b34a465')) {
-    html = html.replace(/\s*<\/body>/, `\n${STICKY_BOTTOM}\n</body>`);
-  }
+  html = html.replace(/\s*<!-- Adsterra Sticky Bottom Banner[\s\S]*?<\/div>\s*\n?/g, '\n');
+  html = html.replace(/\s*<div id="sticky-bottom-ad"[\s\S]*?<\/div>\s*\n?/g, '\n');
+  html = html.replace(/\s*<\/body>/, `\n${STICKY_BOTTOM}\n</body>`);
 
   // Social Bar + Popunder
   if (!html.includes('ba6744afc790009f7b04d7509a97ea2f')) {
