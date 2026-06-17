@@ -1172,7 +1172,7 @@ async function handleSubmit(request, env, ctx) {
     // D1 is now the single source of truth.
 
     // Ping Bing IndexNow in the background (non-blocking)
-    ctx.waitUntil(pingIndexNow(env));
+    ctx.waitUntil(pingIndexNow(env, id));
 
     return new Response(
       JSON.stringify({
@@ -1227,25 +1227,31 @@ function jsonError(message, status) {
   return new Response(JSON.stringify({ error: message }), { status, headers: CORS });
 }
 
-async function pingIndexNow(env) {
+async function pingIndexNow(env, newSiteId = null) {
   if (!env.INDEXNOW_KEY) return;
   try {
     const url = 'https://api.indexnow.org/indexnow';
+    const urlList = [
+      'https://hentaivault.me/',
+      'https://hentaivault.me/category/anime-streaming',
+      'https://hentaivault.me/category/hentai-streaming',
+      'https://hentaivault.me/category/manga-doujin',
+      'https://hentaivault.me/category/images-boorus',
+      'https://hentaivault.me/category/games',
+      'https://hentaivault.me/category/communities',
+      'https://hentaivault.me/category/downloads',
+      'https://hentaivault.me/category/visual-novels'
+    ];
+    
+    if (newSiteId) {
+      urlList.push(`https://hentaivault.me/site?id=${newSiteId}`);
+    }
+
     const payload = {
       host: 'hentaivault.me',
       key: env.INDEXNOW_KEY,
       keyLocation: `https://hentaivault.me/${env.INDEXNOW_KEY}.txt`,
-      urlList: [
-        'https://hentaivault.me/',
-        'https://hentaivault.me/category/anime-streaming',
-        'https://hentaivault.me/category/hentai-streaming',
-        'https://hentaivault.me/category/manga-doujin',
-        'https://hentaivault.me/category/images-boorus',
-        'https://hentaivault.me/category/games',
-        'https://hentaivault.me/category/communities',
-        'https://hentaivault.me/category/downloads',
-        'https://hentaivault.me/category/visual-novels'
-      ]
+      urlList: urlList
     };
 
     await fetch(url, {
