@@ -111,11 +111,6 @@ jobs:
             git commit -m "chore(queue): remove processed/dead sites [$(date -u +%Y-%m-%d)]"
           git push
 
-      - name: Ping Bing IndexNow
-        if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: |
-          echo "==== PINGING BING INDEXNOW ===="
-          node scripts/ping-indexnow.js
 
       - name: Report status
         if: always()
