@@ -111,7 +111,7 @@ class HeadHandler {
         "reviewBody": desc
       }
     };
-    element.append(`<script type="application/ld+json">${JSON.stringify(schema)}</script>`, { html: true });
+    element.append(`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`, { html: true });
   }
 }
 
@@ -379,11 +379,12 @@ class EmbedHandler {
     const halfStar = (this.site.rating % 1) >= 0.5;
     let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
     
-    // Quick script to inject the values
+    // Quick script to inject the values safely
+    const safeName = String(this.site.name || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/</g, '\\u003c');
     const script = `
         <script>
             document.getElementById('embed-icon').src = "${faviconUrl}";
-            document.getElementById('embed-title').innerText = "${this.site.name}";
+            document.getElementById('embed-title').innerText = "${safeName}";
             document.getElementById('embed-rating').innerText = "${starsHtml}";
             document.getElementById('embed-link').href = "https://hentaivault.me/site?id=${this.site.id}";
         </script>
@@ -1308,7 +1309,7 @@ function isValidURL(str) {
 function sanitize(str) {
   if (typeof str !== 'string') return '';
   return str
-    .replace(/[\\"`]/g, '')
+    .replace(/[\\"`<>&]/g, '')
     .replace(/[\r\n\t]/g, ' ')
     .trim()
     .slice(0, 300);

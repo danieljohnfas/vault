@@ -84,10 +84,11 @@ function buildCategoryEmbed(sites, category) {
     return { embeds: [embed], components: [] };
   }
 
+  const escapeMarkdown = (str) => String(str || '').replace(/([_~*`\[\]()<>])/g, '\\$1');
   const lines = sites.slice(0, 5).map((s, i) => {
     const stars = '★'.repeat(Math.round(s.rating || 0)) + '☆'.repeat(5 - Math.round(s.rating || 0));
     const reviewUrl = `${SITE_BASE_URL}/site?id=${encodeURIComponent(s.id)}`;
-    return `**${i + 1}.** [${s.name}](${reviewUrl}) — ${stars} (${s.rating || 'N/A'})`;
+    return `**${i + 1}.** [${escapeMarkdown(s.name)}](${reviewUrl}) — ${stars} (${s.rating || 'N/A'})`;
   });
 
   embed.setDescription(lines.join('\n\n'));

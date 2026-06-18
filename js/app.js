@@ -698,6 +698,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderSites(batch, append = false, apiTotal = null) {
         if (!append) siteGrid.innerHTML = '';
 
+        const escapeHTML = (str) => {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+            }[tag] || tag));
+        };
+
         const total = apiTotal !== null ? apiTotal : currentSites.length;
         // pageItems is always the fresh batch passed in — no slice drift
         const pageItems = batch || [];
@@ -735,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const domain = urlObj.hostname;
             const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
-            const tagsHtml = (site.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+            const tagsHtml = (site.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
             
             const fullStars = Math.floor(site.rating);
             const halfStar = (site.rating % 1) >= 0.5;
@@ -744,9 +751,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const isFav = favorites.includes(site.id);
 
             // Localization lookup
-            const localName = site[`name_${currentLang}`] || site.name;
-            const localDesc = site[`description_${currentLang}`] || site.description;
-            const localCat  = (t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category;
+            const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
+            const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
+            const localCat  = escapeHTML((t.categories && t.categories[site.category]) ? t.categories[site.category] : site.category);
 
             // Format date
             const addedDate = new Date(site.addedAt).toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
