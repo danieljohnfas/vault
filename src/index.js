@@ -402,6 +402,106 @@ class CanonicalInjector {
   }
 }
 
+class OutHandler {
+  constructor(site) {
+    this.site = site;
+  }
+  element(element) {
+    element.setInnerContent(this.site.url);
+  }
+}
+
+class CompareHeadHandler {
+  constructor(site1, site2, canonicalUrl) {
+    this.site1 = site1;
+    this.site2 = site2;
+    this.canonicalUrl = canonicalUrl;
+  }
+  element(element) {
+    const title = `${this.site1.name} vs ${this.site2.name} | HentaiVault`;
+    const desc = `Compare ${this.site1.name} and ${this.site2.name}. See which ${this.site1.category} site is better based on features, pros, cons, and ratings.`;
+    
+    element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<meta name="description" content="${desc}">`, { html: true });
+    element.append(`<meta property="og:title" content="${title}">`, { html: true });
+    element.append(`<meta property="og:description" content="${desc}">`, { html: true });
+    element.append(`<meta property="og:url" content="${this.canonicalUrl}">`, { html: true });
+  }
+}
+
+class CompareBodyHandler {
+  constructor(site1, site2) {
+    this.site1 = site1;
+    this.site2 = site2;
+  }
+  element(element) {
+    const escapeHTML = (str) => {
+        if (!str) return '';
+        return String(str).replace(/[&<>'"]/g, tag => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[tag] || tag));
+    };
+
+    const s1Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site1.url).hostname}&sz=128`;
+    const s2Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site2.url).hostname}&sz=128`;
+
+    const html = `
+      <div class="review-header" style="justify-content: center; text-align: center; flex-direction: column;">
+          <h1 style="margin-bottom: 20px;">${escapeHTML(this.site1.name)} vs ${escapeHTML(this.site2.name)}</h1>
+          <div class="review-badge">${escapeHTML(this.site1.category)}</div>
+      </div>
+      <div class="compare-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
+          
+          <!-- Site 1 -->
+          <div class="review-content" style="text-align: center;">
+              <img src="${s1Favicon}" alt="${escapeHTML(this.site1.name)}" class="review-icon" style="margin: 0 auto 20px;">
+              <h2>${escapeHTML(this.site1.name)}</h2>
+              <div class="rating" style="margin-bottom: 20px;">Rating: ${this.site1.rating} / 5</div>
+              <p style="text-align: left;">${escapeHTML(this.site1.description)}</p>
+              
+              <div class="pros-cons" style="grid-template-columns: 1fr; gap: 15px;">
+                  <div class="pc-box pros" style="text-align: left;">
+                      <h3>Pros</h3>
+                      <ul class="pc-list">
+                          ${(this.site1.pros || []).map(p => `<li>${escapeHTML(p)}</li>`).join('')}
+                      </ul>
+                  </div>
+              </div>
+              
+              <div style="margin-top: 30px;">
+                  <a href="/site?id=${this.site1.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
+                  <a href="${this.site1.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
+              </div>
+          </div>
+
+          <!-- Site 2 -->
+          <div class="review-content" style="text-align: center;">
+              <img src="${s2Favicon}" alt="${escapeHTML(this.site2.name)}" class="review-icon" style="margin: 0 auto 20px;">
+              <h2>${escapeHTML(this.site2.name)}</h2>
+              <div class="rating" style="margin-bottom: 20px;">Rating: ${this.site2.rating} / 5</div>
+              <p style="text-align: left;">${escapeHTML(this.site2.description)}</p>
+              
+              <div class="pros-cons" style="grid-template-columns: 1fr; gap: 15px;">
+                  <div class="pc-box pros" style="text-align: left;">
+                      <h3>Pros</h3>
+                      <ul class="pc-list">
+                          ${(this.site2.pros || []).map(p => `<li>${escapeHTML(p)}</li>`).join('')}
+                      </ul>
+                  </div>
+              </div>
+
+              <div style="margin-top: 30px;">
+                  <a href="/site?id=${this.site2.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
+                  <a href="${this.site2.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
+              </div>
+          </div>
+      </div>
+    `;
+
+    element.setInnerContent(html, { html: true });
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -539,6 +639,14 @@ export default {
       if (!targetUrl) return jsonError('Missing url', 400);
 
       try {
+        const targetUrlObj = new URL(targetUrl);
+        if (targetUrlObj.protocol !== 'http:' && targetUrlObj.protocol !== 'https:') {
+          return jsonError('Invalid protocol', 400);
+        }
+        const hostname = targetUrlObj.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.')) {
+          return jsonError('Invalid host', 400);
+        }
         const start = Date.now();
         const res = await fetch(targetUrl, { 
           method: 'HEAD', 

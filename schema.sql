@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 CREATE INDEX IF NOT EXISTS idx_category ON sites(category);
-CREATE INDEX IF NOT EXISTS idx_name ON sites(name);
 CREATE INDEX IF NOT EXISTS idx_rating ON sites(rating);
 CREATE INDEX IF NOT EXISTS idx_added_at ON sites(added_at);
 CREATE INDEX IF NOT EXISTS idx_reviews_site_id ON reviews(site_id);
