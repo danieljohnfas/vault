@@ -51,7 +51,27 @@ function isValidUrl(url) {
 }
 
 // --- 1. Reddit Mining (Subreddits & Global Search) ---
-const REDDIT_QUERIES = ['hentai site', 'porn site', 'adult game', 'doujinshi site', 'vr porn'];
+const REDDIT_QUERIES_POOL = [
+  // Streaming & Video
+  'hentai streaming', 'hentai site', 'watch hentai', 'best hentai tube', 'uncensored hentai',
+  'porn site', 'adult tube', 'hd porn', 'free porn streaming', 'premium adult video',
+  'jav streaming', 'jav site', 'watch jav',
+  // Manga, Doujinshi & Comics
+  'doujinshi site', 'read hentai manga', 'doujin reader', 'nhentai alternative', 'fakku alternative',
+  'adult webtoon', 'nsfw comic site', 'hentai manga english', 'read doujin',
+  // Games & Visual Novels
+  'adult game', 'eroge download', 'hentai game site', 'nsfw visual novel', 'nutaku alternative',
+  'f95zone alternative', 'itch.io adult', 'patreon adult games', 'play hentai games',
+  // Boorus & Images
+  'hentai booru', 'rule34 site', 'gelbooru alternative', 'nsfw image board', 'hentai gallery',
+  // VR & Interactive
+  'vr porn', 'vr hentai', 'interactive porn', '3d porn site', 'vr adult video',
+  // Creator Platforms & Social
+  'onlyfans alternative', 'fansly alternative', 'patreon alternative nsfw', 'adult creator platform',
+  'cam site', 'free cam show',
+  // Torrents & Downloads
+  'hentai torrents', 'adult torrent site', 'porn download site', 'jav torrents', 'nsfw piracy'
+];
 
 async function discoverFromReddit() {
   const discovered = [];
@@ -75,9 +95,12 @@ async function discoverFromReddit() {
     }
   }
 
+  // Shuffle and pick 8 random queries to avoid Reddit API rate limits
+  const selectedQueries = REDDIT_QUERIES_POOL.sort(() => 0.5 - Math.random()).slice(0, 8);
+  
   // Comb all of Reddit via Search API
-  console.log('🌍 Combing all of Reddit via Search API...');
-  for (const query of REDDIT_QUERIES) {
+  console.log(`🌍 Combing all of Reddit for ${selectedQueries.length} random keyword combinations...`);
+  for (const query of selectedQueries) {
     try {
       const res = await fetch(`https://www.reddit.com/search.json?q=${encodeURIComponent(query)}&sort=new&t=week&limit=100`, {
         headers: { 'User-Agent': 'HV-Scout-Bot/2.1' }
