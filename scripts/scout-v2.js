@@ -50,14 +50,18 @@ function isValidUrl(url) {
   }
 }
 
-// --- 1. Reddit Mining ---
+// --- 1. Reddit Mining (Subreddits & Global Search) ---
+const REDDIT_QUERIES = ['hentai site', 'porn site', 'adult game', 'doujinshi site', 'vr porn'];
+
 async function discoverFromReddit() {
   const discovered = [];
   console.log('🕵️ Mining Reddit for new URLs...');
+  
+  // Mine specific subreddits
   for (const sub of SUBREDDITS) {
     try {
       const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=100`, {
-        headers: { 'User-Agent': 'HV-Scout-Bot/2.0' }
+        headers: { 'User-Agent': 'HV-Scout-Bot/2.1' }
       });
       if (!res.ok) continue;
       const data = await res.json();
@@ -70,6 +74,26 @@ async function discoverFromReddit() {
       console.log(`Failed to mine r/${sub}: ${err.message}`);
     }
   }
+
+  // Comb all of Reddit via Search API
+  console.log('🌍 Combing all of Reddit via Search API...');
+  for (const query of REDDIT_QUERIES) {
+    try {
+      const res = await fetch(`https://www.reddit.com/search.json?q=${encodeURIComponent(query)}&sort=new&t=week&limit=100`, {
+        headers: { 'User-Agent': 'HV-Scout-Bot/2.1' }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const post of data.data.children) {
+        const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
+        const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+        urls.filter(isValidUrl).forEach(u => discovered.push({ url: u, source: `reddit_search` }));
+      }
+    } catch (err) {
+      console.log(`Failed to search Reddit for "${query}": ${err.message}`);
+    }
+  }
+  
   return discovered;
 }
 
