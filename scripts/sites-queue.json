@@ -2352,5 +2352,55 @@
       "HD"
     ],
     "rating": 4.3
+  },
+  {
+    "name": "@everythingmoe.com on Bluesky",
+    "url": "https://bsky.app/profile/everythingmoe.com",
+    "category": "Adult Tubes & Studios",
+    "description": "Otaku toplist &amp; reviews https://everythingmoe.com/\nAnime tracker https://kuroiru.co/",
+    "rating": 3.8,
+    "tags": [
+      "ScoutV2",
+      "New"
+    ],
+    "addedAt": "2026-06-23"
+  },
+  {
+    "name": "Home",
+    "url": "https://thewiki.moe/",
+    "category": "Adult Tubes & Studios",
+    "description": "Wiki for all things related to anime and more!",
+    "rating": 3.8,
+    "tags": [
+      "ScoutV2",
+      "New"
+    ],
+    "addedAt": "2026-06-23",
+    "discord": "https://discord.gg/snackbox"
+  },
+  {
+    "name": "AirVPN - The air to breathe the real Internet - Ai",
+    "url": "https://airvpn.org/?referred_by=661445",
+    "category": "Adult Tubes & Studios",
+    "description": "airvpn.org is a great resource for adult tubes & studios.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV2",
+      "New"
+    ],
+    "addedAt": "2026-06-23",
+    "twitter": "https://twitter.com/airvpn"
+  },
+  {
+    "name": "Anime Nexus: Watch Popular &amp; High Quality Anim",
+    "url": "https://anime.nexus",
+    "category": "Hentai Streaming",
+    "description": "Anime Nexus is your ultimate destination for discovering, streaming, and discussing all things anime. Explore a vast library of anime series and movies, stay updated with the latest releases, and connect with a vibrant community of anime enthusiasts.",
+    "rating": 4.4,
+    "tags": [
+      "ScoutV2",
+      "New"
+    ],
+    "addedAt": "2026-06-23"
   }
 ]
