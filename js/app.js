@@ -111,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // re-generated when filters/sort changes. Avoids the URL length cap of the old exclude approach.
     let randomSeed = Math.floor(Math.random() * 2000000000) + 1;
 
+    // Read current language set by i18n.js (exposed on window)
+    const currentLang = window.currentLang || localStorage.getItem('hv_lang') || 'en';
+
     // --- Cloud Sync & Favorites Logic ---
     let syncCode = localStorage.getItem('hv_sync_code');
     if (!syncCode) {

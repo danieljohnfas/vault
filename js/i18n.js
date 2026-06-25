@@ -441,7 +441,8 @@ const BLOG_H1_TRANSLATIONS = {
 
 const urlParams = new URLSearchParams(window.location.search);
 const langParam = urlParams.get('lang');
-let currentLang = langParam || localStorage.getItem('hv_lang') || 'en';
+window.currentLang = langParam || localStorage.getItem('hv_lang') || 'en';
+let currentLang = window.currentLang;
 if (!TRANSLATIONS[currentLang]) {
     currentLang = 'en';
 }
@@ -454,6 +455,7 @@ if (langParam && TRANSLATIONS[langParam]) {
 function setLanguage(lang) {
     if (!TRANSLATIONS[lang]) return;
     currentLang = lang;
+    window.currentLang = lang;
     try {
         localStorage.setItem('hv_lang', lang);
     } catch(e){}
