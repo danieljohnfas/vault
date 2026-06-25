@@ -1,0 +1,412 @@
+name: 📊 Weekly Health & Security Review
+
+on:
+  schedule:
+    # Every Sunday at 08:00 UTC (11:00 AM Riyadh/Istanbul time)
+    - cron: '0 8 * * 0'
+  workflow_dispatch:
+    inputs:
+      post_to_discord:
+        description: 'Post summary to Discord webhook'
+        required: false
+        default: 'true'
+        type: boolean
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  review:
+    name: Full System Health Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure Git
+        run: |
+          git config user.name "HentaiVault Review Bot"
+          git config user.email "bot@hentaivault.me"
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      # ── 1. GitHub Actions — last 7 days of workflow runs ──────────────────
+      - name: Check GitHub Actions run health
+        id: actions_check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "## 📋 GitHub Actions — Last 7 Days" > /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          SINCE=$(date -u -d '7 days ago' '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date -u -v-7d '+%Y-%m-%dT%H:%M:%SZ')
+
+          # Fetch last 50 runs from the API
+          curl -s \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=50&created=>$SINCE" \
+            > /tmp/runs.json
+
+          # Parse and summarise
+          node -e "
+            const data = require('/tmp/runs.json');
+            const runs = data.workflow_runs || [];
+            const byWorkflow = {};
+            for (const r of runs) {
+              const name = r.name;
+              if (!byWorkflow[name]) byWorkflow[name] = { success: 0, failure: 0, cancelled: 0, last: '', lastStatus: '' };
+              const s = r.conclusion || r.status;
+              if (s === 'success')   byWorkflow[name].success++;
+              else if (s === 'failure') byWorkflow[name].failure++;
+              else byWorkflow[name].cancelled++;
+              if (!byWorkflow[name].last || r.created_at > byWorkflow[name].last) {
+                byWorkflow[name].last = r.created_at.split('T')[0];
+                byWorkflow[name].lastStatus = s;
+              }
+            }
+            let md = '| Workflow | ✅ Pass | ❌ Fail | Last Run | Status |\n|---|---|---|---|---|\n';
+            let hasFailures = false;
+            for (const [name, s] of Object.entries(byWorkflow)) {
+              const icon = s.failure > 0 ? '🔴' : '🟢';
+              if (s.failure > 0) hasFailures = true;
+              md += \`| \${icon} \${name} | \${s.success} | \${s.failure} | \${s.last} | \${s.lastStatus} |\n\`;
+            }
+            if (Object.keys(byWorkflow).length === 0) md += '| — | No runs in last 7 days | | | |\n';
+            require('fs').appendFileSync('/tmp/review.md', md + '\n');
+            process.env.HAS_FAILURES = hasFailures ? '1' : '0';
+            // Write to github output
+            require('fs').appendFileSync(process.env.GITHUB_OUTPUT || '/dev/null', \`has_failures=\${hasFailures ? 'true' : 'false'}\n\`);
+          "
+          echo "has_failures=$(node -e "
+            const d=require('/tmp/runs.json');
+            const r=(d.workflow_runs||[]);
+            console.log(r.some(x=>x.conclusion==='failure')?'true':'false')
+          ")" >> $GITHUB_OUTPUT
+
+      # ── 2. D1 Database Health ──────────────────────────────────────────────
+      - name: Check D1 database health
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "## 🗄️ Cloudflare D1 Database" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          # Total site count
+          TOTAL_RAW=$(npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT COUNT(*) as count FROM sites;" \
+            --json 2>/dev/null || echo '[]')
+
+          TOTAL=$(echo "$TOTAL_RAW" | node -e "
+            let d=''; process.stdin.on('data',c=>d+=c).on('end',()=>{
+              try { const r=JSON.parse(d); console.log(r[0].results[0].count); }
+              catch(e){ console.log('?'); }
+            })
+          " <<< "$TOTAL_RAW" 2>/dev/null || echo "?")
+
+          # Sites added in last 7 days
+          SINCE_DATE=$(date -u -d '7 days ago' '+%Y-%m-%d' 2>/dev/null || date -u -v-7d '+%Y-%m-%d')
+          NEW_RAW=$(npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT COUNT(*) as count FROM sites WHERE added_at >= '$SINCE_DATE';" \
+            --json 2>/dev/null || echo '[]')
+          NEW=$(echo "$NEW_RAW" | node -e "
+            let d=''; process.stdin.on('data',c=>d+=c).on('end',()=>{
+              try { const r=JSON.parse(d); console.log(r[0].results[0].count); }
+              catch(e){ console.log('?'); }
+            })
+          " <<< "$NEW_RAW" 2>/dev/null || echo "?")
+
+          # Category breakdown
+          CAT_RAW=$(npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT category, COUNT(*) as n FROM sites GROUP BY category ORDER BY n DESC;" \
+            --json 2>/dev/null || echo '[]')
+
+          echo "| Metric | Value |" >> /tmp/review.md
+          echo "|---|---|" >> /tmp/review.md
+          echo "| Total sites | **$TOTAL** |" >> /tmp/review.md
+          echo "| New this week | **$NEW** |" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          echo "**Category Breakdown:**" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+          node -e "
+            const raw = \`$CAT_RAW\`;
+            try {
+              const r = JSON.parse(raw);
+              const rows = r[0] && r[0].results ? r[0].results : [];
+              let md = '| Category | Count |\n|---|---|\n';
+              for (const row of rows) md += \`| \${row.category} | \${row.n} |\n\`;
+              require('fs').appendFileSync('/tmp/review.md', md + '\n');
+            } catch(e) {
+              require('fs').appendFileSync('/tmp/review.md', '_(Could not fetch category breakdown)_\n\n');
+            }
+          " 2>/dev/null || echo "_(Category breakdown unavailable)_" >> /tmp/review.md
+
+      # ── 3. Queue Health ────────────────────────────────────────────────────
+      - name: Check pipeline queue health
+        run: |
+          echo "## 📋 Site Discovery Queue" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          if [ -f "scripts/sites-queue.json" ]; then
+            QUEUE_LEN=$(node -e "const q=require('./scripts/sites-queue.json'); console.log(q.length)")
+            DAYS_LEFT=$((QUEUE_LEN / 100))
+            echo "| Metric | Value |" >> /tmp/review.md
+            echo "|---|---|" >> /tmp/review.md
+            echo "| Queue length | **$QUEUE_LEN** sites |" >> /tmp/review.md
+            echo "| Days until empty (100/day) | **$DAYS_LEFT** days |" >> /tmp/review.md
+            echo "" >> /tmp/review.md
+            if [ "$QUEUE_LEN" -lt 200 ]; then
+              echo "⚠️ **WARNING: Queue is critically low (<200 sites). Run Scout V2 manually.**" >> /tmp/review.md
+              echo "" >> /tmp/review.md
+              echo "queue_low=true" >> $GITHUB_OUTPUT
+            else
+              echo "queue_low=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "_sites-queue.json not found — daily-add pipeline may be broken._" >> /tmp/review.md
+            echo "" >> /tmp/review.md
+            echo "queue_low=true" >> $GITHUB_OUTPUT
+          fi
+
+      # ── 4. Cloudflare Worker Health via CF API ─────────────────────────────
+      - name: Check Cloudflare Worker analytics
+        id: worker_check
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "## ⚡ Cloudflare Worker Health" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          SINCE=$(date -u -d '7 days ago' '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date -u -v-7d '+%Y-%m-%dT%H:%M:%SZ')
+          UNTIL=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+
+          # GraphQL query for worker analytics
+          QUERY=$(cat <<'GRAPHQL'
+          {
+            "query": "{ viewer { accounts(filter: {accountTag: $accountId}) { workersInvocationsAdaptive(limit: 1, filter: {datetimeHour_geq: $since, datetimeHour_leq: $until}) { sum { requests errors } } } } }",
+            "variables": {
+              "accountId": "ACCOUNT_ID_PLACEHOLDER",
+              "since": "SINCE_PLACEHOLDER",
+              "until": "UNTIL_PLACEHOLDER"
+            }
+          }
+          GRAPHQL
+          )
+
+          RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"query\":\"{ viewer { accounts(filter: {accountTag: \\\"$CLOUDFLARE_ACCOUNT_ID\\\"}) { workersInvocationsAdaptive(limit: 10, filter: {scriptName: \\\"vault\\\", datetimeHour_geq: \\\"$SINCE\\\", datetimeHour_leq: \\\"$UNTIL\\\"}) { sum { requests errors } } } } }\"}" \
+            "https://api.cloudflare.com/client/v4/graphql" 2>/dev/null || echo '{}')
+
+          node -e "
+            const raw = \`$RESPONSE\`;
+            try {
+              const data = JSON.parse(raw);
+              const inv = data?.data?.viewer?.accounts?.[0]?.workersInvocationsAdaptive || [];
+              let totalReqs = 0, totalErrors = 0;
+              for (const i of inv) {
+                totalReqs   += i.sum?.requests || 0;
+                totalErrors += i.sum?.errors   || 0;
+              }
+              const errRate = totalReqs > 0 ? ((totalErrors / totalReqs) * 100).toFixed(2) : '0.00';
+              const icon = parseFloat(errRate) > 1 ? '🔴' : parseFloat(errRate) > 0.1 ? '🟡' : '🟢';
+              let md = '| Metric | Value |\n|---|---|\n';
+              md += \`| Total requests (7d) | **\${totalReqs.toLocaleString()}** |\n\`;
+              md += \`| Total errors (7d) | **\${totalErrors.toLocaleString()}** |\n\`;
+              md += \`| Error rate | \${icon} **\${errRate}%** |\n\`;
+              require('fs').appendFileSync('/tmp/review.md', md + '\n');
+              if (parseFloat(errRate) > 1) {
+                require('fs').appendFileSync('/tmp/review.md', '🔴 **ALERT: Worker error rate exceeds 1%. Investigate logs in CF dashboard.**\n\n');
+              }
+            } catch(e) {
+              require('fs').appendFileSync('/tmp/review.md', '_Worker analytics unavailable (API token may lack Analytics:Read permission)_\n\n');
+            }
+          " 2>/dev/null || echo "_Worker analytics unavailable_" >> /tmp/review.md
+
+      # ── 5. Security Audit ─────────────────────────────────────────────────
+      - name: Security & config audit
+        run: |
+          echo "## 🔒 Security & Config Audit" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          ISSUES=0
+
+          # Check for hardcoded secrets/keys in source
+          echo "**Hardcoded Secrets Scan (src/index.js):**" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          # Look for patterns that suggest hardcoded keys
+          if grep -qE "fallback.*'[a-f0-9]{32}'" src/index.js 2>/dev/null; then
+            echo "🔴 Hardcoded ad key fallbacks found in src/index.js" >> /tmp/review.md
+            ISSUES=$((ISSUES+1))
+          else
+            echo "🟢 No hardcoded ad key fallbacks detected" >> /tmp/review.md
+          fi
+
+          # Check /api/config has origin guard
+          if grep -q "isInternal" src/index.js 2>/dev/null; then
+            echo "🟢 /api/config origin guard is present" >> /tmp/review.md
+          else
+            echo "🔴 /api/config origin guard MISSING — ad keys exposed publicly" >> /tmp/review.md
+            ISSUES=$((ISSUES+1))
+          fi
+
+          # Check 308 redirect (should be 301)
+          if grep -q "status: 308" src/index.js 2>/dev/null; then
+            echo "🟡 308 redirect found — consider using 301 for broader crawler compatibility" >> /tmp/review.md
+          else
+            echo "🟢 No 308 redirects found" >> /tmp/review.md
+          fi
+
+          # Check deprecated escape() usage
+          if grep -q "escape(atob" src/index.js 2>/dev/null; then
+            echo "🟡 Deprecated escape() still used in decodeB64" >> /tmp/review.md
+          else
+            echo "🟢 No deprecated escape() usage detected" >> /tmp/review.md
+          fi
+
+          # Check all blog posts are in sitemap
+          BLOGS=("nhentai-alternatives-2026" "best-streaming-2026" "best-doujin-sites-2026" "free-manga-guide" "hanime-alternatives-2026")
+          SITEMAP_MISSING=0
+          for blog in "${BLOGS[@]}"; do
+            if ! grep -q "$blog" src/index.js; then
+              echo "🔴 Blog post missing from sitemap: /blog/$blog" >> /tmp/review.md
+              SITEMAP_MISSING=$((SITEMAP_MISSING+1))
+              ISSUES=$((ISSUES+1))
+            fi
+          done
+          if [ "$SITEMAP_MISSING" -eq 0 ]; then
+            echo "🟢 All known blog posts present in sitemap" >> /tmp/review.md
+          fi
+
+          # Check honeypot has rate limiting
+          if grep -q "honeypotIp" src/index.js 2>/dev/null; then
+            echo "🟢 Honeypot tarpit has rate limiting" >> /tmp/review.md
+          else
+            echo "🟡 Honeypot tarpit missing rate limit guard" >> /tmp/review.md
+          fi
+
+          echo "" >> /tmp/review.md
+          echo "**Total issues found: $ISSUES**" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+          echo "security_issues=$ISSUES" >> $GITHUB_OUTPUT
+
+      # ── 6. Recent Commit Summary ──────────────────────────────────────────
+      - name: Summarise recent commits
+        run: |
+          echo "## 📝 Recent Commits (Last 7 Days)" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+          echo '```' >> /tmp/review.md
+          git log --oneline --since="7 days ago" --pretty=format:"%h %ad %s" --date=short | head -20 >> /tmp/review.md || echo "(none)" >> /tmp/review.md
+          echo '' >> /tmp/review.md
+          echo '```' >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+      # ── 7. SEO Quick Checks ───────────────────────────────────────────────
+      - name: SEO quick checks
+        run: |
+          echo "## 🔍 SEO Quick Checks" >> /tmp/review.md
+          echo "" >> /tmp/review.md
+
+          # robots.txt
+          if [ -f "robots.txt" ]; then
+            echo "🟢 robots.txt exists" >> /tmp/review.md
+          else
+            echo "🔴 robots.txt MISSING" >> /tmp/review.md
+          fi
+
+          # Check for HTTP links that should be HTTPS in critical pages
+          HTTP_LINKS=$(grep -rE 'href="http://' blog/ category/ index.html 2>/dev/null | wc -l)
+          if [ "$HTTP_LINKS" -gt 0 ]; then
+            echo "🟡 $HTTP_LINKS HTTP (non-HTTPS) href links found in HTML files — check for mixed content" >> /tmp/review.md
+          else
+            echo "🟢 No HTTP href links found in HTML source files" >> /tmp/review.md
+          fi
+
+          # Check canonical tags present in blog posts
+          for f in blog/*.html; do
+            if ! grep -q 'rel="canonical"' "$f" 2>/dev/null; then
+              echo "🔴 Missing canonical tag: $f" >> /tmp/review.md
+            fi
+          done
+
+          echo "" >> /tmp/review.md
+
+      # ── 8. Finalise report ────────────────────────────────────────────────
+      - name: Finalise and save report
+        id: finalise
+        run: |
+          DATE=$(date -u '+%Y-%m-%d')
+          HEADER="# 🏥 HentaiVault Weekly Health Report — $DATE\n\n_Generated automatically every Sunday. Review actions logged below._\n\n---\n\n"
+
+          printf "$HEADER" | cat - /tmp/review.md > /tmp/final_report.md
+
+          # Save to reports/ directory in repo
+          mkdir -p reports
+          cp /tmp/final_report.md "reports/review-$DATE.md"
+
+          # Always keep the latest report as a fixed filename for easy access
+          cp /tmp/final_report.md reports/latest-review.md
+
+          echo "report_date=$DATE" >> $GITHUB_OUTPUT
+          echo "::notice::Weekly review complete. Report saved to reports/review-$DATE.md"
+
+          # Print to Actions log for visibility
+          cat /tmp/final_report.md
+
+      - name: Commit report to repository
+        run: |
+          git add reports/
+          git diff --cached --quiet && echo "No report changes." || \
+            git commit -m "chore(review): weekly health report [$(date -u '+%Y-%m-%d')]"
+          git push
+
+      # ── 9. Discord notification (optional) ───────────────────────────────
+      - name: Post summary to Discord
+        if: ${{ (github.event.inputs.post_to_discord != 'false') && env.DISCORD_WEBHOOK != '' }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          DATE=$(date -u '+%Y-%m-%d')
+          # Build a short Discord embed from the report
+          SUMMARY=$(head -60 /tmp/final_report.md | sed 's/`//g' | sed 's/\*\*//g' | sed 's/^#* //' | head -40)
+          PAYLOAD=$(node -e "
+            const summary = \`$SUMMARY\`.substring(0, 1800);
+            const payload = {
+              username: 'HentaiVault Bot',
+              embeds: [{
+                title: '📊 Weekly Health Report — $DATE',
+                description: summary + '\n\n[View Full Report](https://github.com/${{ github.repository }}/blob/main/reports/latest-review.md)',
+                color: 0x7c3aed,
+                footer: { text: 'HentaiVault Weekly Review' },
+                timestamp: new Date().toISOString()
+              }]
+            };
+            console.log(JSON.stringify(payload));
+          ")
+          curl -s -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            "$DISCORD_WEBHOOK" || echo "Discord notification failed (non-fatal)"
+
+      - name: Review complete summary
+        if: always()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Weekly review complete"
+          echo "📄 Report: reports/latest-review.md"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

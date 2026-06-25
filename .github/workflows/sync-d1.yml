@@ -1,18 +1,15 @@
-name: 🔄 Sync GitHub to D1
+name: 🔄 Sync GitHub to D1 [DISABLED]
+# ⚠️  DISABLED: D1 is now the single source of truth.
+# The daily-add.yml workflow writes directly to D1 and js/data.js no longer exists.
+# This workflow silently skips every run. Keeping file for historical reference.
+# To re-enable, remove the 'if: false' guard on the sync job below.
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'js/data.js'
-  schedule:
-    # Run daily as a fallback to ensure absolute sync
-    - cron: '0 1 * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Manual trigger only — all schedule triggers removed
 
 jobs:
   sync:
+    if: false # DISABLED — see header comment above
     name: Sync data.js to Cloudflare D1
     runs-on: ubuntu-latest
     env:

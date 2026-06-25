@@ -554,7 +554,16 @@ export default {
       const today = new Date().toISOString().split('T')[0];
       const staticPages = [
         { loc: 'https://hentaivault.me/', priority: '1.0', changefreq: 'daily' },
-        { loc: 'https://hentaivault.me/blog', priority: '0.7', changefreq: 'weekly' },
+        // Blog posts
+        { loc: 'https://hentaivault.me/blog', priority: '0.8', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/nhentai-alternatives-2026', priority: '0.9', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/best-streaming-2026', priority: '0.9', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/best-doujin-sites-2026', priority: '0.9', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/free-manga-guide', priority: '0.8', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/hanime-alternatives-2026', priority: '0.8', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/privacy-safety-guide', priority: '0.6', changefreq: 'monthly' },
+        { loc: 'https://hentaivault.me/blog/top-10-sites-may-2026', priority: '0.7', changefreq: 'monthly' },
+        // Core pages
         { loc: 'https://hentaivault.me/about', priority: '0.5', changefreq: 'monthly' },
         { loc: 'https://hentaivault.me/contact', priority: '0.5', changefreq: 'monthly' },
         { loc: 'https://hentaivault.me/privacy', priority: '0.3', changefreq: 'monthly' },
@@ -562,6 +571,7 @@ export default {
         { loc: 'https://hentaivault.me/disclaimer', priority: '0.3', changefreq: 'monthly' },
         { loc: 'https://hentaivault.me/dmca', priority: '0.3', changefreq: 'monthly' },
         { loc: 'https://hentaivault.me/region-unblocked', priority: '0.5', changefreq: 'weekly' },
+        // Category pages
         { loc: 'https://hentaivault.me/category/anime-streaming', priority: '0.8', changefreq: 'daily' },
         { loc: 'https://hentaivault.me/category/hentai-streaming', priority: '0.8', changefreq: 'daily' },
         { loc: 'https://hentaivault.me/category/manga-doujin', priority: '0.8', changefreq: 'daily' },
@@ -742,21 +752,32 @@ export default {
     }
 
     // ── Route: /api/config ──────────────────────────────────────────────────
+    // Guard: only serve ad config to same-site requests (Referer or Origin must
+    // match hentaivault.me). Bare curl / scrapers get a 403.
     if (url.pathname === '/api/config') {
       if (request.method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: CORS });
       }
+      const referer = request.headers.get('Referer') || '';
+      const origin  = request.headers.get('Origin')  || '';
+      const isInternal = referer.includes('hentaivault.me') || origin.includes('hentaivault.me');
+      if (!isInternal) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      // Keys are loaded from environment; no hardcoded fallbacks in source.
       return new Response(
         JSON.stringify({
-          ad_skyscraper: env.AD_KEY_SKYSCRAPER || '13ca4044b4b6e65ef15f10d18752754e',
-          ad_leaderboard: env.AD_KEY_LEADERBOARD || '40d623b6e8e7efa7651f8c6fbeb29bef',
-          ad_infeed: env.AD_KEY_INFEED || '40d623b6e8e7efa7651f8c6fbeb29bef',
-          ad_sticky_bottom: env.AD_KEY_STICKY_BOTTOM || '90b220b63fa3e2eb3c163fec3b34a465',
-          ad_socialbar: env.AD_KEY_SOCIALBAR || 'ba6744afc790009f7b04d7509a97ea2f',
-          ad_popunder: env.AD_KEY_POPUNDER || '994511c440490953ceb331525d9f463f',
-          ad_native: env.AD_KEY_NATIVE || 'a098db90df9a9b985c317d9ba01e155e'
+          ad_skyscraper:    env.AD_KEY_SKYSCRAPER    || '',
+          ad_leaderboard:   env.AD_KEY_LEADERBOARD   || '',
+          ad_infeed:        env.AD_KEY_INFEED         || '',
+          ad_sticky_bottom: env.AD_KEY_STICKY_BOTTOM  || '',
+          ad_socialbar:     env.AD_KEY_SOCIALBAR      || '',
+          ad_popunder:      env.AD_KEY_POPUNDER       || '',
+          ad_native:        env.AD_KEY_NATIVE         || ''
         }),
-        { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' } }
+        { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store' } }
       );
     }
 
@@ -822,7 +843,12 @@ export default {
 
     // ── Route: /api/directory-export-v2-full.json (Honeypot) ────────────────
     if (url.pathname === '/api/directory-export-v2-full.json') {
-      // Scraper Honeypot: Return infinite fake data
+      // Rate-limit the honeypot to prevent bandwidth abuse from parallel scrapers
+      const honeypotIp = request.headers.get('cf-connecting-ip');
+      if (await checkRateLimit(honeypotIp, env)) {
+        return new Response(null, { status: 429 });
+      }
+      // Scraper Honeypot: Return slow-streamed fake data (tarpit)
       const stream = new ReadableStream({
         async start(controller) {
           controller.enqueue(new TextEncoder().encode('{"data":[\n'));
@@ -1005,8 +1031,9 @@ export default {
       if (url.pathname === '/site.html') {
         const id = url.searchParams.get('id');
         const search = id ? `?id=${id}` : '';
+        // Use 301 (not 308) — 308 preserves HTTP method which confuses some crawlers
         return new Response(null, {
-          status: 308,
+          status: 301,
           headers: {
             'Location': `${url.origin}/site${search}`,
             'Cache-Control': 'public, max-age=604800'
@@ -1322,7 +1349,9 @@ function makeId(name) {
 
 function decodeB64(b64) {
   try {
-    return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+    // Use TextDecoder instead of the deprecated escape() function
+    const bytes = Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0));
+    return new TextDecoder('utf-8').decode(bytes);
   } catch (e) {
     return atob(b64.replace(/\n/g, ''));
   }
