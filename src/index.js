@@ -1079,8 +1079,11 @@ export default {
         }
         
         if (isDead) {
-          await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(body.id).run();
-          return new Response(JSON.stringify({ success: true, removed: true }), { headers: CORS });
+          // Changed during audit: DO NOT permanently delete sites via anonymous API.
+          // In a real system, we would flag this for manual review.
+          // For now, simply return success so the frontend stops pinging it.
+          console.log(`[REPORT LINK] Flagged site ${body.id} as dead. Needs manual review.`);
+          return new Response(JSON.stringify({ success: true, removed: false, flagged: true }), { headers: CORS });
         } else {
           return new Response(JSON.stringify({ success: false, removed: false, msg: 'Site is responding.' }), { headers: CORS });
         }
@@ -1103,7 +1106,12 @@ export default {
         return new Response(data || '[]', { headers: { ...CORS, 'Content-Type': 'application/json' } });
       } 
       else if (request.method === 'POST') {
+        const ip = request.headers.get('CF-Connecting-IP');
+        if (await checkRateLimit(ip, env)) return jsonError('Rate limit exceeded', 429);
+        
         const body = await request.text();
+        if (body.length > 20000) return jsonError('Payload too large', 413);
+        
         await env.PUSH_SUBSCRIBERS.put(key, body);
         return new Response(JSON.stringify({ success: true }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
