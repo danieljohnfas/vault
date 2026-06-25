@@ -271,6 +271,35 @@
 
             <div class="filter-group">
                 <h3 data-i18n="categories_title">Categories</h3>
+<!-- Recently Viewed Shelf -->
+    <div id="recentlyViewedContainer" style="display: none; max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
+        <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--text-muted);">Recently Viewed</h3>
+        <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px;"></div>
+    </div>
+
+    <!-- Site of the Week Spotlight -->
+    <div id="spotlightContainer" style="display: none; max-width: 1200px; margin: 40px auto 20px; padding: 0 24px;">
+    </div>
+
+    <!-- Main Layout -->
+
+<main class="main-layout">
+        
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h3 data-i18n="sort_by">Sort By</h3>
+                <select id="sortSelect" title="Sort Sites By">
+                    <option value="random" data-i18n="random">Random (Shuffle)</option>
+                    <option value="popular" data-i18n="popular">Popularity</option>
+                    <option value="alpha" data-i18n="alpha">Alphabetical (A-Z)</option>
+                    <option value="newest" data-i18n="newest">Newest Added</option>
+                    <option value="rating" data-i18n="rating">Highest Rated</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <h3 data-i18n="categories_title">Categories</h3>
                 <div class="checkbox-list" id="categoryFilters">
                     <!-- Categories injected via JS -->
                 </div>
@@ -281,6 +310,16 @@
                 <div class="checkbox-list" id="tagFilters">
                     <!-- Tags injected via JS -->
                 </div>
+            </div>
+
+            <div class="filter-group cloud-sync-group" style="background: rgba(123,57,220,0.1); border: 1px solid rgba(123,57,220,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                <h3 style="display:flex; align-items:center; gap:8px;">☁️ Cloud Sync <span style="font-size:0.65rem; background:var(--primary); padding:2px 6px; border-radius:8px; color:white;">NEW</span></h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Sync your favorites across devices anonymously.</p>
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <input type="text" id="syncCodeInput" placeholder="Enter Sync Code" style="flex:1; padding:8px; background:var(--bg-elevated); border:1px solid var(--border-color); color:white; border-radius:6px; font-size:0.85rem; width:100%;" autocomplete="off" spellcheck="false">
+                    <button id="btnSyncRestore" style="padding:8px 12px; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Load</button>
+                </div>
+                <div style="font-size:0.75rem; color:var(--text-muted); text-align:center;">Your Code: <br><span id="mySyncCodeDisplay" style="font-family:monospace; color:white; font-weight:bold; letter-spacing:1px; user-select:all; font-size:1.1rem; display:inline-block; margin-top:5px; background:var(--bg-surface); padding:4px 8px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">---</span></div>
             </div>
 
             <!-- Ad Sidebar 1 -->

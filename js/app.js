@@ -111,12 +111,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // re-generated when filters/sort changes. Avoids the URL length cap of the old exclude approach.
     let randomSeed = Math.floor(Math.random() * 2000000000) + 1;
 
-    // --- Favorites Logic ---
+    // --- Cloud Sync & Favorites Logic ---
+    let syncCode = localStorage.getItem('hv_sync_code');
+    if (!syncCode) {
+        syncCode = Math.random().toString(36).substring(2,10).toUpperCase();
+        localStorage.setItem('hv_sync_code', syncCode);
+    }
+    const mySyncCodeDisplay = document.getElementById('mySyncCodeDisplay');
+    if (mySyncCodeDisplay) mySyncCodeDisplay.innerText = syncCode;
+
     let favorites = [];
     try {
         favorites = JSON.parse(localStorage.getItem('hv_favorites') || '[]');
     } catch (e) { console.error("Favorites parse failed", e); }
     let showFavoritesOnly = false;
+
+    let syncTimeout;
+    function triggerCloudSync() {
+        clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => {
+            fetch('/api/vault/sync?code=' + syncCode, {
+                method: 'POST',
+                body: JSON.stringify(favorites)
+            }).catch(console.error);
+        }, 1000);
+    }
+
+    const btnSyncRestore = document.getElementById('btnSyncRestore');
+    const syncCodeInput = document.getElementById('syncCodeInput');
+    if (btnSyncRestore && syncCodeInput) {
+        btnSyncRestore.addEventListener('click', () => {
+            const code = syncCodeInput.value.trim().toUpperCase();
+            if (code.length < 8) return alert('Invalid code length.');
+            btnSyncRestore.innerText = '...';
+            fetch('/api/vault/sync?code=' + code)
+                .then(r => r.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        favorites = data;
+                        localStorage.setItem('hv_favorites', JSON.stringify(favorites));
+                        syncCode = code;
+                        localStorage.setItem('hv_sync_code', syncCode);
+                        mySyncCodeDisplay.innerText = syncCode;
+                        alert('Cloud Sync successful! ' + favorites.length + ' favorites loaded.');
+                        applyFiltersAndSort();
+                    } else {
+                        alert('No backup found for this code.');
+                    }
+                })
+                .catch(e => alert('Sync failed.'))
+                .finally(() => btnSyncRestore.innerText = 'Load');
+        });
+    }
 
     
     // --- Share Logic ---
@@ -904,6 +950,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    window.toggleFavorite = (id, event) => {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (favorites.includes(id)) {
+            favorites = favorites.filter(favId => favId !== id);
+            showToast("Removed from Favorites");
+        } else {
+            favorites.push(id);
+            showToast("Added to Favorites ❤️");
+        }
+        localStorage.setItem('hv_favorites', JSON.stringify(favorites));
+        triggerCloudSync();
+    };
+
     function toggleFavorite(id, btn) {
         if (favorites.includes(id)) {
             favorites = favorites.filter(favId => favId !== id);
@@ -915,6 +977,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '❤️';
         }
         localStorage.setItem('hv_favorites', JSON.stringify(favorites));
+        triggerCloudSync();
         
         // If we are in "Favorites Only" mode, re-filter immediately
         if (showFavoritesOnly) {

@@ -269,6 +269,9 @@ class ReviewBodyHandler {
                     <h3>${l.ready}</h3>
                     <p style="margin-bottom:20px;">${l.visitBelow}</p>
                     <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+                    <div style="margin-top: 15px;">
+                        <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" style="background:none; border:none; color:var(--text-muted); text-decoration:underline; cursor:pointer; font-size:0.85rem;">⚠️ Report Dead Link</button>
+                    </div>
                 </div>
                 <div id="adblock-overlay" class="adblock-overlay" style="display: none;">
                     <h3>🔒 Content Locked</h3>
@@ -278,6 +281,19 @@ class ReviewBodyHandler {
             </div>
             
             <script>
+                function reportDeadLink(id) {
+                    const btn = document.getElementById('btnReportDead');
+                    if(btn.innerText.includes('Reporting')) return;
+                    btn.innerText = 'Reporting...';
+                    fetch('/api/report-link', { method: 'POST', body: JSON.stringify({id}) })
+                      .then(r => r.json())
+                      .then(d => {
+                        if (d.success) btn.innerText = '✅ Removed. Thanks!';
+                        else btn.innerText = '❌ Site is still alive';
+                      })
+                      .catch(() => btn.innerText = '⚠️ Error');
+                }
+
                 setTimeout(function() {
                     var testAd = document.createElement('div');
                     testAd.innerHTML = '&nbsp;';
@@ -926,12 +942,12 @@ export default {
         const tagsStr = url.searchParams.get('tags');
         if (tagsStr) {
           const tagsArray = tagsStr.split(',');
-          // If any tag matches
+          // Use AND for advanced filtering
           const tagConditions = tagsArray.map(tag => {
             params.push(`%"${tag}"%`);
             return 'data_json LIKE ?';
           });
-          conditions.push(`(${tagConditions.join(' OR ')})`);
+          conditions.push(`(${tagConditions.join(' AND ')})`);
         }
         
         // WHERE clause shared by count + data query (no exclude needed)
@@ -972,6 +988,98 @@ export default {
         console.error("Error fetching sites from D1:", err);
         return jsonError('Database error', 500);
       }
+    }
+
+    // ── Route: /rss.xml ─────────────────────────────────────────────────────
+    if (url.pathname === '/rss.xml') {
+      if (!env.hv_directory) return new Response('DB Error', { status: 500 });
+      try {
+        const result = await env.hv_directory.prepare('SELECT id, data_json, added_at FROM sites ORDER BY added_at DESC LIMIT 50').all();
+        let items = '';
+        for (const r of result.results) {
+          const site = JSON.parse(r.data_json);
+          const desc = sanitize(site.description || '');
+          const pubDate = new Date(r.added_at).toUTCString();
+          items += `
+            <item>
+              <title><![CDATA[${site.name} (${site.category})]]></title>
+              <link>https://hentaivault.me/site?id=${site.id}</link>
+              <guid>https://hentaivault.me/site?id=${site.id}</guid>
+              <pubDate>${pubDate}</pubDate>
+              <description><![CDATA[${desc}]]></description>
+            </item>
+          `;
+        }
+        const rss = `<?xml version="1.0" encoding="UTF-8" ?>
+          <rss version="2.0">
+            <channel>
+              <title>HentaiVault - New Sites</title>
+              <link>https://hentaivault.me</link>
+              <description>The latest adult sites and directories added to HentaiVault.</description>
+              <language>en-us</language>
+              ${items}
+            </channel>
+          </rss>`;
+        return new Response(rss, { headers: { 'Content-Type': 'application/rss+xml', 'Cache-Control': 'public, max-age=3600' } });
+      } catch (e) {
+        return new Response('Error generating RSS', { status: 500 });
+      }
+    }
+
+    // ── Route: /api/report-link ──────────────────────────────────────────────
+    if (url.pathname === '/api/report-link') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (request.method !== 'POST') return jsonError('Method not allowed', 405);
+      if (!env.hv_directory) return jsonError('DB not configured', 500);
+      try {
+        const body = await request.json();
+        if (!body.id) return jsonError('Missing ID', 400);
+        
+        const row = await env.hv_directory.prepare('SELECT url FROM sites WHERE id = ?').bind(body.id).first();
+        if (!row) return jsonError('Not found', 404);
+        
+        let isDead = false;
+        try {
+          const res = await fetch(row.url, { 
+            method: 'HEAD', 
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0' },
+            signal: AbortSignal.timeout(5000) 
+          });
+          if (res.status === 404 || res.status >= 500) isDead = true;
+        } catch (e) {
+          isDead = true;
+        }
+        
+        if (isDead) {
+          await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(body.id).run();
+          return new Response(JSON.stringify({ success: true, removed: true }), { headers: CORS });
+        } else {
+          return new Response(JSON.stringify({ success: false, removed: false, msg: 'Site is responding.' }), { headers: CORS });
+        }
+      } catch (e) {
+        return jsonError('Error reporting', 500);
+      }
+    }
+
+    // ── Route: /api/vault/sync ──────────────────────────────────────────────
+    if (url.pathname === '/api/vault/sync') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (!env.PUSH_SUBSCRIBERS) return jsonError('KV not configured', 500);
+      
+      const code = url.searchParams.get('code');
+      if (!code || code.length < 8) return jsonError('Invalid code', 400);
+      const key = `vault_sync:${code}`;
+
+      if (request.method === 'GET') {
+        const data = await env.PUSH_SUBSCRIBERS.get(key);
+        return new Response(data || '[]', { headers: { ...CORS, 'Content-Type': 'application/json' } });
+      } 
+      else if (request.method === 'POST') {
+        const body = await request.text();
+        await env.PUSH_SUBSCRIBERS.put(key, body);
+        return new Response(JSON.stringify({ success: true }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+      return jsonError('Method not allowed', 405);
     }
 
     // ── Route: /api/random ──────────────────────────────────────────────────
