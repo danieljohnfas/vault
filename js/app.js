@@ -1274,6 +1274,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Initial grid load
+    applyFiltersAndSort();
 });
 // ── Live Site Count ─────────────────────────────────────────────────────────
 (function updateSiteCount() {
