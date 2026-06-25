@@ -247,12 +247,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Site of the Week Spotlight ---
+    // --- Site of the DAY Spotlight (with FOMO countdown) ---
     const spotlightContainer = document.getElementById('spotlightContainer');
     if (spotlightContainer) {
         (async () => {
             try {
-                const res = await fetch('/api/site-of-the-week');
+                const res = await fetch('/api/site-of-the-day');
                 if (!res.ok) return;
                 const { site } = await res.json();
                 if (!site) return;
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div style="position:relative; flex:1; min-width:0;">
                             <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,42,95,0.2); border:1px solid rgba(255,42,95,0.4); padding:4px 12px; border-radius:20px; margin-bottom:12px;">
-                                <span style="font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:#ff2a5f;">🏆 Site of the Week</span>
+                                <span style="font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:#ff2a5f;">⭐ Site of the Day &nbsp;|&nbsp; Resets in: <span id="sotd-countdown" style="font-variant-numeric:tabular-nums;">--:--:--</span></span>
                             </div>
                             <h2 style="margin:0 0 8px; font-size:2rem; font-weight:800; color:white;">${localName}</h2>
                             <p style="margin:0 0 20px; color:#a1a1aa; font-size:0.95rem; line-height:1.5; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${localDesc}</p>
@@ -280,13 +280,79 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>`;
                 spotlightContainer.style.display = 'block';
+                // FOMO Countdown to midnight UTC
+                function updateCountdown() {
+                    const el = document.getElementById('sotd-countdown');
+                    if (!el) return;
+                    const now = new Date();
+                    const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+                    const diff = midnight - now;
+                    const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                    el.textContent = `${h}:${m}:${s}`;
+                }
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
             } catch (e) { /* Silently fail */ }
+        })();
+    }
+
+    // --- Trending Sites Shelf ---
+    const trendingShelf = document.getElementById('trendingShelf');
+    if (trendingShelf) {
+        (async () => {
+            try {
+                const res = await fetch('/api/trending');
+                if (!res.ok) return;
+                const { sites } = await res.json();
+                if (!sites || sites.length === 0) return;
+                trendingShelf.innerHTML = sites.map(s => `
+                    <a href="/site?id=${s.id}" style="display:flex; flex-direction:column; align-items:center; min-width:90px; max-width:90px; text-align:center; text-decoration:none; gap:6px;">
+                        <div style="position:relative;">
+                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:0 0 12px rgba(255,42,95,0.3);border:1px solid rgba(255,42,95,0.3);" loading="lazy">
+                            <span style="position:absolute;top:-6px;right:-6px;font-size:0.75rem;">🔥</span>
+                        </div>
+                        <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
+                    </a>`).join('');
+                document.getElementById('trendingContainer').style.display = 'block';
+            } catch(e) {}
         })();
     }
 
     // --- Collections / My List ---
     let myList = [];
     try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+    window.applyPlaylist = (tagsStr, cat) => {
+        activeCategories = [];
+        activeTags = [];
+        document.querySelectorAll('#categoryFilters input[type="checkbox"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('#tagFilters input[type="checkbox"]').forEach(cb => cb.checked = false);
+        
+        if (cat) {
+            activeCategories.push(cat);
+            const cb = document.querySelector(`#categoryFilters input[value="${cat}"]`);
+            if (cb) cb.checked = true;
+        }
+        
+        if (tagsStr) {
+            const tags = tagsStr.split(',');
+            activeTags.push(...tags);
+            tags.forEach(tag => {
+                const cb = document.querySelector(`#tagFilters input[value="${tag}"]`);
+                if (cb) cb.checked = true;
+            });
+        }
+        
+        showFavoritesOnly = false;
+        myListMode = false;
+        showSharedList = false;
+        if (sortSelect) { sortSelect.value = 'rating'; currentSort = 'rating'; }
+        
+        document.getElementById('siteGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        applyFiltersAndSort();
+    };
 
     window.toggleMyList = (siteId, siteName) => {
         const idx = myList.indexOf(siteId);
@@ -398,6 +464,63 @@ document.addEventListener('DOMContentLoaded', () => {
     if (siteGrid && sortSelect && categoryFiltersContainer && tagFiltersContainer) {
         initFilters();
     }
+
+    // --- Click Tracking (Social Proof engine) ---
+    // Delegate on document so it captures dynamically injected .btn-visit-tracked links
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('.btn-visit-tracked');
+        if (link) {
+            const id = link.dataset.id;
+            if (id) {
+                // Non-blocking, fire and forget
+                fetch('/api/click', { method: 'POST', body: JSON.stringify({ id }), headers: { 'Content-Type': 'application/json' } }).catch(() => {});
+            }
+        }
+    });
+
+    // --- For You Shelf (Endowed Progress / Personalisation) ---
+    const forYouContainer = document.getElementById('forYouContainer');
+    const forYouShelf = document.getElementById('forYouShelf');
+    if (forYouContainer && forYouShelf && favorites.length >= 2) {
+        (async () => {
+            try {
+                const res = await fetch('/api/recommend?likes=' + favorites.join(','));
+                if (!res.ok) return;
+                const { sites } = await res.json();
+                if (!sites || sites.length === 0) return;
+                forYouShelf.innerHTML = sites.map(s => `
+                    <a href="/site?id=${s.id}" style="display:flex;flex-direction:column;align-items:center;min-width:90px;max-width:90px;text-align:center;text-decoration:none;gap:6px;">
+                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:var(--shadow-glass);" loading="lazy">
+                        <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
+                    </a>`).join('');
+                forYouContainer.style.display = 'block';
+            } catch(e) {}
+        })();
+    }
+
+    // --- Vault Progress Bar (Gamification) ---
+    function updateVaultProgress() {
+        const progressBar = document.getElementById('vaultProgressBar');
+        const progressText = document.getElementById('vaultProgressText');
+        if (!progressBar || !progressText) return;
+        const count = favorites.length;
+        const milestones = [1, 3, 5, 10, 25, 50];
+        const nextMilestone = milestones.find(m => m > count) || milestones[milestones.length - 1];
+        const prevMilestone = milestones[Math.max(0, milestones.indexOf(nextMilestone) - 1)] || 0;
+        const pct = Math.min(100, Math.round(((count - prevMilestone) / (nextMilestone - prevMilestone)) * 100));
+        progressBar.style.width = `${Math.max(5, pct)}%`;
+
+        let badge = '';
+        if (count >= 50) badge = '💎 Diamond Vault';
+        else if (count >= 25) badge = '🥇 Gold Vault';
+        else if (count >= 10) badge = '🥈 Silver Vault';
+        else if (count >= 5) badge = '🌟 Veteran Explorer';
+        else if (count >= 3) badge = '🔍 Explorer';
+        else badge = '🆕 New Visitor';
+
+        progressText.innerHTML = `${badge} &nbsp;·&nbsp; ${count} saved &nbsp;·&nbsp; Next: ${nextMilestone}`;
+    }
+    updateVaultProgress();
 
     // Pre-filter from category page (window.FILTER_CATEGORY) or URL ?q= param
     const urlParams = new URLSearchParams(window.location.search);
@@ -782,7 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pageItems.forEach((site) => {
             const isRecentlyAdded = (new Date() - new Date(site.addedAt)) < (7 * 24 * 60 * 60 * 1000); // 7 days
             const isNew = (new Date() - new Date(site.addedAt)) < (30 * 24 * 60 * 60 * 1000); // 30 days
-            const isTrending = site.rating >= 4.8 || (isNew && site.rating >= 4.5);
+            const isTrending = site.isTrending || site.rating >= 4.8 || (isNew && site.rating >= 4.5);
             
             const urlObj = new URL(site.url);
             const domain = urlObj.hostname;
@@ -855,7 +978,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${isFav ? '❤️' : '🤍'}
                         </button>
                         <button class="mylist-btn ${myList.includes(site.id) ? 'mylist-active' : ''}" data-id="${site.id}" title="${myList.includes(site.id) ? 'Remove from My List' : 'Add to My List'}">📋</button>
-                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${escapeHTML(site.url)}">${t.visit} &rarr;</a>
+                        <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${site.id}" data-outbound="${escapeHTML(site.url)}">${t.visit} &rarr;</a>
                     </div>
                 </div>
             `;

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -350,6 +350,17 @@
             </div>
 
             <noscript><p class="no-js-msg">Please enable JavaScript to browse HentaiVault.</p></noscript>
+            <div style="margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                <span style="font-size:0.78rem;color:var(--text-muted);flex-shrink:0;">Quick Packs:</span>
+                <button onclick="applyPlaylist('vanilla','')" style="padding:5px 12px;background:rgba(255,42,95,0.1);border:1px solid rgba(255,42,95,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Vanilla</button>
+                <button onclick="applyPlaylist('HD','Hentai Streaming')" style="padding:5px 12px;background:rgba(123,57,220,0.1);border:1px solid rgba(123,57,220,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">HD Streaming</button>
+                <button onclick="applyPlaylist('manga','Manga &amp; Doujinshi')" style="padding:5px 12px;background:rgba(0,180,120,0.1);border:1px solid rgba(0,180,120,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Manga</button>
+                <button onclick="applyPlaylist('no-ads','')" style="padding:5px 12px;background:rgba(255,200,0,0.1);border:1px solid rgba(255,200,0,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">No Ads</button>
+                <button onclick="applyPlaylist('mobile-friendly','')" style="padding:5px 12px;background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Mobile</button>
+                <button onclick="applyPlaylist('uncensored','')" style="padding:5px 12px;background:rgba(255,100,0,0.1);border:1px solid rgba(255,100,0,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Uncensored</button>
+            </div>
+            <div id="trendingContainer" style="display:none;margin-bottom:14px;"><p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Trending Now</p><div id="trendingShelf" style="display:flex;gap:12px;flex-wrap:wrap;"></div></div>
+            <div id="forYouContainer" style="display:none;margin-bottom:14px;"><p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Recommended For You</p><div id="forYouShelf" style="display:flex;gap:12px;flex-wrap:wrap;"></div></div>
             <div class="grid-container" id="siteGrid">
                 <!-- Site Cards injected via JS -->
             </div>

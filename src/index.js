@@ -857,6 +857,34 @@ export default {
       return jsonError('Method not allowed', 405);
     }
 
+    // ── Route: /api/site-of-the-day ─────────────────────────────────────────
+    if (url.pathname === '/api/site-of-the-day' || url.pathname === '/api/site-of-the-week') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: CORS });
+      }
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+
+      try {
+        const now = new Date();
+        const dayStr = now.toISOString().split('T')[0];
+        
+        const topSites = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY rating DESC LIMIT 50').all();
+        if (topSites.results.length === 0) return jsonError('No sites found', 404);
+        
+        let hash = 0;
+        for (let i = 0; i < dayStr.length; i++) hash += dayStr.charCodeAt(i);
+        
+        const selectedIdx = hash % topSites.results.length;
+        const site = JSON.parse(topSites.results[selectedIdx].data_json);
+        
+        return new Response(JSON.stringify({ site }), {
+          headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' }
+        });
+      } catch (e) {
+        return jsonError('Error fetching site', 500);
+      }
+    }
+
     // ── Route: /api/directory-export-v2-full.json (Honeypot) ────────────────
     if (url.pathname === '/api/directory-export-v2-full.json') {
       // Rate-limit the honeypot to prevent bandwidth abuse from parallel scrapers
@@ -1080,6 +1108,75 @@ export default {
         return new Response(JSON.stringify({ success: true }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
       return jsonError('Method not allowed', 405);
+    }
+
+    // ── Route: /api/click ───────────────────────────────────────────────────
+    if (url.pathname === '/api/click') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (request.method !== 'POST') return jsonError('Method not allowed', 405);
+      if (!env.hv_directory) return jsonError('DB not configured', 500);
+      try {
+        const body = await request.json();
+        if (!body.id) return jsonError('Missing ID', 400);
+        await env.hv_directory.prepare('UPDATE sites SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
+        return new Response(JSON.stringify({ success: true }), { headers: CORS });
+      } catch (e) {
+        return jsonError('Error updating click', 500);
+      }
+    }
+
+    // ── Route: /api/trending ────────────────────────────────────────────────
+    if (url.pathname === '/api/trending') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (!env.hv_directory) return jsonError('DB not configured', 500);
+      try {
+        const result = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY clicks DESC LIMIT 3').all();
+        const sites = result.results.map(r => {
+            const s = JSON.parse(r.data_json);
+            s.isTrending = true;
+            return s;
+        });
+        return new Response(JSON.stringify({ sites }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
+      } catch (e) {
+        return jsonError('Error fetching trending', 500);
+      }
+    }
+
+    // ── Route: /api/recommend ───────────────────────────────────────────────
+    if (url.pathname === '/api/recommend') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (!env.hv_directory) return jsonError('DB not configured', 500);
+      try {
+        const likes = url.searchParams.get('likes');
+        if (!likes) return new Response(JSON.stringify({ sites: [] }), { headers: CORS });
+        const likeIds = likes.split(',');
+        
+        const placeholders = likeIds.map(() => '?').join(',');
+        const queryLiked = `SELECT data_json FROM sites WHERE id IN (${placeholders})`;
+        const likedRes = await env.hv_directory.prepare(queryLiked).bind(...likeIds).all();
+        
+        const tagFreq = {};
+        for (const r of likedRes.results) {
+            const s = JSON.parse(r.data_json);
+            if (s.tags) s.tags.forEach(t => { tagFreq[t] = (tagFreq[t] || 0) + 1 });
+        }
+        
+        const sortedTags = Object.entries(tagFreq).sort((a,b) => b[1]-a[1]).map(x => x[0]).slice(0, 2);
+        
+        if (sortedTags.length === 0) return new Response(JSON.stringify({ sites: [] }), { headers: CORS });
+        
+        const tagConditions = sortedTags.map(tag => `data_json LIKE ?`).join(' AND ');
+        const params = sortedTags.map(t => `%"${t}"%`);
+        params.push(...likeIds);
+        
+        const queryRec = `SELECT data_json FROM sites WHERE (${tagConditions}) AND id NOT IN (${placeholders}) ORDER BY rating DESC LIMIT 5`;
+        const recRes = await env.hv_directory.prepare(queryRec).bind(...params).all();
+        
+        const sites = recRes.results.map(r => JSON.parse(r.data_json));
+        return new Response(JSON.stringify({ sites }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
+      } catch (e) {
+        return jsonError('Error fetching recommendations', 500);
+      }
     }
 
     // ── Route: /api/random ──────────────────────────────────────────────────
