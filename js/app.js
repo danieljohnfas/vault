@@ -831,9 +831,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const res = await fetch('/api/sites?' + params.toString());
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            }
             const data = await res.json();
             
-            if (data && data.sites) {
+            if (data && Array.isArray(data.sites)) {
                 let fetchedSites = data.sites;
                 // Client-side favorites filter if active
                 if (showFavoritesOnly) {
@@ -850,10 +853,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // reflects DB pagination, not the locally-filtered subset
                 hasMoreSites = (data.sites.length === ITEMS_PER_PAGE);
                 renderSites(fetchedSites, append, data.total);
+            } else {
+                console.error('[HV] Unexpected API shape:', data);
+                siteGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Unable to load sites (bad response shape). <a href="javascript:location.reload()" style="color:var(--primary)">Retry</a></div>`;
             }
         } catch (e) {
             console.error('API Fetch Failed', e);
-            siteGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Failed to load sites. Please try again.</div>';
+            siteGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--primary);">Failed to load sites: ${e.message}. <a href="javascript:location.reload()" style="color:var(--primary)">Retry</a></div>`;
         } finally {
             isLoading = false;
             if (loadingBar) loadingBar.classList.remove('loading');
@@ -909,10 +915,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const isRecentlyAdded = (new Date() - new Date(site.addedAt)) < (7 * 24 * 60 * 60 * 1000); // 7 days
             const isNew = (new Date() - new Date(site.addedAt)) < (30 * 24 * 60 * 60 * 1000); // 30 days
             const isTrending = site.isTrending || site.rating >= 4.8 || (isNew && site.rating >= 4.5);
-            
-            const urlObj = new URL(site.url);
-            const domain = urlObj.hostname;
-            const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+
+            let domain = '';
+            let faviconUrl = 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'><rect width=\'48\' height=\'48\' fill=\'%233f3f46\'/></svg>';
+            try {
+                const urlObj = new URL(site.url);
+                domain = urlObj.hostname;
+                faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+            } catch(urlErr) {
+                console.warn('[HV] Bad URL for site:', site.id, site.url);
+            }
 
             const tagsHtml = (site.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
             
