@@ -485,6 +485,7 @@ select {
     transition: var(--transition-normal);
     position: relative;
     overflow: hidden;
+    opacity: 1; /* Always visible — animation is an enhancement only */
 }
 
 .trending-badge {
@@ -539,8 +540,11 @@ select {
     }
 }
 
+/* Cards are always visible by default.
+   .card-entering is a progressive enhancement only —
+   if animation is blocked, cards stay fully visible. */
 .card-entering {
-    animation: cardFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: cardFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ==========================================================================

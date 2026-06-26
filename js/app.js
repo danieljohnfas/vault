@@ -945,7 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const card = document.createElement('div');
             card.className = `card card-entering ${site.promoted ? 'promoted' : ''}`;
-            card.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
+            // No animation delay — prevents cards sitting at opacity:0
             // Tracking & Linkbacks
             const trackedUrl = (() => {
                 try {
