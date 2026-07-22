@@ -196,6 +196,12 @@ async function run() {
 
   if (fresh.length === 0) {
     console.log('⚠️  All queue items already exist in D1. Nothing to add.');
+    
+    if (!DRY_RUN) {
+      const remaining = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()));
+      fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
+      console.log(`📋 Queue cleaned up: removed ${queue.length - remaining.length} existing items.`);
+    }
     process.exit(0);
   }
 
@@ -228,6 +234,11 @@ async function run() {
 
   if (batch.length === 0) {
     console.log('⚠️ No live sites found in the remaining queue!');
+    if (!DRY_RUN) {
+      const remaining = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()) && !deadUrls.has(s.url));
+      fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
+      console.log(`📋 Queue cleaned up: removed ${queue.length - remaining.length} existing/dead items.`);
+    }
     process.exit(0);
   }
 
@@ -254,7 +265,10 @@ async function run() {
 
   // 6. Remove processed and dead entries from queue
   const addedUrls = new Set(batch.map(s => s.url));
-  const remaining = queue.filter(s => !addedUrls.has(s.url) && !deadUrls.has(s.url));
+  const remaining = queue.filter(s => {
+    const norm = String(s.url).replace(/\/$/, '').toLowerCase();
+    return !existingUrls.has(norm) && !addedUrls.has(s.url) && !deadUrls.has(s.url);
+  });
   fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
   console.log(`📋 Queue remaining: ${remaining.length} (removed ${queue.length - remaining.length} entries)`);
 
