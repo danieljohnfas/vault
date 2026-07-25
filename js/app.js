@@ -59,6 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitModal = document.getElementById('submitModal');
     const btnSubmitSite = document.getElementById('btnSubmitSite');
+    
+    // Inject global top-nav affiliate CTA
+    const navActions = document.querySelector('.nav-actions');
+    if(navActions && btnSubmitSite) {
+        const premiumBtn = document.createElement('a');
+        premiumBtn.href = "/out?url=" + encodeURIComponent("https://nutaku.net?ref=hentaivault_nav");
+        premiumBtn.target = "_blank";
+        premiumBtn.className = "btn-submit";
+        premiumBtn.style = "background: linear-gradient(90deg, #ff7b00, #ff2a5f); margin-right: 8px; border: none; box-shadow: 0 2px 10px rgba(255,42,95,0.4);";
+        premiumBtn.innerHTML = "🔞 Play Free";
+        navActions.insertBefore(premiumBtn, btnSubmitSite);
+    }
+
     const closeBtns = document.getElementsByClassName('close-modal');
 
     const ageGate = document.getElementById('ageGate');
