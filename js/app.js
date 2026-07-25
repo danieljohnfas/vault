@@ -953,8 +953,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     u.searchParams.set('utm_source', 'hentaivault.me');
                     u.searchParams.set('utm_medium', 'directory');
                     u.searchParams.set('ref', 'hentaivault.me');
-                    return u.toString();
-                } catch (e) { return site.url; }
+                    return '/out?url=' + encodeURIComponent(u.toString());
+                } catch (e) { return '/out?url=' + encodeURIComponent(site.url); }
             })();
 
             card.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
