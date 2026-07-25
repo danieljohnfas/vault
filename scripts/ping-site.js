@@ -19,10 +19,15 @@ module.exports = async function isSiteLive(url) {
     // If it's a 4xx or 5xx, but it's Cloudflare or another known WAF, we consider it alive, just protected.
     if (!res.ok && res.status >= 400) {
       if (isCloudflareServer && (res.status === 403 || res.status === 503)) {
-        return true;
+        return 'live';
       }
-      // Otherwise, it's a genuine error (404, 500, etc.)
-      return false;
+      
+      // If it's a 404 Not Found, or 410 Gone, we consider it definitively dead.
+      // Other 4xx/5xx might be transient or anti-bot measures, so we return 'error'.
+      if (res.status === 404 || res.status === 410) {
+        return 'dead';
+      }
+      return 'error';
     }
     
     const text = await res.text();
@@ -30,11 +35,12 @@ module.exports = async function isSiteLive(url) {
     
     // If we get an OK response but the body mentions Cloudflare challenge, it's alive.
     if (t.includes('cloudflare') && (t.includes('just a moment') || t.includes('please wait'))) {
-      return true;
+      return 'live';
     }
 
     // Heuristics for dead or parked sites
-    if (text.length < 500) return false; // Too small to be a real site
+    // Too small to be a real site, probably an empty domain or parking page
+    if (text.length < 500) return 'dead'; 
     
     const parkedPhrases = [
       'buy this domain', 
@@ -48,11 +54,12 @@ module.exports = async function isSiteLive(url) {
       'domain names for sale'
     ];
     
-    if (parkedPhrases.some(p => t.includes(p))) return false;
+    if (parkedPhrases.some(p => t.includes(p))) return 'dead';
     
-    return true; // Passed all checks
+    return 'live'; // Passed all checks
   } catch (err) {
     // Catch timeouts, DNS resolution failures, network errors
-    return false;
+    // Since we aren't definitively sure if the domain is gone, we return 'error'
+    return 'error';
   }
 };

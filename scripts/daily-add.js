@@ -220,14 +220,21 @@ async function run() {
     }));
 
     for (const r of results) {
-      if (r.live) {
+      if (r.live === 'live') {
         if (batch.length < COUNT) {
           console.log(`   ✅ ${r.site.url}`);
           batch.push(r.site);
         }
-      } else {
+      } else if (r.live === 'dead') {
         console.log(`   ❌ ${r.site.url} (Dead/Parked)`);
         deadUrls.add(r.site.url);
+      } else {
+        // r.live === 'error'
+        // Site timed out, blocked bot, or returned 5xx. Assume it is alive since it was manually scouted.
+        if (batch.length < COUNT) {
+          console.log(`   ⚠️ ${r.site.url} (Ping Error / Cloudflare Blocked - Assuming Live)`);
+          batch.push(r.site);
+        }
       }
     }
   }
