@@ -1,0 +1,6 @@
+/* ==========================================================================
+   Adsterra Top Banner — Responsive Visibility
+   (Centralised from inline <style> that was repeated on every page)
+   ========================================================================= */
+@media (min-width: 729px) { .ad-top-banner .ad-728 { display: block !important; } }
+@media (max-width: 728px) { .ad-top-banner .ad-320 { display: block !important; } }

@@ -957,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (e) { return site.url; }
             })();
 
-            card.innerHTML = `
+            card.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
                 <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
                     ${isRecentlyAdded ? '<div class="new-badge">New</div>' : ''}
                     ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
@@ -996,7 +996,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="${trackedUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${site.id}" data-outbound="${escapeHTML(site.url)}">${t.visit} &rarr;</a>
                     </div>
                 </div>
-            `;
+            `) : "";
             
             // Add Favorite Listener
             const shareBtn = card.querySelector('.btn-share-icon');

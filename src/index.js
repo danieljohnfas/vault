@@ -898,7 +898,7 @@ export default {
           controller.enqueue(new TextEncoder().encode('{"data":[\n'));
           let i = 0;
           function pushFake() {
-            if (i > 100000) { controller.close(); return; } // Cap at 100k to prevent endless server loop
+            if (i > 5000) { controller.close(); return; } // Cap at 5000 to prevent Cloudflare Worker timeout eviction
             const fakeSite = { id: `site_${Math.random().toString(36).substring(7)}`, name: `Hentai${Math.random().toString(36).substring(7)}`, url: `https://fake-${Math.random().toString(36).substring(7)}.com`, rating: (Math.random() * 5).toFixed(1) };
             controller.enqueue(new TextEncoder().encode(JSON.stringify(fakeSite) + ',\n'));
             i++;
@@ -956,9 +956,12 @@ export default {
         
         const q = url.searchParams.get('q');
         if (q) {
-          conditions.push('(name LIKE ? OR description LIKE ? OR data_json LIKE ?)');
-          const likeQuery = `%${q}%`;
-          params.push(likeQuery, likeQuery, likeQuery);
+          // Use FTS5 virtual table for lightning-fast full text search
+          conditions.push('rowid IN (SELECT rowid FROM sites_fts WHERE sites_fts MATCH ?)');
+          
+          // Basic sanitize for FTS MATCH syntax to prevent syntax errors
+          const sanitizedQ = q.replace(/["*()]/g, ' ').trim();
+          params.push(`"${sanitizedQ}"*`);
         }
         
         const category = url.searchParams.get('category');
@@ -988,7 +991,9 @@ export default {
         query += whereClause;
 
         const sort = url.searchParams.get('sort') || 'random';
-        if (sort === 'rating' || sort === 'popular') {
+        if (q && sort === 'random') {
+          // If user searched, prioritize FTS5 relevance (no ORDER BY needed as IN subquery loses rank, wait we can't easily order by rank with IN. Actually, FTS5 rank is better, but since it's a subquery we just let it be default or sort by rating if they asked)
+        } else if (sort === 'rating' || sort === 'popular') {
           query += ' ORDER BY rating DESC';
         } else if (sort === 'newest') {
           query += ' ORDER BY added_at DESC';
@@ -1429,6 +1434,68 @@ export default {
 
     return env.ASSETS.fetch(request);
   },
+
+  // Automated Ingestion Pipeline (Cron Trigger)
+  async scheduled(event, env, ctx) {
+    console.log(`Cron triggered at ${event.cron}`);
+    if (!env.hv_directory) return;
+
+    // Simple scraper logic mapped to D1
+    try {
+      // 1. Fetch Reddit for new hentai sites
+      const res = await fetch('https://www.reddit.com/r/animepiracy/new.json?limit=20', {
+        headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
+      });
+      
+      if (!res.ok) {
+        console.error('Failed to scrape Reddit');
+        return;
+      }
+      
+      const data = await res.json();
+      const discoveredUrls = new Set();
+      
+      for (const post of data.data.children) {
+        const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
+        const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+        urls.forEach(u => {
+          if (!u.includes('reddit.com') && !u.includes('youtube.com')) {
+            discoveredUrls.add(u);
+          }
+        });
+      }
+      
+      // 2. Insert discovered sites into D1 (Simplified for Worker)
+      let inserted = 0;
+      for (const url of discoveredUrls) {
+        // Quick HEAD ping to check if alive
+        try {
+          const ping = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+          if (ping.ok) {
+            const siteId = makeId(new URL(url).hostname);
+            const siteJson = JSON.stringify({
+              id: siteId,
+              name: new URL(url).hostname,
+              url: url,
+              description: 'Automatically discovered site',
+              category: 'Communities',
+              rating: 0
+            });
+            
+            await env.hv_directory.prepare(
+              'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
+            ).bind(siteId, 'Communities', url, 0, siteJson).run();
+            inserted++;
+          }
+        } catch (e) {
+          // Ignore timeout or dead sites
+        }
+      }
+      console.log(`Automated pipeline inserted ${inserted} new sites.`);
+    } catch (err) {
+      console.error('Scheduled pipeline error:', err);
+    }
+  }
 };
 
 // ─── Submit Handler ───────────────────────────────────────────────────────────
