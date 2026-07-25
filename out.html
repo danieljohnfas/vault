@@ -52,23 +52,38 @@
     <div id="target-url"></div>
 
     <script>
-        let timeLeft = 3;
+        let timeLeft = 10;
         const targetDiv = document.getElementById('target-url');
+        const countdownSpan = document.getElementById('countdown');
+        const msgDiv = document.getElementById('msg');
+        const spinner = document.querySelector('.spinner');
+
         const timer = setInterval(() => {
             timeLeft--;
-            document.getElementById('countdown').innerText = timeLeft;
-            if (timeLeft <= 0) {
+            if (timeLeft > 0) {
+                countdownSpan.innerText = timeLeft;
+            } else {
                 clearInterval(timer);
+                spinner.style.display = 'none';
                 const target = targetDiv.innerText.trim();
                 if (target && target.startsWith('http')) {
-                    document.getElementById('msg').innerText = "Taking you there...";
-                    window.location.replace(target);
+                    msgDiv.innerHTML = `<button id="btnContinue" style="background:#ff2a5f;color:#fff;border:none;padding:16px 32px;border-radius:12px;font-size:20px;cursor:pointer;font-weight:bold;transition:0.2s;box-shadow:0 4px 15px rgba(255,42,95,0.4); animation: pulse 2s infinite;">🚀 Continue to Site</button>`;
+                    document.getElementById('btnContinue').addEventListener('click', () => {
+                        window.location.replace(target);
+                    });
                 } else {
-                    document.getElementById('msg').innerText = "Invalid destination.";
+                    msgDiv.innerText = "Invalid destination.";
                 }
             }
         }, 1000);
     </script>
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
 
 <!-- Footer -->
     <footer class="site-footer" style="margin-top:auto; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding: 20px; text-align: center;">
