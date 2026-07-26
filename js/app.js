@@ -922,6 +922,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Track card index for this batch (for in-feed ad injection every 8 cards)
         const existingCards = siteGrid.querySelectorAll('.card').length;
+        
+        // --- NATIVE SPONSORED CARD INJECTION ---
+        if (existingCards === 0 && !showFavoritesOnly) {
+            const spCard = document.createElement('div');
+            spCard.className = 'card card-entering promoted';
+            spCard.style.border = '2px solid #ff2a5f';
+            spCard.style.boxShadow = '0 0 15px rgba(255, 42, 95, 0.3)';
+            
+            const spUrl = '/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_native');
+            
+            spCard.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
+                <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
+                    <div class="trending-badge" style="background:#ff2a5f;color:white;">⭐ Sponsored</div>
+                </div>
+                <div class="card-banner" style="background:#111; display:flex; justify-content:center; align-items:center;">
+                    <span style="font-size:4rem;">🎮</span>
+                </div>
+                <div class="card-header">
+                    <div style="position:relative; display:inline-block; line-height: 0;">
+                        <img src="https://www.google.com/s2/favicons?domain=nutaku.net&sz=64" alt="Nutaku icon" class="card-icon" loading="lazy">
+                        <div class="status-dot status-up"></div>
+                    </div>
+                    <div>
+                        <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" class="card-title-link" style="text-decoration:none; color:inherit;">
+                            <div class="card-title">Nutaku - Top Adult Games</div>
+                        </a>
+                        <div class="card-category">Games & Visual Novels</div>
+                    </div>
+                </div>
+                <div class="card-desc">Play the best free 3D adult games online. No download required. Join millions of players now!</div>
+                <div class="card-tags"><span class="tag">free</span><span class="tag">games</span><span class="tag">3D</span><span class="tag">premium</span></div>
+                <div class="last-added-label">Added: Just now</div>
+                <div class="card-footer">
+                    <div class="rating" title="Rating: 5/5">★★★★★</div>
+                    <div class="card-actions">
+                        <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="background:#ff2a5f;color:white;">Play Free &rarr;</a>
+                    </div>
+                </div>
+            `) : "";
+            siteGrid.appendChild(spCard);
+        }
+
         let batchIndex = 0;
 
         pageItems.forEach((site) => {
