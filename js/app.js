@@ -1333,7 +1333,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     
-                    autocompleteBox.innerHTML = matches.slice(0,5).map(s => `
+                    let html = `
+                        <div class="autocomplete-item" onclick="window.open('/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_search'), '_blank')" style="background: rgba(255, 42, 95, 0.1); border-left: 3px solid #ff2a5f;">
+                            <img src="https://www.google.com/s2/favicons?domain=nutaku.net&sz=32" alt="">
+                            <div class="autocomplete-info">
+                                <div class="autocomplete-name" style="color: #ff2a5f; font-weight: bold;">Nutaku 3D Games <span style="font-size:0.7rem; background:#ff2a5f; color:white; padding: 2px 4px; border-radius: 4px; margin-left: 6px;">Sponsored</span></div>
+                                <div class="autocomplete-cat">Play Best Adult Games Free</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    html += matches.slice(0,4).map(s => `
                         <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">
                             <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
                             <div class="autocomplete-info">
@@ -1342,6 +1352,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </div>
                     `).join("");
+                    
+                    autocompleteBox.innerHTML = html;
                     autocompleteBox.classList.add("active");
                 } catch (err) {
                     autocompleteBox.classList.remove("active");
