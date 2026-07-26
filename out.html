@@ -69,7 +69,8 @@
                 if (target && target.startsWith('http')) {
                     msgDiv.innerHTML = `<button id="btnContinue" style="background:#ff2a5f;color:#fff;border:none;padding:16px 32px;border-radius:12px;font-size:20px;cursor:pointer;font-weight:bold;transition:0.2s;box-shadow:0 4px 15px rgba(255,42,95,0.4); animation: pulse 2s infinite;">🚀 Continue to Site</button>`;
                     document.getElementById('btnContinue').addEventListener('click', () => {
-                        window.location.replace(target);
+                        window.open(target, '_blank');
+                        window.location.replace('https://nutaku.net?ref=hentaivault_reversepop');
                     });
                 } else {
                     msgDiv.innerText = "Invalid destination.";
