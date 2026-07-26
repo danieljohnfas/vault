@@ -45,6 +45,31 @@ document.addEventListener('DOMContentLoaded', () => {
         initTheme();
     } catch (e) { console.error("Theme init failed", e); }
     
+    // --- Custom First-Click Popunder (Monetization) ---
+    if (!sessionStorage.getItem('hv_fc_pop')) {
+        const interceptor = document.createElement('div');
+        interceptor.style.position = 'fixed';
+        interceptor.style.top = '0';
+        interceptor.style.left = '0';
+        interceptor.style.width = '100vw';
+        interceptor.style.height = '100vh';
+        interceptor.style.zIndex = '2147483647'; // Max z-index
+        interceptor.style.opacity = '0';
+        interceptor.style.cursor = 'pointer';
+        
+        interceptor.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            sessionStorage.setItem('hv_fc_pop', '1');
+            interceptor.remove();
+            
+            // Open affiliate link in new tab
+            window.open('/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_firstclick'), '_blank');
+        }, { capture: true, once: true });
+        
+        document.body.appendChild(interceptor);
+    }
+    
     // --- DOM Elements ---
     const siteGrid = document.getElementById('siteGrid');
     const categoryFiltersContainer = document.getElementById('categoryFilters');
