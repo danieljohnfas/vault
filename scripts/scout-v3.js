@@ -1,0 +1,341 @@
+#!/usr/bin/env node
+
+/**
+ * HentaiVault Advanced Scout V3
+ * 
+ * Features:
+ * 1. Web Spidering (Crawls existing DB for outbound links)
+ * 2. Reddit / Social Mining (Expanded Subreddits)
+ * 3. Directory Scraping
+ * 4. Deep Social Extraction (Discord/Twitter from HTML)
+ * 5. Wayback Machine Trust Scoring
+ * 6. Gemini AI Enrichment (if GEMINI_API_KEY is present)
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
+
+// Subreddits to mine for new URLs (Expanded for V3)
+const SUBREDDITS = [
+  'animepiracy', 'hentai', 'nsfwgaming', 
+  'NSFW411', 'AdultGames', 'doujinshi', 
+  'porn_sites', 'HentaiGames'
+];
+// Directories to scrape
+const DIRECTORIES = [
+  'https://everythingmoe.com/',
+  'https://theindex.moe/',
+  'https://www.hentairules.net/index2.html'
+];
+const BLACKLIST = ['scam', 'phishing', 'casino', 'betting', 'crypto'];
+
+// --- Helper Functions ---
+function getExistingUrls() {
+  const urls = new Set();
+  
+  // 1. From Queue File
+  if (fs.existsSync(QUEUE_FILE)) {
+    const queue = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8'));
+    queue.forEach(s => urls.add(String(s.url).toLowerCase().replace(/\/$/, '')));
+  }
+  
+  // 2. From D1 Export File (via arg)
+  const existingFlag = process.argv.findIndex(a => a === '--existing-urls');
+  const existingFile = existingFlag !== -1 ? process.argv[existingFlag + 1] : null;
+  if (existingFile && fs.existsSync(existingFile)) {
+    const raw = JSON.parse(fs.readFileSync(existingFile, 'utf8'));
+    raw.forEach(u => {
+      const urlStr = typeof u === 'string' ? u : u.url;
+      if (urlStr) urls.add(String(urlStr).toLowerCase().replace(/\/$/, ''));
+    });
+  }
+  
+  return urls;
+}
+
+function isValidUrl(url) {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+    const domain = u.hostname.toLowerCase();
+    // Exclude common non-directory targets
+    if (['youtube.com', 'reddit.com', 'twitter.com', 'x.com', 'google.com', 'github.com', 'imgur.com', 'discord.gg', 'discord.com', 'bsky.app', 'airvpn.org', 'wikipedia.org'].some(d => domain.includes(d))) return false;
+    if (BLACKLIST.some(b => url.toLowerCase().includes(b))) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// --- 1. Web Spidering ---
+async function discoverFromSpidering(existingUrlSet) {
+  const discovered = [];
+  console.log('🕸️ Spidering existing database links to find related networks...');
+  
+  const allExisting = Array.from(existingUrlSet).filter(u => u.startsWith('http'));
+  if (allExisting.length === 0) return discovered;
+  
+  // Pick 20 random URLs to crawl
+  const targets = allExisting.sort(() => 0.5 - Math.random()).slice(0, 20);
+
+  for (const t of targets) {
+    try {
+      const res = await fetch(t, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
+      if (!res.ok) continue;
+      const html = await res.text();
+      const urls = html.match(/href="https?:\/\/[^"]+"/g) || [];
+      
+      let found = 0;
+      urls.map(u => u.replace('href="', '').replace('"', ''))
+          .filter(isValidUrl)
+          .forEach(u => {
+            discovered.push({ url: u, source: 'spider' });
+            found++;
+          });
+      console.log(`   - Spidered ${t} -> found ${found} outbound valid links`);
+    } catch (err) {
+      // Silently ignore timeout or network errors on crawled sites
+    }
+  }
+  return discovered;
+}
+
+// --- 2. Reddit Mining (Subreddits & Global Search) ---
+const REDDIT_QUERIES_POOL = [
+  'hentai streaming', 'hentai site', 'watch hentai', 'best hentai tube', 'uncensored hentai',
+  'porn site', 'adult tube', 'hd porn', 'free porn streaming', 'premium adult video',
+  'jav streaming', 'jav site', 'watch jav',
+  'doujinshi site', 'read hentai manga', 'doujin reader', 'nhentai alternative', 'fakku alternative',
+  'adult webtoon', 'nsfw comic site', 'hentai manga english', 'read doujin',
+  'adult game', 'eroge download', 'hentai game site', 'nsfw visual novel', 'nutaku alternative',
+  'f95zone alternative', 'itch.io adult', 'patreon adult games', 'play hentai games',
+  'hentai booru', 'rule34 site', 'gelbooru alternative', 'nsfw image board', 'hentai gallery',
+  'vr porn', 'vr hentai', 'interactive porn', '3d porn site', 'vr adult video',
+  'onlyfans alternative', 'fansly alternative', 'patreon alternative nsfw', 'adult creator platform',
+  'cam site', 'free cam show',
+  'hentai torrents', 'adult torrent site', 'porn download site', 'jav torrents', 'nsfw piracy'
+];
+
+async function discoverFromReddit() {
+  const discovered = [];
+  console.log('🕵️ Mining Reddit for new URLs...');
+  
+  for (const sub of SUBREDDITS) {
+    try {
+      const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=100`, {
+        headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const post of data.data.children) {
+        const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
+        const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+        urls.filter(isValidUrl).forEach(u => discovered.push({ url: u, source: `r/${sub}` }));
+      }
+    } catch (err) {
+      console.log(`Failed to mine r/${sub}: ${err.message}`);
+    }
+  }
+
+  const selectedQueries = REDDIT_QUERIES_POOL.sort(() => 0.5 - Math.random()).slice(0, 8);
+  console.log(`🌍 Combing Reddit Search for ${selectedQueries.length} random keyword combinations...`);
+  
+  for (const query of selectedQueries) {
+    try {
+      const res = await fetch(`https://www.reddit.com/search.json?q=${encodeURIComponent(query)}&sort=new&t=week&limit=100`, {
+        headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const post of data.data.children) {
+        const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
+        const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+        urls.filter(isValidUrl).forEach(u => discovered.push({ url: u, source: `reddit_search` }));
+      }
+    } catch (err) {
+      console.log(`Failed to search Reddit for "${query}": ${err.message}`);
+    }
+  }
+  
+  return discovered;
+}
+
+// --- 3. Directory Scraping ---
+async function discoverFromDirectories() {
+  const discovered = [];
+  console.log('🕸️ Scraping known directories...');
+  for (const dir of DIRECTORIES) {
+    try {
+      const res = await fetch(dir, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+      if (!res.ok) continue;
+      const html = await res.text();
+      const urls = html.match(/href="https?:\/\/[^"]+"/g) || [];
+      urls.map(u => u.replace('href="', '').replace('"', '')).filter(isValidUrl).forEach(u => discovered.push({ url: u, source: 'directory' }));
+    } catch (err) {
+      console.log(`Failed to scrape ${dir}: ${err.message}`);
+    }
+  }
+  return discovered;
+}
+
+// --- Deep HTML & Social Extraction ---
+async function validateAndExtract(url) {
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    const html = await res.text();
+    
+    let title = (html.match(/<title>([^<]+)<\/title>/i) || [])[1] || new URL(url).hostname;
+    title = title.replace(/\s+/g, ' ').trim();
+
+    let desc = (html.match(/<meta[^>]*name="description"[^>]*content="([^"]+)"/i) || [])[1] || '';
+    if (!desc) desc = (html.match(/<meta[^>]*property="og:description"[^>]*content="([^"]+)"/i) || [])[1] || '';
+    
+    const discord = (html.match(/https?:\/\/(?:www\.)?(?:discord\.gg|discordapp\.com\/invite)\/[a-zA-Z0-9-]+/i) || [])[0] || null;
+    const twitter = (html.match(/https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/[a-zA-Z0-9_]+/i) || [])[0] || null;
+
+    return { title, desc, discord, twitter, live: true };
+  } catch (err) {
+    return null;
+  }
+}
+
+// --- Wayback Machine Trust Scoring ---
+async function fetchWaybackAge(url) {
+  try {
+    const res = await fetch(`https://archive.org/wayback/available?url=${url}`);
+    if (!res.ok) return 0;
+    const data = await res.json();
+    if (data.archived_snapshots && data.archived_snapshots.closest) {
+      const timestamp = data.archived_snapshots.closest.timestamp; 
+      const year = parseInt(timestamp.substring(0, 4));
+      const currentYear = new Date().getFullYear();
+      const age = currentYear - year;
+      return age > 5 ? 0.4 : (age > 2 ? 0.2 : 0);
+    }
+  } catch (err) {}
+  return 0;
+}
+
+// --- AI Enrichment (Gemini API) ---
+async function aiEnrich(siteData) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return siteData; 
+
+  console.log(`   🤖 Enhancing with Gemini AI for ${siteData.name}...`);
+  try {
+    const prompt = `You are an SEO expert. Write an engaging English description and a 'longReview' for an adult entertainment directory site.
+    Site Name: ${siteData.name}
+    URL: ${siteData.url}
+    Meta Description: ${siteData.description}
+    Return ONLY a JSON object with this exact format, nothing else:
+    {"description": "A 1-2 sentence snappy intro", "longReview": "A detailed 3-4 sentence review mentioning features, speed, and library."}`;
+
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
+
+    const json = await res.json();
+    const textResp = json.candidates[0].content.parts[0].text;
+    const parsed = JSON.parse(textResp.replace(/```json/g, '').replace(/```/g, '').trim());
+    
+    siteData.description = parsed.description || siteData.description;
+    if (parsed.longReview) siteData.longReview = parsed.longReview;
+    siteData.tags.push("AI-Enhanced");
+  } catch (e) {
+    console.log(`   ⚠️ AI Enrichment failed: ${e.message}`);
+  }
+  return siteData;
+}
+
+function guessCategory(domain, title) {
+  const d = (domain + ' ' + title).toLowerCase();
+  if (d.includes('hentai') || d.includes('anime')) return 'Hentai Streaming';
+  if (d.includes('manga') || d.includes('doujin')) return 'Manga & Doujinshi';
+  if (d.includes('game') || d.includes('play')) return 'Games & Visual Novels';
+  if (d.includes('vr')) return 'Immersive & Interactive';
+  if (d.includes('booru') || d.includes('chan')) return 'Image Boards (Boorus)';
+  if (d.includes('dl') || d.includes('torrent')) return 'Downloads & Torrents';
+  if (d.includes('cam') || d.includes('fans')) return 'Creator Platforms';
+  return 'Adult Tubes & Studios';
+}
+
+// --- Main Pipeline ---
+async function run() {
+  console.log(`\n🚀 HentaiVault Scout V3 — ${new Date().toISOString().split('T')[0]}`);
+  
+  const existingUrls = getExistingUrls();
+  console.log(`📦 Loaded ${existingUrls.size} existing URLs to deduplicate against.`);
+
+  const spiderLinks = await discoverFromSpidering(existingUrls);
+  const redditLinks = await discoverFromReddit();
+  const dirLinks = await discoverFromDirectories();
+  
+  const rawLinks = [...spiderLinks, ...redditLinks, ...dirLinks];
+  const uniqueUrls = new Set();
+  const candidates = [];
+  
+  for (const link of rawLinks) {
+    const norm = String(link.url).toLowerCase().replace(/\/$/, '');
+    if (!existingUrls.has(norm) && !uniqueUrls.has(norm)) {
+      uniqueUrls.add(norm);
+      candidates.push(link.url);
+    }
+  }
+
+  console.log(`\n🎯 Found ${candidates.length} unique, brand-new URLs to validate.`);
+
+  const validSites = [];
+  let count = 0;
+
+  for (const url of candidates) {
+    if (count >= 200) break; // Increased limit to 200 discoveries per run
+
+    const extracted = await validateAndExtract(url);
+    if (!extracted) continue; 
+
+    console.log(`\n✅ Validated: ${url}`);
+    
+    const domain = new URL(url).hostname;
+    const category = guessCategory(domain, extracted.title);
+    const waybackBonus = await fetchWaybackAge(url);
+    const baseRating = Math.round((3.8 + Math.random() * 0.7 + waybackBonus) * 10) / 10;
+    
+    let siteData = {
+      name: extracted.title.substring(0, 50),
+      url: url,
+      category: category,
+      description: extracted.desc || `${domain} is a great resource for ${category.toLowerCase()}.`,
+      rating: Math.min(baseRating, 5.0),
+      tags: ['ScoutV3', 'New'],
+      addedAt: new Date().toISOString().split('T')[0]
+    };
+
+    if (extracted.discord) siteData.discord = extracted.discord;
+    if (extracted.twitter) siteData.twitter = extracted.twitter;
+
+    siteData = await aiEnrich(siteData);
+    
+    validSites.push(siteData);
+    count++;
+  }
+
+  if (validSites.length > 0) {
+    let queue = [];
+    if (fs.existsSync(QUEUE_FILE)) queue = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8'));
+    queue.push(...validSites);
+    fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2), 'utf8');
+    console.log(`\n💾 Saved ${validSites.length} crazy new sites to queue! Queue size: ${queue.length}`);
+  } else {
+    console.log(`\n⚠️ No new valid sites found today.`);
+  }
+}
+
+run().catch(err => {
+  console.error('❌ Fatal error in Scout V3:', err.message);
+  process.exit(1);
+});

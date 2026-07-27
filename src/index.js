@@ -459,8 +459,10 @@ class CompareBodyHandler {
         }[tag] || tag));
     };
 
-    const s1Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site1.url).hostname}&sz=128`;
-    const s2Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site2.url).hostname}&sz=128`;
+    let s1Favicon = '';
+    try { s1Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site1.url).hostname}&sz=128`; } catch(e) {}
+    let s2Favicon = '';
+    try { s2Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site2.url).hostname}&sz=128`; } catch(e) {}
 
     const html = `
       <div class="review-header" style="justify-content: center; text-align: center; flex-direction: column;">
@@ -1261,7 +1263,7 @@ export default {
 
       let id = url.searchParams.get('id');
       if (!id) {
-        return Response.redirect(url.origin + '/', 302);
+        return new Response('Not Found', { status: 404 });
       }
 
       // Typo-Squatting / Redirects
@@ -1326,7 +1328,7 @@ export default {
     if (url.pathname === '/compare') {
       const site1Id = url.searchParams.get('site1');
       const site2Id = url.searchParams.get('site2');
-      if (!site1Id || !site2Id) return Response.redirect(url.origin + '/', 302);
+      if (!site1Id || !site2Id) return new Response('Not Found', { status: 404 });
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/compare.html'));
       if (!response.ok) return response;
@@ -1342,7 +1344,7 @@ export default {
           }
         } catch (e) {}
       }
-      if (!site1 || !site2) return Response.redirect(url.origin + '/', 302);
+      if (!site1 || !site2) return new Response('Not Found', { status: 404 });
 
       const canonicalUrl = `https://hentaivault.me/compare?site1=${site1Id}&site2=${site2Id}`;
       const rewriter = new HTMLRewriter()
@@ -1356,7 +1358,7 @@ export default {
     // ── Route: /out (Interstitial Redirect) ─────────────────────────────────
     if (url.pathname === '/out') {
       const id = url.searchParams.get('id');
-      if (!id) return Response.redirect(url.origin + '/', 302);
+      if (!id) return new Response('Not Found', { status: 404 });
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/out.html'));
       if (!response.ok) return response;
@@ -1368,7 +1370,7 @@ export default {
           if (row) site = { url: row.url };
         } catch (e) {}
       }
-      if (!site) return Response.redirect(url.origin + '/', 302);
+      if (!site) return new Response('Not Found', { status: 404 });
 
       const rewriter = new HTMLRewriter()
         .on('div#target-url', new OutHandler(site));
@@ -1403,11 +1405,9 @@ export default {
     // Explicitly mapping to .html causes an infinite 307 redirect loop.
 
     // ── Everything else: serve static assets — with canonical injection ───────
-    // Build the canonical URL (strip ?lang= and other UI params, keep only meaningful params)
-    const isHtmlPage = url.pathname === '/' || url.pathname.endsWith('.html') ||
-                       url.pathname.includes('/category/') || url.pathname.includes('/blog/');
-    
-    if (isHtmlPage) {
+    const response = await env.ASSETS.fetch(request);
+
+    if (response.ok && response.headers.get('content-type')?.includes('text/html')) {
       const canonicalUrl = (() => {
         const clean = new URL(url.toString());
         // Keep only ?id= and ?q= query params — strip ?lang= and other UI state
@@ -1418,13 +1418,12 @@ export default {
         if (q) clean.searchParams.set('q', q);
         // Always use https
         clean.protocol = 'https:';
+        // Strip .html for canonicals
+        if (clean.pathname.endsWith('.html')) {
+          clean.pathname = clean.pathname === '/index.html' ? '/' : clean.pathname.slice(0, -5);
+        }
         return clean.toString();
       })();
-
-      const response = await env.ASSETS.fetch(request);
-      if (!response.ok || !response.headers.get('content-type')?.includes('text/html')) {
-        return response;
-      }
 
       const rewriter = new HTMLRewriter()
         .on('head', new CanonicalInjector(canonicalUrl));
@@ -1432,7 +1431,7 @@ export default {
       return rewriter.transform(response);
     }
 
-    return env.ASSETS.fetch(request);
+    return response;
   },
 
   // Automated Ingestion Pipeline (Cron Trigger)

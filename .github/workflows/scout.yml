@@ -1,9 +1,9 @@
-name: 🕵️ Scout V2
+name: 🕵️ Scout V3
 
 on:
   schedule:
-    # Runs every Sunday at Midnight UTC
-    - cron: '0 0 * * 0'
+    # Runs every day at Midnight UTC
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   scout:
-    name: Advanced Social & AI Scout
+    name: Advanced Spider, Social & AI Scout
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -30,15 +31,36 @@ jobs:
           git config user.name "HentaiVault Scout Bot"
           git config user.email "bot@hentaivault.me"
 
-      - name: Run Scout V2
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Fetch existing site URLs from D1 for Spidering
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "==== Fetching existing URLs from D1 ===="
+          npx wrangler d1 execute hv-directory --remote \
+            --command="SELECT url FROM sites;" \
+            --json > /tmp/d1_urls_raw.json 2>/dev/null || echo '[]' > /tmp/d1_urls_raw.json
+
+          node -e "
+            const raw = require('/tmp/d1_urls_raw.json');
+            const rows = Array.isArray(raw) && raw[0] && raw[0].results ? raw[0].results : [];
+            const urls = rows.map(r => r.url);
+            require('fs').writeFileSync('/tmp/existing_urls_scout.json', JSON.stringify(urls));
+            console.log('Existing sites loaded for spidering/dedup: ' + urls.length);
+          "
+
+      - name: Run Scout V3
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          node scripts/scout-v2.js
+          node scripts/scout-v3.js --existing-urls /tmp/existing_urls_scout.json
 
       - name: Commit updated queue to GitHub
         run: |
           git add scripts/sites-queue.json
           git diff --cached --quiet && echo "No new sites found." || \
-            git commit -m "feat(scout): append crazy new discoveries to queue [$(date -u +%Y-%m-%d)]"
+            git commit -m "feat(scout): append crazy new discoveries via Scout V3 [$(date -u +%Y-%m-%d)]"
           git push
