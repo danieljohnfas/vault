@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // Simple test: create a fake ad div
         const testAd = document.createElement('div');
+        testAd.innerHTML = '&nbsp;'; // Give it content so offsetHeight > 0 by default
         testAd.className = 'adsbox';
         testAd.style.position = 'absolute';
         testAd.style.top = '-999px';
