@@ -419,6 +419,12 @@ class CanonicalInjector {
   }
 }
 
+class CanonicalRemover {
+  element(element) {
+    element.remove();
+  }
+}
+
 class OutHandler {
   constructor(site) {
     this.site = site;
@@ -1317,6 +1323,7 @@ export default {
       const lang = effectiveLang;
 
       const rewriter = new HTMLRewriter()
+        .on('link[rel="canonical"]', new CanonicalRemover())
         .on('title', new TitleHandler(titleText))
         .on('head', new HeadHandler(site, canonicalUrl))
         .on('div#reviewContent', new ReviewBodyHandler(site, lang, relatedSites));
@@ -1348,6 +1355,7 @@ export default {
 
       const canonicalUrl = `https://hentaivault.me/compare?site1=${site1Id}&site2=${site2Id}`;
       const rewriter = new HTMLRewriter()
+        .on('link[rel="canonical"]', new CanonicalRemover())
         .on('title', new TitleHandler(`${site1.name} vs ${site2.name} | HentaiVault`))
         .on('head', new CompareHeadHandler(site1, site2, canonicalUrl))
         .on('main#compareContent', new CompareBodyHandler(site1, site2));
@@ -1373,6 +1381,7 @@ export default {
       if (!site) return new Response('Not Found', { status: 404 });
 
       const rewriter = new HTMLRewriter()
+        .on('link[rel="canonical"]', new CanonicalRemover())
         .on('div#target-url', new OutHandler(site));
 
       return rewriter.transform(response);
@@ -1396,6 +1405,7 @@ export default {
       if (!site) return new Response('Site not found', { status: 404 });
 
       const rewriter = new HTMLRewriter()
+        .on('link[rel="canonical"]', new CanonicalRemover())
         .on('body', new EmbedHandler(site));
 
       return rewriter.transform(response);
@@ -1426,6 +1436,7 @@ export default {
       })();
 
       const rewriter = new HTMLRewriter()
+        .on('link[rel="canonical"]', new CanonicalRemover())
         .on('head', new CanonicalInjector(canonicalUrl));
 
       return rewriter.transform(response);
