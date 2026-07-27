@@ -297,7 +297,7 @@ class ReviewBodyHandler {
                 setTimeout(function() {
                     var testAd = document.createElement('div');
                     testAd.innerHTML = '&nbsp;';
-                    testAd.className = 'adsbox';
+                    testAd.className = 'ad-banner adsbox ad-placement';
                     document.body.appendChild(testAd);
                     window.setTimeout(function() {
                         if (testAd.offsetHeight === 0) {
