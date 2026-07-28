@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navActions = document.querySelector('.nav-actions');
     if(navActions && btnSubmitSite) {
         const premiumBtn = document.createElement('a');
-        premiumBtn.href = "/out?url=" + encodeURIComponent("https://nutaku.net?ref=hentaivault_nav");
+        premiumBtn.href = "/out?url=" + encodeURIComponent("https://partner.pcloud.com/r/156786");
         premiumBtn.target = "_blank";
         premiumBtn.className = "btn-submit";
-        premiumBtn.style = "background: linear-gradient(90deg, #ff7b00, #ff2a5f); margin-right: 8px; border: none; box-shadow: 0 2px 10px rgba(255,42,95,0.4);";
-        premiumBtn.innerHTML = "🔞 Play Free";
+        premiumBtn.style = "background: linear-gradient(90deg, #007EE5, #0056b3); margin-right: 8px; border: none; box-shadow: 0 2px 10px rgba(0,126,229,0.4);";
+        premiumBtn.innerHTML = "☁️ 10TB Storage";
         navActions.insertBefore(premiumBtn, btnSubmitSite);
     }
 
@@ -927,37 +927,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (existingCards === 0 && !showFavoritesOnly) {
             const spCard = document.createElement('div');
             spCard.className = 'card card-entering promoted';
-            spCard.style.border = '2px solid #ff2a5f';
-            spCard.style.boxShadow = '0 0 15px rgba(255, 42, 95, 0.3)';
+            spCard.style.border = '2px solid #007EE5';
+            spCard.style.boxShadow = '0 0 15px rgba(0, 126, 229, 0.3)';
             
-            const spUrl = '/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_native');
+            const spUrl = '/out?url=' + encodeURIComponent('https://partner.pcloud.com/r/156786');
             
             spCard.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
                 <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
-                    <div class="trending-badge" style="background:#ff2a5f;color:white;">⭐ Sponsored</div>
+                    <div class="trending-badge" style="background:#007EE5;color:white;">⭐ Sponsored</div>
                 </div>
                 <div class="card-banner" style="background:#111; display:flex; justify-content:center; align-items:center;">
-                    <span style="font-size:4rem;">🎮</span>
+                    <span style="font-size:4rem;">☁️</span>
                 </div>
                 <div class="card-header">
                     <div style="position:relative; display:inline-block; line-height: 0;">
-                        <img src="https://www.google.com/s2/favicons?domain=nutaku.net&sz=64" alt="Nutaku icon" class="card-icon" loading="lazy">
+                        <img src="https://www.google.com/s2/favicons?domain=pcloud.com&sz=64" alt="pCloud icon" class="card-icon" loading="lazy">
                         <div class="status-dot status-up"></div>
                     </div>
                     <div>
                         <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" class="card-title-link" style="text-decoration:none; color:inherit;">
-                            <div class="card-title">Nutaku - Top Adult Games</div>
+                            <div class="card-title">pCloud - 10TB Lifetime Storage</div>
                         </a>
-                        <div class="card-category">Games & Visual Novels</div>
+                        <div class="card-category">Cloud Storage</div>
                     </div>
                 </div>
-                <div class="card-desc">Play the best free 3D adult games online. No download required. Join millions of players now!</div>
-                <div class="card-tags"><span class="tag">free</span><span class="tag">games</span><span class="tag">3D</span><span class="tag">premium</span></div>
+                <div class="card-desc">Running out of space for your collection? Get up to 10TB of Lifetime Cloud Storage with pCloud. One-time payment, yours forever.</div>
+                <div class="card-tags"><span class="tag">cloud</span><span class="tag">storage</span><span class="tag">lifetime</span><span class="tag">premium</span></div>
                 <div class="last-added-label">Added: Just now</div>
                 <div class="card-footer">
                     <div class="rating" title="Rating: 5/5">★★★★★</div>
                     <div class="card-actions">
-                        <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="background:#ff2a5f;color:white;">Play Free &rarr;</a>
+                        <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="background:#007EE5;color:white;">Get Offer &rarr;</a>
                     </div>
                 </div>
             `) : "";

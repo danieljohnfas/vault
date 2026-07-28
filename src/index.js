@@ -288,11 +288,7 @@ class ReviewBodyHandler {
                         <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" style="background:none; border:none; color:var(--text-muted); text-decoration:underline; cursor:pointer; font-size:0.85rem;">⚠️ Report Dead Link</button>
                     </div>
                 </div>
-                <div id="adblock-overlay" class="adblock-overlay" style="display: none;">
-                    <h3>🔒 Content Locked</h3>
-                    <p>Please disable your adblocker to support our directory and unlock the link to ${localName}.</p>
-                    <button class="btn-visit" onclick="window.location.reload()" style="font-size: 1rem; padding: 10px 20px;">I've disabled it, refresh</button>
-                </div>
+
             </div>
             
             <script>
@@ -309,19 +305,7 @@ class ReviewBodyHandler {
                       .catch(() => btn.innerText = '⚠️ Error');
                 }
 
-                setTimeout(function() {
-                    var testAd = document.createElement('div');
-                    testAd.innerHTML = '&nbsp;';
-                    testAd.className = 'ad-banner adsbox ad-placement';
-                    document.body.appendChild(testAd);
-                    window.setTimeout(function() {
-                        if (testAd.offsetHeight === 0) {
-                            document.getElementById('cta-content').classList.add('adblock-blur');
-                            document.getElementById('adblock-overlay').style.display = 'flex';
-                        }
-                        testAd.remove();
-                    }, 100);
-                }, 500);
+
             </script>
             <div class="compare-alternatives" style="margin-top: 60px;">
                 <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
