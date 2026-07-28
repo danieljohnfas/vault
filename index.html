@@ -109,6 +109,7 @@
     <link rel="stylesheet" href="css/style.css?v=5">
 
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://image.thum.io">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -130,7 +131,7 @@
 
     <!-- Cloudflare Turnstile -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js" defer></script>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#09090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -140,8 +141,9 @@
 
     </head>
 <body>
-
-    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
+    <!-- Adsterra Placeholder: Top Banner -->
+    <div id="ad-top" style="width: 728px; height: 90px; margin: 0 auto; overflow: hidden; display: flex; justify-content: center; max-width: 100%;"></div>
+<!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
     <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
         <div class="ad-728" style="display:none;">
             <script>
@@ -153,8 +155,7 @@
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
-        </div>
+            </div>
         <div class="ad-320" style="display:none;">
             <script>
               atOptions = {
@@ -165,8 +166,7 @@
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
-        </div>
+            </div>
     </div>
 
 <!-- Navigation -->
@@ -216,10 +216,7 @@
                 <a href="/region-unblocked" class="btn-outline" style="border-color: #00e676; color: #00e676; font-weight: bold;" title="Find sites that bypass local bans">
                     <span class="btn-icon">🌐</span> Live ISP Unblock Scanner
                 </a>
-                                <a href="https://revolthem.com/a0qetz6sq?key=df2ad4ccf03e4eb012e77d7ffe6be738" class="btn-primary" style="background: linear-gradient(135deg, #f1c40f, #f39c12); color: #000; border: none; font-weight: 800;" target="_blank" rel="noopener noreferrer">
-                    <span class="btn-icon">🎁</span> Bonus Vault
-                </a>
-                <button id="btnSurpriseMe" class="btn-primary">
+                                <button id="btnSurpriseMe" class="btn-primary">
                     <span class="btn-icon">🎲</span> <span data-i18n="surprise_me">Surprise Me</span>
                 </button>
                 <a href="#resultsCount" class="btn-secondary" data-i18n="browse_vault">Browse Vault</a>
@@ -229,6 +226,9 @@
             </div>
         </div>
 </header>
+    <!-- Adsterra Placeholder: 468x60 -->
+    <div id="ad-hero" style="width: 468px; height: 60px; margin: 30px auto; overflow: hidden; display: flex; justify-content: center; max-width: 100%;"></div>
+
     <!-- Adsterra Banner 468x60 -->
     <div style="text-align:center; margin: 30px auto; max-width:100%; overflow:hidden;">
         <script>
@@ -240,8 +240,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/4179d9cf3a579f7778ba7a09f693ca35/invoke.js"></script>
-    </div>
+        </div>
 
 <!-- Recently Viewed Shelf -->
     <div id="recentlyViewedContainer" style="display: none; max-width: 1200px; margin: 20px auto 0; padding: 0 24px;">
@@ -286,13 +285,13 @@
             </div>
 
             <div class="filter-group cloud-sync-group" style="background: rgba(123,57,220,0.1); border: 1px solid rgba(123,57,220,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-                <h3 style="display:flex; align-items:center; gap:8px;">☁️ Cloud Sync <span style="font-size:0.65rem; background:var(--primary); padding:2px 6px; border-radius:8px; color:white;">NEW</span></h3>
+                <h3 style="display:flex; align-items:center; gap:8px;">☁️ Cloud Sync <span style="font-size:0.65rem; background:var(--primary); padding:2px 6px; border-radius:8px; color:#000;">NEW</span></h3>
                 <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Sync your favorites across devices anonymously.</p>
                 <div style="display:flex; gap:8px; margin-bottom:10px;">
-                    <input type="text" id="syncCodeInput" placeholder="Enter Sync Code" style="flex:1; padding:8px; background:var(--bg-elevated); border:1px solid var(--border-color); color:white; border-radius:6px; font-size:0.85rem; width:100%;" autocomplete="off" spellcheck="false">
-                    <button id="btnSyncRestore" style="padding:8px 12px; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Load</button>
+                    <input type="text" id="syncCodeInput" placeholder="Enter Sync Code" style="flex:1; padding:8px; background:var(--bg-elevated); border:1px solid var(--border-color); color:#000; border-radius:6px; font-size:0.85rem; width:100%;" autocomplete="off" spellcheck="false">
+                    <button id="btnSyncRestore" style="padding:8px 12px; background:var(--primary); color:#000; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Load</button>
                 </div>
-                <div style="font-size:0.75rem; color:var(--text-muted); text-align:center;">Your Code: <br><span id="mySyncCodeDisplay" style="font-family:monospace; color:white; font-weight:bold; letter-spacing:1px; user-select:all; font-size:1.1rem; display:inline-block; margin-top:5px; background:var(--bg-surface); padding:4px 8px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">---</span></div>
+                <div style="font-size:0.75rem; color:var(--text-muted); text-align:center;">Your Code: <br><span id="mySyncCodeDisplay" style="font-family:monospace; color:#000; font-weight:bold; letter-spacing:1px; user-select:all; font-size:1.1rem; display:inline-block; margin-top:5px; background:var(--bg-surface); padding:4px 8px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">---</span></div>
             </div>
 
             <!-- Ad Sidebar 1 -->
@@ -308,8 +307,10 @@
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/f09dcac8f1df551ed650e4aee0028622/invoke.js"></script>
-    </div>
+        </div>
+
+    <!-- Adsterra Placeholder: 160x300 -->
+    <div id="ad-sidebar" style="width: 160px; height: 300px; margin: 20px auto; overflow: hidden; display: flex; justify-content: center; max-width: 100%;"></div>
 </aside>
 
         <!-- Listings -->
@@ -325,12 +326,12 @@
             <noscript><p class="no-js-msg">Please enable JavaScript to browse HentaiVault.</p></noscript>
             <div style="margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
                 <span style="font-size:0.78rem;color:var(--text-muted);flex-shrink:0;">Quick Packs:</span>
-                <button onclick="applyPlaylist('vanilla','')" style="padding:5px 12px;background:rgba(255,42,95,0.1);border:1px solid rgba(255,42,95,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Vanilla</button>
-                <button onclick="applyPlaylist('HD','Hentai Streaming')" style="padding:5px 12px;background:rgba(123,57,220,0.1);border:1px solid rgba(123,57,220,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">HD Streaming</button>
-                <button onclick="applyPlaylist('manga','Manga &amp; Doujinshi')" style="padding:5px 12px;background:rgba(0,180,120,0.1);border:1px solid rgba(0,180,120,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Manga</button>
-                <button onclick="applyPlaylist('no-ads','')" style="padding:5px 12px;background:rgba(255,200,0,0.1);border:1px solid rgba(255,200,0,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">No Ads</button>
-                <button onclick="applyPlaylist('mobile-friendly','')" style="padding:5px 12px;background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Mobile</button>
-                <button onclick="applyPlaylist('uncensored','')" style="padding:5px 12px;background:rgba(255,100,0,0.1);border:1px solid rgba(255,100,0,0.35);color:white;border-radius:20px;cursor:pointer;font-size:0.8rem;">Uncensored</button>
+                <button onclick="applyPlaylist('vanilla','')" style="padding:5px 12px;background:rgba(255,42,95,0.1);border:1px solid rgba(255,42,95,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">Vanilla</button>
+                <button onclick="applyPlaylist('HD','Hentai Streaming')" style="padding:5px 12px;background:rgba(123,57,220,0.1);border:1px solid rgba(123,57,220,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">HD Streaming</button>
+                <button onclick="applyPlaylist('manga','Manga &amp; Doujinshi')" style="padding:5px 12px;background:rgba(0,180,120,0.1);border:1px solid rgba(0,180,120,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">Manga</button>
+                <button onclick="applyPlaylist('no-ads','')" style="padding:5px 12px;background:rgba(255,200,0,0.1);border:1px solid rgba(255,200,0,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">No Ads</button>
+                <button onclick="applyPlaylist('mobile-friendly','')" style="padding:5px 12px;background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">Mobile</button>
+                <button onclick="applyPlaylist('uncensored','')" style="padding:5px 12px;background:rgba(255,100,0,0.1);border:1px solid rgba(255,100,0,0.35);color:#000;border-radius:20px;cursor:pointer;font-size:0.8rem;">Uncensored</button>
             </div>
             <div id="trendingContainer" style="display:none;margin-bottom:14px;"><p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Trending Now</p><div id="trendingShelf" style="display:flex;gap:12px;flex-wrap:wrap;"></div></div>
             <div id="forYouContainer" style="display:none;margin-bottom:14px;"><p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Recommended For You</p><div id="forYouShelf" style="display:flex;gap:12px;flex-wrap:wrap;"></div></div>
@@ -351,19 +352,19 @@
                 </h2>
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <a href="/blog/best-doujin-sites-2026" style="text-decoration: none; display: block; padding: 16px; border-radius: var(--radius-lg); background: var(--bg-surface-elevated); border: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='transparent'">
-                        <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">Top 10 Best Doujin Sites & nhentai Alternatives in 2026</h3>
+                        <h3 style="color: #ff6b93; margin-bottom: 8px; font-size: 1.1rem;">Top 10 Best Doujin Sites & nhentai Alternatives in 2026</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Looking for free doujinshi, translated hentai manga, or raw Japanese archives? We ranked the absolute best doujin sites working right now.</p>
                     </a>
                     <a href="/blog/nhentai-alternatives-2026" style="text-decoration: none; display: block; padding: 16px; border-radius: var(--radius-lg); background: var(--bg-surface-elevated); border: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='transparent'">
-                        <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">Best nhentai Alternatives in 2026 — Top Sites Still Working</h3>
+                        <h3 style="color: #ff6b93; margin-bottom: 8px; font-size: 1.1rem;">Best nhentai Alternatives in 2026 — Top Sites Still Working</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">nhentai down or blocked? Here are the best working alternatives with the same massive library of English-translated doujinshi.</p>
                     </a>
                     <a href="/blog/best-streaming-2026" style="text-decoration: none; display: block; padding: 16px; border-radius: var(--radius-lg); background: var(--bg-surface-elevated); border: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='transparent'">
-                        <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">Best Hentai Streaming Sites 2026 — Ranked & Reviewed</h3>
+                        <h3 style="color: #ff6b93; margin-bottom: 8px; font-size: 1.1rem;">Best Hentai Streaming Sites 2026 — Ranked & Reviewed</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Hanime alternatives, uncensored hentai streams, and the top sites ranked by quality and reliability.</p>
                     </a>
                     <a href="/blog/hanime-alternatives-2026" style="text-decoration: none; display: block; padding: 16px; border-radius: var(--radius-lg); background: var(--bg-surface-elevated); border: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='transparent'">
-                        <h3 style="color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">7 Best Hanime Alternatives in 2026 (Free & Working)</h3>
+                        <h3 style="color: #ff6b93; margin-bottom: 8px; font-size: 1.1rem;">7 Best Hanime Alternatives in 2026 (Free & Working)</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Hanime.tv down or buffering? Here are the best free streaming alternatives for uncensored anime.</p>
                     </a>
                 </div>
@@ -392,7 +393,7 @@
                         <div style="font-size:0.85rem; color:var(--text-muted);">Monthly visit report showing impressions and clicks from HentaiVault</div>
                     </div>
                 </div>
-                <a href="/contact" style="display:inline-block; background:linear-gradient(90deg, var(--primary), var(--accent)); color:white; padding:12px 28px; border-radius:var(--radius-pill); font-weight:700; text-decoration:none; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                <a href="/contact" style="display:inline-block; background:linear-gradient(90deg, var(--primary), var(--accent)); color:#000; padding:12px 28px; border-radius:var(--radius-pill); font-weight:700; text-decoration:none; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
                     🚀 Apply for Featured Listing
                 </a>
                 <span style="color:var(--text-muted); font-size:0.8rem; margin-left:16px;">Limited spots available per category</span>
@@ -448,7 +449,6 @@
     </div>
     <!-- Adsterra Native Banner -->
     <div style="text-align:center; margin: 40px auto; max-width: 800px; overflow: hidden;">
-        <script async="async" data-cfasync="false" src="https://revolthem.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
         <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
     </div>
 <footer class="site-footer">
@@ -482,12 +482,12 @@
             </div>
             <div class="footer-digest" style="margin: 24px 0; padding: 24px; background: rgba(255,42,95,0.06); border: 1px solid rgba(255,42,95,0.2); border-radius: 16px; display:flex; flex-wrap:wrap; align-items:center; gap: 16px; justify-content:space-between;">
                 <div>
-                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">📧 Weekly Digest</div>
+                    <div style="font-weight:800; font-size:1.1rem; color:#000; margin-bottom:4px;">📧 Weekly Digest</div>
                     <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
                 </div>
                 <form id="digestForm" onsubmit="subscribeDigest(event)" style="display:flex; gap:10px; flex:1; max-width:400px;">
-                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
-                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe →</button>
+                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: #000; font-size:0.95rem;">
+                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe →</button>
                 </form>
                 <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
             </div>
@@ -561,8 +561,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
-    </div>
+        </div>
     <div class="skyscraper skyscraper-right">
         <script>
           atOptions = {
@@ -573,8 +572,7 @@
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
-    </div>
+        </div>
     <!-- Adsterra Sticky Bottom Banner (320x50) -->
     <div id="sticky-bottom-ad" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); z-index:9999; text-align:center;">
         <div class="sticky-ad-inner">
@@ -587,18 +585,15 @@
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
-        </div>
+            </div>
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
     </div>
-    <!-- Adsterra SocialBar & Popunder -->
-    <script src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <!-- Adsterra SocialBar & Popunder scripts removed: popunder JS is a Page Experience violation -->
     <!-- Anti-Adblock -->
     <script defer src="js/anti-adblock.js?v=3"></script>
 
     <!-- High-Converting Affiliate CTA -->
-    <a href="https://nutaku.net?ref=hentaivault" target="_blank" rel="nofollow noopener" style="position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg, #ff2a5f, #ff7b00);color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:9998;box-shadow:0 4px 15px rgba(255,42,95,0.5);display:flex;align-items:center;gap:8px;transition:transform 0.2s;animation: pulse 2s infinite;">
+    <a href="https://nutaku.net?ref=hentaivault" target="_blank" rel="nofollow noopener" style="position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg, #ff2a5f, #ff7b00);color:#000;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:9998;box-shadow:0 4px 15px rgba(255,42,95,0.5);display:flex;align-items:center;gap:8px;transition:transform 0.2s;animation: pulse 2s infinite;">
         <span style="font-size:1.2rem;">🎮</span> Play Top 3D Adult Game
     </a>
     <style>
@@ -608,5 +603,6 @@
             100% { transform: scale(1); }
         }
     </style>
+    <script src="/js/ads.js" defer></script>
 </body>
 </html>

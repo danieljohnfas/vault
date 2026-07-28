@@ -45,31 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initTheme();
     } catch (e) { console.error("Theme init failed", e); }
     
-    // --- Custom First-Click Popunder (Monetization) ---
-    if (!sessionStorage.getItem('hv_fc_pop')) {
-        const interceptor = document.createElement('div');
-        interceptor.style.position = 'fixed';
-        interceptor.style.top = '0';
-        interceptor.style.left = '0';
-        interceptor.style.width = '100vw';
-        interceptor.style.height = '100vh';
-        interceptor.style.zIndex = '2147483647'; // Max z-index
-        interceptor.style.opacity = '0';
-        interceptor.style.cursor = 'pointer';
-        
-        interceptor.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            sessionStorage.setItem('hv_fc_pop', '1');
-            interceptor.remove();
-            
-            // Open affiliate link in new tab
-            window.open('/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_firstclick'), '_blank');
-        }, { capture: true, once: true });
-        
-        document.body.appendChild(interceptor);
-    }
-    
+
     // --- DOM Elements ---
     const siteGrid = document.getElementById('siteGrid');
     const categoryFiltersContainer = document.getElementById('categoryFilters');
@@ -351,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 trendingShelf.innerHTML = sites.map(s => `
                     <a href="/site?id=${s.id}" style="display:flex; flex-direction:column; align-items:center; min-width:90px; max-width:90px; text-align:center; text-decoration:none; gap:6px;">
                         <div style="position:relative;">
-                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:0 0 12px rgba(255,42,95,0.3);border:1px solid rgba(255,42,95,0.3);" loading="lazy">
+                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:0 0 12px rgba(255,42,95,0.3);border:1px solid rgba(255,42,95,0.3);" loading="lazy">
                             <span style="position:absolute;top:-6px;right:-6px;font-size:0.75rem;">🔥</span>
                         </div>
                         <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
@@ -531,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!sites || sites.length === 0) return;
                 forYouShelf.innerHTML = sites.map(s => `
                     <a href="/site?id=${s.id}" style="display:flex;flex-direction:column;align-items:center;min-width:90px;max-width:90px;text-align:center;text-decoration:none;gap:6px;">
-                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:var(--shadow-glass);" loading="lazy">
+                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:var(--shadow-glass);" loading="lazy">
                         <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
                     </a>`).join('');
                 forYouContainer.style.display = 'block';
@@ -595,7 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <label class="fav-toggle-label">
                     <span>❤️ My Favorites</span>
                     <label class="switch">
-                        <input type="checkbox" id="favToggle">
+                        <input type="checkbox" id="favToggle" aria-label="Toggle favorites mode">
                         <span class="slider"></span>
                     </label>
                 </label>
@@ -908,8 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const IN_FEED_AD_HTML = `
         <div class="in-feed-ad" aria-hidden="true">
             <script>atOptions = {'key':'40d623b6e8e7efa7651f8c6fbeb29bef','format':'iframe','height':90,'width':728,'params':{}}<\/script>
-            <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"><\/script>
-        </div>`;
+            </div>`;
 
     function renderSites(batch, append = false, apiTotal = null) {
         if (!append) siteGrid.innerHTML = '';
@@ -1151,7 +1126,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             'params' : {}
                         };
                     <\/script>
-                    <script src="https://revolthem.com/${adKey}/invoke.js"><\/script>
                     </body></html>
                 `);
                 iframeDoc.close();
@@ -1333,15 +1307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     
-                    let html = `
-                        <div class="autocomplete-item" onclick="window.open('/out?url=' + encodeURIComponent('https://nutaku.net?ref=hentaivault_search'), '_blank')" style="background: rgba(255, 42, 95, 0.1); border-left: 3px solid #ff2a5f;">
-                            <img src="https://www.google.com/s2/favicons?domain=nutaku.net&sz=32" alt="">
-                            <div class="autocomplete-info">
-                                <div class="autocomplete-name" style="color: #ff2a5f; font-weight: bold;">Nutaku 3D Games <span style="font-size:0.7rem; background:#ff2a5f; color:white; padding: 2px 4px; border-radius: 4px; margin-left: 6px;">Sponsored</span></div>
-                                <div class="autocomplete-cat">Play Best Adult Games Free</div>
-                            </div>
-                        </div>
-                    `;
+                    let html = '';
                     
                     html += matches.slice(0,4).map(s => `
                         <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">

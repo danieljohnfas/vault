@@ -76,8 +76,8 @@
         .cons { background: rgba(255, 42, 95, 0.05); border-color: rgba(255, 42, 95, 0.2); }
         .pc-list { list-style: none; padding: 0; }
         .pc-list li { margin-bottom: 8px; display: flex; gap: 8px; }
-        .pc-list li::before { content: '✓'; color: #22c55e; font-weight: bold; }
-        .cons .pc-list li::before { content: '✕'; color: #ff2a5f; }
+        .pc-list li::before { content: '?'; color: #22c55e; font-weight: bold; }
+        .cons .pc-list li::before { content: '?'; color: #ff2a5f; }
         .cta-box {
             text-align: center;
             margin-top: 40px;
@@ -98,8 +98,9 @@
 <link rel="canonical" href="https://hentaivault.me/site"/>
 </head>
 <body>
-
-    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
+    <!-- Adsterra Placeholder: Top Banner -->
+    <div id="ad-top" style="width: 728px; height: 90px; margin: 0 auto; overflow: hidden; display: flex; justify-content: center; max-width: 100%;"></div>
+<!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
     <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
         <div class="ad-728" style="display:none;">
             <iframe src="/ads/banner.html?key=40d623b6e8e7efa7651f8c6fbeb29bef&w=728&h=90" width="728" height="90" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>
@@ -112,7 +113,7 @@
 <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="logo">
-                <span class="logo-icon">💎</span> HentaiVault
+                <span class="logo-icon">??</span> HentaiVault
             </a>
             <div class="search-bar">
                 <div class="search-container">
@@ -120,19 +121,19 @@
                     <div id="searchAutocomplete" class="search-autocomplete"></div>
                 </div>
             </div>
-            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">??</button>
             <div class="nav-actions">
-                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">??</button>
                 <div class="lang-switcher">
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
-                        <option value="en">🇺🇸 EN</option>
-                        <option value="es">🇪🇸 ES</option>
-                        <option value="jp">🇯🇵 JP</option>
-                        <option value="fr">🇫🇷 FR</option>
-                        <option value="pt">🇧🇷 PT</option>
-                        <option value="hi">🇮🇳 HI</option>
-                        <option value="ar">🇲🇦 AR</option>
-                        <option value="de">🇩🇪 DE</option>
+                        <option value="en">???? EN</option>
+                        <option value="es">???? ES</option>
+                        <option value="jp">???? JP</option>
+                        <option value="fr">???? FR</option>
+                        <option value="pt">???? PT</option>
+                        <option value="hi">???? HI</option>
+                        <option value="ar">???? AR</option>
+                        <option value="de">???? DE</option>
                     </select>
                 </div>
 
@@ -140,7 +141,7 @@
             </div>
         </div>
     </nav>
-    <!-- Review Content — populated by app.js -->
+    <!-- Review Content � populated by app.js -->
     <h1 class="sr-only">Site Detail | HentaiVault</h1>
 <main class="review-layout">
         <div id="reviewContent">
@@ -149,7 +150,7 @@
         <!-- User Reviews Section -->
         <div style="margin-top: 60px;" id="userReviewsSection">
             <h2 style="margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
-                <span>💬</span> User Reviews
+                <span>??</span> User Reviews
             </h2>
             <div id="reviewsList" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;"></div>
 
@@ -164,11 +165,11 @@
                     <div>
                         <label for="reviewRating" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Rating</label>
                         <select id="reviewRating" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem;" title="Select Rating">
-                            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
-                            <option value="3">⭐⭐⭐ (3/5)</option>
-                            <option value="2">⭐⭐ (2/5)</option>
-                            <option value="1">⭐ (1/5)</option>
+                            <option value="5">????? (5/5)</option>
+                            <option value="4">???? (4/5)</option>
+                            <option value="3">??? (3/5)</option>
+                            <option value="2">?? (2/5)</option>
+                            <option value="1">? (1/5)</option>
                         </select>
                     </div>
                     <div>
@@ -182,20 +183,10 @@
             </div>
         </div>
 
-        <!-- Mid-review ad -->
-        <div id="mid-review-ad-container" style="display: flex; justify-content: center; margin: 40px 0; padding: 20px; background: rgba(255,42,95,0.05); border: 1px solid rgba(255,42,95,0.2); border-radius: 12px; flex-direction: column; align-items: center; gap: 15px;">
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Sponsored</div>
-            <a href="https://nutaku.net?ref=hentaivault_mid" target="_blank" rel="nofollow noopener" style="display: block; max-width: 100%; text-align: center; text-decoration: none;">
-                <h3 style="color: #ff2a5f; margin-bottom: 8px;">Play the #1 Adult RPG of 2026</h3>
-                <p style="color: #d4d4d8; font-size: 0.95rem; margin-bottom: 15px;">Uncensored 3D graphics, deep storyline, and completely free to play.</p>
-                <button style="background: linear-gradient(135deg, #ff2a5f, #ff7b00); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(255,42,95,0.4);">Play Now</button>
-            </a>
-        </div>
-
         <!-- Related sites grid (populated by app.js) -->
         <div class="related-sites" style="margin-top: 60px;">
             <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                <span>🔗</span> Similar Sites You May Like
+                <span>??</span> Similar Sites You May Like
             </h2>
             <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
         </div>
@@ -242,7 +233,6 @@
         </div>
     </div>
     <div style="text-align:center; margin: 40px auto; max-width: 800px; overflow: hidden;">
-        <script async="async" data-cfasync="false" src="https://revolthem.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
         <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
     </div>
 <footer class="site-footer">
@@ -256,7 +246,7 @@
                 <a href="/privacy">Privacy Policy</a>
                 <a href="/dmca">DMCA / Copyright</a>
                 <a href="/contact">Contact Us</a>
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">☕ Buy Me A Coffee</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">? Buy Me A Coffee</a>
             </div>
             <div class="footer-links category-sitemap">
                 <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
@@ -283,9 +273,9 @@
                 <img id="shareQrImg" src="" alt="QR Code">
             </div>
             <div class="share-actions">
-                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
-                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
-                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
+                <button id="btnShareCopy" class="btn-share-action">?? Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">?? Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">?? Share on Reddit</a>
             </div>
         </div>
     </div>
@@ -332,14 +322,14 @@
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
     </div>
     <!-- Adsterra SocialBar & Popunder -->
-    <script src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <!-- Adsterra popunder script removed: Page Experience violation -->
+    
     <!-- Anti-Adblock -->
     <script defer src="js/anti-adblock.js?v=3"></script>
 
     <!-- High-Converting Affiliate CTA -->
     <a href="https://nutaku.net?ref=hentaivault" target="_blank" rel="nofollow noopener" style="position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg, #ff2a5f, #ff7b00);color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:9998;box-shadow:0 4px 15px rgba(255,42,95,0.5);display:flex;align-items:center;gap:8px;transition:transform 0.2s;animation: pulse 2s infinite;">
-        <span style="font-size:1.2rem;">🎮</span> Play Top 3D Adult Game
+        <span style="font-size:1.2rem;">??</span> Play Top 3D Adult Game
     </a>
     <style>
         @keyframes pulse {
@@ -348,5 +338,6 @@
             100% { transform: scale(1); }
         }
     </style>
+    <script src="/js/ads.js" defer></script>
 </body>
 </html>

@@ -549,7 +549,7 @@ function updateUIText() {
             if (el.tagName === 'INPUT' && el.type === 'text') {
                 el.placeholder = t[key];
             } else {
-                el.innerText = t[key];
+                el.textContent = t[key];
             }
         }
     });
@@ -557,7 +557,7 @@ function updateUIText() {
     const logoText = document.querySelector('.logo');
     if (logoText) {
         const logoIconEl = logoText.querySelector('.logo-icon');
-        const icon = logoIconEl ? logoIconEl.innerText : '💎';
+        const icon = logoIconEl ? logoIconEl.textContent : '💎';
         logoText.innerHTML = `<span class="logo-icon">${icon}</span> Hentai${t.vault}`;
     }
 

@@ -26,8 +26,7 @@ const IN_CONTENT_300_250 = `            <!-- Adsterra 300x250 In-Content -->
                     'params' : {}
                   };
                 </script>
-                <script src="https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js"></script>
-            </div>`;
+                </div>`;
 
 const files = walk('.');
 let c = 0;

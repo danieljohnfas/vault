@@ -77,7 +77,7 @@ class HeadHandler {
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
     
-    // JSON-LD SoftwareApplication + AggregateRating Schema
+    // JSON-LD SoftwareApplication Schema
     const schema = {
       "@context": "https://schema.org/",
       "@type": "SoftwareApplication",
@@ -96,22 +96,37 @@ class HeadHandler {
       "author": {
         "@type": "Organization",
         "name": "HentaiVault"
-      },
-      "review": {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": this.site.rating || 4.5,
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "HentaiVault"
-        },
-        "reviewBody": desc
       }
     };
-    element.append(`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`, { html: true });
+    element.append(`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}<\/script>`, { html: true });
+
+    // JSON-LD Review Schema (separate block — nesting Review inside SoftwareApplication is invalid)
+    const reviewSchema = {
+      "@context": "https://schema.org/",
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "WebApplication",
+        "name": this.site.name,
+        "url": this.site.url
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": this.site.rating || 4.5,
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "HentaiVault"
+      },
+      "reviewBody": desc,
+      "publisher": {
+        "@type": "Organization",
+        "name": "HentaiVault",
+        "url": "https://hentaivault.me"
+      }
+    };
+    element.append(`<script type="application/ld+json">${JSON.stringify(reviewSchema).replace(/</g, '\\u003c')}<\/script>`, { html: true });
   }
 }
 
@@ -268,7 +283,7 @@ class ReviewBodyHandler {
                 <div id="cta-content" style="transition: all 0.3s;">
                     <h3>${l.ready}</h3>
                     <p style="margin-bottom:20px;">${l.visitBelow}</p>
-                    <a href="/out?url=${encodeURIComponent(this.site.url)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+                    <a href="/out?id=${encodeURIComponent(this.site.id)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
                     <div style="margin-top: 15px;">
                         <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" style="background:none; border:none; color:var(--text-muted); text-decoration:underline; cursor:pointer; font-size:0.85rem;">⚠️ Report Dead Link</button>
                     </div>
@@ -517,7 +532,7 @@ class CompareBodyHandler {
 
               <div style="margin-top: 30px;">
                   <a href="/site?id=${this.site2.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
-                  <a href="/out?url=${encodeURIComponent(this.site2.url)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
+                  <a href="/out?id=${encodeURIComponent(this.site2.id)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
               </div>
           </div>
       </div>
@@ -529,6 +544,55 @@ class CompareBodyHandler {
 
 export default {
   async fetch(request, env, ctx) {
+    try {
+      return await handleRequest(request, env, ctx);
+    } catch (err) {
+      console.error('Unhandled worker error:', err);
+      return new Response(JSON.stringify({ error: 'Internal server error' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+      });
+    }
+  },
+
+  async scheduled(event, env, ctx) {
+    return handleScheduled(event, env, ctx);
+  }
+};
+
+// Security headers added to all HTML responses
+const SECURITY_HEADERS = {
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'X-Content-Type-Options': 'nosniff',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'interest-cohort=()',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://challenges.cloudflare.com https://api.qrserver.com https://cdnjs.cloudflare.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https://www.google.com https://api.qrserver.com https://image.thum.io https://*.gstatic.com https://hitscounter.dev",
+    "frame-src 'self' https://challenges.cloudflare.com",
+    "connect-src 'self' https://www.google-analytics.com https://api.indexnow.org",
+    "frame-ancestors 'self'",
+  ].join('; '),
+};
+
+function addSecurityHeaders(response) {
+  const newHeaders = new Headers(response.headers);
+  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    newHeaders.set(key, value);
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders
+  });
+}
+
+async function handleRequest(request, env, ctx) {
     const url = new URL(request.url);
 
     // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC) ────────────
@@ -1275,12 +1339,14 @@ export default {
       // Typo-Squatting / Redirects
       const typos = {
         'nhentiai': 'nhentai',
-        'hanime': 'hanime.tv',
-        'fakku': 'fakku.net',
-        'sankaku': 'sankakucomplex',
-        'hitomi': 'hitomi.la',
         'nhentai.net': 'nhentai',
-        'rule34': 'rule34.xxx'
+        'hanime.tv': 'hanime',
+        'hanime_tv': 'hanime',
+        'fakku.net': 'fakku',
+        'hitomi.la': 'hitomila',
+        'hitomi': 'hitomila',
+        'rule34': 'rule34xxx',
+        'rule34.xxx': 'rule34xxx'
       };
       if (typos[id.toLowerCase()]) {
         return Response.redirect(`${url.origin}/site?id=${typos[id.toLowerCase()]}`, 301);
@@ -1439,74 +1505,73 @@ export default {
         .on('link[rel="canonical"]', new CanonicalRemover())
         .on('head', new CanonicalInjector(canonicalUrl));
 
-      return rewriter.transform(response);
+      return addSecurityHeaders(rewriter.transform(response));
     }
 
+    // Non-HTML assets (robots.txt, CSS, JS, images, etc.) — return as-is
     return response;
-  },
+}
 
-  // Automated Ingestion Pipeline (Cron Trigger)
-  async scheduled(event, env, ctx) {
-    console.log(`Cron triggered at ${event.cron}`);
-    if (!env.hv_directory) return;
+async function handleScheduled(event, env, ctx) {
+  console.log(`Cron triggered at ${event.cron}`);
+  if (!env.hv_directory) return;
 
-    // Simple scraper logic mapped to D1
-    try {
-      // 1. Fetch Reddit for new hentai sites
-      const res = await fetch('https://www.reddit.com/r/animepiracy/new.json?limit=20', {
-        headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
-      });
-      
-      if (!res.ok) {
-        console.error('Failed to scrape Reddit');
-        return;
-      }
-      
-      const data = await res.json();
-      const discoveredUrls = new Set();
-      
-      for (const post of data.data.children) {
-        const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
-        const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
-        urls.forEach(u => {
-          if (!u.includes('reddit.com') && !u.includes('youtube.com')) {
-            discoveredUrls.add(u);
-          }
-        });
-      }
-      
-      // 2. Insert discovered sites into D1 (Simplified for Worker)
-      let inserted = 0;
-      for (const url of discoveredUrls) {
-        // Quick HEAD ping to check if alive
-        try {
-          const ping = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
-          if (ping.ok) {
-            const siteId = makeId(new URL(url).hostname);
-            const siteJson = JSON.stringify({
-              id: siteId,
-              name: new URL(url).hostname,
-              url: url,
-              description: 'Automatically discovered site',
-              category: 'Communities',
-              rating: 0
-            });
-            
-            await env.hv_directory.prepare(
-              'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
-            ).bind(siteId, 'Communities', url, 0, siteJson).run();
-            inserted++;
-          }
-        } catch (e) {
-          // Ignore timeout or dead sites
-        }
-      }
-      console.log(`Automated pipeline inserted ${inserted} new sites.`);
-    } catch (err) {
-      console.error('Scheduled pipeline error:', err);
+  // Simple scraper logic mapped to D1
+  try {
+    // 1. Fetch Reddit for new hentai sites
+    const res = await fetch('https://www.reddit.com/r/animepiracy/new.json?limit=20', {
+      headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
+    });
+    
+    if (!res.ok) {
+      console.error('Failed to scrape Reddit');
+      return;
     }
+    
+    const data = await res.json();
+    const discoveredUrls = new Set();
+    
+    for (const post of data.data.children) {
+      const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
+      const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+      urls.forEach(u => {
+        if (!u.includes('reddit.com') && !u.includes('youtube.com')) {
+          discoveredUrls.add(u);
+        }
+      });
+    }
+    
+    // 2. Insert discovered sites into D1 (Simplified for Worker)
+    let inserted = 0;
+    for (const siteUrl of discoveredUrls) {
+      // Quick HEAD ping to check if alive
+      try {
+        const ping = await fetch(siteUrl, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+        if (ping.ok) {
+          const siteId = makeId(new URL(siteUrl).hostname);
+          const siteJson = JSON.stringify({
+            id: siteId,
+            name: new URL(siteUrl).hostname,
+            url: siteUrl,
+            description: 'Automatically discovered site',
+            category: 'Communities',
+            rating: 0
+          });
+          
+          await env.hv_directory.prepare(
+            'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
+          ).bind(siteId, 'Communities', siteUrl, 0, siteJson).run();
+          inserted++;
+        }
+      } catch (e) {
+        // Ignore timeout or dead sites
+      }
+    }
+    console.log(`Automated pipeline inserted ${inserted} new sites.`);
+  } catch (err) {
+    console.error('Scheduled pipeline error:', err);
   }
-};
+}
 
 // ─── Submit Handler ───────────────────────────────────────────────────────────
 

@@ -26,8 +26,9 @@
 <meta name="description" content="You are being redirected to an external site. HentaiVault is not responsible for external content."/>
 </head>
 <body>
-
-    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
+    <!-- Adsterra Placeholder: Top Banner -->
+    <div id="ad-top" style="width: 728px; height: 90px; margin: 0 auto; overflow: hidden; display: flex; justify-content: center; max-width: 100%;"></div>
+<!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
     <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
         <div class="ad-728" style="display:none;">
             <iframe src="/ads/banner.html?key=40d623b6e8e7efa7651f8c6fbeb29bef&w=728&h=90" width="728" height="90" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>
@@ -52,7 +53,7 @@
     <div id="target-url"></div>
 
     <script>
-        let timeLeft = 10;
+        let timeLeft = 3;
         const targetDiv = document.getElementById('target-url');
         const countdownSpan = document.getElementById('countdown');
         const msgDiv = document.getElementById('msg');
@@ -70,7 +71,6 @@
                     msgDiv.innerHTML = `<button id="btnContinue" style="background:#ff2a5f;color:#fff;border:none;padding:16px 32px;border-radius:12px;font-size:20px;cursor:pointer;font-weight:bold;transition:0.2s;box-shadow:0 4px 15px rgba(255,42,95,0.4); animation: pulse 2s infinite;">🚀 Continue to Site</button>`;
                     document.getElementById('btnContinue').addEventListener('click', () => {
                         window.open(target, '_blank');
-                        window.location.replace('https://nutaku.net?ref=hentaivault_reversepop');
                     });
                 } else {
                     msgDiv.innerText = "Invalid destination.";
@@ -107,8 +107,7 @@
         </div>
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
     </div>
-    <!-- Adsterra SocialBar & Popunder -->
-    <script src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>
+    <!-- Adsterra SocialBar scripts removed: third-party popunder JS is a Page Experience violation -->
+    <script src="/js/ads.js" defer></script>
 </body>
 </html>

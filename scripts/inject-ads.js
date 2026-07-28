@@ -22,8 +22,7 @@ const SKYSCRAPERS = `<!-- Sticky Skyscraper Ads (Wide Screens Only) -->
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
-    </div>
+        </div>
     <div class="skyscraper skyscraper-right">
         <script>
           atOptions = {
@@ -34,8 +33,7 @@ const SKYSCRAPERS = `<!-- Sticky Skyscraper Ads (Wide Screens Only) -->
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
-    </div>`;
+        </div>`;
 
 const TOP_BANNER = `    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile) -->
     <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
@@ -49,8 +47,7 @@ const TOP_BANNER = `    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/40d623b6e8e7efa7651f8c6fbeb29bef/invoke.js"></script>
-        </div>
+            </div>
         <div class="ad-320" style="display:none;">
             <script>
               atOptions = {
@@ -61,8 +58,7 @@ const TOP_BANNER = `    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
-        </div>
+            </div>
     </div>
     <style>
         @media (min-width: 729px) { .ad-top-banner .ad-728 { display:block !important; } }
@@ -81,18 +77,15 @@ const STICKY_BOTTOM = `    <!-- Adsterra Sticky Bottom Banner (320x50) -->
                 'params' : {}
               };
             </script>
-            <script src="https://revolthem.com/90b220b63fa3e2eb3c163fec3b34a465/invoke.js"></script>
-        </div>
+            </div>
         <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
     </div>`;
 
 const SOCIAL_BAR = `    <!-- Adsterra SocialBar & Popunder -->
-    <script src="https://revolthem.com/ba/67/44/ba6744afc790009f7b04d7509a97ea2f.js"></script>
-    <script src="https://revolthem.com/99/45/11/994511c440490953ceb331525d9f463f.js"></script>`;
+    `;
 
 const NATIVE_BANNER = `    <!-- Adsterra Native Banner -->
     <div style="text-align:center; margin: 40px auto; max-width: 800px; overflow: hidden;">
-        <script async="async" data-cfasync="false" src="https://revolthem.com/a098db90df9a9b985c317d9ba01e155e/invoke.js"></script>
         <div id="container-a098db90df9a9b985c317d9ba01e155e"></div>
     </div>`;
 
@@ -107,8 +100,7 @@ const BANNER_468 = `    <!-- Adsterra Banner 468x60 -->
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/4179d9cf3a579f7778ba7a09f693ca35/invoke.js"></script>
-    </div>`;
+        </div>`;
 
 const BANNER_160_300 = `    <!-- Adsterra Banner 160x300 -->
     <div style="text-align:center; margin: 20px auto; overflow:hidden;">
@@ -121,8 +113,7 @@ const BANNER_160_300 = `    <!-- Adsterra Banner 160x300 -->
             'params' : {}
           };
         </script>
-        <script src="https://revolthem.com/f09dcac8f1df551ed650e4aee0028622/invoke.js"></script>
-    </div>`;
+        </div>`;
 
 const SMARTLINK_BUTTON = `                <a href="https://revolthem.com/a0qetz6sq?key=df2ad4ccf03e4eb012e77d7ffe6be738" class="btn-primary" style="background: linear-gradient(135deg, #f1c40f, #f39c12); color: #000; border: none; font-weight: 800;" target="_blank" rel="noopener noreferrer">
                     <span class="btn-icon">🎁</span> Bonus Vault
@@ -139,8 +130,7 @@ const IN_CONTENT_300_250 = `            <!-- Adsterra 300x250 In-Content -->
                     'params' : {}
                   };
                 </script>
-                <script src="https://revolthem.com/384264be4aaafb8eb28962829e409253/invoke.js"></script>
-            </div>`;
+                </div>`;
 
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
