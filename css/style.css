@@ -1767,3 +1767,56 @@ html[lang]:not([lang='de']) .i18n-de {
    ========================================================================= */
 @media (min-width: 729px) { .ad-top-banner .ad-728 { display: block !important; } }
 @media (max-width: 728px) { .ad-top-banner .ad-320 { display: block !important; } }
+
+/* =========================================================================
+   pCloud Affiliate Banner Enhancements
+   ========================================================================= */
+
+/* Base transitions for all injected affiliate banners */
+.pcloud-banner-interactive {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease !important;
+}
+
+.pcloud-banner-interactive:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.4) !important;
+}
+
+.pcloud-banner-interactive a {
+    transition: opacity 0.2s ease;
+}
+
+.pcloud-banner-interactive a:hover {
+    opacity: 0.9;
+}
+
+/* 1. Top Banner Glow Animation */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 136, 204, 0.2); }
+    50% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 136, 204, 0.8); }
+    100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 136, 204, 0.2); }
+}
+.pcloud-banner-top {
+    animation: pulseGlow 4s infinite alternate;
+}
+
+/* 2. Native Banner Pulse SVG Animation */
+@keyframes pulseScale {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+.pcloud-banner-native:hover svg {
+    animation: pulseScale 1s infinite alternate;
+}
+
+/* 3. Sticky Bottom Slide-up Animation */
+@keyframes slideUpFade {
+    0% { transform: translate(-50%, 100%); opacity: 0; }
+    100% { transform: translate(-50%, 0); opacity: 1; }
+}
+#pcloud-sticky-bottom {
+    animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
