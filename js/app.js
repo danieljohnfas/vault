@@ -1087,48 +1087,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 adDiv.style.padding = '20px 0';
                 adDiv.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
                 
-                // Ad label
-                const adLabel = document.createElement('div');
-                adLabel.style.fontSize = '0.65rem';
-                adLabel.style.color = 'rgba(161,161,170,0.4)';
-                adLabel.style.textTransform = 'uppercase';
-                adLabel.style.letterSpacing = '0.1em';
-                adLabel.style.marginBottom = '8px';
-                adLabel.innerText = 'Advertisement';
-                adDiv.appendChild(adLabel);
+                // Ad label will be handled inside innerHTML
 
-                // Use a local iframe to safely sandbox the ad network's document.write()
-                const iframe = document.createElement('iframe');
-                iframe.width = "300";
-                iframe.height = "250";
-                iframe.frameBorder = "0";
-                iframe.scrolling = "no";
-                iframe.style.border = "none";
-                iframe.style.overflow = "hidden";
-                iframe.style.maxWidth = "100%";
-                iframe.style.borderRadius = "8px";
+                const spUrl = '/out?url=' + encodeURIComponent('https://partner.pcloud.com/r/156786');
+                adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
+                    <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
+                    <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #007EE5, #0056b3); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(0,126,229,0.3);">
+                        <div style="font-size:3rem; margin-bottom:10px;">☁️</div>
+                        <h3 style="margin:0 0 10px 0; font-size:1.2rem;">Get 10TB Cloud Storage</h3>
+                        <p style="font-size:0.9rem; opacity:0.9; margin:0 0 15px 0;">Running out of space for your collection? One-time payment, yours forever.</p>
+                        <div style="background:white; color:#007EE5; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">Click Here &rarr;</div>
+                    </a>
+                `) : "";
                 
-                adDiv.appendChild(iframe);
                 siteGrid.appendChild(adDiv);
-                
-                // Write the ad script into the iframe (300x250)
-                const iframeDoc = iframe.contentWindow.document;
-                iframeDoc.open();
-                const adKey = '384264be4aaafb8eb28962829e409253';
-                iframeDoc.write(`
-                    <html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;background:transparent;}</style></head><body>
-                    <script>
-                        atOptions = {
-                            'key' : '${adKey}',
-                            'format' : 'iframe',
-                            'height' : 250,
-                            'width' : 300,
-                            'params' : {}
-                        };
-                    <\/script>
-                    </body></html>
-                `);
-                iframeDoc.close();
             }
             batchIndex++;
         });
