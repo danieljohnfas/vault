@@ -11,7 +11,7 @@ function processFile(filePath) {
     let original = content;
 
     content = content.replace(adRegex, (match, key, height, width) => {
-        return `<iframe src="/ads/banner.html?key=${key}&w=${width}&h=${height}" width="${width}" height="${height}" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>`;
+        return ``;
     });
 
     if (content !== original) {

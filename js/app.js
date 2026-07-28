@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navActions = document.querySelector('.nav-actions');
     if(navActions && btnSubmitSite) {
         const premiumBtn = document.createElement('a');
-        premiumBtn.href = "/out?url=" + encodeURIComponent("https://partner.pcloud.com/r/156786");
+        premiumBtn.href = "https://partner.pcloud.com/r/156786";
         premiumBtn.target = "_blank";
         premiumBtn.className = "btn-submit";
         premiumBtn.style = "background: linear-gradient(90deg, #007EE5, #0056b3); margin-right: 8px; border: none; box-shadow: 0 2px 10px rgba(0,126,229,0.4);";
@@ -930,7 +930,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spCard.style.border = '2px solid #007EE5';
             spCard.style.boxShadow = '0 0 15px rgba(0, 126, 229, 0.3)';
             
-            const spUrl = '/out?url=' + encodeURIComponent('https://partner.pcloud.com/r/156786');
+            const spUrl = 'https://partner.pcloud.com/r/156786';
             
             spCard.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
                 <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
@@ -1008,8 +1008,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     u.searchParams.set('utm_source', 'hentaivault.me');
                     u.searchParams.set('utm_medium', 'directory');
                     u.searchParams.set('ref', 'hentaivault.me');
-                    return '/out?url=' + encodeURIComponent(u.toString());
-                } catch (e) { return '/out?url=' + encodeURIComponent(site.url); }
+                    return u.toString();
+                } catch (e) { return site.url; }
             })();
 
             card.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
@@ -1089,7 +1089,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Ad label will be handled inside innerHTML
 
-                const spUrl = '/out?url=' + encodeURIComponent('https://partner.pcloud.com/r/156786');
+                const spUrl = 'https://partner.pcloud.com/r/156786';
                 adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
                     <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
                     <a href="${spUrl}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #007EE5, #0056b3); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(0,126,229,0.3);">

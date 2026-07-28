@@ -111,21 +111,7 @@ if (!html.includes('29314489')) {
 
 // 7. Inject sticky bottom before </body>
 const STICKY = `    <!-- Adsterra Sticky Bottom Banner (320x50) -->
-    <div id="sticky-bottom-ad" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); z-index:9999; text-align:center;">
-        <div class="sticky-ad-inner">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '29314491',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/29314491/invoke.js"></script>
-        </div>
-        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
-    </div>`;
+    `;
 if (!html.includes('sticky-bottom-ad')) {
   html = html.replace(/\s*<\/body>/, `\n${STICKY}\n</body>`);
 }

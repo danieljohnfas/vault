@@ -66,20 +66,7 @@ const TOP_BANNER = `    <!-- Adsterra Top Banner (728x90 desktop / 320x50 mobile
     </style>`;
 
 const STICKY_BOTTOM = `    <!-- Adsterra Sticky Bottom Banner (320x50) -->
-    <div id="sticky-bottom-ad" style="position:fixed; bottom:0; left:50%; transform:translateX(-50%); z-index:9999; text-align:center;">
-        <div class="sticky-ad-inner">
-            <script>
-              atOptions = {
-                'key' : '90b220b63fa3e2eb3c163fec3b34a465',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-              };
-            </script>
-            </div>
-        <button onclick="document.getElementById('sticky-bottom-ad').style.display='none'" class="btn-close-ad" style="position:absolute;top:-10px;right:0;background:#333;color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;line-height:20px;">&times;</button>
-    </div>`;
+    `;
 
 const SOCIAL_BAR = `    <!-- Adsterra SocialBar & Popunder -->
     `;

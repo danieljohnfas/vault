@@ -283,7 +283,7 @@ class ReviewBodyHandler {
                 <div id="cta-content" style="transition: all 0.3s;">
                     <h3>${l.ready}</h3>
                     <p style="margin-bottom:20px;">${l.visitBelow}</p>
-                    <a href="/out?id=${encodeURIComponent(this.site.id)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
+                    <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${this.site.id}" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
                     <div style="margin-top: 15px;">
                         <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" style="background:none; border:none; color:var(--text-muted); text-decoration:underline; cursor:pointer; font-size:0.85rem;">⚠️ Report Dead Link</button>
                     </div>
@@ -516,7 +516,7 @@ class CompareBodyHandler {
 
               <div style="margin-top: 30px;">
                   <a href="/site?id=${this.site2.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
-                  <a href="/out?id=${encodeURIComponent(this.site2.id)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
+                  <a href="${this.site2.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${this.site2.id}">Visit Site</a>
               </div>
           </div>
       </div>
@@ -557,7 +557,7 @@ const SECURITY_HEADERS = {
     "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://challenges.cloudflare.com https://api.qrserver.com https://cdnjs.cloudflare.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://www.google.com https://api.qrserver.com https://image.thum.io https://*.gstatic.com https://hitscounter.dev",
+    "img-src 'self' data: https: http:",
     "frame-src 'self' https://challenges.cloudflare.com",
     "connect-src 'self' https://www.google-analytics.com https://api.indexnow.org",
     "frame-ancestors 'self'",
