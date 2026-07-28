@@ -1775,6 +1775,8 @@ html[lang]:not([lang='de']) .i18n-de {
 /* Base transitions for all injected affiliate banners */
 .pcloud-banner-interactive {
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease !important;
+    margin-top: 32px !important;
+    margin-bottom: 32px !important;
 }
 
 .pcloud-banner-interactive:hover {
