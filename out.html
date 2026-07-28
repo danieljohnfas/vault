@@ -60,54 +60,25 @@
     </div>
     
 
-    <div class="ad-top-banner" style="text-align:center; margin: 8px auto 0; max-width:100%; overflow:hidden;">
-        <div class="ad-728" style="display:none;">
-            <iframe src="/ads/banner.html?key=40d623b6e8e7efa7651f8c6fbeb29bef&w=728&h=90" width="728" height="90" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>
-        </div>
-        <div class="ad-320" style="display:none;">
-            <iframe src="/ads/banner.html?key=90b220b63fa3e2eb3c163fec3b34a465&w=320&h=50" width="320" height="50" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>
-        </div>
-    </div>
+
 
 <div class="spinner"></div>
     <div class="redirect-msg" id="msg">Redirecting you in <span id="countdown">1</span>...</div>
     
-    <!-- Ad Space & VPN Warning -->
-    <div style="max-width: 600px; width: 100%; padding: 0 20px;">
-        <div class="ad-container" style="margin-top: 0; min-height: 250px; background: transparent; border: none;">
-            <div class="ad-label" style="font-size: 0.65rem; color: rgba(161,161,170,0.4); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; margin-bottom: 4px;">Advertisement</div>
-            <iframe src="/ads/banner.html?key=384264be4aaafb8eb28962829e409253&w=300&h=250" width="300" height="250" frameborder="0" scrolling="no" sandbox="allow-scripts allow-popups allow-same-origin"></iframe>
-        </div>
-    </div>
+
 
     <!-- Hidden target injected by worker -->
     <div id="target-url"></div>
 
     <script>
-        let timeLeft = 1;
         const targetDiv = document.getElementById('target-url');
-        const countdownSpan = document.getElementById('countdown');
-        const msgDiv = document.getElementById('msg');
-        const spinner = document.querySelector('.spinner');
-
-        const timer = setInterval(() => {
-            timeLeft--;
-            if (timeLeft > 0) {
-                countdownSpan.innerText = timeLeft;
-            } else {
-                clearInterval(timer);
-                spinner.style.display = 'none';
-                const target = targetDiv.innerText.trim();
-                if (target && target.startsWith('http')) {
-                    msgDiv.innerHTML = `<button id="btnContinue" style="background:#ff2a5f;color:#fff;border:none;padding:16px 32px;border-radius:12px;font-size:20px;cursor:pointer;font-weight:bold;transition:0.2s;box-shadow:0 4px 15px rgba(255,42,95,0.4); animation: pulse 2s infinite;">🚀 Continue to Site</button>`;
-                    document.getElementById('btnContinue').addEventListener('click', () => {
-                        window.open(target, '_blank');
-                    });
-                } else {
-                    msgDiv.innerText = "Invalid destination.";
-                }
-            }
-        }, 1000);
+        const target = targetDiv.innerText.trim();
+        if (target && target.startsWith('http')) {
+            window.location.replace(target);
+        } else {
+            document.getElementById('msg').innerText = "Invalid destination.";
+            document.querySelector('.spinner').style.display = 'none';
+        }
     </script>
     <style>
         @keyframes pulse {
