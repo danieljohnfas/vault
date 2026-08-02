@@ -1065,6 +1065,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const mlBtn = card.querySelector('.mylist-btn');
             if (mlBtn) mlBtn.onclick = (e) => { e.preventDefault(); window.toggleMyList(site.id, localName); };
 
+            // Make the entire card clickable to go to details page
+            card.addEventListener('click', (e) => {
+                // Ignore clicks on existing links or buttons
+                if (e.target.closest('a') || e.target.closest('button')) {
+                    return;
+                }
+                window.location.href = `/site?id=${site.id}`;
+            });
+
             const dot = card.querySelector('.status-dot');
             if (dot) statusObserver.observe(dot);
 

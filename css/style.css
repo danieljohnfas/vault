@@ -485,6 +485,7 @@ select {
     transition: var(--transition-normal);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
     opacity: 1; /* Always visible — animation is an enhancement only */
 }
 
