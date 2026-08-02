@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             const urlObj = new URL(site.url);
             const domain = urlObj.hostname;
-            const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+            const faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
             // Localization lookup
             const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
             const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             alternatives.forEach(s => {
                 const sUrl = new URL(s.url);
-                const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
+                const sFavicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
                 const sLocalName = escapeHTML(s[`name_${currentLang}`] || s.name);
                 const sLocalCat = (t.categories && t.categories[s.category]) ? t.categories[s.category] : s.category;
                 

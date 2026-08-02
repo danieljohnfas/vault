@@ -155,7 +155,7 @@ class ReviewBodyHandler {
 
     const urlObj = new URL(this.site.url);
     const domain = urlObj.hostname;
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+    const faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
 
     const labels = {
         en: {
@@ -235,7 +235,7 @@ class ReviewBodyHandler {
 
     const relatedHTML = related.map(s => {
         const sUrl = new URL(s.url);
-        const sFavicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=64`;
+        const sFavicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
         return `
             <div class="card">
                 <div class="card-header">
@@ -389,7 +389,7 @@ class EmbedHandler {
   element(element) {
     const urlObj = new URL(this.site.url);
     const domain = urlObj.hostname;
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+    const faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
     const fullStars = Math.floor(this.site.rating);
     const halfStar = (this.site.rating % 1) >= 0.5;
     let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
@@ -465,9 +465,9 @@ class CompareBodyHandler {
     };
 
     let s1Favicon = '';
-    try { s1Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site1.url).hostname}&sz=128`; } catch(e) {}
+    try { s1Favicon = `https://icons.duckduckgo.com/ip3/${new URL(this.site1.url).hostname}.ico`; } catch(e) {}
     let s2Favicon = '';
-    try { s2Favicon = `https://www.google.com/s2/favicons?domain=${new URL(this.site2.url).hostname}&sz=128`; } catch(e) {}
+    try { s2Favicon = `https://icons.duckduckgo.com/ip3/${new URL(this.site2.url).hostname}.ico`; } catch(e) {}
 
     const html = `
       <div class="review-header" style="justify-content: center; text-align: center; flex-direction: column;">

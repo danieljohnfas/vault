@@ -47,7 +47,7 @@ function buildRandomEmbed(site) {
     .setTitle(`🎲 HentaiVault Roulette: ${site.name}`)
     .setURL(reviewLink)
     .setDescription(`**Category:** ${site.category || 'N/A'}\n\nClick the button below to visit the site!`)
-    .setThumbnail(`https://www.google.com/s2/favicons?domain=${new URL(site.url || 'https://example.com').hostname}&sz=128`)
+    .setThumbnail(`https://icons.duckduckgo.com/ip3/${new URL(site.url || 'https://example.com').hostname}.ico`)
     .setFooter({ text: 'HentaiVault.me — The #1 Adult Directory' })
     .setTimestamp();
 

@@ -230,7 +230,7 @@
         grid.innerHTML = '';
         sites.forEach(site => {
             const sUrl = new URL(site.url);
-            const favicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
+            const favicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
             const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
             const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
 
