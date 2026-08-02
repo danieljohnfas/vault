@@ -1274,7 +1274,7 @@ async function handleRequest(request, env, ctx) {
         // We use LIKE for simple tag matching in SQLite
         const tagConditions = tags.map(t => `tags LIKE '%${t}%'`).join(' OR ');
         const query = `
-          SELECT id AS asin, title, desc, emoji, cta, priceHint, tags 
+          SELECT id AS asin, title, desc, emoji, cta, priceHint, tags, url 
           FROM amazon_ads 
           WHERE status = 'active' AND (${tagConditions})
           ORDER BY clicks DESC, RANDOM()

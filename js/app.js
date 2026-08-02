@@ -1098,11 +1098,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Render Amazon Ad
                     const ad = amzAdCards[amzAdIndex % amzAdCards.length];
                     amzAdIndex++;
-                    const url = `https://www.amazon.com/dp/${ad.asin || ad.id}?tag=photoid03-20`;
+                    const adUrl = ad.url ? ad.url : `https://www.amazon.com/dp/${ad.asin || ad.id}?tag=photoid03-20`;
                     
                     adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
                         <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
-                        <a href="${url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(255,153,0,0.2); border: 1px solid rgba(255,153,0,0.35);"
+                        <a href="${adUrl}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(255,153,0,0.2); border: 1px solid rgba(255,153,0,0.35);"
                            onmouseover="this.style.borderColor='rgba(255,153,0,0.7)';this.style.transform='translateY(-2px)'"
                            onmouseout="this.style.borderColor='rgba(255,153,0,0.35)';this.style.transform='none'">
                             <div style="font-size:3rem; margin-bottom:10px;">${ad.emoji || '🛒'}</div>
