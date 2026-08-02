@@ -1313,6 +1313,77 @@ async function handleRequest(request, env, ctx) {
     }
 
     // ── Route: /api/random ──────────────────────────────────────────────────
+    // ── Route: /api/audit-sites (temporary — edge-side batch ping + context check) ──
+    if (url.pathname === '/api/audit-sites') {
+      if (!env.hv_directory) return jsonError('Database not configured', 500);
+      const offset = parseInt(url.searchParams.get('offset')) || 0;
+      const limit = Math.min(parseInt(url.searchParams.get('limit')) || 50, 50);
+
+      const { results } = await env.hv_directory.prepare(
+        'SELECT id, url, category, data_json FROM sites ORDER BY id LIMIT ? OFFSET ?'
+      ).bind(limit, offset).all();
+
+      // Known hentai/anime context keywords
+      const CONTEXT_KEYWORDS = [
+        'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
+        'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
+        'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
+        'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio'
+      ];
+
+      const OFF_CONTEXT_CATEGORIES = ['Communities', 'Communities & Forums'];
+
+      const results_out = [];
+
+      await Promise.all(results.map(async (row) => {
+        let up = false;
+        let statusCode = 0;
+        let latency = 0;
+
+        try {
+          const start = Date.now();
+          const res = await fetch(row.url, {
+            method: 'HEAD',
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+            signal: AbortSignal.timeout(4000)
+          });
+          latency = Date.now() - start;
+          statusCode = res.status;
+          up = res.status >= 200 && res.status < 500 && res.status !== 404;
+        } catch (e) {
+          up = false;
+        }
+
+        // Context check — inspect name + description + category in data_json
+        let fitsContext = true;
+        let siteData = {};
+        try { siteData = JSON.parse(row.data_json); } catch(e) {}
+        const textToCheck = `${siteData.name || ''} ${siteData.description || ''} ${row.category || ''}`.toLowerCase();
+        const hasKeyword = CONTEXT_KEYWORDS.some(k => textToCheck.includes(k));
+        if (!hasKeyword) fitsContext = false;
+
+        results_out.push({
+          id: row.id,
+          url: row.url,
+          category: row.category,
+          name: siteData.name || row.id,
+          up,
+          statusCode,
+          latency,
+          fitsContext
+        });
+      }));
+
+      const total = await env.hv_directory.prepare('SELECT COUNT(*) as count FROM sites').first();
+
+      return new Response(JSON.stringify({
+        offset,
+        limit,
+        total: total.count,
+        results: results_out
+      }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+    }
+
     if (url.pathname === '/api/random') {
       if (request.method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: CORS });
