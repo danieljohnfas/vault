@@ -1154,6 +1154,41 @@ document.addEventListener('DOMContentLoaded', () => {
                             desc: 'Access your files on any device. Highly secure, easy to use cloud storage.',
                             cta: 'View Plans &rarr;',
                             icon: '🛡️'
+                        },
+                        {
+                            url: 'https://www.pcloud.com/family',
+                            title: 'pCloud Family Plan',
+                            desc: 'Share up to 10TB of Lifetime storage with up to 5 family members.',
+                            cta: 'View Family Plan &rarr;',
+                            icon: '👨‍👩‍👧‍👦'
+                        },
+                        {
+                            url: 'https://www.pcloud.com/business-registration.html',
+                            title: 'pCloud for Business',
+                            desc: 'Secure cloud storage for your team. Easy collaboration and access control.',
+                            cta: 'Start Business Trial &rarr;',
+                            icon: '💼'
+                        },
+                        {
+                            url: 'https://www.pcloud.com/encrypted-cloud-storage.html',
+                            title: 'pCloud Crypto',
+                            desc: 'Client-side encryption for your most sensitive files. Zero-knowledge privacy.',
+                            cta: 'Encrypt Files &rarr;',
+                            icon: '🔒'
+                        },
+                        {
+                            url: 'https://www.pcloud.com/Europe',
+                            title: 'pCloud Europe',
+                            desc: 'Store your files securely in our European data center (Luxembourg).',
+                            cta: 'EU Data Region &rarr;',
+                            icon: '🇪🇺'
+                        },
+                        {
+                            url: 'https://partner.pcloud.com/dl/mac',
+                            title: 'pCloud Drive for Mac',
+                            desc: 'Access all your files directly from your Mac without taking up local space.',
+                            cta: 'Download Now &rarr;',
+                            icon: '🍏'
                         }
                     ];
                     
