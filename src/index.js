@@ -1709,7 +1709,7 @@ async function handleScheduled(event, env, ctx) {
 
   // ── SOURCE 1: Reddit Subreddits (posts) ──────────────────────────────────
   try {
-    const subreddits = ['hentai', 'animepiracy', 'animedubs', 'ecchi', 'doujinshi', 'manhwa'];
+    const subreddits = ['hentai', 'animepiracy', 'animedubs', 'ecchi', 'doujinshi', 'manhwa', 'rule34', 'hentaivideo', 'nsfw_games', 'visualnovels', 'yuri', 'yaoi', 'MangaPiracy', 'Piracy'];
     for (const sub of subreddits) {
       try {
         const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=25`, {
@@ -1734,6 +1734,9 @@ async function handleScheduled(event, env, ctx) {
     const wikiPages = [
       'https://www.reddit.com/r/animepiracy/wiki/index.json',
       'https://www.reddit.com/r/hentai/wiki/index.json',
+      'https://www.reddit.com/r/Piracy/wiki/megathread/anime.json',
+      'https://www.reddit.com/r/Piracy/wiki/megathread/nsfw.json',
+      'https://www.reddit.com/r/MangaPiracy/wiki/index.json',
     ];
     for (const wikiUrl of wikiPages) {
       try {
@@ -1753,7 +1756,7 @@ async function handleScheduled(event, env, ctx) {
   // ── SOURCE 3: crt.sh Certificate Transparency Logs ───────────────────────
   try {
     // Rotate through keyword list each cron run to avoid hammering
-    const crtKeywords = ['hentai','anime-stream','manga','doujin','ecchi','hanime','nhentai'];
+    const crtKeywords = ['hentai','anime-stream','manga','doujin','ecchi','hanime','nhentai','rule34','booru','f95zone','pornhwa','yaoi','yuri','eroge'];
     const crtIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % crtKeywords.length;
     const keyword = crtKeywords[crtIdx];
 
@@ -1781,7 +1784,7 @@ async function handleScheduled(event, env, ctx) {
 
   // ── SOURCE 4: Wayback Machine CDX API ────────────────────────────────────
   try {
-    const cdxKeywords = ['hentai','nhentai','hanime','anime-stream','doujin'];
+    const cdxKeywords = ['hentai','nhentai','hanime','anime-stream','doujin','rule34','booru','pornhwa'];
     const cdxIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % cdxKeywords.length;
     const cdxKw = cdxKeywords[cdxIdx];
 
@@ -1806,8 +1809,12 @@ async function handleScheduled(event, env, ctx) {
 
   // ── SOURCE 5: GitHub Awesome-Lists ───────────────────────────────────────
   try {
+    const ghKeywords = ['anime hentai sites list', 'manga sites', 'doujin sites', 'nsfw gaming list'];
+    const ghIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % ghKeywords.length;
+    const ghKw = ghKeywords[ghIdx];
+
     const ghRes = await fetch(
-      'https://api.github.com/search/repositories?q=anime+hentai+sites+list&sort=stars&per_page=5',
+      `https://api.github.com/search/repositories?q=${encodeURIComponent(ghKw)}&sort=stars&per_page=5`,
       { headers: { 'User-Agent': 'HV-Scout-Bot/3.0', 'Accept': 'application/vnd.github.v3+json' } }
     );
     if (ghRes.ok) {
@@ -1830,6 +1837,34 @@ async function handleScheduled(event, env, ctx) {
     }
     console.log(`Source 5 (GitHub Lists): ${totalInserted} total inserted so far.`);
   } catch(err) { console.error('GitHub lists error:', err); }
+
+  // ── SOURCE 6: Hacker News Algolia Search ───────────────────────────────
+  try {
+    const hnKeywords = ['anime streaming', 'manga reader', 'visual novel', 'doujin', 'piracy site'];
+    const hnIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % hnKeywords.length;
+    const hnKw = hnKeywords[hnIdx];
+
+    const hnRes = await fetch(
+      `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(hnKw)}&hitsPerPage=20`,
+      { headers: { 'User-Agent': 'HV-Scout-Bot/3.0' } }
+    );
+    if (hnRes.ok) {
+      const hnData = await hnRes.json();
+      for (const hit of hnData.hits || []) {
+        // extract from URL
+        if (hit.url) {
+          if (await tryInsertSite(hit.url.split('?')[0], 'HackerNews')) totalInserted++;
+        }
+        // extract from text/comments
+        const text = `${hit.title || ''} ${hit.story_text || ''} ${hit.comment_text || ''}`;
+        const urls = text.match(/https?:\/\/[^\s"'()<>\]]+/g) || [];
+        for (const u of urls) {
+          if (await tryInsertSite(u.split('?')[0], 'HackerNews')) totalInserted++;
+        }
+      }
+    }
+    console.log(`Source 6 (HackerNews - "${hnKw}"): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('HackerNews search error:', err); }
 
   console.log(`Discovery pipeline complete. Total new sites inserted: ${totalInserted}.`);
 
