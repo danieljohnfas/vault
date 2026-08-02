@@ -1645,6 +1645,21 @@ async function handleScheduled(event, env, ctx) {
         const asinMatch = url.match(/\/(?:dp|product)\/([A-Z0-9]{10})/i);
         if (asinMatch && asinMatch[1]) {
           const asin = asinMatch[1];
+          
+          // Verify link is alive to prevent 404s
+          try {
+            const verifyHtml = await fetch(`https://www.amazon.com/dp/${asin}`, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+              signal: AbortSignal.timeout(3000)
+            }).then(r => r.text()).catch(() => "");
+            
+            if (verifyHtml.includes("Sorry! We couldn't find that page") || verifyHtml.includes("Dogs of Amazon")) {
+              continue; // Skip dead ASIN
+            }
+          } catch(e) {
+            // ignore timeout
+          }
+
           // We map these to a general category
           const tags = "all,deals,tech,premium";
           const desc = "Limited time Amazon deal discovered today.";
@@ -1661,11 +1676,33 @@ async function handleScheduled(event, env, ctx) {
       }
     }
     
+    // 3. Verify existing active ads and prune dead ones (404s)
+    const { results: activeAdsToVerify } = await env.hv_directory.prepare(`
+      SELECT id FROM amazon_ads WHERE status = 'active' LIMIT 20
+    `).all();
+    
+    let prunedDead = 0;
+    for (const ad of activeAdsToVerify) {
+      try {
+        const verifyHtml = await fetch(`https://www.amazon.com/dp/${ad.id}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+          signal: AbortSignal.timeout(3000)
+        }).then(r => r.text()).catch(() => "");
+        
+        if (verifyHtml.includes("Sorry! We couldn't find that page") || verifyHtml.includes("Dogs of Amazon") || verifyHtml.includes("<title>Page Not Found</title>")) {
+          await env.hv_directory.prepare(`UPDATE amazon_ads SET status = 'pruned' WHERE id = ?`).bind(ad.id).run();
+          prunedDead++;
+        }
+      } catch (e) {
+        // ignore timeout
+      }
+    }
+    
     const { results: activeAds } = await env.hv_directory.prepare(`
       SELECT count(*) as count FROM amazon_ads WHERE status = 'active'
     `).all();
     
-    console.log(`Amazon Ads: Pruned ${pruneRes.meta.changes} ads. Added ${addedDeals} new deals. Active ads remaining: ${activeAds[0].count}`);
+    console.log(`Amazon Ads: Pruned ${pruneRes.meta.changes} old, ${prunedDead} dead ads. Added ${addedDeals} new deals. Active ads remaining: ${activeAds[0].count}`);
     
   } catch (err) {
     console.error('Amazon Ads Cron error:', err);
