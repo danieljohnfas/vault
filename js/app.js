@@ -41,10 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => { if (data) window.adConfig = data; })
         .catch(e => console.error("Failed to load ad config", e));
 
+    let amzAdCards = [];
+    let amzAdIndex = 0;
+    fetch('/api/amazon-ads?context=default&limit=6')
+        .then(r => r.json())
+        .then(data => amzAdCards = data || [])
+        .catch(e => console.error(e));
+
     try {
         initTheme();
     } catch (e) { console.error("Theme init failed", e); }
-    
 
     // --- DOM Elements ---
     const siteGrid = document.getElementById('siteGrid');
