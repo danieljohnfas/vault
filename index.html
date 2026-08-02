@@ -524,15 +524,27 @@
 
 
     <style>@media (min-width: 768px) { #qr-widget { display: none !important; } }</style>
-    <!-- QR Code Widget -->
+    <!-- QR Code Widget — src populated lazily, only on mobile, to avoid Googlebot hitting qrserver.com -->
     <div id="qr-widget" title="Scan to visit on mobile">
         <div id="qr-label">📱 Scan Me</div>
         <img id="qr-img"
-             src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
+             src=""
+             data-qr-src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fhentaivault.me&bgcolor=18181b&color=ff2a5f&format=svg&qzone=1"
              alt="QR Code — HentaiVault.me"
              width="160" height="160">
         <p id="qr-caption">hentaivault.me</p>
     </div>
+    <script>
+        (function() {
+            var widget = document.getElementById('qr-widget');
+            if (!widget) return;
+            // Only load QR on mobile (widget is hidden on desktop via CSS)
+            if (window.matchMedia && window.matchMedia('(max-width: 767px)').matches) {
+                var img = document.getElementById('qr-img');
+                if (img && img.dataset.qrSrc) img.src = img.dataset.qrSrc;
+            }
+        })();
+    </script>
 
     <!-- PWA Service Worker Registration -->
     <script>
