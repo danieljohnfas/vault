@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
-Disallow: /api/
+Disallow: /api/config
+Disallow: /api/click
+Disallow: /api/submit
+Disallow: /api/push-subscribe
+Disallow: /api/vault/
+Disallow: /api/subscribe-digest
 
 Sitemap: https://hentaivault.me/sitemap.xml

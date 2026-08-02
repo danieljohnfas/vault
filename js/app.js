@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { site } = await res.json();
                 if (!site) return;
                 const sUrl = new URL(site.url);
-                const favicon = `https://www.google.com/s2/favicons?domain=${sUrl.hostname}&sz=128`;
+                const favicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
                 const currentLang = localStorage.getItem('hv_lang') || 'en';
                 const localName = window.escapeHTML(site[`name_${currentLang}`] || site.name);
                 const localDesc = window.escapeHTML(site[`description_${currentLang}`] || site.description);
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 trendingShelf.innerHTML = sites.map(s => `
                     <a href="/site?id=${s.id}" style="display:flex; flex-direction:column; align-items:center; min-width:90px; max-width:90px; text-align:center; text-decoration:none; gap:6px;">
                         <div style="position:relative;">
-                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:0 0 12px rgba(255,42,95,0.3);border:1px solid rgba(255,42,95,0.3);" loading="lazy">
+                            <img src="https://icons.duckduckgo.com/ip3/${new URL(s.url).hostname}.ico" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:0 0 12px rgba(255,42,95,0.3);border:1px solid rgba(255,42,95,0.3);" loading="lazy">
                             <span style="position:absolute;top:-6px;right:-6px;font-size:0.75rem;">🔥</span>
                         </div>
                         <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (recentSites.length > 0) {
                         recentShelf.innerHTML = recentSites.map(site => `
                             <a href="/site?id=${site.id}" style="display:flex; flex-direction:column; align-items:center; min-width: 80px; text-align:center; text-decoration:none; gap:6px; transition:transform 0.2s;">
-                                <img src="https://www.google.com/s2/favicons?domain=${new URL(site.url).hostname}&sz=64" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
+                                <img src="https://icons.duckduckgo.com/ip3/${new URL(site.url).hostname}.ico" alt="" loading="lazy" decoding="async" style="width:48px; height:48px; border-radius:12px; background:var(--bg-surface); padding:4px; box-shadow:var(--shadow-glass);">
                                 <span style="font-size:0.75rem; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:80px;">${escapeHTML(site.name)}</span>
                             </a>
                         `).join('');
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!sites || sites.length === 0) return;
                 forYouShelf.innerHTML = sites.map(s => `
                     <a href="/site?id=${s.id}" style="display:flex;flex-direction:column;align-items:center;min-width:90px;max-width:90px;text-align:center;text-decoration:none;gap:6px;">
-                        <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=64" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:var(--shadow-glass);" loading="lazy">
+                        <img src="https://icons.duckduckgo.com/ip3/${new URL(s.url).hostname}.ico" alt="${window.escapeHTML(s.name)} icon" style="width:52px;height:52px;border-radius:14px;background:var(--bg-surface);padding:4px;box-shadow:var(--shadow-glass);" loading="lazy">
                         <span style="font-size:0.72rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:88px;">${window.escapeHTML(s.name)}</span>
                     </a>`).join('');
                 forYouContainer.style.display = 'block';
@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="card-header">
                     <div style="position:relative; display:inline-block; line-height: 0;">
-                        <img src="https://www.google.com/s2/favicons?domain=pcloud.com&sz=64" alt="pCloud icon" class="card-icon" loading="lazy">
+                        <img src="https://icons.duckduckgo.com/ip3/pcloud.com.ico" alt="pCloud icon" class="card-icon" loading="lazy">
                         <div class="status-dot status-up"></div>
                     </div>
                     <div>
@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const urlObj = new URL(site.url);
                 domain = urlObj.hostname;
-                faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
             } catch(urlErr) {
                 console.warn('[HV] Bad URL for site:', site.id, site.url);
             }
@@ -1283,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     html += matches.slice(0,4).map(s => `
                         <div class="autocomplete-item" onclick="window.location.href='/site?id=${s.id}'">
-                            <img src="https://www.google.com/s2/favicons?domain=${new URL(s.url).hostname}&sz=32" alt="">
+                            <img src="https://icons.duckduckgo.com/ip3/${new URL(s.url).hostname}.ico" alt="">
                             <div class="autocomplete-info">
                                 <div class="autocomplete-name">${escapeHTML(s.name)}</div>
                                 <div class="autocomplete-cat">${s.category}</div>
