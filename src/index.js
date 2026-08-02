@@ -1635,7 +1635,7 @@ async function handleScheduled(event, env, ctx) {
   console.log(`Cron triggered at ${event.cron}`);
   if (!env.hv_directory) return;
 
-  // Simple scraper logic mapped to D1
+  // ── Multi-source site discovery pipeline ─────────────────────────────────
   const SITE_CONTEXT_KEYWORDS = [
     'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
     'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
@@ -1643,72 +1643,195 @@ async function handleScheduled(event, env, ctx) {
     'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio','hd'
   ];
 
-  try {
-    // 1. Fetch Reddit for new hentai/anime sites from relevant subreddits
-    const subreddits = ['hentai', 'animepiracy', 'animedubs'];
-    const discoveredUrls = new Set();
+  // Category guesser based on domain/URL keywords
+  function guessCategory(urlStr) {
+    const u = urlStr.toLowerCase();
+    if (/booru|rule34|gelbooru|danbooru|safebooru|konachan|yandere/.test(u)) return 'Image Boards (Boorus)';
+    if (/manga|doujin|nhentai|hitomi|fakku|tsumino/.test(u)) return 'Manga & Doujinshi';
+    if (/game|vndb|f95|visual.novel|itch\.io/.test(u)) return 'Games & Visual Novels';
+    if (/torrent|nyaa|1337|download|fap|fap-nation/.test(u)) return 'Downloads & Torrents';
+    if (/patreon|fanbox|onlyfans|creator|subscribestar/.test(u)) return 'Creator Platforms';
+    if (/forum|reddit|discord|chan|board|community/.test(u)) return 'Communities & Forums';
+    if (/hentai.*stream|hanime|hstream|watch.*hentai/.test(u)) return 'Hentai Streaming';
+    if (/vr|3d|immersive|interactive/.test(u)) return 'Immersive & Interactive';
+    if (/tube|porn|xxx|adult|xvideos|xhamster|pornhub/.test(u)) return 'Adult Tubes & Studios';
+    if (/anime|crunchyroll|funimation|animepahe|gogoanime/.test(u)) return 'Anime Streaming';
+    return 'Hentai Streaming';
+  }
 
+  // Shared insert helper — checks context, pings, deduplicates, inserts
+  async function tryInsertSite(siteUrl, discoveredBy) {
+    try {
+      const urlObj = new URL(siteUrl);
+      const hostname = urlObj.hostname.replace(/^www\./, '');
+      if (!hostname || hostname.length < 4) return false;
+
+      // Skip noise domains
+      const NOISE = ['reddit.com','youtube.com','imgur.com','twitter.com','x.com',
+        'instagram.com','facebook.com','amazon.com','google.com','github.com',
+        'cloudflare.com','discord.com','telegram.org','t.me','bit.ly','tinyurl.com'];
+      if (NOISE.some(n => hostname.endsWith(n))) return false;
+
+      // Context check
+      const urlLower = siteUrl.toLowerCase();
+      const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => urlLower.includes(k));
+      if (!fitsContext) return false;
+
+      // Duplicate check
+      const existing = await env.hv_directory.prepare('SELECT id FROM sites WHERE url = ?').bind(siteUrl).first();
+      if (existing) return false;
+
+      // Live ping
+      const ping = await fetch(siteUrl, {
+        method: 'HEAD',
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+        signal: AbortSignal.timeout(5000)
+      });
+      const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
+      if (!isUp) return false;
+
+      const category = guessCategory(siteUrl);
+      const siteId = makeId(hostname);
+      const siteJson = JSON.stringify({
+        id: siteId, name: hostname, url: siteUrl,
+        description: `Discovered via ${discoveredBy}`,
+        category, rating: 0, tags: ['Auto-Discovered', discoveredBy]
+      });
+
+      await env.hv_directory.prepare(
+        'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
+      ).bind(siteId, category, siteUrl, 0, siteJson).run();
+      return true;
+    } catch(e) { return false; }
+  }
+
+  let totalInserted = 0;
+
+  // ── SOURCE 1: Reddit Subreddits (posts) ──────────────────────────────────
+  try {
+    const subreddits = ['hentai', 'animepiracy', 'animedubs', 'ecchi', 'doujinshi', 'manhwa'];
     for (const sub of subreddits) {
       try {
-        const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=15`, {
+        const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=25`, {
           headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
         });
         if (!res.ok) continue;
         const data = await res.json();
         for (const post of data.data.children) {
-          const text = (post.data.selftext || '') + ' ' + (post.data.url || '') + ' ' + (post.data.title || '');
-          const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
-          urls.forEach(u => {
-            if (!u.includes('reddit.com') && !u.includes('youtube.com') && !u.includes('imgur.com')) {
-              discoveredUrls.add(u.split('?')[0]); // strip query params
-            }
-          });
+          const text = `${post.data.selftext || ''} ${post.data.url || ''} ${post.data.title || ''}`;
+          const urls = text.match(/https?:\/\/[^\s"'()<>]+/g) || [];
+          for (const u of urls) {
+            if (await tryInsertSite(u.split('?')[0], 'Reddit Posts')) totalInserted++;
+          }
         }
-      } catch(e) { /* ignore per-subreddit errors */ }
+      } catch(e) { /* ignore */ }
     }
+    console.log(`Source 1 (Reddit Posts): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('Reddit posts error:', err); }
 
-    // 2. Insert discovered sites — ONLY if alive AND contextually relevant
-    let inserted = 0;
-    for (const siteUrl of discoveredUrls) {
+  // ── SOURCE 2: Reddit Wiki Pages (curated mega-lists) ─────────────────────
+  try {
+    const wikiPages = [
+      'https://www.reddit.com/r/animepiracy/wiki/index.json',
+      'https://www.reddit.com/r/hentai/wiki/index.json',
+    ];
+    for (const wikiUrl of wikiPages) {
       try {
-        const hostname = new URL(siteUrl).hostname.replace(/^www\./, '');
+        const res = await fetch(wikiUrl, { headers: { 'User-Agent': 'HV-Scout-Bot/3.0' } });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const content = data?.data?.content_md || data?.data?.content_html || '';
+        const urls = content.match(/https?:\/\/[^\s"'()<>\]]+/g) || [];
+        for (const u of urls) {
+          if (await tryInsertSite(u.split('?')[0], 'Reddit Wiki')) totalInserted++;
+        }
+      } catch(e) { /* ignore */ }
+    }
+    console.log(`Source 2 (Reddit Wikis): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('Reddit wiki error:', err); }
 
-        // Context check: hostname or URL must contain a keyword
-        const urlLower = siteUrl.toLowerCase();
-        const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => urlLower.includes(k));
-        if (!fitsContext) continue;
+  // ── SOURCE 3: crt.sh Certificate Transparency Logs ───────────────────────
+  try {
+    // Rotate through keyword list each cron run to avoid hammering
+    const crtKeywords = ['hentai','anime-stream','manga','doujin','ecchi','hanime','nhentai'];
+    const crtIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % crtKeywords.length;
+    const keyword = crtKeywords[crtIdx];
 
-        // Live ping
-        const ping = await fetch(siteUrl, {
-          method: 'HEAD',
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-          signal: AbortSignal.timeout(4000)
-        });
-        const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
-        if (!isUp) continue;
-
-        const siteId = makeId(hostname);
-        const siteJson = JSON.stringify({
-          id: siteId,
-          name: hostname,
-          url: siteUrl,
-          description: 'Automatically discovered site',
-          category: 'Anime Streaming',
-          rating: 0
-        });
-
-        await env.hv_directory.prepare(
-          'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
-        ).bind(siteId, 'Anime Streaming', siteUrl, 0, siteJson).run();
-        inserted++;
-      } catch (e) {
-        // Ignore timeout or dead sites
+    const crtRes = await fetch(`https://crt.sh/?q=%.${keyword}.%&output=json`, {
+      headers: { 'User-Agent': 'HV-Scout-Bot/3.0' },
+      signal: AbortSignal.timeout(10000)
+    });
+    if (crtRes.ok) {
+      const crtData = await crtRes.json();
+      const domains = new Set();
+      for (const entry of crtData.slice(0, 200)) {
+        const name = (entry.common_name || entry.name_value || '').toLowerCase();
+        // Skip wildcards, IP addresses, and subdomains with too many parts
+        if (name.startsWith('*') || /^\d+\.\d+/.test(name)) continue;
+        const parts = name.split('.');
+        if (parts.length > 4) continue;
+        domains.add(`https://${name}`);
+      }
+      for (const domainUrl of domains) {
+        if (await tryInsertSite(domainUrl, 'crt.sh')) totalInserted++;
       }
     }
-    console.log(`Automated pipeline inserted ${inserted} new sites.`);
-  } catch (err) {
-    console.error('Scheduled pipeline error:', err);
-  }
+    console.log(`Source 3 (crt.sh - "${keyword}"): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('crt.sh error:', err); }
+
+  // ── SOURCE 4: Wayback Machine CDX API ────────────────────────────────────
+  try {
+    const cdxKeywords = ['hentai','nhentai','hanime','anime-stream','doujin'];
+    const cdxIdx = Math.floor(Date.now() / (12 * 60 * 60 * 1000)) % cdxKeywords.length;
+    const cdxKw = cdxKeywords[cdxIdx];
+
+    const cdxRes = await fetch(
+      `https://web.archive.org/cdx/search/cdx?url=*.${cdxKw}.*&output=json&fl=original&limit=150&collapse=urlkey&filter=statuscode:200`,
+      { headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }, signal: AbortSignal.timeout(10000) }
+    );
+    if (cdxRes.ok) {
+      const cdxData = await cdxRes.json();
+      // First row is header ["original"], skip it
+      for (const row of cdxData.slice(1, 100)) {
+        const siteUrl = row[0];
+        if (!siteUrl) continue;
+        try {
+          const origin = new URL(siteUrl).origin;
+          if (await tryInsertSite(origin, 'Wayback Machine')) totalInserted++;
+        } catch(e) { /* bad URL */ }
+      }
+    }
+    console.log(`Source 4 (Wayback CDX - "${cdxKw}"): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('Wayback CDX error:', err); }
+
+  // ── SOURCE 5: GitHub Awesome-Lists ───────────────────────────────────────
+  try {
+    const ghRes = await fetch(
+      'https://api.github.com/search/repositories?q=anime+hentai+sites+list&sort=stars&per_page=5',
+      { headers: { 'User-Agent': 'HV-Scout-Bot/3.0', 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    if (ghRes.ok) {
+      const ghData = await ghRes.json();
+      for (const repo of (ghData.items || []).slice(0, 5)) {
+        try {
+          // Fetch README
+          const readmeRes = await fetch(
+            `https://raw.githubusercontent.com/${repo.full_name}/${repo.default_branch}/README.md`,
+            { headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }, signal: AbortSignal.timeout(5000) }
+          );
+          if (!readmeRes.ok) continue;
+          const readme = await readmeRes.text();
+          const urls = readme.match(/https?:\/\/[^\s"'()<>\]]+/g) || [];
+          for (const u of urls) {
+            if (await tryInsertSite(u.split('?')[0], 'GitHub Lists')) totalInserted++;
+          }
+        } catch(e) { /* ignore per-repo errors */ }
+      }
+    }
+    console.log(`Source 5 (GitHub Lists): ${totalInserted} total inserted so far.`);
+  } catch(err) { console.error('GitHub lists error:', err); }
+
+  console.log(`Discovery pipeline complete. Total new sites inserted: ${totalInserted}.`);
 
   // ── Periodic DB Health Sweep (prune dead sites from existing DB) ──────────
   try {
