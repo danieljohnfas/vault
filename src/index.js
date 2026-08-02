@@ -1636,52 +1636,71 @@ async function handleScheduled(event, env, ctx) {
   if (!env.hv_directory) return;
 
   // Simple scraper logic mapped to D1
+  const SITE_CONTEXT_KEYWORDS = [
+    'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
+    'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
+    'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
+    'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio','hd'
+  ];
+
   try {
-    // 1. Fetch Reddit for new hentai sites
-    const res = await fetch('https://www.reddit.com/r/animepiracy/new.json?limit=20', {
-      headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
-    });
-    
-    if (!res.ok) {
-      console.error('Failed to scrape Reddit');
-      return;
-    }
-    
-    const data = await res.json();
+    // 1. Fetch Reddit for new hentai/anime sites from relevant subreddits
+    const subreddits = ['hentai', 'animepiracy', 'animedubs'];
     const discoveredUrls = new Set();
-    
-    for (const post of data.data.children) {
-      const text = (post.data.selftext || '') + ' ' + (post.data.url || '');
-      const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
-      urls.forEach(u => {
-        if (!u.includes('reddit.com') && !u.includes('youtube.com')) {
-          discoveredUrls.add(u);
+
+    for (const sub of subreddits) {
+      try {
+        const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=15`, {
+          headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+        for (const post of data.data.children) {
+          const text = (post.data.selftext || '') + ' ' + (post.data.url || '') + ' ' + (post.data.title || '');
+          const urls = text.match(/https?:\/\/[^\s"'()]+/g) || [];
+          urls.forEach(u => {
+            if (!u.includes('reddit.com') && !u.includes('youtube.com') && !u.includes('imgur.com')) {
+              discoveredUrls.add(u.split('?')[0]); // strip query params
+            }
+          });
         }
-      });
+      } catch(e) { /* ignore per-subreddit errors */ }
     }
-    
-    // 2. Insert discovered sites into D1 (Simplified for Worker)
+
+    // 2. Insert discovered sites — ONLY if alive AND contextually relevant
     let inserted = 0;
     for (const siteUrl of discoveredUrls) {
-      // Quick HEAD ping to check if alive
       try {
-        const ping = await fetch(siteUrl, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
-        if (ping.ok) {
-          const siteId = makeId(new URL(siteUrl).hostname);
-          const siteJson = JSON.stringify({
-            id: siteId,
-            name: new URL(siteUrl).hostname,
-            url: siteUrl,
-            description: 'Automatically discovered site',
-            category: 'Communities',
-            rating: 0
-          });
-          
-          await env.hv_directory.prepare(
-            'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
-          ).bind(siteId, 'Communities', siteUrl, 0, siteJson).run();
-          inserted++;
-        }
+        const hostname = new URL(siteUrl).hostname.replace(/^www\./, '');
+
+        // Context check: hostname or URL must contain a keyword
+        const urlLower = siteUrl.toLowerCase();
+        const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => urlLower.includes(k));
+        if (!fitsContext) continue;
+
+        // Live ping
+        const ping = await fetch(siteUrl, {
+          method: 'HEAD',
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          signal: AbortSignal.timeout(4000)
+        });
+        const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
+        if (!isUp) continue;
+
+        const siteId = makeId(hostname);
+        const siteJson = JSON.stringify({
+          id: siteId,
+          name: hostname,
+          url: siteUrl,
+          description: 'Automatically discovered site',
+          category: 'Anime Streaming',
+          rating: 0
+        });
+
+        await env.hv_directory.prepare(
+          'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
+        ).bind(siteId, 'Anime Streaming', siteUrl, 0, siteJson).run();
+        inserted++;
       } catch (e) {
         // Ignore timeout or dead sites
       }
@@ -1689,6 +1708,39 @@ async function handleScheduled(event, env, ctx) {
     console.log(`Automated pipeline inserted ${inserted} new sites.`);
   } catch (err) {
     console.error('Scheduled pipeline error:', err);
+  }
+
+  // ── Periodic DB Health Sweep (prune dead sites from existing DB) ──────────
+  try {
+    // Grab a rolling batch of 30 sites to re-verify each cron run (cycles through the whole DB over time)
+    const sweepSeed = Math.floor(Date.now() / (12 * 60 * 60 * 1000)); // changes every 12h
+    const sweepOffset = (sweepSeed * 30) % 831; // 831 = current live sites, keeps offset in range
+    const { results: sitesToSweep } = await env.hv_directory.prepare(
+      'SELECT id, url FROM sites ORDER BY id LIMIT 30 OFFSET ?'
+    ).bind(sweepOffset).all();
+
+    let sweptDead = 0;
+    for (const site of sitesToSweep) {
+      try {
+        const ping = await fetch(site.url, {
+          method: 'HEAD',
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          signal: AbortSignal.timeout(4000)
+        });
+        const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
+        if (!isUp) {
+          await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(site.id).run();
+          sweptDead++;
+        }
+      } catch(e) {
+        // Timeout = treat as dead
+        await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(site.id).run();
+        sweptDead++;
+      }
+    }
+    console.log(`Health sweep: removed ${sweptDead} dead sites from DB.`);
+  } catch(err) {
+    console.error('Health sweep error:', err);
   }
 
   // ── Amazon Ads Pruning & Discovery ───────────────────────────────────────
@@ -1846,7 +1898,35 @@ async function handleSubmit(request, env, ctx) {
       return jsonError('This site is already listed in the directory!', 409);
     }
 
-    // ── 4. Build new entry ───────────────────────────────────────────────────
+    // ── 3b. Live reachability check ──────────────────────────────────────────
+    try {
+      const pingRes = await fetch(urlClean, {
+        method: 'HEAD',
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+        signal: AbortSignal.timeout(5000)
+      });
+      const isUp = pingRes.status >= 200 && pingRes.status < 500 && pingRes.status !== 404;
+      if (!isUp) {
+        return jsonError('That site appears to be offline or unreachable right now. Please try again later.', 422);
+      }
+    } catch (e) {
+      return jsonError('Could not reach that site. Please check the URL and try again.', 422);
+    }
+
+    // ── 3c. Context relevance check ──────────────────────────────────────────
+    const CONTEXT_KEYWORDS = [
+      'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
+      'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
+      'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
+      'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio'
+    ];
+    const textToCheck = `${nameClean} ${descClean} ${catClean}`.toLowerCase();
+    const fitsContext = CONTEXT_KEYWORDS.some(k => textToCheck.includes(k));
+    if (!fitsContext) {
+      return jsonError('This site does not appear to be relevant to the HentaiVault directory (adult/anime/hentai content).', 422);
+    }
+
+
     const id    = makeId(nameClean);
     const today = new Date().toISOString().split('T')[0];
     const newEntry = {
