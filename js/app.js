@@ -1156,35 +1156,35 @@ document.addEventListener('DOMContentLoaded', () => {
                             icon: '🛡️'
                         },
                         {
-                            url: 'https://www.pcloud.com/family',
+                            url: 'https://partner.pcloud.com/r/156782',
                             title: 'pCloud Family Plan',
                             desc: 'Share up to 10TB of Lifetime storage with up to 5 family members.',
                             cta: 'View Family Plan &rarr;',
                             icon: '👨‍👩‍👧‍👦'
                         },
                         {
-                            url: 'https://www.pcloud.com/business-registration.html',
+                            url: 'https://partner.pcloud.com/r/156781',
                             title: 'pCloud for Business',
                             desc: 'Secure cloud storage for your team. Easy collaboration and access control.',
                             cta: 'Start Business Trial &rarr;',
                             icon: '💼'
                         },
                         {
-                            url: 'https://www.pcloud.com/encrypted-cloud-storage.html',
+                            url: 'https://partner.pcloud.com/r/156780',
                             title: 'pCloud Crypto',
                             desc: 'Client-side encryption for your most sensitive files. Zero-knowledge privacy.',
                             cta: 'Encrypt Files &rarr;',
                             icon: '🔒'
                         },
                         {
-                            url: 'https://www.pcloud.com/Europe',
+                            url: 'https://partner.pcloud.com/r/156783',
                             title: 'pCloud Europe',
                             desc: 'Store your files securely in our European data center (Luxembourg).',
                             cta: 'EU Data Region &rarr;',
                             icon: '🇪🇺'
                         },
                         {
-                            url: 'https://partner.pcloud.com/dl/mac',
+                            url: 'https://partner.pcloud.com/r/156785',
                             title: 'pCloud Drive for Mac',
                             desc: 'Access all your files directly from your Mac without taking up local space.',
                             cta: 'Download Now &rarr;',
