@@ -41,12 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => { if (data) window.adConfig = data; })
         .catch(e => console.error("Failed to load ad config", e));
 
-    let amzAdCards = [];
-    let amzAdIndex = 0;
-    fetch('/api/amazon-ads?context=default&limit=6')
-        .then(r => r.json())
-        .then(data => amzAdCards = data || [])
-        .catch(e => console.error(e));
+
 
     try {
         initTheme();
@@ -1064,46 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 adDiv.style.padding = '20px 0';
                 adDiv.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
 
-                if (adNumber % 3 === 1 && amzAdCards.length > 0) {
-                    // Render Amazon Ad
-                    const ad = amzAdCards[amzAdIndex % amzAdCards.length];
-                    amzAdIndex++;
-                    const adUrl = ad.url ? ad.url : `https://www.amazon.com/dp/${ad.asin || ad.id}?tag=photoid03-20`;
-                    
-                    adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
-                        <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
-                        <a href="${adUrl}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(255,153,0,0.2); border: 1px solid rgba(255,153,0,0.35);"
-                           onmouseover="this.style.borderColor='rgba(255,153,0,0.7)';this.style.transform='translateY(-2px)'"
-                           onmouseout="this.style.borderColor='rgba(255,153,0,0.35)';this.style.transform='none'">
-                            <div style="font-size:3rem; margin-bottom:10px;">${ad.emoji || '🛒'}</div>
-                            <div style="display:flex; align-items:center; gap:8px; margin: 0 auto 4px;">
-                              <span style="background:#ff9900; color:#000; font-size:0.65rem; font-weight:800; padding:2px 7px; border-radius:4px;">AMAZON</span>
-                            </div>
-                            <h3 style="margin:0 0 10px 0; font-size:1.1rem; color:#ff9900;">${ad.title || 'Amazon Deal'}</h3>
-                            <p style="font-size:0.85rem; color:#a0aec0; margin:0 0 15px 0; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${ad.desc || 'Check out this deal on Amazon.'}</p>
-                            <div style="margin-top:auto; background:#ff9900; color:#000; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">${ad.cta || 'View on Amazon'} &rarr;</div>
-                        </a>
-                    `) : "";
-                    
-                    // Attach click tracking
-                    adDiv.addEventListener('click', () => {
-                        fetch(`/api/amazon-ads/click?id=${encodeURIComponent(ad.asin || ad.id)}`, { method: 'POST' }).catch(()=>{});
-                    });
-                    
-                } else if (adNumber % 3 === 2) {
-                    // Render Get Featured Ad
-                    adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
-                        <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
-                        <a href="/contact" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, rgba(0,229,255,0.05), rgba(255,42,95,0.05)); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(255,42,95,0.1); border: 1px solid var(--border);"
-                           onmouseover="this.style.borderColor='var(--primary)';this.style.transform='translateY(-2px)'"
-                           onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
-                            <div style="font-size:3rem; margin-bottom:10px;">⭐</div>
-                            <h3 style="margin:0 0 10px 0; font-size:1.2rem; color:var(--text-main);">Get Featured</h3>
-                            <p style="font-size:0.9rem; color:var(--text-muted); margin:0 0 15px 0;">Reach 10,000+ monthly visitors. Boost your site's visibility at the top of the directory.</p>
-                            <div style="margin-top:auto; background:linear-gradient(90deg, var(--primary), var(--accent)); color:#000; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">Apply Now &rarr;</div>
-                        </a>
-                    `) : "";
-                } else {
+                if (true) {
                     // Render pCloud Ad (Rotate between available affiliate links)
                     const pcloudAds = [
                         {

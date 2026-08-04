@@ -381,8 +381,7 @@ class ReviewBodyHandler {
                     <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
 
-                <!-- Amazon Ad Slot -->
-                <div class="hv-ad-stack-right"></div>
+
 
             </aside>
 
@@ -1319,69 +1318,7 @@ async function handleRequest(request, env, ctx) {
       }
     }
 
-    // ── Route: /api/amazon-ads ──────────────────────────────────────────────
-    if (url.pathname === '/api/amazon-ads') {
-      if (request.method === 'OPTIONS') {
-        return new Response(null, { status: 204, headers: CORS });
-      }
-      if (request.method !== 'GET') return jsonError('Method not allowed.', 405);
-      if (!env.hv_directory) return jsonError('Database not configured', 500);
-      
-      const context = url.searchParams.get('context') || 'default';
-      const limit = parseInt(url.searchParams.get('limit') || '4');
-      
-      // Determine relevant tags based on context (matching client logic)
-      let tags = ['all', 'storage'];
-      if (['manga-doujin', 'Manga & Doujinshi'].includes(context)) tags = ['manga', 'books', 'storage', 'all'];
-      if (['hentai-streaming', 'Hentai Streaming', 'anime-streaming', 'Anime Streaming'].includes(context)) tags = ['streaming', 'monitor', 'storage', 'all'];
-      if (['games', 'Games & Visual Novels', 'visual-novels'].includes(context)) tags = ['gaming', 'games', 'all'];
-      if (['images-boorus', 'Image Boards (Boorus)'].includes(context)) tags = ['booru', 'monitor', 'storage', 'all'];
-      if (['downloads', 'Downloads & Torrents'].includes(context)) tags = ['downloads', 'storage', 'all'];
-      if (['communities', 'Communities & Forums'].includes(context)) tags = ['community', 'collectibles', 'all'];
-      if (['privacy'].includes(context)) tags = ['privacy', 'vpn', 'security', 'all'];
 
-      try {
-        // Fetch ads that match ANY of the tags, order by click count (DESC) + randomness
-        // We use LIKE for simple tag matching in SQLite
-        const tagConditions = tags.map(t => `tags LIKE '%${t}%'`).join(' OR ');
-        const query = `
-          SELECT id AS asin, title, desc, emoji, cta, priceHint, tags, url 
-          FROM amazon_ads 
-          WHERE status = 'active' AND (${tagConditions})
-          ORDER BY clicks DESC, RANDOM()
-          LIMIT ?
-        `;
-        const { results } = await env.hv_directory.prepare(query).bind(limit).all();
-        
-        return new Response(JSON.stringify(results), { 
-          status: 200, 
-          headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } 
-        });
-      } catch (err) {
-        console.error('Amazon Ads GET Error:', err);
-        return jsonError('Database error', 500);
-      }
-    }
-
-    // ── Route: /api/amazon-ads/click ────────────────────────────────────────
-    if (url.pathname === '/api/amazon-ads/click') {
-      if (request.method === 'OPTIONS') {
-        return new Response(null, { status: 204, headers: CORS });
-      }
-      if (request.method !== 'POST') return jsonError('Method not allowed.', 405);
-      if (!env.hv_directory) return jsonError('Database not configured', 500);
-      
-      const id = url.searchParams.get('id');
-      if (!id) return jsonError('Missing ID', 400);
-
-      try {
-        await env.hv_directory.prepare('UPDATE amazon_ads SET clicks = clicks + 1 WHERE id = ?').bind(id).run();
-        return new Response(JSON.stringify({ success: true }), { status: 200, headers: CORS });
-      } catch (err) {
-        console.error('Amazon Ads Click Error:', err);
-        return jsonError('Database error', 500);
-      }
-    }
 
     // ── Route: /api/random ──────────────────────────────────────────────────
     // ── Route: /api/audit-sites (temporary — edge-side batch ping + context check) ──
@@ -2038,93 +1975,7 @@ async function handleScheduled(event, env, ctx) {
     console.error('Health sweep error:', err);
   }
 
-  // ── Amazon Ads Pruning & Discovery ───────────────────────────────────────
-  try {
-    // 1. Prune ads that have been active for > 3 days but have 0 clicks
-    const pruneRes = await env.hv_directory.prepare(`
-      UPDATE amazon_ads 
-      SET status = 'pruned' 
-      WHERE status = 'active' AND clicks = 0 AND added_at < datetime('now', '-3 days')
-    `).run();
-    
-    // 2. Discover new deals from Reddit (Intermediary Deals Feed)
-    const amzRes = await fetch('https://www.reddit.com/r/amazondealsus/new.json?limit=15', {
-      headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }
-    });
-    
-    let addedDeals = 0;
-    if (amzRes.ok) {
-      const amzData = await amzRes.json();
-      for (const post of amzData.data.children) {
-        const title = post.data.title || '';
-        const url = post.data.url || '';
-        
-        // Match Amazon ASINs: /dp/B012345678 or /gp/product/B012345678
-        const asinMatch = url.match(/\/(?:dp|product)\/([A-Z0-9]{10})/i);
-        if (asinMatch && asinMatch[1]) {
-          const asin = asinMatch[1];
-          
-          // Verify link is alive to prevent 404s
-          try {
-            const verifyHtml = await fetch(`https://www.amazon.com/dp/${asin}`, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-              signal: AbortSignal.timeout(3000)
-            }).then(r => r.text()).catch(() => "");
-            
-            if (verifyHtml.includes("Sorry! We couldn't find that page") || verifyHtml.includes("Dogs of Amazon")) {
-              continue; // Skip dead ASIN
-            }
-          } catch(e) {
-            // ignore timeout
-          }
 
-          // We map these to a general category
-          const tags = "all,deals,tech,premium";
-          const desc = "Limited time Amazon deal discovered today.";
-          const emoji = "🔥";
-          const cta = "View Deal";
-          
-          await env.hv_directory.prepare(`
-            INSERT OR IGNORE INTO amazon_ads (id, title, desc, emoji, cta, priceHint, tags, commission_rate, clicks, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 'active')
-          `).bind(asin, title.slice(0, 100), desc, emoji, cta, 'Check Price', tags, 3.0).run();
-          
-          addedDeals++;
-        }
-      }
-    }
-    
-    // 3. Verify existing active ads and prune dead ones (404s)
-    const { results: activeAdsToVerify } = await env.hv_directory.prepare(`
-      SELECT id FROM amazon_ads WHERE status = 'active' LIMIT 20
-    `).all();
-    
-    let prunedDead = 0;
-    for (const ad of activeAdsToVerify) {
-      try {
-        const verifyHtml = await fetch(`https://www.amazon.com/dp/${ad.id}`, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-          signal: AbortSignal.timeout(3000)
-        }).then(r => r.text()).catch(() => "");
-        
-        if (verifyHtml.includes("Sorry! We couldn't find that page") || verifyHtml.includes("Dogs of Amazon") || verifyHtml.includes("<title>Page Not Found</title>")) {
-          await env.hv_directory.prepare(`UPDATE amazon_ads SET status = 'pruned' WHERE id = ?`).bind(ad.id).run();
-          prunedDead++;
-        }
-      } catch (e) {
-        // ignore timeout
-      }
-    }
-    
-    const { results: activeAds } = await env.hv_directory.prepare(`
-      SELECT count(*) as count FROM amazon_ads WHERE status = 'active'
-    `).all();
-    
-    console.log(`Amazon Ads: Pruned ${pruneRes.meta.changes} old, ${prunedDead} dead ads. Added ${addedDeals} new deals. Active ads remaining: ${activeAds[0].count}`);
-    
-  } catch (err) {
-    console.error('Amazon Ads Cron error:', err);
-  }
 }
 
 // ─── Submit Handler ───────────────────────────────────────────────────────────
