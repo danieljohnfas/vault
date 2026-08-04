@@ -1430,6 +1430,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targets.length) {
             targets.forEach(el => { el.textContent = label; });
         }
+
+        // Dynamically update search placeholder
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput && searchInput.placeholder) {
+            searchInput.placeholder = searchInput.placeholder.replace(/(?:\d{1,3}(?:,\d{3})+|\d+)\+?/, label);
+        }
         
         // Update i18n translation strings dynamically for search placeholders
         if (typeof TRANSLATIONS !== 'undefined') {
