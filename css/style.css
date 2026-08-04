@@ -297,15 +297,25 @@ a:hover {
     }
 }
 
-/* Each rail: sticky so cards float alongside the page */
+/* Left rail: sticky — stays visible as user scrolls */
 .skyscraper-rail {
     display: none;
     flex-direction: column;
     gap: 20px;
-    position: sticky;
-    top: 90px;
     height: fit-content;
     padding-top: 24px;
+}
+
+.skyscraper-rail-left {
+    position: sticky;
+    top: 90px;
+}
+
+/* Right rail: NOT sticky — flows naturally to lower content area */
+.skyscraper-rail-right {
+    position: static;
+    align-self: end;   /* sits beside the bottom of the center content */
+    padding-bottom: 24px;
 }
 
 @media (min-width: 1300px) {
