@@ -277,13 +277,15 @@ class ReviewBodyHandler {
             </div>
         </div>
 
-        <!-- Three-column layout -->
+        <!-- Two-column layout -->
         <div class="review-grid">
 
-            <!-- LEFT RAIL: Ad Stack -->
-            <aside class="review-left-rail">
-                <div class="hv-ad-stack-left">
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35); margin-bottom:20px;">
+            <!-- CENTER: Main review content -->
+            <div class="review-main">
+
+                <!-- PureVPN Native Ad Block -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
                         <div class="sky-sponsored">Sponsored</div>
                         <div class="sky-body">
                             <div class="sky-logo-row">
@@ -295,7 +297,7 @@ class ReviewBodyHandler {
                             <div class="sky-cta" style="color:#019a69;">Get PureVPN →</div>
                         </div>
                     </a>
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35); margin-bottom:20px;">
+                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
                         <div class="sky-sponsored">Sponsored</div>
                         <div class="sky-body">
                             <div class="sky-logo-row">
@@ -307,7 +309,7 @@ class ReviewBodyHandler {
                             <div class="sky-cta" style="color:#019a69;">Stay Private →</div>
                         </div>
                     </a>
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35); margin-bottom:20px;">
+                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
                         <div class="sky-sponsored">Sponsored</div>
                         <div class="sky-body">
                             <div class="sky-logo-row">
@@ -320,10 +322,6 @@ class ReviewBodyHandler {
                         </div>
                     </a>
                 </div>
-            </aside>
-
-            <!-- CENTER: Main review content -->
-            <div class="review-main">
 
                 <!-- Expert Review Card -->
                 <div class="review-card">
