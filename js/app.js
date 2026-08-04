@@ -1072,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // PureVPN Ads
                         {
                             url: 'https://billing.purevpn.com/aff.php?aff=49387845',
-                            title: '🛡️ Secure Your Browsing',
+                            title: '🛡️ PureVPN: Secure Browsing',
                             desc: 'Unblock region-locked sites, hide your IP, and torrent safely with PureVPN.',
                             cta: 'Get PureVPN &rarr;',
                             icon: '🌐',
@@ -1082,8 +1082,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         },
                         {
                             url: 'https://billing.purevpn.com/aff.php?aff=49387845',
-                            title: 'Bypass ISP Blocks',
-                            desc: 'Access any restricted site globally. Military-grade encryption for total privacy.',
+                            title: '🛡️ PureVPN: Bypass ISP Blocks',
+                            desc: 'Access any restricted site globally with PureVPN. Military-grade encryption for total privacy.',
                             cta: 'Stay Anonymous &rarr;',
                             icon: '🕵️',
                             bg: 'linear-gradient(135deg, #302b63, #0f0c29)',
