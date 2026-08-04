@@ -1751,15 +1751,52 @@ async function handleScheduled(event, env, ctx) {
       const hostname = urlObj.hostname.replace(/^www\./, '');
       if (!hostname || hostname.length < 4) return false;
 
-      // Skip noise domains
-      const NOISE = ['reddit.com','youtube.com','imgur.com','twitter.com','x.com',
-        'instagram.com','facebook.com','amazon.com','google.com','github.com',
-        'cloudflare.com','discord.com','telegram.org','t.me','bit.ly','tinyurl.com'];
-      if (NOISE.some(n => hostname.endsWith(n))) return false;
+      // ── Expanded NOISE blocklist ─────────────────────────────────────────
+      const NOISE = [
+        // Social / general
+        'reddit.com','youtube.com','youtu.be','imgur.com','twitter.com','x.com',
+        'instagram.com','facebook.com','tiktok.com','snapchat.com','pinterest.com',
+        'linkedin.com','threads.net','mastodon.social','bsky.app',
+        // Dev / code hosting
+        'github.com','gitlab.com','gitlab.io','bitbucket.org','codeberg.org',
+        'sourceforge.net','npmjs.com','pypi.org','rubygems.org','crates.io',
+        // Reference / encyclopedias
+        'wikipedia.org','wikimedia.org','wikia.com','fandom.com','mediawiki.org',
+        'wiktionary.org','wikidata.org','wikihow.com','quora.com',
+        // Tech / infra
+        'cloudflare.com','discord.com','discord.gg','telegram.org','t.me',
+        'slack.com','notion.so','airtable.com','trello.com',
+        // Search / aggregators
+        'google.com','bing.com','duckduckgo.com','yahoo.com','yandex.com',
+        'startpage.com','brave.com',
+        // Shorteners / redirectors
+        'bit.ly','tinyurl.com','ow.ly','buff.ly','rebrand.ly','short.io',
+        'goo.gl','rb.gy','is.gd','v.gd','cutt.ly',
+        // File hosts / cloud
+        'amazon.com','drive.google.com','docs.google.com','play.google.com',
+        'dropbox.com','onedrive.live.com','icloud.com','mega.nz','mediafire.com',
+        'archive.org','web.archive.org',
+        // Blogs / publishing
+        'medium.com','substack.com','tumblr.com','blogspot.com','wordpress.com',
+        'blogger.com','ghost.io','hashnode.dev',
+        // E-commerce / storefronts (not content)
+        'etsy.com','ebay.com','aliexpress.com','shopify.com',
+        // App stores
+        'apps.apple.com','play.google.com','microsoft.com',
+      ];
+      if (NOISE.some(n => hostname === n || hostname.endsWith('.' + n))) return false;
 
-      // Context check
-      const urlLower = siteUrl.toLowerCase();
-      const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => urlLower.includes(k));
+      // ── Reject sub-page URLs — only accept root/top-level domains ──────────
+      // Allows: https://nhentai.net, https://nhentai.net/
+      // Rejects: https://wikipedia.org/wiki/Doujin, https://github.com/user/repo
+      //          https://reddit.com/r/hentai, https://xnxx.com/search/hentai
+      const pathDepth = urlObj.pathname.replace(/\/$/, '').split('/').filter(Boolean).length;
+      if (pathDepth > 0) return false; // Only accept root-level URLs
+
+      // ── Context check: keyword must appear in the HOSTNAME, not just path ──
+      // Prevents: wikipedia.org/wiki/doujin_soft passing because "doujin" is in path
+      const hostLower = hostname.toLowerCase();
+      const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => hostLower.includes(k));
       if (!fitsContext) return false;
 
       // Duplicate check
@@ -1806,7 +1843,11 @@ async function handleScheduled(event, env, ctx) {
           const text = `${post.data.selftext || ''} ${post.data.url || ''} ${post.data.title || ''}`;
           const urls = text.match(/https?:\/\/[^\s"'()<>]+/g) || [];
           for (const u of urls) {
-            if (await tryInsertSite(u.split('?')[0], 'Reddit Posts')) totalInserted++;
+            // Normalize to root origin — prevents sub-page junk from sneaking in
+            try {
+              const origin = new URL(u).origin;
+              if (await tryInsertSite(origin, 'Reddit Posts')) totalInserted++;
+            } catch(e) { /* bad URL */ }
           }
         }
       } catch(e) { /* ignore */ }
@@ -1831,7 +1872,10 @@ async function handleScheduled(event, env, ctx) {
         const content = data?.data?.content_md || data?.data?.content_html || '';
         const urls = content.match(/https?:\/\/[^\s"'()<>\]]+/g) || [];
         for (const u of urls) {
-          if (await tryInsertSite(u.split('?')[0], 'Reddit Wiki')) totalInserted++;
+          try {
+            const origin = new URL(u).origin;
+            if (await tryInsertSite(origin, 'Reddit Wiki')) totalInserted++;
+          } catch(e) { /* bad URL */ }
         }
       } catch(e) { /* ignore */ }
     }
@@ -1915,7 +1959,10 @@ async function handleScheduled(event, env, ctx) {
           const readme = await readmeRes.text();
           const urls = readme.match(/https?:\/\/[^\s"'()<>\]]+/g) || [];
           for (const u of urls) {
-            if (await tryInsertSite(u.split('?')[0], 'GitHub Lists')) totalInserted++;
+            try {
+              const origin = new URL(u).origin;
+              if (await tryInsertSite(origin, 'GitHub Lists')) totalInserted++;
+            } catch(e) { /* bad URL */ }
           }
         } catch(e) { /* ignore per-repo errors */ }
       }
