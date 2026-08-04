@@ -251,24 +251,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const localName = window.escapeHTML(site[`name_${currentLang}`] || site.name);
                 const localDesc = window.escapeHTML(site[`description_${currentLang}`] || site.description);
                 spotlightContainer.innerHTML = `
-                    <div style="position:relative; overflow:hidden; border-radius: 20px; border: 1px solid rgba(255,42,95,0.4); background: linear-gradient(135deg, rgba(255,42,95,0.08) 0%, rgba(123,57,220,0.08) 100%); padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px; box-shadow: 0 0 60px rgba(255,42,95,0.1); height: 100%; box-sizing: border-box;">
+                    <div style="position:relative; overflow:hidden; border-radius: 16px; border: 1px solid rgba(255,42,95,0.4); background: linear-gradient(135deg, rgba(255,42,95,0.08) 0%, rgba(123,57,220,0.08) 100%); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 0 40px rgba(255,42,95,0.1); box-sizing: border-box; height: 100%;">
                         <div style="position:absolute; inset:0; background:url('https://image.thum.io/get/width/1200/crop/400/noanimate/${site.url}') center/cover no-repeat; opacity:0.06; border-radius: inherit;"></div>
-                        <div style="position:relative; flex-shrink:0; background:rgba(255,42,95,0.15); border-radius:14px; padding:8px; border:1px solid rgba(255,42,95,0.3);">
-                            <img src="${favicon}" alt="${localName}" style="width:80px; height:80px; border-radius:10px; display:block;">
+                        <div style="position:relative; flex-shrink:0; background:rgba(255,42,95,0.15); border-radius:10px; padding:6px; border:1px solid rgba(255,42,95,0.3);">
+                            <img src="${favicon}" alt="${localName}" style="width:48px; height:48px; border-radius:8px; display:block;">
                         </div>
                         <div style="position:relative; flex:1; min-width:0;">
-                            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,42,95,0.2); border:1px solid rgba(255,42,95,0.4); padding:4px 12px; border-radius:20px; margin-bottom:12px;">
-                                <span style="font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:#ff2a5f;">⭐ Site of the Day &nbsp;|&nbsp; Resets in: <span id="sotd-countdown" style="font-variant-numeric:tabular-nums;">--:--:--</span></span>
+                            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,42,95,0.2); border:1px solid rgba(255,42,95,0.4); padding:3px 10px; border-radius:20px; margin-bottom:6px;">
+                                <span style="font-size:0.65rem; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:#ff2a5f;">⭐ Site of the Day &nbsp;|&nbsp; Resets in: <span id="sotd-countdown" style="font-variant-numeric:tabular-nums;">--:--:--</span></span>
                             </div>
-                            <h2 style="margin:0 0 8px; font-size:2rem; font-weight:800; color:white;">${localName}</h2>
-                            <p style="margin:0 0 20px; color:#a1a1aa; font-size:0.95rem; line-height:1.5; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${localDesc}</p>
-                            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                                <a href="/site?id=${site.id}" style="text-decoration:none; padding:10px 24px; background:var(--primary); color:white; border-radius:8px; font-weight:700; font-size:0.95rem;">Read Review →</a>
-                                <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; padding:10px 24px; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:8px; font-weight:600; font-size:0.95rem;">Visit Site ↗</a>
+                            <h2 style="margin:0 0 4px; font-size:1.2rem; font-weight:800; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${localName}</h2>
+                            <p style="margin:0 0 10px; color:#a1a1aa; font-size:0.82rem; line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical;">${localDesc}</p>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <a href="/site?id=${site.id}" style="text-decoration:none; padding:7px 16px; background:var(--primary); color:white; border-radius:8px; font-weight:700; font-size:0.85rem;">Read Review →</a>
+                                <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; padding:7px 16px; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:8px; font-weight:600; font-size:0.85rem;">Visit Site ↗</a>
                             </div>
                         </div>
                     </div>`;
-                spotlightContainer.style.display = 'block';
+                spotlightContainer.style.display = 'flex';
                 // FOMO Countdown to midnight UTC
                 function updateCountdown() {
                     const el = document.getElementById('sotd-countdown');
@@ -426,9 +426,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const recentContainer = document.getElementById('recentlyViewedContainer');
         const recentShelf = document.getElementById('recentlyViewedShelf');
         if (recentContainer && recentShelf) {
+            const spotlight = document.getElementById('spotlightContainer');
             const recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
             if (recent.length > 0) {
                 recentContainer.style.display = 'flex';
+                if (spotlight) spotlight.style.flex = '2 1 0'; // recent shown → SOTD takes 2/3
                 Promise.all(recent.map(id => fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null)))
                 .then(sites => {
                     const recentSites = sites.filter(Boolean);
@@ -441,10 +443,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         `).join('');
                     } else {
                         recentContainer.style.display = 'none';
+                        if (spotlight) spotlight.style.flex = '1 1 0'; // recent hidden → SOTD fills full width
                     }
                 }).catch(e => {
                     recentContainer.style.display = 'none';
+                    if (spotlight) spotlight.style.flex = '1 1 0';
                 });
+            } else {
+                // No history at all — SOTD fills the full row
+                if (spotlight) spotlight.style.flex = '1 1 0';
             }
         }
     } catch (e) { console.error("Recently viewed failed", e); }

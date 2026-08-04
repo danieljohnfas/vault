@@ -214,15 +214,15 @@
 
 
 <!-- Top Showcase (Recently Viewed & Site of the Day) -->
-    <div style="max-width: 1200px; margin: 40px auto 20px; padding: 0 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 24px;">
+    <div id="topShowcase" style="max-width: 1200px; margin: 24px auto 20px; padding: 0 24px; display: flex; gap: 24px; align-items: stretch;">
         <!-- Recently Viewed Shelf -->
-        <div id="recentlyViewedContainer" style="display: none; flex-direction: column;">
-            <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--text-muted);">Recently Viewed</h3>
-            <div id="recentlyViewedShelf" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; flex: 1;"></div>
+        <div id="recentlyViewedContainer" style="display: none; flex-direction: column; flex: 1 1 0; min-width: 0;">
+            <h3 style="margin-bottom: 10px; font-size: 1rem; color: var(--text-muted);">Recently Viewed</h3>
+            <div id="recentlyViewedShelf" style="display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; flex: 1;"></div>
         </div>
 
-        <!-- Site of the Week Spotlight -->
-        <div id="spotlightContainer" style="display: none; height: 100%;">
+        <!-- Site of the Day Spotlight -->
+        <div id="spotlightContainer" style="display: none; flex: 2 1 0; min-width: 0;">
         </div>
     </div>
 
