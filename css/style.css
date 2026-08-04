@@ -275,69 +275,131 @@ a:hover {
     height: 250px;
     min-height: 250px;
     margin-top: 30px;
-}/* Skyscraper Ads (Autoresponsive) */
-.skyscraper {
-    position: static;
-    width: 100%;
+}/* ============================================================
+   Skyscraper Ad Rails — sticky in-flow columns, no overlap
+   ============================================================ */
+
+/* Page wrapper: 3-column grid when wide enough */
+.page-with-rails {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+@media (min-width: 1300px) {
+    .page-with-rails {
+        grid-template-columns: 220px 1fr 220px;
+        gap: 24px;
+        align-items: start;
+        max-width: 1800px;
+        padding: 0 16px;
+    }
+}
+
+/* Each rail: sticky so cards float alongside the page */
+.skyscraper-rail {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 90px;
+    height: fit-content;
+    padding-top: 24px;
+}
+
+@media (min-width: 1300px) {
+    .skyscraper-rail {
+        display: flex;
+    }
+}
+
+/* Affiliate card — same style as site cards */
+.skyscraper-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
     display: flex;
-    justify-content: center;
-    margin: 20px auto;
-    z-index: 900;
+    flex-direction: column;
+    transition: var(--transition-normal);
+    width: 100%;
 }
 
-/* On tablets and desktops, switch to fixed sidebars */
-@media (min-width: 850px) {
-    .skyscraper {
-        position: fixed;
-        display: block;
-        top: 90px; 
-        width: 160px;
-        height: 600px;
-        margin: 0;
-    }
-    
-    .skyscraper-left {
-        left: 5px;
-    }
-    
-    .skyscraper-right {
-        right: 5px;
-    }
-
-    /* Prevent overlap by forcing side padding on the main containers */
-    .main-layout {
-        padding-left: 170px !important;
-        padding-right: 170px !important;
-    }
-
-    .review-layout {
-        padding-left: 170px !important;
-        padding-right: 170px !important;
-    }
+.skyscraper-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
 }
 
-@media (min-width: 1450px) {
-    /* Once the screen is wide enough that left/right doesn't overlap the max-width, restore normal padding */
-    .main-layout {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-    }
-
-    .review-layout {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-    }
+.skyscraper-card .sky-sponsored {
+    padding: 4px 10px;
+    background: rgba(0,0,0,0.2);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    text-align: right;
 }
 
-@media (min-width: 1750px) {
-    .skyscraper-left {
-        left: calc(50% - 700px - 180px);
-    }
-    
-    .skyscraper-right {
-        right: calc(50% - 700px - 180px);
-    }
+.skyscraper-card .sky-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
 }
+
+.skyscraper-card .sky-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.skyscraper-card .sky-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: white;
+    padding: 4px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.skyscraper-card .sky-brand {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.skyscraper-card .sky-headline {
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.skyscraper-card .sky-desc {
+    font-size: 0.78rem;
+    opacity: 0.85;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.skyscraper-card .sky-cta {
+    margin-top: auto;
+    padding: 8px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-align: center;
+    background: white;
+}
+
+/* Legacy: keep .skyscraper hidden to avoid any leftover markup showing */
+.skyscraper { display: none !important; }
 
 /* ==========================================================================
    Main Layout Grid
