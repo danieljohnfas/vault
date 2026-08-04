@@ -913,9 +913,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
                     <div class="trending-badge" style="background:#007EE5;color:white;">⭐ Sponsored</div>
                 </div>
-                <div class="card-banner" style="background:#111; display:flex; justify-content:center; align-items:center;">
-                    <span style="font-size:4rem;">☁️</span>
-                </div>
                 <div class="card-header">
                     <div style="position:relative; display:inline-block; line-height: 0;">
                         <img src="https://icons.duckduckgo.com/ip3/pcloud.com.ico" alt="pCloud icon" class="card-icon" loading="lazy">
@@ -993,14 +990,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="badge-container" style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 10;">
                     ${isRecentlyAdded ? '<div class="new-badge">New</div>' : ''}
                     ${isTrending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
-                </div>
-                <div class="card-banner">
-                    <img
-                        src="https://image.thum.io/get/width/400/crop/220/noanimate/${site.url}"
-                        alt="${localName} screenshot"
-                        loading="lazy"
-                        onerror="this.parentElement.classList.add('card-banner--fallback'); this.remove();"
-                    >
                 </div>
                 <div class="card-header">
                     <div style="position:relative; display:inline-block; line-height: 0;">
