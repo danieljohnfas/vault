@@ -1075,7 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             title: '🛡️ PureVPN: Secure Browsing',
                             desc: 'Unblock region-locked sites, hide your IP, and torrent safely with PureVPN.',
                             cta: 'Get PureVPN &rarr;',
-                            icon: '🌐',
+                            icon: '<img src="https://logo.clearbit.com/purevpn.com" onerror="this.src=\'https://icons.duckduckgo.com/ip3/purevpn.com.ico\'" alt="PureVPN Logo" style="width:64px; height:64px; border-radius:14px; background:white; padding:4px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">',
                             bg: 'linear-gradient(135deg, #02cf8e, #019a69)',
                             shadow: 'rgba(2,207,142,0.3)',
                             btnColor: '#019a69'
@@ -1085,7 +1085,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             title: '🛡️ PureVPN: Bypass ISP Blocks',
                             desc: 'Access any restricted site globally with PureVPN. Military-grade encryption for total privacy.',
                             cta: 'Stay Anonymous &rarr;',
-                            icon: '🕵️',
+                            icon: '<img src="https://logo.clearbit.com/purevpn.com" onerror="this.src=\'https://icons.duckduckgo.com/ip3/purevpn.com.ico\'" alt="PureVPN Logo" style="width:64px; height:64px; border-radius:14px; background:white; padding:4px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">',
                             bg: 'linear-gradient(135deg, #302b63, #0f0c29)',
                             shadow: 'rgba(48,43,99,0.3)',
                             btnColor: '#302b63'
