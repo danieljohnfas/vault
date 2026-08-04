@@ -108,11 +108,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css?v=5">
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://image.thum.io">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"></noscript>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -157,6 +158,7 @@
             <div class="search-bar">
                 <div class="search-container">
                     <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <label for="searchInput" class="sr-only">Search sites</label>
                         <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
                     </form>
                     <div id="searchAutocomplete" class="search-autocomplete"></div>
@@ -485,7 +487,7 @@
             <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
             <h3>Share this link</h3>
             <div class="share-qr-container">
-                <img id="shareQrImg" src="" alt="QR Code">
+                <img id="shareQrImg" src="" alt="QR Code for sharing" loading="lazy">
             </div>
             <div class="share-actions">
                 <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
@@ -501,9 +503,6 @@
 
     
     
-    <!-- Anti-Adblock -->
-    <script defer src="js/anti-adblock.js?v=3"></script>
-
 
     
 

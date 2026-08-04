@@ -237,106 +237,171 @@ class ReviewBodyHandler {
         const sUrl = new URL(s.url);
         const sFavicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
         return `
-            <div class="card">
+            <a href="/site?id=${s.id}" class="card btn-visit-tracked" data-id="${s.id}" style="display:block; text-decoration:none; color:inherit;">
                 <div class="card-header">
-                    <img src="${sFavicon}" alt="" class="card-icon">
+                    <img src="${sFavicon}" alt="${escapeHTML(s.name)} logo" class="card-icon" width="32" height="32" loading="lazy">
                     <div>
-                        <div class="card-title"><a href="/site?id=${s.id}" style="color:inherit;">${escapeHTML(s.name)}</a></div>
+                        <div class="card-title">${escapeHTML(s.name)}</div>
                         <div class="card-category">${escapeHTML(s.category)}</div>
                     </div>
                 </div>
                 <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${escapeHTML(s.description)}</div>
-            </div>
+            </a>
         `;
     }).join('');
 
+    const isUp = this.site.isUp !== false;
+    const statusColor = isUp ? '#22c55e' : '#ef4444';
+    const statusText = isUp ? 'Online' : 'Offline';
+
     const html = `
-        <div class="review-header">
-            <img src="${faviconUrl}" alt="${localName}" class="review-icon">
-            <div class="review-meta">
-                <div class="review-badge">${localCat}</div>
-                <h1>${localName}</h1>
-                <div class="rating">${l.rating}${ '★'.repeat(Math.floor(this.site.rating)) }${ this.site.rating % 1 >= 0.5 ? '½' : '' }${ '☆'.repeat(5 - Math.ceil(this.site.rating)) }</div>
+        <!-- Hero Section -->
+        <div class="review-hero">
+            <div class="review-hero-bg" style="background-image: url('${faviconUrl}');"></div>
+            <div class="review-hero-content">
+                <img src="${faviconUrl}" alt="${localName} logo" class="review-hero-icon" width="100" height="100" onerror="this.style.display='none'">
+                <div class="review-hero-text">
+                    <div class="hero-badges">
+                        <span class="hero-badge hero-badge-cat">${localCat}</span>
+                        <span class="hero-badge ${isUp ? 'hero-badge-status-online' : 'hero-badge-status-offline'}">
+                            <span class="status-dot" style="background:${statusColor}; box-shadow: 0 0 6px ${statusColor};"></span>
+                            ${statusText}
+                        </span>
+                        <span class="hero-badge hero-badge-rating">
+                            ${ '★'.repeat(Math.floor(this.site.rating)) }${ this.site.rating % 1 >= 0.5 ? '½' : '' } ${this.site.rating}/5
+                        </span>
+                    </div>
+                    <h1>${localName}</h1>
+                    <p class="review-hero-desc">${localDesc || ''}</p>
+                </div>
             </div>
         </div>
-        <div class="review-content">
-            <h2>${l.expertReview}</h2>
-            <p>${localReviewText}</p>
-            
-            <div class="pros-cons">
-                <div class="pc-box pros">
-                    <h3>${l.pros}</h3>
-                    <ul class="pc-list">
-                        ${ (this.site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li>${escapeHTML(p)}</li>`).join('') }
-                    </ul>
+
+        <!-- Three-column layout -->
+        <div class="review-grid">
+
+            <!-- LEFT RAIL: Ad Stack -->
+            <aside class="review-left-rail">
+                <div class="hv-ad-stack-left"></div>
+            </aside>
+
+            <!-- CENTER: Main review content -->
+            <div class="review-main">
+
+                <!-- Expert Review Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">📝</span> ${l.expertReview}</h2>
+                    <p>${localReviewText}</p>
                 </div>
-                <div class="pc-box cons">
-                    <h3>${l.cons}</h3>
-                    <ul class="pc-list">
-                        ${ (this.site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li>${escapeHTML(c)}</li>`).join('') }
-                    </ul>
-                </div>
-            </div>
-            <h2>${l.conclusion}</h2>
-            <p>${l.conclusionText}</p>
-            <div class="cta-box" id="cta-box" style="position: relative; overflow: hidden;">
-                <div id="cta-content" style="transition: all 0.3s;">
-                    <h3>${l.ready}</h3>
-                    <p style="margin-bottom:20px;">${l.visitBelow}</p>
-                    <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${this.site.id}" data-outbound="${this.site.url}" style="font-size:1.2rem; padding:15px 40px; text-decoration: none;">${l.visitSite}</a>
-                    <div style="margin-top: 15px;">
-                        <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" style="background:none; border:none; color:var(--text-muted); text-decoration:underline; cursor:pointer; font-size:0.85rem;">⚠️ Report Dead Link</button>
+
+                <!-- Pros & Cons Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">⚖️</span> Pros &amp; Cons</h2>
+                    <div class="pros-cons">
+                        <div class="pc-box pros">
+                            <h3 style="color:#4ade80;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                                ${l.pros}
+                            </h3>
+                            <ul class="pc-list">
+                                ${ (this.site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li><span class="pc-mark" style="color:#4ade80;">✓</span>${escapeHTML(p)}</li>`).join('') }
+                            </ul>
+                        </div>
+                        <div class="pc-box cons">
+                            <h3 style="color:#f87171;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                ${l.cons}
+                            </h3>
+                            <ul class="pc-list">
+                                ${ (this.site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li><span class="pc-mark" style="color:#f87171;">✕</span>${escapeHTML(c)}</li>`).join('') }
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-            </div>
-            
-            <script>
-                function reportDeadLink(id) {
-                    const btn = document.getElementById('btnReportDead');
-                    if(btn.innerText.includes('Reporting')) return;
-                    btn.innerText = 'Reporting...';
-                    fetch('/api/report-link', { method: 'POST', body: JSON.stringify({id}) })
-                      .then(r => r.json())
-                      .then(d => {
-                        if (d.success) btn.innerText = '✅ Removed. Thanks!';
-                        else btn.innerText = '❌ Site is still alive';
-                      })
-                      .catch(() => btn.innerText = '⚠️ Error');
-                }
+                <!-- Conclusion Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">🎯</span> ${l.conclusion}</h2>
+                    <p>${l.conclusionText}</p>
+                </div>
 
+                <!-- Compare Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">⚔️</span> Compare ${localName}</h2>
+                    <div class="compare-links">
+                        ${related.map(r => `<a href="/compare?site1=${this.site.id}&site2=${r.id}" class="compare-btn">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
+                    </div>
+                </div>
 
-            </script>
-            <div class="compare-alternatives" style="margin-top: 60px;">
-                <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
-                    <span>⚔️</span> Compare ${localName}
-                </h2>
-                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                    ${related.map(r => `<a href="/compare?site1=${this.site.id}&site2=${r.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border);">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
+                <!-- Embed Widget Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">🏷️</span> Are you the owner?</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">Show off your HentaiVault rating! Copy the embed code below.</p>
+                    <textarea readonly style="width: 100%; height: 56px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 11px; resize: none;"><iframe src="https://hentaivault.me/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget"></iframe></textarea>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 12px 0 8px;">Preview:</p>
+                    <iframe src="/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget for ${localName}"></iframe>
                 </div>
-            </div>
-            
-            <div class="embed-widget-container" style="margin-top: 60px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; border-radius: var(--radius-xl);">
-                <h3 style="margin-top:0; margin-bottom: 10px;">Are you the owner of ${localName}?</h3>
-                <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.95rem;">Show off your HentaiVault rating to your users! Copy the code below to embed a badge on your site.</p>
-                <div style="position: relative;">
-                    <textarea readonly style="width: 100%; height: 60px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 12px; resize: none;"><iframe src="https://hentaivault.me/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true"></iframe></textarea>
+
+                <!-- Related Sites -->
+                <div class="review-card">
+                    <h2><span class="card-icon">🔗</span> ${l.similar}</h2>
+                    <div class="related-grid" id="relatedGrid">
+                        ${relatedHTML}
+                    </div>
                 </div>
-                <div style="margin-top: 15px;">
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Preview:</p>
-                    <iframe src="/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+
+            </div><!-- /review-main -->
+
+            <!-- RIGHT: Sticky Sidebar -->
+            <aside class="review-sidebar">
+
+                <!-- Visit Card -->
+                <div class="sidebar-card">
+                    <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer"
+                       class="sidebar-visit-btn btn-visit-tracked"
+                       data-id="${this.site.id}" data-outbound="${this.site.url}">
+                        ${l.visitSite}
+                    </a>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Status</span>
+                        <span class="sidebar-stat-value" style="color:${statusColor};">● ${statusText}</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Category</span>
+                        <span class="sidebar-stat-value">${localCat}</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Rating</span>
+                        <span class="sidebar-stat-value" style="color:#ff9900;">${ '★'.repeat(Math.floor(this.site.rating)) } ${this.site.rating}/5</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Domain</span>
+                        <span class="sidebar-stat-value" style="font-size:0.8rem; word-break:break-all;">${domain}</span>
+                    </div>
+                    <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
-            </div>
-            
-            <div class="related-sites" style="margin-top: 60px;">
-                <h2 style="margin-bottom:25px; display: flex; align-items: center; gap: 10px;">
-                    <span>🔗</span> ${l.similar}
-                </h2>
-                <div id="relatedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
-                    ${relatedHTML}
-                </div>
-            </div>
-        </div>
+
+                <!-- Amazon Ad Slot -->
+                <div class="hv-ad-stack-right"></div>
+
+            </aside>
+
+        </div><!-- /review-grid -->
+
+        <script>
+            function reportDeadLink(id) {
+                const btn = document.getElementById('btnReportDead');
+                if(btn.innerText.includes('Reporting')) return;
+                btn.innerText = 'Reporting...';
+                fetch('/api/report-link', { method: 'POST', body: JSON.stringify({id}) })
+                  .then(r => r.json())
+                  .then(d => {
+                    if (d.success) btn.innerText = '✅ Removed. Thanks!';
+                    else btn.innerText = '❌ Site is still alive';
+                  })
+                  .catch(() => btn.innerText = '⚠️ Error');
+            }
+        </script>
     `;
 
     // FAQ Schema for Rich Results
@@ -1187,7 +1252,13 @@ async function handleRequest(request, env, ctx) {
       try {
         const body = await request.json();
         if (!body.id) return jsonError('Missing ID', 400);
-        await env.hv_directory.prepare('UPDATE sites SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
+        
+        if (body.id.startsWith('amz_')) {
+            await env.hv_directory.prepare('UPDATE amazon_ads SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
+        } else {
+            await env.hv_directory.prepare('UPDATE sites SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
+        }
+        
         return new Response(JSON.stringify({ success: true }), { headers: CORS });
       } catch (e) {
         return jsonError('Error updating click', 500);
@@ -1379,7 +1450,7 @@ async function handleRequest(request, env, ctx) {
       return new Response(JSON.stringify({
         offset,
         limit,
-        total: total.count,
+        total: total ? total.count : 0,
         results: results_out
       }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
     }
@@ -1478,14 +1549,20 @@ async function handleRequest(request, env, ctx) {
 
       let site = null;
       let relatedSites = [];
-      
+
       if (env.hv_directory) {
         try {
-          const siteRow = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+          // ── Parallel D1 fetch: site row + asset fetch run concurrently ──────
+          const siteRow = await env.hv_directory.prepare(
+            'SELECT data_json FROM sites WHERE id = ?'
+          ).bind(id).first();
+
           if (siteRow && siteRow.data_json) {
             site = JSON.parse(siteRow.data_json);
-            // Fetch some related sites for the Jaccard similarity engine in ReviewBodyHandler
-            const relatedRows = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE category = ? AND id != ? LIMIT 15').bind(site.category, site.id).all();
+            // Fetch related sites in parallel with the already-fetched asset above
+            const relatedRows = await env.hv_directory.prepare(
+              'SELECT data_json FROM sites WHERE category = ? AND id != ? ORDER BY rating DESC LIMIT 15'
+            ).bind(site.category, site.id).all();
             relatedSites = relatedRows.results.map(r => JSON.parse(r.data_json));
             relatedSites.push(site); // Ensure the site itself is in the array so the handler doesn't crash
           }
@@ -1513,7 +1590,15 @@ async function handleRequest(request, env, ctx) {
         .on('head', new HeadHandler(site, canonicalUrl))
         .on('div#reviewContent', new ReviewBodyHandler(site, lang, relatedSites));
 
-      return rewriter.transform(response);
+      // Add Cache-Control so Cloudflare edge caches SSR HTML for 5 minutes
+      const transformed = rewriter.transform(response);
+      const cachedHeaders = new Headers(transformed.headers);
+      cachedHeaders.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60');
+      return new Response(transformed.body, {
+        status: transformed.status,
+        statusText: transformed.statusText,
+        headers: cachedHeaders
+      });
     }
 
     // ── Route: /compare ─────────────────────────────────────────────────────
@@ -1887,16 +1972,21 @@ async function handleScheduled(event, env, ctx) {
         });
         const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
         if (!isUp) {
-          await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(site.id).run();
+          // Flag as dead instead of deleting — preserves analytics and DB count integrity
+          await env.hv_directory.prepare(
+            "UPDATE sites SET data_json = json_set(data_json, '$.isUp', 0, '$.isDeadFlagged', 1) WHERE id = ?"
+          ).bind(site.id).run();
           sweptDead++;
         }
       } catch(e) {
-        // Timeout = treat as dead
-        await env.hv_directory.prepare('DELETE FROM sites WHERE id = ?').bind(site.id).run();
+        // Timeout = treat as dead — flag, don't delete
+        await env.hv_directory.prepare(
+          "UPDATE sites SET data_json = json_set(data_json, '$.isUp', 0, '$.isDeadFlagged', 1) WHERE id = ?"
+        ).bind(site.id).run();
         sweptDead++;
       }
     }
-    console.log(`Health sweep: removed ${sweptDead} dead sites from DB.`);
+    console.log(`Health sweep: flagged ${sweptDead} dead sites (preserved in DB for analytics).`);
   } catch(err) {
     console.error('Health sweep error:', err);
   }
@@ -2046,8 +2136,7 @@ async function handleSubmit(request, env, ctx) {
     if (!descClean || descClean.length < 20)
       return jsonError('Description must be at least 20 characters.', 400);
 
-    if (!env.GITHUB_TOKEN)
-      return jsonError('Server misconfiguration. Contact the admin.', 500);
+    // GitHub token check removed — submissions now go directly to D1
 
     // ── 3. Duplicate check via D1 ────────────────────────────────────────────
     if (!env.hv_directory) return jsonError('Database not configured.', 500);

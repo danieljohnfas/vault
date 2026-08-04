@@ -71,8 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeBtns = document.getElementsByClassName('close-modal');
 
-    const ageGate = document.getElementById('ageGate');
-    const btnEnter = document.getElementById('btnEnter');
     const btnSearchMobile = document.getElementById('btnSearchMobile');
 
     // Uptime Status Observer
@@ -212,23 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Age Gate ---
-    try {
-        if (localStorage.getItem('hv_age_verified') === 'true') {
-            if (ageGate) ageGate.classList.add('hidden');
-        } else {
-            if (ageGate) document.body.style.overflow = 'hidden'; // Block scrolling ONLY if ageGate exists
-        }
-        if (btnEnter) {
-            btnEnter.addEventListener('click', () => {
-                try {
-                    localStorage.setItem('hv_age_verified', 'true');
-                } catch (e) {}
-                if (ageGate) ageGate.classList.add('hidden');
-                document.body.style.overflow = ''; // Restore scrolling
-            });
-        }
-    } catch (e) { console.error("Age gate init failed", e); }
 
     // --- Mobile Search Toggle ---
     if (btnSearchMobile && searchBar && searchInput) {
