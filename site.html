@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
+        /* Override global page-with-rails grid — detail page manages its own layout */
+        .page-with-rails { display: block !important; }
+        .rail-center { display: block !important; width: 100%; }
+
         /* ── Three-column review layout ── */
         .review-layout {
             max-width: 1500px;
