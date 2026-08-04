@@ -1,318 +1,642 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-G40QDCGTTZ');
-    </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My List | HentaiVault</title>
-    <meta name="description" content="Your personal collection of saved sites on HentaiVault.">
-    <meta name="robots" content="noindex">
-    <link rel="canonical" href="https://hentaivault.me/mylist">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link rel="stylesheet" href="css/style.css?v=4">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script defer src="js/i18n.js"></script>
-    <script defer src="js/app.js"></script>
-    </head>
-<body>
-
-    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
-    <div class="skyscraper skyscraper-left">
-        <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, #007EE5 0%, #0056b3 100%); border: 1px solid rgba(0,126,229,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#4fb0ff'; this.style.boxShadow='0 0 15px rgba(0,126,229,0.4)'" onmouseout="this.style.borderColor='rgba(0,126,229,0.4)'; this.style.boxShadow='none'">
-            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">Ôÿü´©Å</div>
-            <h3 style="color:#ffffff; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">pCloud</h3>
-            <p style="font-size:0.9rem; color:#e0f2fe; margin:0 0 20px 0; line-height:1.5;">Running out of space for your collection?</p>
-            <div style="margin-top:auto; background:white; color:#007EE5; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">10TB Storage</div>
-            <div style="font-size:0.65rem; color:#b0dfff; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
-        </a>
-    </div>
-    <div class="skyscraper skyscraper-right">
-        <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, #007EE5 0%, #0056b3 100%); border: 1px solid rgba(0,126,229,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#4fb0ff'; this.style.boxShadow='0 0 15px rgba(0,126,229,0.4)'" onmouseout="this.style.borderColor='rgba(0,126,229,0.4)'; this.style.boxShadow='none'">
-            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">Ôÿü´©Å</div>
-            <h3 style="color:#ffffff; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">pCloud</h3>
-            <p style="font-size:0.9rem; color:#e0f2fe; margin:0 0 20px 0; line-height:1.5;">One-time payment, yours forever.</p>
-            <div style="margin-top:auto; background:white; color:#007EE5; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">Get Deal</div>
-            <div style="font-size:0.65rem; color:#b0dfff; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
-        </a>
-    </div>
-
-    
-    <!-- pCloud Lifetime Promo Banner -->
-    <div class="pcloud-banner-interactive pcloud-banner-top" style="text-align:center; margin: 16px auto; max-width:800px; padding: 12px; background: linear-gradient(90deg, #092c4c, #00508a); border-radius: 8px; border: 1px solid #0088cc; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-        <a href="https://partner.pcloud.com/r/156776" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <strong style="font-size: 1.2rem; margin-bottom: 4px; display:flex; align-items:center; gap:8px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19C19.985 19 22 16.985 22 14.5C22 12.133 20.177 10.217 17.863 10.024C17.375 6.643 14.475 4 11 4C7.134 4 4 7.134 4 11C4 11.026 4 11.053 4.002 11.079C1.727 11.455 0 13.525 0 16C0 18.761 2.239 21 5 21H17.5Z"></path></svg>
-                Running out of space for your collection?
-            </strong>
-            <span style="font-size: 0.95rem; color: #a3d9ff;">Get up to 10TB of Lifetime Cloud Storage with pCloud. One-time payment, yours forever. Click here!</span>
-        </a>
-    </div>
-    <!-- Navigation -->
-    <div id="loadingBar"></div>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo" style="text-decoration:none;">
-                <span class="logo-icon">­ƒîÉ</span> HentaiVault
-            </a>
-            
-            <div class="search-bar">
-                <div class="search-container">
-                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
-                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
-                    </form>
-                    <div id="searchAutocomplete" class="search-autocomplete"></div>
-                </div>
-            </div>
-
-    
-            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">­ƒöì</button>
-            
-            <div class="nav-actions">
-                <button id="themeToggle" class="btn-theme" title="Toggle Theme">­ƒîô</button>
-                <div class="lang-switcher">
-                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
-                        <option value="en">­ƒç║­ƒç© EN</option>
-                        <option value="es">­ƒç¬­ƒç© ES</option>
-                        <option value="jp">­ƒç»­ƒçÁ JP</option>
-                        <option value="fr">­ƒç½­ƒçÀ FR</option>
-                        <option value="pt">­ƒçº­ƒçÀ PT</option>
-                        <option value="hi">­ƒç«­ƒç│ HI</option>
-                        <option value="ar">­ƒç▓­ƒçª AR</option>
-                        <option value="de">­ƒç®­ƒç¬ DE</option>
-                    </select>
-                </div>
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
-                </a>
-                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
-            </div>
-        </div>
-    </nav>
-    <main style="max-width: 1200px; margin: 60px auto 60px; padding: 0 24px;">
-    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom: 40px;">
-        <div>
-            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">­ƒôï My List</h1>
-            <p style="color: var(--text-muted);" id="listCount">Loading your saved sites...</p>
-        </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button onclick="copyShareLink()" class="btn-outline" style="padding: 10px 20px;">­ƒöù Share This List</button>
-            <button onclick="clearList()" class="btn-outline" style="padding: 10px 20px; border-color: #ff2a5f; color: #ff2a5f;">­ƒùæ´©Å Clear All</button>
-        </div>
-    </div>
-
-    <div id="myListGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-        <div style="grid-column: 1/-1; text-align:center; padding: 60px; color: var(--text-muted);">
-            Loading...
-        </div>
-    </div>
-
-    <!-- Amazon Affiliate Inline Ad -->
-    <div class="hv-amazon-inline-slot"></div>
-</main>
-</div>
-</div>
-</div>
-    
-
-    
-    <!-- Amazon Affiliate Footer Grid -->
-    <div class="hv-amazon-footer-slot"></div>
-
-    <footer class="site-footer">
-        <div class="footer-content">
-            <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
-            <div class="footer-links">
-                <a href="/blog" class="blog-link">Blog / Guides</a>
-                <a href="/about">About Us</a>
-                <a href="/disclaimer">Disclaimer</a>
-                <a href="/terms">Terms of Service</a>
-                <a href="/privacy">Privacy Policy</a>
-                <a href="/dmca">DMCA / Copyright</a>
-                <a href="/contact">Contact Us</a>
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">Ôÿò Buy Me A Coffee</a>
-            </div>
-            <div class="footer-links category-sitemap">
-                <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
-                <a href="/?q=Anime Streaming">Anime Streaming</a>
-                <a href="/?q=Hentai Streaming">Hentai Streaming</a>
-                <a href="/?q=Adult Tubes &amp; Studios">Adult Tubes &amp; Studios</a>
-                <a href="/?q=Games &amp; Visual Novels">Games &amp; Visual Novels</a>
-                <a href="/?q=Image Boards (Boorus)">Image Boards (Boorus)</a>
-                <a href="/?q=Communities &amp; Forums">Communities &amp; Forums</a>
-                <a href="/?q=Creator Platforms">Creator Platforms</a>
-                <a href="/?q=Downloads &amp; Torrents">Downloads &amp; Torrents</a>
-                <a href="/?q=Immersive &amp; Interactive">Immersive &amp; Interactive</a>
-            </div>
-            
-            <div class="footer-links sponsor-links" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
-                <strong style="color: #999; margin-bottom: 8px; display: block;">Sponsors & Partners:</strong>
-                <a href="https://partner.pcloud.com/r/156778" target="_blank" rel="noopener noreferrer">pCloud Plans & Pricing</a>
-                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="noopener noreferrer">pCloud Pass (Password Manager)</a>
-                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener noreferrer">pCloud Home</a>
-            </div>
-            <div class="visitor-stats">
-                <span>Global Visitors:</span>
-                <img src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23fe2c55&style=flat-square" alt="Visitor Count" class="hit-counter">
-            </div>
-            <div class="footer-digest" style="margin: 24px 0; padding: 24px; background: rgba(255,42,95,0.06); border: 1px solid rgba(255,42,95,0.2); border-radius: 16px; display:flex; flex-wrap:wrap; align-items:center; gap: 16px; justify-content:space-between;">
-                <div>
-                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">­ƒôº Weekly Digest</div>
-                    <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
-                </div>
-                <form id="digestForm" onsubmit="subscribeDigest(event)" style="display:flex; gap:10px; flex:1; max-width:400px;">
-                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
-                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe ÔåÆ</button>
-                </form>
-                <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
-            </div>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
-                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">­ƒôï My List</a>
-                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('­ƒôï List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">­ƒöù Share My List</button>
-                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">ÔÜû´©Å Compare Sites</a>
-            </div>
-<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
-                    </div>
-            </div>
-            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
-        </div>
-    </footer>
-
-<script>
-    const escapeHTML = (str) => {
-        if (!str) return '';
-        return String(str).replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));
-    };
-
-    async function loadMyList() {
-        let myList = [];
-        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
-
-        // Check for shared list in URL
-        const sharedParam = new URLSearchParams(window.location.search).get('list');
-        if (sharedParam) {
-            try {
-                const decoded = JSON.parse(atob(sharedParam));
-                if (Array.isArray(decoded)) myList = decoded;
-            } catch(e) {}
-        }
-
-        const grid = document.getElementById('myListGrid');
-        const countEl = document.getElementById('listCount');
-
-        if (myList.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:80px 20px;">
-                <div style="font-size:4rem; margin-bottom:20px;">­ƒôï</div>
-                <h2 style="margin-bottom:12px; color: var(--text-main);">Your list is empty</h2>
-                <p style="color:var(--text-muted); margin-bottom:24px;">Browse the directory and click ­ƒôï on any card to add sites here.</p>
-                <a href="/" class="btn-visit" style="text-decoration:none; padding:12px 28px;">Browse Directory ÔåÆ</a>
-            </div>`;
-            countEl.textContent = '0 saved sites';
-            return;
-        }
-
-        countEl.textContent = `${myList.length} saved site${myList.length !== 1 ? 's' : ''}`;
-        const currentLang = localStorage.getItem('hv_lang') || 'en';
-
-        // Fetch each site from the API
-        const sitePromises = myList.map(id => 
-            fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null).catch(() => null)
-        );
-        const sites = (await Promise.all(sitePromises)).filter(Boolean);
-
-        if (sites.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted);">Could not load saved sites. They may have been removed.</div>`;
-            return;
-        }
-
-        grid.innerHTML = '';
-        sites.forEach(site => {
-            const sUrl = new URL(site.url);
-            const favicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
-            const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
-            const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
-
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="card-header">
-                    <div style="position:relative; display:inline-block; line-height:0;">
-                        <img src="${favicon}" alt="" class="card-icon" loading="lazy">
-                    </div>
-                    <div>
-                        <div class="card-title"><a href="/site?id=${site.id}" style="text-decoration:none; color:inherit;">${localName}</a></div>
-                        <div class="card-category">${escapeHTML(site.category)}</div>
-                    </div>
-                </div>
-                <div class="card-desc" style="-webkit-line-clamp:3;">${localDesc}</div>
-                <div class="card-footer" style="margin-top:auto;">
-                    <div class="rating" style="color:#f59e0b;">Rating: ${'Ôÿà'.repeat(Math.floor(site.rating))}Ôÿå</div>
-                    <div class="card-actions">
-                        <button onclick="removeFromList('${site.id}', this)" class="mylist-btn mylist-active" title="Remove from My List">­ƒôï Remove</button>
-                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding:6px 16px;">Visit ÔåÆ</a>
-                    </div>
-                </div>`;
-            grid.appendChild(card);
-        });
-    }
-
-    function removeFromList(id, btn) {
-        let myList = [];
-        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
-        myList = myList.filter(i => i !== id);
-        localStorage.setItem('hv_mylist', JSON.stringify(myList));
-        btn.closest('.card').style.opacity = '0';
-        btn.closest('.card').style.transform = 'scale(0.95)';
-        setTimeout(() => { btn.closest('.card').remove(); loadMyList(); }, 300);
-    }
-
-    function copyShareLink() {
-        let myList = [];
-        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
-        const url = `${window.location.origin}/mylist.html?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
-        navigator.clipboard.writeText(url).then(() => {
-            window.showToast && showToast('­ƒöù Share link copied to clipboard!');
-        });
-    }
-
-    function clearList() {
-        if (!confirm('Clear your entire list?')) return;
-        localStorage.removeItem('hv_mylist');
-        loadMyList();
-    }
-
-    document.addEventListener('DOMContentLoaded', loadMyList);
-</script>
-
-
-    
-    
-    
-    
-
-    
-    <!-- Amazon Affiliate Ads Engine -->
-    <script defer src="/js/amazon-ads.js"></script>
-
-    <!-- High-Converting Affiliate CTA -->
-    <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener" style="position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg, #007EE5, #0056b3);color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;z-index:9998;box-shadow:0 4px 15px rgba(0,126,229,0.5);display:flex;align-items:center;gap:8px;transition:transform 0.2s;animation: pulse 2s infinite;">
-        <span style="font-size:1.2rem;">Ôÿü´©Å</span> Get 10TB Cloud Storage
-    </a>
-    <style>
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-    </style>
-</body>
-</html>
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+
+
+    <!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G40QDCGTTZ"></script>
+
+    <script>
+
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag(){dataLayer.push(arguments);}
+
+      gtag('js', new Date());
+
+      gtag('config', 'G-G40QDCGTTZ');
+
+    </script>
+
+
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My List | HentaiVault</title>
+
+    <meta name="description" content="Your personal collection of saved sites on HentaiVault.">
+
+    <meta name="robots" content="noindex">
+
+    <link rel="canonical" href="https://hentaivault.me/mylist">
+
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <link rel="stylesheet" href="css/style.css?v=4">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script defer src="js/i18n.js"></script>
+
+    <script defer src="js/app.js"></script>
+
+    </head>
+
+<body>
+
+
+
+    <!-- Sticky Skyscraper Ads (Wide Screens Only) -->
+
+    <div class="skyscraper skyscraper-left">
+
+        <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, #007EE5 0%, #0056b3 100%); border: 1px solid rgba(0,126,229,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#4fb0ff'; this.style.boxShadow='0 0 15px rgba(0,126,229,0.4)'" onmouseout="this.style.borderColor='rgba(0,126,229,0.4)'; this.style.boxShadow='none'">
+
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">Ôÿü´©Å</div>
+
+            <h3 style="color:#ffffff; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">pCloud</h3>
+
+            <p style="font-size:0.9rem; color:#e0f2fe; margin:0 0 20px 0; line-height:1.5;">Running out of space for your collection?</p>
+
+            <div style="margin-top:auto; background:white; color:#007EE5; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">10TB Storage</div>
+
+            <div style="font-size:0.65rem; color:#b0dfff; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+
+        </a>
+
+    </div>
+
+    <div class="skyscraper skyscraper-right">
+
+        <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener sponsored" style="display:flex; flex-direction:column; width:160px; height:600px; background:linear-gradient(180deg, #007EE5 0%, #0056b3 100%); border: 1px solid rgba(0,126,229,0.4); border-radius:12px; text-decoration:none; padding:20px; box-sizing:border-box; color:white; text-align:center; transition:0.3s;" onmouseover="this.style.borderColor='#4fb0ff'; this.style.boxShadow='0 0 15px rgba(0,126,229,0.4)'" onmouseout="this.style.borderColor='rgba(0,126,229,0.4)'; this.style.boxShadow='none'">
+
+            <div style="font-size:3.5rem; margin-bottom:20px; margin-top: 10px;">Ôÿü´©Å</div>
+
+            <h3 style="color:#ffffff; margin:0 0 15px 0; font-size:1.4rem; line-height:1.2; font-weight:900;">pCloud</h3>
+
+            <p style="font-size:0.9rem; color:#e0f2fe; margin:0 0 20px 0; line-height:1.5;">One-time payment, yours forever.</p>
+
+            <div style="margin-top:auto; background:white; color:#007EE5; padding:12px; border-radius:8px; font-weight:bold; font-size:1rem; text-transform:uppercase;">Get Deal</div>
+
+            <div style="font-size:0.65rem; color:#b0dfff; margin-top:15px; text-transform:uppercase; letter-spacing:1px;">Sponsored</div>
+
+        </a>
+
+    </div>
+
+
+
+    
+
+    <!-- pCloud Lifetime Promo Banner -->
+
+    <div class="pcloud-banner-interactive pcloud-banner-top" style="text-align:center; margin: 16px auto; max-width:800px; padding: 12px; background: linear-gradient(90deg, #092c4c, #00508a); border-radius: 8px; border: 1px solid #0088cc; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+
+        <a href="https://partner.pcloud.com/r/156776" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+
+            <strong style="font-size: 1.2rem; margin-bottom: 4px; display:flex; align-items:center; gap:8px;">
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19C19.985 19 22 16.985 22 14.5C22 12.133 20.177 10.217 17.863 10.024C17.375 6.643 14.475 4 11 4C7.134 4 4 7.134 4 11C4 11.026 4 11.053 4.002 11.079C1.727 11.455 0 13.525 0 16C0 18.761 2.239 21 5 21H17.5Z"></path></svg>
+
+                Running out of space for your collection?
+
+            </strong>
+
+            <span style="font-size: 0.95rem; color: #a3d9ff;">Get up to 10TB of Lifetime Cloud Storage with pCloud. One-time payment, yours forever. Click here!</span>
+
+        </a>
+
+    </div>
+
+    <!-- Navigation -->
+
+    <div id="loadingBar"></div>
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo" style="text-decoration:none;">
+
+                <span class="logo-icon">­ƒîÉ</span> HentaiVault
+
+            </a>
+
+            
+
+            <div class="search-bar">
+
+                <div class="search-container">
+
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+
+                    </form>
+
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+
+                </div>
+
+            </div>
+
+
+
+    
+
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">­ƒöì</button>
+
+            
+
+            <div class="nav-actions">
+
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">­ƒîô</button>
+
+                <div class="lang-switcher">
+
+                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
+
+                        <option value="en">­ƒç║­ƒç© EN</option>
+
+                        <option value="es">­ƒç¬­ƒç© ES</option>
+
+                        <option value="jp">­ƒç»­ƒçÁ JP</option>
+
+                        <option value="fr">­ƒç½­ƒçÀ FR</option>
+
+                        <option value="pt">­ƒçº­ƒçÀ PT</option>
+
+                        <option value="hi">­ƒç«­ƒç│ HI</option>
+
+                        <option value="ar">­ƒç▓­ƒçª AR</option>
+
+                        <option value="de">­ƒç®­ƒç¬ DE</option>
+
+                    </select>
+
+                </div>
+
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
+
+                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
+
+                </a>
+
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <main style="max-width: 1200px; margin: 60px auto 60px; padding: 0 24px;">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom: 40px;">
+
+        <div>
+
+            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">­ƒôï My List</h1>
+
+            <p style="color: var(--text-muted);" id="listCount">Loading your saved sites...</p>
+
+        </div>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+
+            <button onclick="copyShareLink()" class="btn-outline" style="padding: 10px 20px;">­ƒöù Share This List</button>
+
+            <button onclick="clearList()" class="btn-outline" style="padding: 10px 20px; border-color: #ff2a5f; color: #ff2a5f;">­ƒùæ´©Å Clear All</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="myListGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+
+        <div style="grid-column: 1/-1; text-align:center; padding: 60px; color: var(--text-muted);">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Amazon Affiliate Inline Ad -->
+
+    <div class="hv-amazon-inline-slot"></div>
+
+</main>
+
+</div>
+
+</div>
+
+</div>
+
+    
+
+
+
+    
+
+    
+    <!-- Subpage Affiliate Banners -->
+    <div style="max-width: 800px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 24px;">
+        <!-- PureVPN Banner -->
+        <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener noreferrer sponsored" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #02cf8e, #019a69); border-radius:14px; overflow:hidden; color:white; box-shadow:0 4px 20px rgba(2,207,142,0.3); transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+            <div style="padding:4px 12px; background:rgba(0,0,0,0.15); font-size:0.55rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.6); text-align:right;">Sponsored</div>
+            <div style="display:flex; align-items:center; gap:12px; padding:12px 16px 8px;">
+                <img src="/assets/partners/purevpn-64.png" alt="PureVPN" style="width:40px; height:40px; border-radius:8px; background:white; padding:4px; flex-shrink:0;">
+                <div>
+                    <div style="font-size:0.6rem; font-weight:700; text-transform:uppercase; opacity:0.8;">PureVPN</div>
+                    <div style="font-size:0.9rem; font-weight:800; line-height:1.2;">Secure Your Browsing</div>
+                </div>
+            </div>
+            <p style="margin:0; padding:0 16px 12px; font-size:0.8rem; opacity:0.9; line-height:1.4;">Unblock region-locked sites, hide your IP, and torrent safely.</p>
+            <div style="padding:0 16px 16px; margin-top:auto;">
+                <div style="background:white; color:#019a69; padding:8px; border-radius:50px; font-weight:800; font-size:0.8rem; text-align:center;">Get PureVPN &rarr;</div>
+            </div>
+        </a>
+        
+        <!-- pCloud Banner -->
+        <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener noreferrer sponsored" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #007EE5, #0056b3); border-radius:14px; overflow:hidden; color:white; box-shadow:0 4px 20px rgba(0,126,229,0.3); transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+            <div style="padding:4px 12px; background:rgba(0,0,0,0.15); font-size:0.55rem; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.6); text-align:right;">Sponsored</div>
+            <div style="display:flex; align-items:center; gap:12px; padding:12px 16px 8px;">
+                <img src="/assets/partners/pcloud-64.png" alt="pCloud" style="width:40px; height:40px; border-radius:8px; background:white; padding:4px; flex-shrink:0;">
+                <div>
+                    <div style="font-size:0.6rem; font-weight:700; text-transform:uppercase; opacity:0.8;">pCloud</div>
+                    <div style="font-size:0.9rem; font-weight:800; line-height:1.2;">Get 10TB Cloud Storage</div>
+                </div>
+            </div>
+            <p style="margin:0; padding:0 16px 12px; font-size:0.8rem; opacity:0.9; line-height:1.4;">Pay once and keep your files secure forever. Zero-knowledge privacy.</p>
+            <div style="padding:0 16px 16px; margin-top:auto;">
+                <div style="background:white; color:#007EE5; padding:8px; border-radius:50px; font-weight:800; font-size:0.8rem; text-align:center;">View Plans &rarr;</div>
+            </div>
+        </a>
+    </div>
+
+<footer class="site-footer">
+
+        <div class="footer-content">
+
+            <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
+
+            <div class="footer-links">
+
+                <a href="/blog" class="blog-link">Blog / Guides</a>
+
+                <a href="/about">About Us</a>
+
+                <a href="/disclaimer">Disclaimer</a>
+
+                <a href="/terms">Terms of Service</a>
+
+                <a href="/privacy">Privacy Policy</a>
+
+                <a href="/dmca">DMCA / Copyright</a>
+
+                <a href="/contact">Contact Us</a>
+
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">Ôÿò Buy Me A Coffee</a>
+
+            </div>
+
+            <div class="footer-links category-sitemap">
+
+                <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
+
+                <a href="/?q=Anime Streaming">Anime Streaming</a>
+
+                <a href="/?q=Hentai Streaming">Hentai Streaming</a>
+
+                <a href="/?q=Adult Tubes &amp; Studios">Adult Tubes &amp; Studios</a>
+
+                <a href="/?q=Games &amp; Visual Novels">Games &amp; Visual Novels</a>
+
+                <a href="/?q=Image Boards (Boorus)">Image Boards (Boorus)</a>
+
+                <a href="/?q=Communities &amp; Forums">Communities &amp; Forums</a>
+
+                <a href="/?q=Creator Platforms">Creator Platforms</a>
+
+                <a href="/?q=Downloads &amp; Torrents">Downloads &amp; Torrents</a>
+
+                <a href="/?q=Immersive &amp; Interactive">Immersive &amp; Interactive</a>
+
+            </div>
+
+            
+
+            <div class="footer-links sponsor-links" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+
+                <strong style="color: #999; margin-bottom: 8px; display: block;">Sponsors & Partners:</strong>
+
+                <a href="https://partner.pcloud.com/r/156778" target="_blank" rel="noopener noreferrer">pCloud Plans & Pricing</a>
+
+                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="noopener noreferrer">pCloud Pass (Password Manager)</a>
+
+                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="noopener noreferrer">pCloud Home</a>
+
+            </div>
+
+            <div class="visitor-stats">
+
+                <span>Global Visitors:</span>
+
+                <img src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fhentaivault.me&label=Visits&color=%23fe2c55&style=flat-square" alt="Visitor Count" class="hit-counter">
+
+            </div>
+
+            <div class="footer-digest" style="margin: 24px 0; padding: 24px; background: rgba(255,42,95,0.06); border: 1px solid rgba(255,42,95,0.2); border-radius: 16px; display:flex; flex-wrap:wrap; align-items:center; gap: 16px; justify-content:space-between;">
+
+                <div>
+
+                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">­ƒôº Weekly Digest</div>
+
+                    <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
+
+                </div>
+
+                <form id="digestForm" onsubmit="subscribeDigest(event)" style="display:flex; gap:10px; flex:1; max-width:400px;">
+
+                    <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
+
+                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe ÔåÆ</button>
+
+                </form>
+
+                <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
+
+            </div>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
+
+                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">­ƒôï My List</a>
+
+                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('­ƒôï List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">­ƒöù Share My List</button>
+
+                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">ÔÜû´©Å Compare Sites</a>
+
+            </div>
+
+<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
+
+                    </div>
+
+            </div>
+
+            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
+
+        </div>
+
+    </footer>
+
+
+
+<script>
+
+    const escapeHTML = (str) => {
+
+        if (!str) return '';
+
+        return String(str).replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));
+
+    };
+
+
+
+    async function loadMyList() {
+
+        let myList = [];
+
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+
+
+        // Check for shared list in URL
+
+        const sharedParam = new URLSearchParams(window.location.search).get('list');
+
+        if (sharedParam) {
+
+            try {
+
+                const decoded = JSON.parse(atob(sharedParam));
+
+                if (Array.isArray(decoded)) myList = decoded;
+
+            } catch(e) {}
+
+        }
+
+
+
+        const grid = document.getElementById('myListGrid');
+
+        const countEl = document.getElementById('listCount');
+
+
+
+        if (myList.length === 0) {
+
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:80px 20px;">
+
+                <div style="font-size:4rem; margin-bottom:20px;">­ƒôï</div>
+
+                <h2 style="margin-bottom:12px; color: var(--text-main);">Your list is empty</h2>
+
+                <p style="color:var(--text-muted); margin-bottom:24px;">Browse the directory and click ­ƒôï on any card to add sites here.</p>
+
+                <a href="/" class="btn-visit" style="text-decoration:none; padding:12px 28px;">Browse Directory ÔåÆ</a>
+
+            </div>`;
+
+            countEl.textContent = '0 saved sites';
+
+            return;
+
+        }
+
+
+
+        countEl.textContent = `${myList.length} saved site${myList.length !== 1 ? 's' : ''}`;
+
+        const currentLang = localStorage.getItem('hv_lang') || 'en';
+
+
+
+        // Fetch each site from the API
+
+        const sitePromises = myList.map(id => 
+
+            fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null).catch(() => null)
+
+        );
+
+        const sites = (await Promise.all(sitePromises)).filter(Boolean);
+
+
+
+        if (sites.length === 0) {
+
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted);">Could not load saved sites. They may have been removed.</div>`;
+
+            return;
+
+        }
+
+
+
+        grid.innerHTML = '';
+
+        sites.forEach(site => {
+
+            const sUrl = new URL(site.url);
+
+            const favicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
+
+            const localName = escapeHTML(site[`name_${currentLang}`] || site.name);
+
+            const localDesc = escapeHTML(site[`description_${currentLang}`] || site.description);
+
+
+
+            const card = document.createElement('div');
+
+            card.className = 'card';
+
+            card.innerHTML = `
+
+                <div class="card-header">
+
+                    <div style="position:relative; display:inline-block; line-height:0;">
+
+                        <img src="${favicon}" alt="" class="card-icon" loading="lazy">
+
+                    </div>
+
+                    <div>
+
+                        <div class="card-title"><a href="/site?id=${site.id}" style="text-decoration:none; color:inherit;">${localName}</a></div>
+
+                        <div class="card-category">${escapeHTML(site.category)}</div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-desc" style="-webkit-line-clamp:3;">${localDesc}</div>
+
+                <div class="card-footer" style="margin-top:auto;">
+
+                    <div class="rating" style="color:#f59e0b;">Rating: ${'Ôÿà'.repeat(Math.floor(site.rating))}Ôÿå</div>
+
+                    <div class="card-actions">
+
+                        <button onclick="removeFromList('${site.id}', this)" class="mylist-btn mylist-active" title="Remove from My List">­ƒôï Remove</button>
+
+                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding:6px 16px;">Visit ÔåÆ</a>
+
+                    </div>
+
+                </div>`;
+
+            grid.appendChild(card);
+
+        });
+
+    }
+
+
+
+    function removeFromList(id, btn) {
+
+        let myList = [];
+
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+        myList = myList.filter(i => i !== id);
+
+        localStorage.setItem('hv_mylist', JSON.stringify(myList));
+
+        btn.closest('.card').style.opacity = '0';
+
+        btn.closest('.card').style.transform = 'scale(0.95)';
+
+        setTimeout(() => { btn.closest('.card').remove(); loadMyList(); }, 300);
+
+    }
+
+
+
+    function copyShareLink() {
+
+        let myList = [];
+
+        try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
+
+        const url = `${window.location.origin}/mylist.html?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
+
+        navigator.clipboard.writeText(url).then(() => {
+
+            window.showToast && showToast('­ƒöù Share link copied to clipboard!');
+
+        });
+
+    }
+
+
+
+    function clearList() {
+
+        if (!confirm('Clear your entire list?')) return;
+
+        localStorage.removeItem('hv_mylist');
+
+        loadMyList();
+
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', loadMyList);
+
+</script>
+
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+
+
+    
+
+    <!-- Amazon Affiliate Ads Engine -->
+
+    
+
+</body>
+
+</html>
+
