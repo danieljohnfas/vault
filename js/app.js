@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const localName = window.escapeHTML(site[`name_${currentLang}`] || site.name);
                 const localDesc = window.escapeHTML(site[`description_${currentLang}`] || site.description);
                 spotlightContainer.innerHTML = `
-                    <div style="position:relative; overflow:hidden; border-radius: 20px; border: 1px solid rgba(255,42,95,0.4); background: linear-gradient(135deg, rgba(255,42,95,0.08) 0%, rgba(123,57,220,0.08) 100%); padding: 32px; display: flex; align-items: center; gap: 28px; box-shadow: 0 0 60px rgba(255,42,95,0.1);">
+                    <div style="position:relative; overflow:hidden; border-radius: 20px; border: 1px solid rgba(255,42,95,0.4); background: linear-gradient(135deg, rgba(255,42,95,0.08) 0%, rgba(123,57,220,0.08) 100%); padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px; box-shadow: 0 0 60px rgba(255,42,95,0.1); height: 100%; box-sizing: border-box;">
                         <div style="position:absolute; inset:0; background:url('https://image.thum.io/get/width/1200/crop/400/noanimate/${site.url}') center/cover no-repeat; opacity:0.06; border-radius: inherit;"></div>
                         <div style="position:relative; flex-shrink:0; background:rgba(255,42,95,0.15); border-radius:14px; padding:8px; border:1px solid rgba(255,42,95,0.3);">
                             <img src="${favicon}" alt="${localName}" style="width:80px; height:80px; border-radius:10px; display:block;">
@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (recentContainer && recentShelf) {
             const recent = JSON.parse(localStorage.getItem('hv_recent') || '[]');
             if (recent.length > 0) {
-                recentContainer.style.display = 'block';
+                recentContainer.style.display = 'flex';
                 Promise.all(recent.map(id => fetch(`/api/site?id=${id}`).then(r => r.ok ? r.json() : null)))
                 .then(sites => {
                     const recentSites = sites.filter(Boolean);
