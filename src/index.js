@@ -381,7 +381,31 @@ class ReviewBodyHandler {
                     <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
 
-
+                <!-- pCloud Affiliate Banners (Dynamic Injection) -->
+                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
+                            <span class="sky-brand">pCloud</span>
+                        </div>
+                        <p class="sky-headline">10TB Forever</p>
+                        <p class="sky-desc">Pay once, store your collection forever. Zero monthly fees.</p>
+                        <div class="sky-cta" style="color:#007EE5;">Get pCloud →</div>
+                    </div>
+                </a>
+                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
+                            <span class="sky-brand">pCloud</span>
+                        </div>
+                        <p class="sky-headline">pCloud Pass</p>
+                        <p class="sky-desc">Manage all your site passwords securely with end-to-end encryption.</p>
+                        <div class="sky-cta" style="color:#007EE5;">Try Password Manager →</div>
+                    </div>
+                </a>
 
             </aside>
 
