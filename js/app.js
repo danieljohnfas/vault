@@ -1072,23 +1072,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         // PureVPN Ads
                         {
                             url: 'https://billing.purevpn.com/aff.php?aff=49387845',
-                            title: '🛡️ PureVPN: Secure Browsing',
+                            title: 'Secure Your Browsing',
                             desc: 'Unblock region-locked sites, hide your IP, and torrent safely with PureVPN.',
                             cta: 'Get PureVPN &rarr;',
-                            icon: '<img src="https://logo.clearbit.com/purevpn.com" onerror="this.src=\'https://icons.duckduckgo.com/ip3/purevpn.com.ico\'" alt="PureVPN Logo" style="width:64px; height:64px; border-radius:14px; background:white; padding:4px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">',
+                            logo: '/assets/partners/purevpn-64.png',
+                            brand: 'PureVPN',
                             bg: 'linear-gradient(135deg, #02cf8e, #019a69)',
                             shadow: 'rgba(2,207,142,0.3)',
                             btnColor: '#019a69'
                         },
                         {
                             url: 'https://billing.purevpn.com/aff.php?aff=49387845',
-                            title: '🛡️ PureVPN: Bypass ISP Blocks',
+                            title: 'Bypass ISP Blocks',
                             desc: 'Access any restricted site globally with PureVPN. Military-grade encryption for total privacy.',
                             cta: 'Stay Anonymous &rarr;',
-                            icon: '<img src="https://logo.clearbit.com/purevpn.com" onerror="this.src=\'https://icons.duckduckgo.com/ip3/purevpn.com.ico\'" alt="PureVPN Logo" style="width:64px; height:64px; border-radius:14px; background:white; padding:4px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">',
+                            logo: '/assets/partners/purevpn-64.png',
+                            brand: 'PureVPN',
                             bg: 'linear-gradient(135deg, #302b63, #0f0c29)',
                             shadow: 'rgba(48,43,99,0.3)',
-                            btnColor: '#302b63'
+                            btnColor: '#8b5cf6'
                         },
                         // pCloud Ads
                         {
@@ -1096,17 +1098,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             title: 'Get 10TB Cloud Storage',
                             desc: 'Running out of space for your collection? One-time payment, yours forever.',
                             cta: 'Click Here &rarr;',
-                            icon: '☁️',
+                            logo: '/assets/partners/pcloud-64.png',
+                            brand: 'pCloud',
                             bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
                             shadow: 'rgba(0,126,229,0.3)',
                             btnColor: '#007EE5'
                         },
                         {
                             url: 'https://partner.pcloud.com/r/156784',
-                            title: 'pCloud Pass Manager',
+                            title: 'Password Manager',
                             desc: 'The most secure password manager. Save and access your passwords anywhere.',
                             cta: 'Secure Now &rarr;',
-                            icon: '🔐',
+                            logo: '/assets/partners/pcloud-64.png',
+                            brand: 'pCloud',
                             bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
                             shadow: 'rgba(0,126,229,0.3)',
                             btnColor: '#007EE5'
@@ -1116,7 +1120,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             title: 'Lifetime Cloud Storage',
                             desc: 'Pay once and keep your files secure forever with pCloud Lifetime.',
                             cta: 'Get Deal &rarr;',
-                            icon: '♾️',
+                            logo: '/assets/partners/pcloud-64.png',
+                            brand: 'pCloud',
                             bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
                             shadow: 'rgba(0,126,229,0.3)',
                             btnColor: '#007EE5'
@@ -1127,13 +1132,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pAd = inFeedAds[adNumber % inFeedAds.length];
                     
                     adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
-                        <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Sponsored</div>
-                        <a href="${pAd.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:${pAd.bg}; border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px ${pAd.shadow};"
-                           onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-                            <div style="font-size:3rem; margin-bottom:10px;">${pAd.icon}</div>
-                            <h3 style="margin:0 0 10px 0; font-size:1.2rem;">${pAd.title}</h3>
-                            <p style="font-size:0.9rem; opacity:0.9; margin:0 0 15px 0;">${pAd.desc}</p>
-                            <div style="margin-top:auto; background:white; color:${pAd.btnColor}; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">${pAd.cta}</div>
+                        <a href="${pAd.url}" target="_blank" rel="nofollow noopener noreferrer sponsored"
+                           style="text-decoration:none; display:flex; flex-direction:column; width:100%; background:${pAd.bg}; border-radius:14px; overflow:hidden; color:white; box-shadow:0 4px 20px ${pAd.shadow}; transition:transform 0.2s, box-shadow 0.2s;"
+                           onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px ${pAd.shadow}'"
+                           onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px ${pAd.shadow}'">
+
+                            <!-- Sponsored label -->
+                            <div style="padding:6px 14px; background:rgba(0,0,0,0.15); font-size:0.6rem; text-transform:uppercase; letter-spacing:0.12em; color:rgba(255,255,255,0.55); text-align:right;">
+                                Sponsored
+                            </div>
+
+                            <!-- Logo + Title row -->
+                            <div style="display:flex; align-items:center; gap:14px; padding:16px 20px 10px;">
+                                <img src="${pAd.logo}"
+                                     alt="${pAd.brand}"
+                                     style="width:52px; height:52px; border-radius:12px; background:white; padding:6px; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+                                <div>
+                                    <div style="font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; opacity:0.75; margin-bottom:3px;">${pAd.brand}</div>
+                                    <div style="font-size:1rem; font-weight:800; line-height:1.2;">${pAd.title}</div>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <p style="margin:0; padding:0 20px 16px; font-size:0.85rem; opacity:0.88; line-height:1.5;">
+                                ${pAd.desc}
+                            </p>
+
+                            <!-- CTA Button -->
+                            <div style="padding:0 20px 18px; margin-top:auto;">
+                                <div style="background:white; color:${pAd.btnColor}; padding:10px 18px; border-radius:50px; font-weight:800; font-size:0.88rem; text-align:center;">
+                                    ${pAd.cta}
+                                </div>
+                            </div>
                         </a>
                     `) : "";
                 }
