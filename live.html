@@ -1,0 +1,832 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- OG/Twitter meta tags and JSON-LD review schema are dynamically injected by the Worker via HTMLRewriter -->
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ââ Three-column review layout ââ */
+        .review-layout {
+            max-width: 1500px;
+            margin: 20px auto 60px;
+            padding: 0 24px;
+        }
+
+        /* Three-column grid: left ads + main + right sidebar */
+        .review-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Left rail: static, flows with content below hero */
+        .review-left-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Right sidebar: sticky */
+        .review-sidebar {
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1100px) {
+            .review-grid { grid-template-columns: 1fr 300px; }
+            .review-left-rail { display: none; }
+        }
+        @media (max-width: 900px) {
+            .review-grid { grid-template-columns: 1fr; }
+            .review-sidebar { position: static; }
+        }
+
+        .sidebar-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+        }
+
+        .sidebar-visit-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding: 16px 20px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(0,136,204,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 14px;
+        }
+        .sidebar-visit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,136,204,0.6);
+        }
+
+        .sidebar-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+        .sidebar-stat:last-child { border-bottom: none; }
+        .sidebar-stat-label { color: var(--text-muted); }
+        .sidebar-stat-value { color: var(--text-main); font-weight: 600; }
+
+        /* Main content area */
+        .review-main { min-width: 0; }
+
+        /* Hero */
+        .review-hero {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 40px;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, rgba(20,20,30,0.9) 0%, rgba(10,10,15,0.98) 100%);
+        }
+        .review-hero-bg {
+            position: absolute;
+            inset: -50%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(50px) brightness(0.15) saturate(2);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .review-hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            width: 100%;
+        }
+        .review-hero-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            object-fit: contain;
+            background: #000;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            flex-shrink: 0;
+        }
+        .review-hero-text h1 {
+            font-size: 2.2rem;
+            margin: 0 0 10px;
+            color: #fff;
+            font-weight: 800;
+            line-height: 1.15;
+        }
+        .hero-badges {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .hero-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .hero-badge-cat {
+            background: var(--primary);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .hero-badge-status-online {
+            background: rgba(34,197,94,0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34,197,94,0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hero-badge-status-offline {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .hero-badge-rating {
+            background: rgba(255,153,0,0.12);
+            color: #ff9900;
+            border: 1px solid rgba(255,153,0,0.3);
+        }
+        .review-hero-desc {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Content card */
+        .review-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 36px;
+            margin-bottom: 24px;
+        }
+        .review-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            margin: 0 0 20px;
+            color: var(--text-main);
+        }
+        .review-card h2 .card-icon { font-size: 1.3rem; }
+        .review-card p {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: #d4d4d8;
+            margin: 0;
+        }
+
+        /* Pros & Cons */
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .pc-box {
+            padding: 22px;
+            border-radius: var(--radius-lg);
+        }
+        .pc-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 16px;
+            font-size: 1rem;
+        }
+        .pros {
+            background: linear-gradient(180deg, rgba(34,197,94,0.08) 0%, transparent 100%);
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+        .cons {
+            background: linear-gradient(180deg, rgba(239,68,68,0.08) 0%, transparent 100%);
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+        .pc-list { list-style: none; padding: 0; margin: 0; }
+        .pc-list li {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.9rem;
+            color: #d4d4d8;
+            line-height: 1.5;
+        }
+        .pc-list li:last-child { border-bottom: none; }
+        .pc-mark { font-weight: 800; flex-shrink: 0; }
+
+        /* Compare buttons */
+        .compare-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .compare-btn {
+            padding: 9px 18px;
+            background: var(--bg-elevated, rgba(255,255,255,0.04));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .compare-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--primary);
+        }
+
+        /* Related cards */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .related-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            transition: border-color 0.2s, transform 0.15s;
+            text-decoration: none;
+            display: block;
+        }
+        .related-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .related-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .related-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            object-fit: contain;
+            background: var(--bg-elevated);
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .related-card-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+        .related-card-cat {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .related-card-desc {
+            font-size: 0.82rem;
+            color: #a0aec0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Report button */
+        .btn-report {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 7px 14px;
+            border-radius: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.2s, color 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn-report:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
+
+        /* Responsive: collapse to single column on mobile */
+        @media (max-width: 900px) {
+            .review-grid {
+                grid-template-columns: 1fr;
+            }
+            .review-sidebar {
+                position: static;
+                /* Render sidebar above main content on mobile */
+                order: -1;
+            }
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            .review-hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-badges { justify-content: center; }
+            .review-hero-text h1 { font-size: 1.8rem; }
+        }
+    </style>
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#09090b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HentaiVault">
+    <link rel="apple-touch-icon" href="/assets/icon-192.png">
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/app.js"></script>
+
+<link rel="canonical" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w"><link rel="alternate" hreflang="x-default" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w"><link rel="alternate" hreflang="en" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w"><link rel="alternate" hreflang="es" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w&lang=es"><link rel="alternate" hreflang="ja" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w&lang=jp"><link rel="alternate" hreflang="fr" href="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w&lang=fr"><meta name="description" content="Read our expert review of Tiktokclaim. Curated, rated, and verified by the HentaiVault team. Category: Adult Tubes & Studios."><meta property="og:title" content="Tiktokclaim Review | HentaiVault"><meta property="og:description" content="Tiktokclaim is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts."><meta property="og:url" content="https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w"><meta property="og:type" content="article"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Tiktokclaim Review | HentaiVault"><meta name="twitter:description" content="Tiktokclaim is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts."><script type="application/ld+json">{"@context":"https://schema.org/","@type":"SoftwareApplication","name":"Tiktokclaim","applicationCategory":"MultimediaApplication","operatingSystem":"Any","url":"https://hentaivault.me/site?id=tiktokclaim_mq7x3q5w","description":"Read our expert review of Tiktokclaim. Category: Adult Tubes & Studios.","aggregateRating":{"@type":"AggregateRating","ratingValue":4.5,"bestRating":"5","worstRating":"1","ratingCount":1},"author":{"@type":"Organization","name":"HentaiVault"}}</script><script type="application/ld+json">{"@context":"https://schema.org/","@type":"Review","itemReviewed":{"@type":"WebApplication","name":"Tiktokclaim","url":"https://tiktokclaim.org"},"reviewRating":{"@type":"Rating","ratingValue":4.5,"bestRating":"5","worstRating":"1"},"author":{"@type":"Organization","name":"HentaiVault"},"reviewBody":"Tiktokclaim is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.","publisher":{"@type":"Organization","name":"HentaiVault","url":"https://hentaivault.me"}}</script></head>
+<body>
+
+    <!-- Navigation -->
+    <div id="loadingBar"></div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <span class="logo-icon">ð</span> HentaiVault
+            </a>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+                    </form>
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
+            </div>
+
+    
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">ð</button>
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">ð</button>
+                <div class="lang-switcher">
+                    <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
+                        <option value="en">ðºð¸ EN</option>
+                        <option value="es">ðªð¸ ES</option>
+                        <option value="jp">ð¯ðµ JP</option>
+                        <option value="fr">ð«ð· FR</option>
+                        <option value="pt">ð§ð· PT</option>
+                        <option value="hi">ð®ð³ HI</option>
+                        <option value="ar">ð¸ð¦ AR</option>
+                        <option value="de">ð©ðª DE</option>
+                    </select>
+                </div>
+
+                <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
+            </div>
+        </div>
+    </nav>
+<div class="page-with-rails">
+
+<div class="rail-center">
+
+
+    <h1 class="sr-only">Site Detail | HentaiVault</h1>
+
+    <main class="review-layout">
+        <!-- Two-column grid: populated by worker (ReviewBodyHandler) + app.js -->
+        <div id="reviewContent">
+        <!-- Hero Section -->
+        <div class="review-hero">
+            <div class="review-hero-bg" style="background-image: url('https://icons.duckduckgo.com/ip3/tiktokclaim.org.ico');"></div>
+            <div class="review-hero-content">
+                <img src="https://icons.duckduckgo.com/ip3/tiktokclaim.org.ico" alt="Tiktokclaim logo" class="review-hero-icon" width="100" height="100" onerror="this.style.display='none'">
+                <div class="review-hero-text">
+                    <div class="hero-badges">
+                        <span class="hero-badge hero-badge-cat">Adult Tubes &amp; Studios</span>
+                        <span class="hero-badge hero-badge-status-online">
+                            <span class="status-dot" style="background:#22c55e; box-shadow: 0 0 6px #22c55e;"></span>
+                            Online
+                        </span>
+                        <span class="hero-badge hero-badge-rating">
+                            ââââÂ½ 4.5/5
+                        </span>
+                    </div>
+                    <h1>Tiktokclaim</h1>
+                    <p class="review-hero-desc">Tiktokclaim is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three-column layout -->
+        <div class="review-grid">
+
+            <!-- LEFT RAIL: PureVPN Ads -->
+            <aside class="review-left-rail">
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Unblock Any Site</p>
+                        <p class="sky-desc">Access region-locked anime and hentai sites from anywhere in the world.</p>
+                        <div class="sky-cta" style="color:#019a69;">Get PureVPN â</div>
+                    </div>
+                </a>
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Hide Your IP</p>
+                        <p class="sky-desc">Browse in total privacy. No logs, no tracking, blazing-fast servers.</p>
+                        <div class="sky-cta" style="color:#019a69;">Stay Private â</div>
+                    </div>
+                </a>
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Torrent Safely</p>
+                        <p class="sky-desc">Download manga and visual novel packs without ISP throttling.</p>
+                        <div class="sky-cta" style="color:#019a69;">Start Torrenting â</div>
+                    </div>
+                </a>
+            </aside>
+
+            <!-- CENTER: Main review content -->
+            <div class="review-main">
+
+                <!-- Expert Review Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">ð</span> Expert Review</h2>
+                    <p>When it comes to high-quality Adult Tubes &amp; Studios, Tiktokclaim is a site that definitely deserves your attention. Itâs rare to see such a dedicated approach to HD and Studio and Amateur, making this a standout choice among alternatives. Our review team gave it high marks for usability, making it a reliable daily driver. Tiktokclaim is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.</p>
+                </div>
+
+                <!-- Pros & Cons Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">âï¸</span> Pros &amp; Cons</h2>
+                    <div class="pros-cons">
+                        <div class="pc-box pros">
+                            <h3 style="color:#4ade80;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                                Pros
+                            </h3>
+                            <ul class="pc-list">
+                                <li><span class="pc-mark" style="color:#4ade80;">â</span>High-definition video quality with minimal compression</li><li><span class="pc-mark" style="color:#4ade80;">â</span>Intuitive and easy-to-navigate interface</li>
+                            </ul>
+                        </div>
+                        <div class="pc-box cons">
+                            <h3 style="color:#f87171;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                Cons
+                            </h3>
+                            <ul class="pc-list">
+                                <li><span class="pc-mark" style="color:#f87171;">â</span>Interface feels slightly outdated on mobile</li><li><span class="pc-mark" style="color:#f87171;">â</span>Can occasionally trigger aggressive captchas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conclusion Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">ð¯</span> Conclusion</h2>
+                    <p>If you are looking for a reliable source for Adult Tubes & Studios, Tiktokclaim is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.</p>
+                </div>
+
+                <!-- Compare Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">âï¸</span> Compare Tiktokclaim</h2>
+                    <div class="compare-links">
+                        <a href="/compare?site1=tiktokclaim_mq7x3q5w&site2=dusk_trees_mqasar1k" class="compare-btn">Tiktokclaim vs Dusk-trees</a><a href="/compare?site1=tiktokclaim_mq7x3q5w&site2=ar_mqdlv5i9" class="compare-btn">Tiktokclaim vs AR</a><a href="/compare?site1=tiktokclaim_mq7x3q5w&site2=dzsxs_mq241p4u" class="compare-btn">Tiktokclaim vs Dzsxs</a>
+                    </div>
+                </div>
+
+                <!-- Embed Widget Card -->
+                <div class="review-card">
+                    <h2><span class="card-icon">ð·ï¸</span> Are you the owner?</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">Show off your HentaiVault rating! Copy the embed code below.</p>
+                    <textarea readonly style="width: 100%; height: 56px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 11px; resize: none;"><iframe src="https://hentaivault.me/embed?id=tiktokclaim_mq7x3q5w" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget"></iframe></textarea>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 12px 0 8px;">Preview:</p>
+                    <iframe src="/embed?id=tiktokclaim_mq7x3q5w" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget for Tiktokclaim"></iframe>
+                </div>
+
+                <!-- Related Sites -->
+                <div class="review-card">
+                    <h2><span class="card-icon">ð</span> Similar Sites You May Like</h2>
+                    <div class="related-grid" id="relatedGrid">
+                        
+            <a href="/site?id=dusk_trees_mqasar1k" class="card btn-visit-tracked" data-id="dusk_trees_mqasar1k" style="display:block; text-decoration:none; color:inherit;">
+                <div class="card-header">
+                    <img src="https://icons.duckduckgo.com/ip3/dusk-trees.com.ico" alt="Dusk-trees logo" class="card-icon" width="32" height="32" loading="lazy">
+                    <div>
+                        <div class="card-title">Dusk-trees</div>
+                        <div class="card-category">Adult Tubes &amp; Studios</div>
+                    </div>
+                </div>
+                <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">Dusk-trees is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.</div>
+            </a>
+        
+            <a href="/site?id=ar_mqdlv5i9" class="card btn-visit-tracked" data-id="ar_mqdlv5i9" style="display:block; text-decoration:none; color:inherit;">
+                <div class="card-header">
+                    <img src="https://icons.duckduckgo.com/ip3/ar.ksaksaksa.com.ico" alt="AR logo" class="card-icon" width="32" height="32" loading="lazy">
+                    <div>
+                        <div class="card-title">AR</div>
+                        <div class="card-category">Adult Tubes &amp; Studios</div>
+                    </div>
+                </div>
+                <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">AR is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.</div>
+            </a>
+        
+            <a href="/site?id=dzsxs_mq241p4u" class="card btn-visit-tracked" data-id="dzsxs_mq241p4u" style="display:block; text-decoration:none; color:inherit;">
+                <div class="card-header">
+                    <img src="https://icons.duckduckgo.com/ip3/dzsxs.com.ico" alt="Dzsxs logo" class="card-icon" width="32" height="32" loading="lazy">
+                    <div>
+                        <div class="card-title">Dzsxs</div>
+                        <div class="card-category">Adult Tubes &amp; Studios</div>
+                    </div>
+                </div>
+                <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">Dzsxs is a high-authority platform specializing in adult video. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.</div>
+            </a>
+        
+                    </div>
+                </div>
+
+            </div><!-- /review-main -->
+
+            <!-- RIGHT: Sticky Sidebar -->
+            <aside class="review-sidebar">
+
+                <!-- Visit Card -->
+                <div class="sidebar-card">
+                    <a href="https://tiktokclaim.org" target="_blank" rel="nofollow noopener noreferrer"
+                       class="sidebar-visit-btn btn-visit-tracked"
+                       data-id="tiktokclaim_mq7x3q5w" data-outbound="https://tiktokclaim.org">
+                        Visit Tiktokclaim &rarr;
+                    </a>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Status</span>
+                        <span class="sidebar-stat-value" style="color:#22c55e;">â Online</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Category</span>
+                        <span class="sidebar-stat-value">Adult Tubes &amp; Studios</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Rating</span>
+                        <span class="sidebar-stat-value" style="color:#ff9900;">ââââ 4.5/5</span>
+                    </div>
+                    <div class="sidebar-stat">
+                        <span class="sidebar-stat-label">Domain</span>
+                        <span class="sidebar-stat-value" style="font-size:0.8rem; word-break:break-all;">tiktokclaim.org</span>
+                    </div>
+                    <button onclick="reportDeadLink('tiktokclaim_mq7x3q5w')" id="btnReportDead" class="btn-report">â ï¸ Report Dead Link</button>
+                </div>
+
+                <!-- pCloud Affiliate Banners (Dynamic Injection) -->
+                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
+                            <span class="sky-brand">pCloud</span>
+                        </div>
+                        <p class="sky-headline">10TB Forever</p>
+                        <p class="sky-desc">Pay once, store your collection forever. Zero monthly fees.</p>
+                        <div class="sky-cta" style="color:#007EE5;">Get pCloud â</div>
+                    </div>
+                </a>
+                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
+                            <span class="sky-brand">pCloud</span>
+                        </div>
+                        <p class="sky-headline">pCloud Pass</p>
+                        <p class="sky-desc">Manage all your site passwords securely with end-to-end encryption.</p>
+                        <div class="sky-cta" style="color:#007EE5;">Try Password Manager â</div>
+                    </div>
+                </a>
+
+            </aside>
+
+        </div><!-- /review-grid -->
+
+        <script>
+            function reportDeadLink(id) {
+                const btn = document.getElementById('btnReportDead');
+                if(btn.innerText.includes('Reporting')) return;
+                btn.innerText = 'Reporting...';
+                fetch('/api/report-link', { method: 'POST', body: JSON.stringify({id}) })
+                  .then(r => r.json())
+                  .then(d => {
+                    if (d.success) btn.innerText = 'â Removed. Thanks!';
+                    else btn.innerText = 'â Site is still alive';
+                  })
+                  .catch(() => btn.innerText = 'â ï¸ Error');
+            }
+        </script>
+    
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Tiktokclaim free?","acceptedAnswer":{"@type":"Answer","text":"Yes, you can browse and access content on Tiktokclaim for free."}},{"@type":"Question","name":"Is Tiktokclaim safe?","acceptedAnswer":{"@type":"Answer","text":"Yes, Tiktokclaim has been reviewed and listed in our directory. However, we always recommend using an ad-blocker or VPN for adult websites."}},{"@type":"Question","name":"What is the best alternative to Tiktokclaim?","acceptedAnswer":{"@type":"Answer","text":"There are several great alternatives to Tiktokclaim in the Adult Tubes &amp; Studios category. Check our Similar Sites section below for top-rated recommendations."}}]}
+</script>
+</div>
+
+        <!-- User Reviews Section (below the grid) -->
+        <div style="margin-top: 60px;" id="userReviewsSection">
+            <h2 style="margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+                <span>ð¬</span> User Reviews
+            </h2>
+            <div id="reviewsList" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;"></div>
+
+            <!-- Submit Review Form -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px;">
+                <h3 style="margin-bottom: 20px;">Write a Review</h3>
+                <form id="reviewForm" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label for="reviewName" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Your Name (optional)</label>
+                        <input type="text" id="reviewName" placeholder="Anonymous" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem;">
+                    </div>
+                    <div>
+                        <label for="reviewRating" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Rating</label>
+                        <select id="reviewRating" style="padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem;" title="Select Rating">
+                            <option value="5">âââââ (5/5)</option>
+                            <option value="4">âââââ (4/5)</option>
+                            <option value="3">âââââ (3/5)</option>
+                            <option value="2">âââââ (2/5)</option>
+                            <option value="1">âââââ (1/5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="reviewComment" style="display:block; margin-bottom: 6px; color: var(--text-muted); font-size: 0.9rem;">Your Review</label>
+                        <textarea id="reviewComment" rows="4" placeholder="Share your experience with this site..." style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: white; font-size: 0.95rem; resize: vertical;" required></textarea>
+                    </div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark"></div>
+                    <div id="reviewStatus" style="font-size: 0.9rem; display: none;"></div>
+                    <button type="submit" class="btn-primary" style="align-self: flex-start; padding: 12px 28px;">Submit Review</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Submit Modal -->
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Submit a New Site</h2>
+            <p>Help grow the vault! Submitted sites are <strong>automatically published</strong> after basic validation.</p>
+            <form id="submitForm">
+                <div class="form-group">
+                    <label for="siteName">Website Name</label>
+                    <input type="text" id="siteName" name="site_name" placeholder="e.g. AnimeSite.tv" required>
+                </div>
+                <div class="form-group">
+                    <label for="siteUrl">URL</label>
+                    <input type="url" id="siteUrl" name="url" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label for="siteCategory">Category</label>
+                    <select name="category" id="siteCategory" title="Select Site Category" required>
+                        <option value="Manga/Doujin">Manga &amp; Doujinshi</option>
+                        <option value="Anime Streaming">Anime Streaming</option>
+                        <option value="Hentai Streaming">Hentai Streaming</option>
+                        <option value="Adult Studios">Adult Tubes &amp; Studios</option>
+                        <option value="Games">Games &amp; Visual Novels</option>
+                        <option value="Images/Boorus">Image Boards (Boorus)</option>
+                        <option value="Communities">Communities &amp; Forums</option>
+                        <option value="Premium Creators">Creator Platforms</option>
+                        <option value="Downloads">Downloads &amp; Torrents</option>
+                        <option value="Adult VR">Immersive &amp; Interactive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="siteDesc">Description</label>
+                    <textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site (at least 20 characters)..." required></textarea>
+                </div>
+                <!-- Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom: 15px;"></div>
+                <div id="submitStatus" class="submit-status hidden"></div>
+                <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
+            </form>
+        </div>
+    </div>
+
+
+    
+    </div><!-- /rail-center -->
+</div><!-- /page-with-rails -->
+<footer class="site-footer">
+        <div class="footer-content">
+            <p class="disclaimer"><strong>Disclaimer:</strong> HentaiVault is an indexing directory. We do not host, upload, or manage any of the content linked on this website. All content belongs to their respective owners. You must be 18+ to browse this directory.</p>
+            <div class="footer-links">
+                <a href="/blog" class="blog-link">Blog / Guides</a>
+                <a href="/about">About Us</a>
+                <a href="/disclaimer">Disclaimer</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/dmca">DMCA / Copyright</a>
+                <a href="/contact">Contact Us</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">â Buy Me A Coffee</a>
+            </div>
+            <div class="footer-links category-sitemap">
+                <a href="/?q=Manga &amp; Doujinshi">Manga &amp; Doujinshi</a>
+                <a href="/?q=Anime Streaming">Anime Streaming</a>
+                <a href="/?q=Hentai Streaming">Hentai Streaming</a>
+                <a href="/?q=Adult Tubes &amp; Studios">Adult Tubes &amp; Studios</a>
+                <a href="/?q=Games &amp; Visual Novels">Games &amp; Visual Novels</a>
+                <a href="/?q=Image Boards (Boorus)">Image Boards (Boorus)</a>
+                <a href="/?q=Communities &amp; Forums">Communities &amp; Forums</a>
+                <a href="/?q=Creator Platforms">Creator Platforms</a>
+                <a href="/?q=Downloads &amp; Torrents">Downloads &amp; Torrents</a>
+                <a href="/?q=Immersive &amp; Interactive">Immersive &amp; Interactive</a>
+            </div>
+            <p class="copyright">&copy; 2026 HentaiVault.me. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <button class="close-modal close-share" style="position: absolute; right: 10px; top: 10px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+            <h3>Share this link</h3>
+            <div class="share-qr-container">
+                <img id="shareQrImg" src="" alt="QR Code">
+            </div>
+            <div class="share-actions">
+                <button id="btnShareCopy" class="btn-share-action">ð Copy Link</button>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">ð¦ Share on Twitter</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">ð¤ Share on Reddit</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(reg) { console.log('SW registered'); })
+                    .catch(function(err) { console.log('SW error:', err); });
+            });
+        }
+    </script>
+
+    <!-- Lazy Load Turnstile -->
+    <script>
+        function loadTurnstile() {
+            if (!window.turnstileLoaded) {
+                window.turnstileLoaded = true;
+                const script = document.createElement('script');
+                script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+                script.async = true;
+                document.body.appendChild(script);
+            }
+        }
+        document.getElementById('reviewForm').addEventListener('focusin', loadTurnstile);
+        const btnSubmitSite = document.getElementById('btnSubmitSite');
+        if (btnSubmitSite) btnSubmitSite.addEventListener('click', loadTurnstile);
+    </script>
+
+
+    <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4580040eb573428c994b682807c2284f","r":1}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a25d88dc6bd29c08',t:'MTc4NTg0NjIyMA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
