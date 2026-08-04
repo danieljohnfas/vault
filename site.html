@@ -16,15 +16,22 @@
             padding: 0 24px;
         }
 
-        /* Two-column grid: main + right sidebar */
+        /* Three-column grid: left ads + main + right sidebar */
         .review-grid {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 32px;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 24px;
             align-items: start;
         }
 
-        /* Rails stick while main scrolls */
+        /* Left rail: static, flows with content below hero */
+        .review-left-rail {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Right sidebar: sticky */
         .review-sidebar {
             position: sticky;
             top: 80px;
@@ -33,6 +40,10 @@
             gap: 20px;
         }
 
+        @media (max-width: 1100px) {
+            .review-grid { grid-template-columns: 1fr 300px; }
+            .review-left-rail { display: none; }
+        }
         @media (max-width: 900px) {
             .review-grid { grid-template-columns: 1fr; }
             .review-sidebar { position: static; }

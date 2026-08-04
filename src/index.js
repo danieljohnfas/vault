@@ -277,51 +277,51 @@ class ReviewBodyHandler {
             </div>
         </div>
 
-        <!-- Two-column layout -->
+        <!-- Three-column layout -->
         <div class="review-grid">
+
+            <!-- LEFT RAIL: PureVPN Ads -->
+            <aside class="review-left-rail">
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Unblock Any Site</p>
+                        <p class="sky-desc">Access region-locked anime and hentai sites from anywhere in the world.</p>
+                        <div class="sky-cta" style="color:#019a69;">Get PureVPN →</div>
+                    </div>
+                </a>
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Hide Your IP</p>
+                        <p class="sky-desc">Browse in total privacy. No logs, no tracking, blazing-fast servers.</p>
+                        <div class="sky-cta" style="color:#019a69;">Stay Private →</div>
+                    </div>
+                </a>
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                    <div class="sky-sponsored">Sponsored</div>
+                    <div class="sky-body">
+                        <div class="sky-logo-row">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <span class="sky-brand">PureVPN</span>
+                        </div>
+                        <p class="sky-headline">Torrent Safely</p>
+                        <p class="sky-desc">Download manga and visual novel packs without ISP throttling.</p>
+                        <div class="sky-cta" style="color:#019a69;">Start Torrenting →</div>
+                    </div>
+                </a>
+            </aside>
 
             <!-- CENTER: Main review content -->
             <div class="review-main">
-
-                <!-- PureVPN Native Ad Block -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
-                        <div class="sky-sponsored">Sponsored</div>
-                        <div class="sky-body">
-                            <div class="sky-logo-row">
-                                <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
-                                <span class="sky-brand">PureVPN</span>
-                            </div>
-                            <p class="sky-headline">Unblock Any Site</p>
-                            <p class="sky-desc">Access region-locked anime and hentai sites from anywhere in the world.</p>
-                            <div class="sky-cta" style="color:#019a69;">Get PureVPN →</div>
-                        </div>
-                    </a>
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
-                        <div class="sky-sponsored">Sponsored</div>
-                        <div class="sky-body">
-                            <div class="sky-logo-row">
-                                <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
-                                <span class="sky-brand">PureVPN</span>
-                            </div>
-                            <p class="sky-headline">Hide Your IP</p>
-                            <p class="sky-desc">Browse in total privacy. No logs, no tracking, blazing-fast servers.</p>
-                            <div class="sky-cta" style="color:#019a69;">Stay Private →</div>
-                        </div>
-                    </a>
-                    <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
-                        <div class="sky-sponsored">Sponsored</div>
-                        <div class="sky-body">
-                            <div class="sky-logo-row">
-                                <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
-                                <span class="sky-brand">PureVPN</span>
-                            </div>
-                            <p class="sky-headline">Torrent Safely</p>
-                            <p class="sky-desc">Download manga and visual novel packs without ISP throttling.</p>
-                            <div class="sky-cta" style="color:#019a69;">Start Torrenting →</div>
-                        </div>
-                    </a>
-                </div>
 
                 <!-- Expert Review Card -->
                 <div class="review-card">
