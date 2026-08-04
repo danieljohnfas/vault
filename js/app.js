@@ -1067,83 +1067,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 adDiv.style.animationDelay = `${(batchIndex % 24) * 0.05}s`;
 
                 if (true) {
-                    // Render pCloud Ad (Rotate between available affiliate links)
-                    const pcloudAds = [
+                    // Render Ads (Rotate between available affiliate links)
+                    const inFeedAds = [
+                        // PureVPN Ads
+                        {
+                            url: 'https://billing.purevpn.com/aff.php?aff=49387845',
+                            title: '🛡️ Secure Your Browsing',
+                            desc: 'Unblock region-locked sites, hide your IP, and torrent safely with PureVPN.',
+                            cta: 'Get PureVPN &rarr;',
+                            icon: '🌐',
+                            bg: 'linear-gradient(135deg, #02cf8e, #019a69)',
+                            shadow: 'rgba(2,207,142,0.3)',
+                            btnColor: '#019a69'
+                        },
+                        {
+                            url: 'https://billing.purevpn.com/aff.php?aff=49387845',
+                            title: 'Bypass ISP Blocks',
+                            desc: 'Access any restricted site globally. Military-grade encryption for total privacy.',
+                            cta: 'Stay Anonymous &rarr;',
+                            icon: '🕵️',
+                            bg: 'linear-gradient(135deg, #302b63, #0f0c29)',
+                            shadow: 'rgba(48,43,99,0.3)',
+                            btnColor: '#302b63'
+                        },
+                        // pCloud Ads
                         {
                             url: 'https://partner.pcloud.com/r/156786',
                             title: 'Get 10TB Cloud Storage',
                             desc: 'Running out of space for your collection? One-time payment, yours forever.',
                             cta: 'Click Here &rarr;',
-                            icon: '☁️'
+                            icon: '☁️',
+                            bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
+                            shadow: 'rgba(0,126,229,0.3)',
+                            btnColor: '#007EE5'
                         },
                         {
                             url: 'https://partner.pcloud.com/r/156784',
                             title: 'pCloud Pass Manager',
                             desc: 'The most secure password manager. Save and access your passwords anywhere.',
                             cta: 'Secure Now &rarr;',
-                            icon: '🔐'
+                            icon: '🔐',
+                            bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
+                            shadow: 'rgba(0,126,229,0.3)',
+                            btnColor: '#007EE5'
                         },
                         {
                             url: 'https://partner.pcloud.com/r/156776',
                             title: 'Lifetime Cloud Storage',
                             desc: 'Pay once and keep your files secure forever with pCloud Lifetime.',
                             cta: 'Get Deal &rarr;',
-                            icon: '♾️'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156778',
-                            title: 'Secure Cloud Storage',
-                            desc: 'Access your files on any device. Highly secure, easy to use cloud storage.',
-                            cta: 'View Plans &rarr;',
-                            icon: '🛡️'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156782',
-                            title: 'pCloud Family Plan',
-                            desc: 'Share up to 10TB of Lifetime storage with up to 5 family members.',
-                            cta: 'View Family Plan &rarr;',
-                            icon: '👨‍👩‍👧‍👦'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156781',
-                            title: 'pCloud for Business',
-                            desc: 'Secure cloud storage for your team. Easy collaboration and access control.',
-                            cta: 'Start Business Trial &rarr;',
-                            icon: '💼'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156780',
-                            title: 'pCloud Crypto',
-                            desc: 'Client-side encryption for your most sensitive files. Zero-knowledge privacy.',
-                            cta: 'Encrypt Files &rarr;',
-                            icon: '🔒'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156783',
-                            title: 'pCloud Europe',
-                            desc: 'Store your files securely in our European data center (Luxembourg).',
-                            cta: 'EU Data Region &rarr;',
-                            icon: '🇪🇺'
-                        },
-                        {
-                            url: 'https://partner.pcloud.com/r/156785',
-                            title: 'pCloud Drive for Mac',
-                            desc: 'Access all your files directly from your Mac without taking up local space.',
-                            cta: 'Download Now &rarr;',
-                            icon: '🍏'
+                            icon: '♾️',
+                            bg: 'linear-gradient(135deg, #007EE5, #0056b3)',
+                            shadow: 'rgba(0,126,229,0.3)',
+                            btnColor: '#007EE5'
                         }
                     ];
                     
-                    const pAd = pcloudAds[Math.floor(globalIndex / 18) % pcloudAds.length];
+                    // adNumber increments every 6 cards. Use this to cycle ads cleanly.
+                    const pAd = inFeedAds[adNumber % inFeedAds.length];
                     
                     adDiv.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(`
-                        <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Advertisement</div>
-                        <a href="${pAd.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:linear-gradient(135deg, #007EE5, #0056b3); border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px rgba(0,126,229,0.3);"
+                        <div style="font-size:0.65rem;color:rgba(161,161,170,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Sponsored</div>
+                        <a href="${pAd.url}" target="_blank" rel="nofollow noopener noreferrer" style="text-decoration:none; display:flex; flex-direction:column; background:${pAd.bg}; border-radius:12px; padding:20px; color:white; text-align:center; height:250px; width:300px; box-sizing:border-box; transition: transform 0.2s; box-shadow:0 4px 15px ${pAd.shadow};"
                            onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                             <div style="font-size:3rem; margin-bottom:10px;">${pAd.icon}</div>
                             <h3 style="margin:0 0 10px 0; font-size:1.2rem;">${pAd.title}</h3>
                             <p style="font-size:0.9rem; opacity:0.9; margin:0 0 15px 0;">${pAd.desc}</p>
-                            <div style="margin-top:auto; background:white; color:#007EE5; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">${pAd.cta}</div>
+                            <div style="margin-top:auto; background:white; color:${pAd.btnColor}; padding:10px; border-radius:50px; font-weight:bold; font-size:0.9rem;">${pAd.cta}</div>
                         </a>
                     `) : "";
                 }
