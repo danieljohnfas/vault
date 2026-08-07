@@ -21,29 +21,6 @@ Disallow: /*?*ref=
 Disallow: /*?*lang=
 Disallow: /*?*utm_*
 
-# Bingbot specific crawl optimization
-User-agent: bingbot
-Allow: /
-Allow: /api/sites
-Allow: /api/config
-Allow: /api/site-of-the-day
-Allow: /api/trending
-Allow: /api/site-count
-Disallow: /api/
-Disallow: /out
-Disallow: /out.html
-Disallow: /embed
-Disallow: /embed.html
-Disallow: /mylist
-Disallow: /mylist.html
-Disallow: /*?*q=
-Disallow: /*?*search=
-Disallow: /*?*sort=
-Disallow: /*?*filter=
-Disallow: /*?*tag=
-Disallow: /*?*ref=
-Disallow: /*?*lang=
-Disallow: /*?*utm_*
 # AI Search & LLM Crawlers (ChatGPT, Claude, Perplexity, Gemini)
 User-agent: GPTBot
 User-agent: ClaudeBot
