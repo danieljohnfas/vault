@@ -721,7 +721,7 @@ function addSecurityHeaders(response) {
 async function handleRequest(request, env, ctx) {
     const url = new URL(request.url);
 
-    // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC) ────────────
+    // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC & Bing) ────────────
     if (url.protocol === 'http:') {
       const httpsUrl = new URL(request.url);
       httpsUrl.protocol = 'https:';
@@ -729,6 +729,7 @@ async function handleRequest(request, env, ctx) {
         status: 301,
         headers: {
           'Location': httpsUrl.toString(),
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
           'Cache-Control': 'public, max-age=31536000'
         }
       });
