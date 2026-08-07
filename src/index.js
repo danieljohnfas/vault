@@ -64,7 +64,12 @@ class HeadHandler {
     element.append(`<link rel="alternate" hreflang="es" href="${this.canonicalUrl}&lang=es">`, { html: true });
     element.append(`<link rel="alternate" hreflang="ja" href="${this.canonicalUrl}&lang=jp">`, { html: true });
     element.append(`<link rel="alternate" hreflang="fr" href="${this.canonicalUrl}&lang=fr">`, { html: true });
-    element.append(`<meta name="description" content="Read our expert review of ${this.site.name}. Curated, rated, and verified by the HentaiVault team. Category: ${this.site.category}.">`, { html: true });
+    // CTR-optimised meta description: specific, keyword-rich, includes rating and category
+    const ratingText = this.site.rating ? `${this.site.rating}/5 stars.` : '';
+    const catText = this.site.category ? `${this.site.category} site.` : '';
+    const shortDesc = (this.site.description || '').replace(/"/g, '&quot;').slice(0, 80);
+    const metaDesc = `Is ${this.site.name} safe & working in 2026? Our expert review covers content quality, safety, ads & alternatives. ${ratingText} ${catText} ${shortDesc}`.trim().slice(0, 160);
+    element.append(`<meta name="description" content="${metaDesc}">`, { html: true });
     
     // Open Graph
     element.append(`<meta property="og:title" content="${title}">`, { html: true });
