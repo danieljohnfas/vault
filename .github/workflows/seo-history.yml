@@ -1,0 +1,67 @@
+name: 📚 SEO Historical Analysis
+
+on:
+  workflow_dispatch: {}  # Manual trigger only — run on demand
+  schedule:
+    # Every Monday at 07:00 UTC — weekly deep analysis
+    - cron: '0 7 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  history:
+    name: Pull & Analyse Full GSC History
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure Git
+        run: |
+          git config user.name "HentaiVault SEO Bot"
+          git config user.email "seo-bot@hentaivault.me"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run historical analysis
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/seo-history.js
+
+      - name: Display report
+        if: always()
+        run: |
+          if [ -f "reports/seo-history.md" ]; then
+            echo "════════════════════════════════════════"
+            cat reports/seo-history.md
+            echo "════════════════════════════════════════"
+          fi
+
+      - name: Commit report to repository
+        run: |
+          git add reports/seo-history.md
+          if git diff --cached --quiet; then
+            echo "No changes to report."
+          else
+            git commit -m "chore(seo): historical analysis report [$(date -u '+%Y-%m-%d')]"
+            git push
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📚 Historical Analysis Complete"
+          echo "📄 Report: https://github.com/${{ github.repository }}/blob/main/reports/seo-history.md"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
