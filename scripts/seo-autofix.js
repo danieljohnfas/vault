@@ -161,6 +161,51 @@ function fixBlogCanonicals(missingCanonicals) {
   return fixed;
 }
 
+// ─── Fix: Auto-Update Blog dateModified for Freshness ───────────────────────
+function autoFixBlogSchemaDate(pagePath) {
+  if (!pagePath.includes('/blog/')) return false;
+  const slug = pagePath.split('/blog/')[1].replace(/\/$/, '') + '.html';
+  const filePath = path.join(__dirname, '..', 'blog', slug);
+  if (!fs.existsSync(filePath)) return false;
+
+  const content = fs.readFileSync(filePath, 'utf8');
+  const today = new Date().toISOString().split('T')[0];
+  const updated = content.replace(/"dateModified":\s*"[^"]+"/g, `"dateModified": "${today}"`);
+  
+  if (updated !== content) {
+    if (!DRY_RUN) fs.writeFileSync(filePath, updated, 'utf8');
+    return true;
+  }
+  return false;
+}
+
+// ─── Fix: Auto-Tweak Blog Titles for Low CTR ────────────────────────────────
+function autoFixBlogTitle(pagePath) {
+  if (!pagePath.includes('/blog/')) return false;
+  const slug = pagePath.split('/blog/')[1].replace(/\/$/, '') + '.html';
+  const filePath = path.join(__dirname, '..', 'blog', slug);
+  if (!fs.existsSync(filePath)) return false;
+
+  let content = fs.readFileSync(filePath, 'utf8');
+  const currentTitleMatch = content.match(/<title>([^<]+)<\/title>/i);
+  if (!currentTitleMatch) return false;
+  
+  const currentTitle = currentTitleMatch[1];
+  // Prevent infinitely stacking modifiers
+  if (currentTitle.includes('Updated') || currentTitle.includes('Working')) return false;
+
+  const modifiers = ['[Updated]', '(Working)'];
+  const modifier = modifiers[Math.floor(Math.random() * modifiers.length)];
+  const newTitle = `${modifier} ${currentTitle}`;
+  
+  const updated = content.replace(/<title>[^<]+<\/title>/i, `<title>${newTitle}</title>`);
+  if (updated !== content) {
+    if (!DRY_RUN) fs.writeFileSync(filePath, updated, 'utf8');
+    return newTitle;
+  }
+  return false;
+}
+
 // ─── Ping IndexNow ──────────────────────────────────────────────────────────
 async function pingIndexNow(urls) {
   // Read IndexNow key from index.js
@@ -286,11 +331,12 @@ async function main() {
   let prevRows = [];
 
   for (const url of siteUrls) {
-    const rows = await fetchGscData(auth, url, weekStart, today, ['query'], 100);
+    // Fetch query and page dimensions so we can map issues to files
+    const rows = await fetchGscData(auth, url, weekStart, today, ['query', 'page'], 200);
     if (rows.length > 0) {
       siteUrl = url;
       currentRows = rows;
-      prevRows = await fetchGscData(auth, url, prevWeekStart, prevWeekEnd, ['query'], 100);
+      prevRows = await fetchGscData(auth, url, prevWeekStart, prevWeekEnd, ['query', 'page'], 200);
       break;
     }
   }
@@ -301,8 +347,8 @@ async function main() {
   }
 
   console.log(`✅ Connected to GSC property: ${siteUrl}`);
-  console.log(`📊 Fetched ${currentRows.length} query rows for current period`);
-  console.log(`📊 Fetched ${prevRows.length} query rows for comparison period`);
+  console.log(`📊 Fetched ${currentRows.length} query/page rows for current period`);
+  console.log(`📊 Fetched ${prevRows.length} query/page rows for comparison period`);
 
   // ── 3. Aggregate metrics
   const aggregate = (rows) => rows.reduce((acc, r) => ({
@@ -341,10 +387,24 @@ async function main() {
     }
   }
 
-  // Low CTR queries with high impressions
+  // Low CTR queries with high impressions (Opportunity)
   const lowCtrHighImp = currentRows.filter(r => r.ctr < LOW_CTR_THRESHOLD && r.impressions > 50);
   if (lowCtrHighImp.length > 0) {
-    issues.push(`${lowCtrHighImp.length} queries have >50 impressions but <2% CTR — title/description not compelling enough`);
+    issues.push(`${lowCtrHighImp.length} queries have >50 impressions but <2% CTR — attempting automated title tweaks`);
+    
+    // Auto-fix loop for low CTR pages
+    for (const r of lowCtrHighImp) {
+      const pageUrl = r.keys[1]; // dimension 1 is 'page'
+      if (pageUrl && pageUrl.includes('/blog/')) {
+        const tweakedTitle = autoFixBlogTitle(pageUrl);
+        if (tweakedTitle) {
+          fixes.push(`Tweaked title for ${pageUrl} to boost CTR (new title: "${tweakedTitle}")`);
+        }
+        if (autoFixBlogSchemaDate(pageUrl)) {
+          fixes.push(`Updated dateModified to today for ${pageUrl} to signal freshness`);
+        }
+      }
+    }
   }
 
   // Queries ranking poorly
