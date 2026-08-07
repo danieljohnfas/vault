@@ -46,9 +46,7 @@ jobs:
           git config user.email "seo-bot@hentaivault.me"
 
       - name: Install dependencies
-        run: |
-          npm install --no-audit --no-fund
-          npm install -g wrangler
+        run: npm install --no-audit --no-fund
 
       # ── 2. Run SEO auto-fix engine ──────────────────────────────────────────
       - name: Run SEO Auto-Fix Engine
@@ -109,7 +107,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           echo "🚀 Deploying updated worker to Cloudflare..."
-          npx wrangler deploy --env "" 2>&1 | tee /tmp/deploy.log
+          npx wrangler@latest deploy --env "" 2>&1 | tee /tmp/deploy.log
           if grep -q "Deployed" /tmp/deploy.log; then
             echo "✅ Cloudflare deploy successful"
           else
