@@ -106,7 +106,7 @@ async function pullGSC(auth) {
 async function pullCloudflare(token, accountId) {
   if (!token) { out('⚠️  Cloudflare: No API token'); return null; }
 
-  // Get zone ID
+  // Get zone ID using the analytics token
   const zoneRes = await fetch(`https://api.cloudflare.com/client/v4/zones?name=${SITE_URL}`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
@@ -713,7 +713,7 @@ async function main() {
     ],
   });
 
-  const cfToken = process.env.CLOUDFLARE_API_TOKEN;
+  const cfToken = process.env.CLOUDFLARE_ANALYTICS_TOKEN || process.env.CLOUDFLARE_API_TOKEN;
   const cfAccountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 
   // ── Pull all sources in parallel
