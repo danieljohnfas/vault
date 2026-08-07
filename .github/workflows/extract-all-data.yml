@@ -1,0 +1,36 @@
+name: 💾 Extract All Analytics Data
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install googleapis --no-audit --no-fund
+      - name: Run Extraction
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/extract-all-data.js
+      - name: Commit Data
+        run: |
+          git config user.name "HentaiVault Analytics Bot"
+          git config user.email "analytics-bot@hentaivault.me"
+          git add reports/raw-data/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "💾 data: full raw extraction [$DATE]"
+            git push
+          fi
