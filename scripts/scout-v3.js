@@ -31,6 +31,53 @@ const DIRECTORIES = [
 ];
 const BLACKLIST = ['scam', 'phishing', 'casino', 'betting', 'crypto'];
 
+// Domains that produce junk entries — blocked at scout stage
+const DOMAIN_BLACKLIST = [
+  // Non-adult platforms
+  'eneba.com', 'steampowered.com', 'scribd.com', 'animeonegai.com',
+  'securities.dmm.com', 'zerotolerance.com',
+  // Document / PDF hosts
+  'docs.google.com', 'drive.google.com', 'dropbox.com', 'mega.nz',
+  // News, blogs, non-site content
+  'medium.com', 'substack.com', 'wordpress.com', 'blogspot.com',
+  // Social / app stores
+  'apps.apple.com', 'play.google.com', 'chrome.google.com',
+  // Tracking / redirect links that are not real sites
+  'zline0.com',
+];
+
+// URL path patterns that indicate an individual content page, not a site homepage
+const JUNK_PATH_PATTERNS = [
+  /\.pdf($|\?)/i,
+  /\/videos?\//i,
+  /\/bucetas?\//i,
+  /\/document\//i,
+  /\/curator\//i,
+  /\/news\//i,
+  /\/policy\//i,
+  /anti.?trafficking/i,
+  /\/hub\/news/i,
+  /\/performance\/?$/i,
+  /itch\.io\/[^/]+\//i,   // itch.io individual game subpages
+];
+
+function isJunkUrl(url) {
+  try {
+    const u = new URL(url);
+    const domain = u.hostname.toLowerCase().replace(/^www\./, '');
+    // Block blacklisted domains
+    if (DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
+    // Block junk path patterns
+    if (JUNK_PATH_PATTERNS.some(p => p.test(url))) return true;
+    // Block deep sub-paths (more than 2 path segments = individual content, not a site)
+    const segments = u.pathname.split('/').filter(Boolean);
+    if (segments.length > 2) return true;
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 // --- Helper Functions ---
 function getExistingUrls() {
   const urls = new Set();
@@ -254,14 +301,20 @@ async function aiEnrich(siteData) {
 
 function guessCategory(domain, title) {
   const d = (domain + ' ' + title).toLowerCase();
-  if (d.includes('hentai') || d.includes('anime')) return 'Hentai Streaming';
-  if (d.includes('manga') || d.includes('doujin')) return 'Manga & Doujinshi';
-  if (d.includes('game') || d.includes('play')) return 'Games & Visual Novels';
-  if (d.includes('vr')) return 'Immersive & Interactive';
-  if (d.includes('booru') || d.includes('chan')) return 'Image Boards (Boorus)';
-  if (d.includes('dl') || d.includes('torrent')) return 'Downloads & Torrents';
-  if (d.includes('cam') || d.includes('fans')) return 'Creator Platforms';
-  return 'Adult Tubes & Studios';
+  if (d.includes('hentai')) return 'Hentai Streaming';
+  if (d.includes('doujin') || d.includes('manga') || d.includes('nhentai') || d.includes('fakku')) return 'Manga & Doujinshi';
+  if (d.includes('anime') && !d.includes('hentai')) return 'Anime Streaming';
+  if (d.includes('booru') || d.includes('gelbooru') || d.includes('danbooru') || d.includes('rule34') || d.includes('safebooru')) return 'Image Boards (Boorus)';
+  if (d.includes('torrent') || d.includes('nyaa') || d.includes('download') || d.includes('dl.')) return 'Downloads & Torrents';
+  if (d.includes('visual novel') || d.includes('eroge') || d.includes('nutaku') || d.includes('f95')) return 'Games & Visual Novels';
+  if (d.includes('game') || d.includes('play') || d.includes('itch.io')) return 'Games & Visual Novels';
+  if (d.includes('vr') || d.includes('interactive') || d.includes('360')) return 'Immersive & Interactive';
+  if (d.includes('cam') || d.includes('onlyfans') || d.includes('fansly') || d.includes('patreon') || d.includes('fans')) return 'Creator Platforms';
+  if (d.includes('forum') || d.includes('community') || d.includes('discord') || d.includes('reddit')) return 'Communities & Forums';
+  // Only fall back to Adult Tubes if the domain/title is clearly adult video
+  if (d.includes('tube') || d.includes('porn') || d.includes('xxx') || d.includes('xnxx') || d.includes('xvideos') || d.includes('jav')) return 'Adult Tubes & Studios';
+  // Unknown — return null to signal this entry should be skipped rather than miscategorised
+  return null;
 }
 
 // --- Main Pipeline ---
@@ -281,7 +334,7 @@ async function run() {
   
   for (const link of rawLinks) {
     const norm = String(link.url).toLowerCase().replace(/\/$/, '');
-    if (!existingUrls.has(norm) && !uniqueUrls.has(norm)) {
+    if (!existingUrls.has(norm) && !uniqueUrls.has(norm) && !isJunkUrl(link.url)) {
       uniqueUrls.add(norm);
       candidates.push(link.url);
     }
@@ -302,6 +355,19 @@ async function run() {
     
     const domain = new URL(url).hostname;
     const category = guessCategory(domain, extracted.title);
+
+    // Skip entries we cannot reliably categorise — better to miss than to pollute
+    if (!category) {
+      console.log(`   ⏭️  Skipped (unknown category): ${url}`);
+      continue;
+    }
+
+    // Skip entries whose title looks like an article/video headline rather than a site name
+    const titleWordCount = extracted.title.trim().split(/\s+/).length;
+    if (titleWordCount > 8 || extracted.title.length > 70) {
+      console.log(`   ⏭️  Skipped (title looks like content, not a site): "${extracted.title.substring(0, 60)}..."`);
+      continue;
+    }
     const waybackBonus = await fetchWaybackAge(url);
     const baseRating = Math.round((3.8 + Math.random() * 0.7 + waybackBonus) * 10) / 10;
     

@@ -52,6 +52,48 @@ function escapeSql(str) {
   return String(str || '').replace(/'/g, "''");
 }
 
+// ─── Junk Filter (second gate after Scout) ──────────────────────────────────
+// Blocks individual content pages, documents, non-adult sites, and
+// any URL that was never a site homepage from reaching D1.
+const JUNK_DOMAIN_BLACKLIST = [
+  'eneba.com', 'steampowered.com', 'scribd.com', 'animeonegai.com',
+  'securities.dmm.com', 'zerotolerance.com', 'zline0.com',
+  'docs.google.com', 'drive.google.com', 'medium.com', 'substack.com',
+  'apps.apple.com', 'play.google.com',
+];
+const JUNK_PATH_PATTERNS = [
+  /\.pdf($|\?)/i,
+  /\/videos?\/[^/]+/i,
+  /\/bucetas?\//i,
+  /\/document\//i,
+  /\/curator\//i,
+  /\/news\//i,
+  /\/policy\//i,
+  /anti.?trafficking/i,
+  /\/hub\/news/i,
+  /\/performance\/?$/i,
+];
+
+function isJunkSite(site) {
+  try {
+    const u = new URL(site.url);
+    const domain = u.hostname.toLowerCase().replace(/^www\./, '');
+    // Blacklisted domains
+    if (JUNK_DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
+    // Junk path patterns
+    if (JUNK_PATH_PATTERNS.some(p => p.test(site.url))) return true;
+    // Deep sub-paths = individual content, not a site
+    const segments = u.pathname.split('/').filter(Boolean);
+    if (segments.length > 2) return true;
+    // Name looks like a sentence/headline rather than a brand name
+    const name = String(site.name || '');
+    if (name.length > 70 || name.trim().split(/\s+/).length > 8) return true;
+    return false;
+  } catch {
+    return true; // unparseable URL = junk
+  }
+}
+
 function siteToSql(site) {
   const id       = escapeSql(site.id);
   const category = escapeSql(site.category);
@@ -190,9 +232,16 @@ async function run() {
     process.exit(0);
   }
 
-  // 3. Filter out already-existing URLs
-  const fresh = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()));
-  console.log(`✅ New (not in D1): ${fresh.length}`);
+  // 3. Filter out already-existing URLs + run junk filter
+  const fresh = queue.filter(s => {
+    if (existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase())) return false;
+    if (isJunkSite(s)) {
+      console.log(`   ⏭️  Junk filter removed: ${s.url}`);
+      return false;
+    }
+    return true;
+  });
+  console.log(`✅ New & clean (not in D1, not junk): ${fresh.length}`);
 
   if (fresh.length === 0) {
     console.log('⚠️  All queue items already exist in D1. Nothing to add.');
