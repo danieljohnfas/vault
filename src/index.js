@@ -304,42 +304,43 @@ class ReviewBodyHandler {
         <!-- Three-column layout -->
         <div class="review-grid">
 
-            <!-- LEFT RAIL: PureVPN Ads -->
+            <!-- LEFT RAIL: PureVPN Ads (visible on screens > 1100px) -->
             <aside class="review-left-rail">
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
                     <div class="sky-sponsored">Sponsored</div>
                     <div class="sky-body">
                         <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
                             <span class="sky-brand">PureVPN</span>
                         </div>
-                        <p class="sky-headline">Unblock Any Site</p>
-                        <p class="sky-desc">Access region-locked anime and hentai sites from anywhere in the world.</p>
-                        <div class="sky-cta" style="color:#019a69;">Get PureVPN →</div>
+                        <p class="sky-headline">Site Blocked?</p>
+                        <p class="sky-desc">Unblock nhentai, Hitomi.la & every other site in seconds. 6,500+ servers worldwide.</p>
+                        <div style="background:#02cf8e; color:#000; font-weight:800; font-size:0.8rem; padding:8px 14px; border-radius:50px; text-align:center; margin-top:10px;">Unblock Now — $2.14/mo →</div>
                     </div>
                 </a>
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
                     <div class="sky-sponsored">Sponsored</div>
                     <div class="sky-body">
                         <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
                             <span class="sky-brand">PureVPN</span>
                         </div>
-                        <p class="sky-headline">Hide Your IP</p>
-                        <p class="sky-desc">Browse in total privacy. No logs, no tracking, blazing-fast servers.</p>
-                        <div class="sky-cta" style="color:#019a69;">Stay Private →</div>
+                        <p class="sky-headline">Browse Privately</p>
+                        <p class="sky-desc">Zero logs, military-grade AES-256 encryption. Your ISP sees nothing.</p>
+                        <div style="font-size:0.78rem; color:#02cf8e; font-weight:600; margin-top:8px;">✓ 31-day money-back guarantee</div>
+                        <div class="sky-cta" style="color:#02cf8e; margin-top:6px;">Try Risk-Free →</div>
                     </div>
                 </a>
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #02cf8e, #019a69); border-color:rgba(2,207,142,0.35);">
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
                     <div class="sky-sponsored">Sponsored</div>
                     <div class="sky-body">
                         <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo">
+                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
                             <span class="sky-brand">PureVPN</span>
                         </div>
-                        <p class="sky-headline">Torrent Safely</p>
-                        <p class="sky-desc">Download manga and visual novel packs without ISP throttling.</p>
-                        <div class="sky-cta" style="color:#019a69;">Start Torrenting →</div>
+                        <p class="sky-headline">Torrent Freely</p>
+                        <p class="sky-desc">No speed throttling, P2P optimised servers. Download manga packs without ISP interference.</p>
+                        <div class="sky-cta" style="color:#02cf8e;">Get Started →</div>
                     </div>
                 </a>
             </aside>
@@ -407,6 +408,27 @@ class ReviewBodyHandler {
                     <p>${l.conclusionText}</p>
                 </div>
 
+                <!-- PureVPN Inline Native CTA — visible to 100% of users across all devices -->
+                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored"
+                   style="display:block; text-decoration:none; background:linear-gradient(135deg, rgba(2,207,142,0.12), rgba(1,154,105,0.08)); border:1px solid rgba(2,207,142,0.35); border-radius:14px; padding:20px 22px; margin-bottom:20px; transition:border-color 0.2s, transform 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(2,207,142,0.7)';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.borderColor='rgba(2,207,142,0.35)';this.style.transform='none'">
+                    <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#02cf8e; margin-bottom:10px;">🛡️ Sponsored — Reader Deal</div>
+                    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                        <img src="/assets/partners/purevpn-64.png" alt="PureVPN" width="44" height="44" style="border-radius:10px; flex-shrink:0;" onerror="this.style.display='none'">
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-size:1.05rem; font-weight:800; color:#fff; margin-bottom:3px;">Is ${localName} blocked in your country?</div>
+                            <div style="font-size:0.88rem; color:#a1a1aa; line-height:1.4;">PureVPN unblocks every hentai & anime site. No logs, 6,500+ servers, works on all devices.</div>
+                        </div>
+                        <div style="background:#02cf8e; color:#000; font-weight:800; font-size:0.88rem; padding:10px 18px; border-radius:50px; white-space:nowrap; flex-shrink:0;">Unblock Now →</div>
+                    </div>
+                    <div style="display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;">
+                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ Works on Netflix, Crunchyroll, nhentai</span>
+                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ 31-day money-back guarantee</span>
+                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ From $2.14/mo</span>
+                    </div>
+                </a>
+
                 <!-- Compare Card -->
                 <div class="review-card">
                     <h2><span class="card-icon">⚔️</span> Compare ${localName}</h2>
@@ -464,29 +486,31 @@ class ReviewBodyHandler {
                     <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
 
-                <!-- pCloud Affiliate Banners (Dynamic Injection) -->
-                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                <!-- pCloud Affiliate Banners — upgraded with price anchors & deal hooks -->
+                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(0,126,229,0.15), rgba(0,86,179,0.08)); border-color:rgba(0,126,229,0.45); margin-top:20px;">
                     <div class="sky-sponsored">Sponsored</div>
                     <div class="sky-body">
                         <div class="sky-logo-row">
-                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo" onerror="this.style.display='none'">
                             <span class="sky-brand">pCloud</span>
                         </div>
-                        <p class="sky-headline">10TB Forever</p>
-                        <p class="sky-desc">Pay once, store your collection forever. Zero monthly fees.</p>
-                        <div class="sky-cta" style="color:#007EE5;">Get pCloud →</div>
+                        <p class="sky-headline">10TB — Pay Once</p>
+                        <p class="sky-desc">Store your entire manga & doujin collection forever. One-time payment, no subscriptions, no monthly bill.</p>
+                        <div style="font-size:0.75rem; color:#60a5fa; margin:8px 0;">⚡ Limited offer: <strong style="color:#fff;">$399 once</strong> vs ~$1,800 over 5 years with competitors</div>
+                        <div style="background:#007EE5; color:#fff; font-weight:800; font-size:0.8rem; padding:8px 14px; border-radius:50px; text-align:center; margin-top:6px;">Claim Lifetime Deal →</div>
                     </div>
                 </a>
-                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, #007EE5, #0056b3); border-color:rgba(0,126,229,0.35); margin-top:20px;">
+                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(0,126,229,0.15), rgba(0,86,179,0.08)); border-color:rgba(0,126,229,0.45); margin-top:16px;">
                     <div class="sky-sponsored">Sponsored</div>
                     <div class="sky-body">
                         <div class="sky-logo-row">
-                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo">
-                            <span class="sky-brand">pCloud</span>
+                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo" onerror="this.style.display='none'">
+                            <span class="sky-brand">pCloud Pass</span>
                         </div>
-                        <p class="sky-headline">pCloud Pass</p>
-                        <p class="sky-desc">Manage all your site passwords securely with end-to-end encryption.</p>
-                        <div class="sky-cta" style="color:#007EE5;">Try Password Manager →</div>
+                        <p class="sky-headline">1 Password for Every Site</p>
+                        <p class="sky-desc">Stop reusing passwords across sites. pCloud Pass stores them all with zero-knowledge encryption — even pCloud can't read them.</p>
+                        <div style="font-size:0.75rem; color:#60a5fa; margin:8px 0;">✓ Free plan available &nbsp;✓ Works on all devices</div>
+                        <div class="sky-cta" style="color:#60a5fa;">Try Free →</div>
                     </div>
                 </a>
 
