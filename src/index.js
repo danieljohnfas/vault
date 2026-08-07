@@ -804,75 +804,93 @@ async function handleRequest(request, env, ctx) {
       });
     }
 
-    // ── Route: /sitemap.xml — Dynamic sitemap generated from live D1 data ───
-    // This replaces the static sitemap.xml file to eliminate Soft 404s from
-    // stale/deleted site IDs and "Page with redirect" from ?lang= URL variants.
+    // ── Route: Sitemaps — Dynamic sitemaps generated from live D1 data ───
     if (url.pathname === '/sitemap.xml') {
-      const today = new Date().toISOString().split('T')[0];
-      const staticPages = [
-        { loc: 'https://hentaivault.me/', priority: '1.0', changefreq: 'daily' },
-        // Blog posts
-        { loc: 'https://hentaivault.me/blog', priority: '0.8', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/nhentai-alternatives-2026', priority: '0.9', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/best-streaming-2026', priority: '0.9', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/best-doujin-sites-2026', priority: '0.9', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/hentai-apps-guide-2026', priority: '0.9', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/uncensored-streaming-guide-2026', priority: '0.9', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/free-manga-guide', priority: '0.8', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/hanime-alternatives-2026', priority: '0.8', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/blog/privacy-safety-guide', priority: '0.6', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/blog/top-10-sites-may-2026', priority: '0.7', changefreq: 'monthly' },
-        // Core pages
-        { loc: 'https://hentaivault.me/about', priority: '0.5', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/contact', priority: '0.5', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/privacy', priority: '0.3', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/terms', priority: '0.3', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/disclaimer', priority: '0.3', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/dmca', priority: '0.3', changefreq: 'monthly' },
-        { loc: 'https://hentaivault.me/region-unblocked', priority: '0.5', changefreq: 'weekly' },
-        // Category pages
-        { loc: 'https://hentaivault.me/category/anime-streaming', priority: '0.8', changefreq: 'daily' },
-        { loc: 'https://hentaivault.me/category/hentai-streaming', priority: '0.8', changefreq: 'daily' },
-        { loc: 'https://hentaivault.me/category/manga-doujin', priority: '0.8', changefreq: 'daily' },
-        { loc: 'https://hentaivault.me/category/images-boorus', priority: '0.7', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/category/games', priority: '0.7', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/category/communities', priority: '0.7', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/category/downloads', priority: '0.7', changefreq: 'weekly' },
-        { loc: 'https://hentaivault.me/category/visual-novels', priority: '0.6', changefreq: 'weekly' },
-      ];
-
-      let siteUrls = '';
-      if (env.hv_directory) {
-        try {
-          // Fetch all site IDs and their added_at dates — only live, real entries
-          const rows = await env.hv_directory.prepare(
-            'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
-          ).all();
-          const topSites = rows.results.slice(0, 10);
-          
-          for (const row of rows.results) {
-            const lastmod = row.added_at ? row.added_at.split('T')[0] : today;
-            siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
-          }
-          
-          // Generate comparison URLs for top sites in same category
-          for (let i = 0; i < topSites.length; i++) {
-              for (let j = i + 1; j < topSites.length; j++) {
-                  if (topSites[i].category === topSites[j].category) {
-                      siteUrls += `  <url>\n    <loc>https://hentaivault.me/compare?site1=${topSites[i].id}&amp;site2=${topSites[j].id}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
-                  }
-              }
-          }
-        } catch (err) {
-          console.error('Sitemap D1 error:', err);
+      const httpsUrl = new URL(request.url);
+      httpsUrl.pathname = '/sitemap-index.xml';
+      return new Response(null, {
+        status: 301,
+        headers: {
+          'Location': httpsUrl.toString(),
+          'Cache-Control': 'public, max-age=86400'
         }
+      });
+    }
+
+    if (url.pathname === '/sitemap-index.xml' || url.pathname === '/sitemap-pages.xml' || url.pathname === '/sitemap-sites.xml') {
+      const today = new Date().toISOString().split('T')[0];
+      let xml = '';
+
+      if (url.pathname === '/sitemap-index.xml') {
+        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-pages.xml</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-sites.xml</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+        xml += `</sitemapindex>`;
+      } else if (url.pathname === '/sitemap-pages.xml') {
+        const staticPages = [
+          { loc: 'https://hentaivault.me/', priority: '1.0', changefreq: 'daily' },
+          // Blog posts
+          { loc: 'https://hentaivault.me/blog', priority: '0.8', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/nhentai-alternatives-2026', priority: '0.9', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/best-streaming-2026', priority: '0.9', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/best-doujin-sites-2026', priority: '0.9', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/hentai-apps-guide-2026', priority: '0.9', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/uncensored-streaming-guide-2026', priority: '0.9', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/free-manga-guide', priority: '0.8', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/hanime-alternatives-2026', priority: '0.8', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/blog/privacy-safety-guide', priority: '0.6', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/blog/top-10-sites-may-2026', priority: '0.7', changefreq: 'monthly' },
+          // Core pages
+          { loc: 'https://hentaivault.me/about', priority: '0.5', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/contact', priority: '0.5', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/privacy', priority: '0.3', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/terms', priority: '0.3', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/disclaimer', priority: '0.3', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/dmca', priority: '0.3', changefreq: 'monthly' },
+          { loc: 'https://hentaivault.me/region-unblocked', priority: '0.5', changefreq: 'weekly' },
+          // Category pages
+          { loc: 'https://hentaivault.me/category/anime-streaming', priority: '0.8', changefreq: 'daily' },
+          { loc: 'https://hentaivault.me/category/hentai-streaming', priority: '0.8', changefreq: 'daily' },
+          { loc: 'https://hentaivault.me/category/manga-doujin', priority: '0.8', changefreq: 'daily' },
+          { loc: 'https://hentaivault.me/category/images-boorus', priority: '0.7', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/category/games', priority: '0.7', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/category/communities', priority: '0.7', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/category/downloads', priority: '0.7', changefreq: 'weekly' },
+          { loc: 'https://hentaivault.me/category/visual-novels', priority: '0.6', changefreq: 'weekly' },
+        ];
+        const staticXml = staticPages
+          .map(p => `  <url>\n    <loc>${p.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`)
+          .join('\n');
+        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n</urlset>`;
+      } else if (url.pathname === '/sitemap-sites.xml') {
+        let siteUrls = '';
+        if (env.hv_directory) {
+          try {
+            // Fetch all site IDs and their added_at dates — only live, real entries
+            const rows = await env.hv_directory.prepare(
+              'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
+            ).all();
+            const topSites = rows.results.slice(0, 10);
+            
+            for (const row of rows.results) {
+              const lastmod = row.added_at ? row.added_at.split('T')[0] : today;
+              siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+            }
+            
+            // Generate comparison URLs for top sites in same category
+            for (let i = 0; i < topSites.length; i++) {
+                for (let j = i + 1; j < topSites.length; j++) {
+                    if (topSites[i].category === topSites[j].category) {
+                        siteUrls += `  <url>\n    <loc>https://hentaivault.me/compare?site1=${topSites[i].id}&amp;site2=${topSites[j].id}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+                    }
+                }
+            }
+          } catch (err) {
+            console.error('Sitemap D1 error:', err);
+          }
+        }
+        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${siteUrls}</urlset>`;
       }
-
-      const staticXml = staticPages
-        .map(p => `  <url>\n    <loc>${p.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`)
-        .join('\n');
-
-      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${siteUrls}</urlset>`;
 
       return new Response(xml, {
         status: 200,
