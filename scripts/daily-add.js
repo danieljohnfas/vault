@@ -21,6 +21,7 @@
 const fs   = require('fs');
 const path = require('path');
 const isSiteLive = require('./ping-site');
+const { scoreSite } = require('./score-site');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -129,7 +130,7 @@ function enrich(site) {
   const cat  = site.category;
   const id   = makeId(name) + '_' + Date.now().toString(36);
   const dt   = today();
-  const rating = site.rating || (4.0 + Math.round(Math.random() * 8) / 10);
+  const rating = site.rating && site.rating >= 4.0 ? site.rating : null; // will be set by scoreSite below
 
   const pros = site.pros || [
     `High quality ${d.niche} content`,
@@ -298,7 +299,32 @@ async function run() {
     process.exit(0);
   }
 
-  const enriched = batch.map(enrich);
+  // 5. Score each site with real signals and filter < 4.0
+  console.log(`\n🔬 Scoring ${batch.length} sites with real quality signals...`);
+  const scored = [];
+  for (const s of batch) {
+    const { score, signals } = await scoreSite(s.url, s.category, s.name);
+    if (score < 4.0) {
+      console.log(`   ⏭️  Dropped after scoring (${score}/5.0): ${s.url}`);
+      continue;
+    }
+    console.log(`   ⭐ ${score}/5.0 — ${s.url}`);
+    scored.push({ ...s, rating: score, scoreSignals: signals });
+  }
+
+  if (scored.length === 0) {
+    console.log('⚠️ No sites passed the 4.0 quality gate after scoring.');
+    if (!DRY_RUN) {
+      const remaining = queue.filter(s => {
+        const norm = String(s.url).replace(/\/$/, '').toLowerCase();
+        return !existingUrls.has(norm) && !deadUrls.has(s.url);
+      });
+      fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
+    }
+    process.exit(0);
+  }
+
+  const enriched = scored.map(enrich);
   console.log(`\n➕ Enriched ${enriched.length} new sites`);
   enriched.forEach(s => console.log(`   · ${s.name} (${s.category})`));
 

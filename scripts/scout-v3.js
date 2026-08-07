@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { scoreSite } = require('./score-site');
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -368,24 +369,33 @@ async function run() {
       console.log(`   ⏭️  Skipped (title looks like content, not a site): "${extracted.title.substring(0, 60)}..."`);
       continue;
     }
-    const waybackBonus = await fetchWaybackAge(url);
-    const baseRating = Math.round((3.8 + Math.random() * 0.7 + waybackBonus) * 10) / 10;
-    
+
+    // ── Real quality scoring (replaces random formula) ──
+    const { score, signals } = await scoreSite(url, category, extracted.title);
+
+    if (score < 4.0) {
+      console.log(`   ⏭️  Skipped (score ${score} < 4.0 — age:${signals.ageYears}yr, content:${signals.contentPoints}, adult:${signals.hasAdultSignals}): ${url}`);
+      continue;
+    }
+
+    console.log(`   ⭐ Score ${score}/5.0 — adding to queue: ${url}`);
+
     let siteData = {
       name: extracted.title.substring(0, 50),
       url: url,
       category: category,
       description: extracted.desc || `${domain} is a great resource for ${category.toLowerCase()}.`,
-      rating: Math.min(baseRating, 5.0),
+      rating: score,
       tags: ['ScoutV3', 'New'],
-      addedAt: new Date().toISOString().split('T')[0]
+      addedAt: new Date().toISOString().split('T')[0],
+      scoreSignals: signals,
     };
 
     if (extracted.discord) siteData.discord = extracted.discord;
     if (extracted.twitter) siteData.twitter = extracted.twitter;
 
     siteData = await aiEnrich(siteData);
-    
+
     validSites.push(siteData);
     count++;
   }
