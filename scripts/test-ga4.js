@@ -1,12 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const outPath = path.join(__dirname, '..', 'reports', 'analytics-test.txt');
-let output = '';
-function log(msg) { console.log(msg); output += msg + '\n'; }
 const { google } = require('googleapis');
 
-async function main() {
-  log("Checking GA4 properties for the service account...");
+async function checkGA4() {
+  console.log("Checking GA4 properties for the service account...");
   try {
     const keyJson = process.env.GSC_SERVICE_ACCOUNT_JSON;
     if (!keyJson) throw new Error("No GSC_SERVICE_ACCOUNT_JSON");
@@ -20,19 +15,22 @@ async function main() {
     const res = await analyticsadmin.accountSummaries.list();
     
     let foundPropertyId = null;
+
     if (res.data.accountSummaries && res.data.accountSummaries.length > 0) {
       for (const acc of res.data.accountSummaries) {
         for (const prop of acc.propertySummaries || []) {
-          log(`Found Property: ${prop.property} - ${prop.displayName}`);
+          console.log(`Found Property: ${prop.property} - ${prop.displayName}`);
+          // Just use the first one if we can't map measurement ID easily without dataStream API
           foundPropertyId = prop.property;
         }
       }
     } else {
-      log("No GA4 accounts found for this service account.");
+      console.log("No GA4 accounts found for this service account.");
+      return;
     }
     
     if (foundPropertyId) {
-      log(`\nAttempting to pull data from ${foundPropertyId}...`);
+      console.log(`\nAttempting to pull data from ${foundPropertyId}...`);
       const analyticsdata = google.analyticsdata({ version: 'v1beta', auth });
       const dataRes = await analyticsdata.properties.runReport({
         property: foundPropertyId,
@@ -41,11 +39,12 @@ async function main() {
           metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }]
         }
       });
-      log("Report Data: " + JSON.stringify(dataRes.data, null, 2));
+      console.log("Report Data:", JSON.stringify(dataRes.data, null, 2));
     }
+
   } catch (err) {
-    log("GA4 Check Error: " + err.message);
+    console.error("GA4 Check Error:", err.message);
   }
-  fs.writeFileSync(outPath, output, 'utf8');
 }
-main();
+
+checkGA4();
