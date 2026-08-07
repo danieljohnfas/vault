@@ -1,2 +1,14 @@
-Checking GA4 properties for the service account...
-No GA4 accounts found for this service account.
+
+Attempting to purge Cloudflare cache...
+Cloudflare Zone ID: f36dfe3d2b2b061960f945e262b72c65
+Cache Purge Response: {
+  "result": null,
+  "success": false,
+  "errors": [
+    {
+      "code": 10000,
+      "message": "Authentication error"
+    }
+  ],
+  "messages": []
+}
