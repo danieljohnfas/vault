@@ -1,0 +1,19 @@
+Checking GA4 access...
+GA4 Check Error: Google Analytics Admin API has not been used in project 16663491173 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/analyticsadmin.googleapis.com/overview?project=16663491173 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+
+Checking Cloudflare access...
+Cloudflare Zone ID: f36dfe3d2b2b061960f945e262b72c65
+GraphQL response: {
+  "data": null,
+  "errors": [
+    {
+      "message": "Actor 'com.cloudflare.api.token.9790caff13661fe5ee38a3c8df8cf509' does not have permission 'com.cloudflare.api.account.zone.analytics.read' for zone f36dfe3d2b2b061960f945e262b72c65",
+      "path": null,
+      "extensions": {
+        "code": "authz",
+        "timestamp": "2026-08-07T11:54:38.562643246Z",
+        "ray_id": "a27616759dde2cba-SEA"
+      }
+    }
+  ]
+}
