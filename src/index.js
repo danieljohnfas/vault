@@ -77,37 +77,16 @@ class HeadHandler {
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
     
-    // JSON-LD SoftwareApplication Schema
-    const schema = {
-      "@context": "https://schema.org/",
-      "@type": "SoftwareApplication",
-      "name": this.site.name,
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "Any",
-      "url": this.canonicalUrl,
-      "description": `Read our expert review of ${this.site.name}. Category: ${this.site.category}.`,
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": this.site.rating || 4.5,
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": this.site.ratingCount || 1
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "HentaiVault"
-      }
-    };
-    element.append(`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}<\/script>`, { html: true });
-
-    // JSON-LD Review Schema (separate block — nesting Review inside SoftwareApplication is invalid)
+    // JSON-LD Review Schema (100% Google Review Snippet compliant)
     const reviewSchema = {
       "@context": "https://schema.org/",
       "@type": "Review",
       "itemReviewed": {
-        "@type": "WebApplication",
+        "@type": "SoftwareApplication",
         "name": this.site.name,
-        "url": this.site.url
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "url": this.site.url || this.canonicalUrl
       },
       "reviewRating": {
         "@type": "Rating",
@@ -117,7 +96,8 @@ class HeadHandler {
       },
       "author": {
         "@type": "Organization",
-        "name": "HentaiVault"
+        "name": "HentaiVault",
+        "url": "https://hentaivault.me"
       },
       "reviewBody": desc,
       "publisher": {
