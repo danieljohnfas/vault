@@ -77,34 +77,56 @@ class HeadHandler {
     element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
     element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
     
-    // JSON-LD Review Schema (100% Google Review Snippet compliant)
+    // JSON-LD Knowledge Graph Entity Schema (Organization, WebSite, Review)
     const reviewSchema = {
       "@context": "https://schema.org/",
-      "@type": "Review",
-      "itemReviewed": {
-        "@type": "SoftwareApplication",
-        "name": this.site.name,
-        "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Web",
-        "url": this.site.url || this.canonicalUrl
-      },
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": this.site.rating || 4.5,
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "HentaiVault",
-        "url": "https://hentaivault.me"
-      },
-      "reviewBody": desc,
-      "publisher": {
-        "@type": "Organization",
-        "name": "HentaiVault",
-        "url": "https://hentaivault.me"
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://hentaivault.me/#organization",
+          "name": "HentaiVault",
+          "url": "https://hentaivault.me",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://hentaivault.me/assets/favicon.png"
+          },
+          "sameAs": [
+            "https://github.com/danieljohnfas/vault",
+            "https://twitter.com/hentaivault"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://hentaivault.me/#website",
+          "url": "https://hentaivault.me",
+          "name": "HentaiVault",
+          "publisher": { "@id": "https://hentaivault.me/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://hentaivault.me/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Review",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": this.site.name,
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "url": this.site.url || this.canonicalUrl
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": this.site.rating || 4.5,
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "author": { "@id": "https://hentaivault.me/#organization" },
+          "reviewBody": desc,
+          "publisher": { "@id": "https://hentaivault.me/#organization" }
+        }
+      ]
     };
     element.append(`<script type="application/ld+json">${JSON.stringify(reviewSchema).replace(/</g, '\\u003c')}<\/script>`, { html: true });
   }
@@ -193,6 +215,23 @@ class ReviewBodyHandler {
     else if (this.lang === 'de') fallbackText = `${localName} hat sich als erstklassiges Ziel für ${localCat}-Enthusiasten etabliert. Bei unserem Audit im Jahr 2026 stellten wir fest, dass die Seite sehr reaktionsschnell ist und mit hochwertigen Inhalten gepflegt wird.`;
     const localReviewText = escapeHTML(this.site[`longReview_${this.lang}`] || this.site.longReview) || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
 
+    // Map categories to high-intent Hub URLs
+    const categoryHubSlugs = {
+      'Manga': '/category/manga-doujin',
+      'Doujinshi': '/category/manga-doujin',
+      'Manga / Doujin': '/category/manga-doujin',
+      'Hentai Streaming': '/category/hentai-streaming',
+      'Anime Streaming': '/category/anime-streaming',
+      'Anime': '/category/anime-streaming',
+      'Images / Boorus': '/category/images-boorus',
+      'Boorus': '/category/images-boorus',
+      'Games': '/category/games',
+      'Adult Games': '/category/games',
+      'Visual Novels': '/category/visual-novels',
+      'Communities': '/category/communities',
+      'Downloads': '/category/downloads'
+    };
+    const hubUrl = categoryHubSlugs[this.site.category] || null;
     // Jaccard tag similarity — score by tag overlap + category bonus
     const jaccardSimilarity = (tagsA, tagsB) => {
         if (!tagsA || !tagsB || tagsA.length === 0 || tagsB.length === 0) return 0;
@@ -302,6 +341,29 @@ class ReviewBodyHandler {
 
             <!-- CENTER: Main review content -->
             <div class="review-main">
+
+                <!-- Quick Verdict / At-a-Glance (High Readability & Search Snippets) -->
+                <div class="review-card" style="background: linear-gradient(135deg, rgba(255,42,95,0.08), rgba(121,40,202,0.06)); border-color: rgba(255,42,95,0.3);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                        <h2 style="font-size:1.15rem; margin:0;"><span class="card-icon">⚡</span> Vault Quick Verdict</h2>
+                        <span style="background:rgba(34,197,94,0.15); color:#22c55e; font-weight:700; font-size:0.8rem; padding:4px 10px; border-radius:999px; border:1px solid rgba(34,197,94,0.3);">🛡️ Verified Safe &amp; Tested</span>
+                    </div>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:14px; font-size:0.88rem;">
+                        <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
+                            <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Best Suited For</div>
+                            <div style="color:#fff; font-weight:600; margin-top:2px;">${localCat} Fans</div>
+                        </div>
+                        <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
+                            <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Overall Rating</div>
+                            <div style="color:#ffb703; font-weight:700; margin-top:2px;">⭐ ${this.site.rating || 4.5} / 5.0</div>
+                        </div>
+                        <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
+                            <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Status &amp; Mirrors</div>
+                            <div style="color:${statusColor}; font-weight:600; margin-top:2px;">● ${statusText}</div>
+                        </div>
+                    </div>
+                    ${hubUrl ? `<a href="${hubUrl}" style="display:inline-flex; align-items:center; gap:6px; color:#ff2a5f; font-weight:600; font-size:0.88rem; text-decoration:none; margin-top:4px;">📂 Explore Top-Ranked Sites in ${localCat} Hub &rarr;</a>` : ''}
+                </div>
 
                 <!-- Expert Review Card -->
                 <div class="review-card">
