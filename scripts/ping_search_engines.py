@@ -1,40 +1,60 @@
 import urllib.request
 import urllib.parse
+import json
+import xml.etree.ElementTree as ET
 import sys
 
-def ping_search_engines(sitemap_url):
-    print(f"Pinging search engines with sitemap: {sitemap_url}")
-    
-    engines = [
-        # Google deprecated the ping endpoint in early 2024, but some older systems still log it.
-        # The recommended way for Google is to submit via Google Search Console.
-        ('Bing', 'http://www.bing.com/ping?sitemap='),
-        ('Yandex', 'http://blogs.yandex.ru/pings/?status=success&url=')
-    ]
-    
-    for name, url_prefix in engines:
-        try:
-            ping_url = f"{url_prefix}{urllib.parse.quote(sitemap_url)}"
-            req = urllib.request.Request(ping_url, headers={'User-Agent': 'Mozilla/5.0'})
-            response = urllib.request.urlopen(req)
-            if response.status == 200:
-                print(f"✅ Successfully pinged {name}.")
-            else:
-                print(f"❌ Failed to ping {name}. Status code: {response.status}")
-        except Exception as e:
-            print(f"❌ Error pinging {name}: {e}")
+INDEXNOW_KEY = "45598f4e24eb4bdf9891e4a106e23298"
+HOST = "hentaivault.me"
+KEY_LOCATION = f"https://{HOST}/{INDEXNOW_KEY}.txt"
 
-    print("\n" + "="*50)
-    print("🚨 IMPORTANT GOOGLE INDEXING INSTRUCTIONS 🚨")
-    print("="*50)
-    print("Google has deprecated their automatic ping URL endpoint.")
-    print("To force Google to re-crawl your 127 'Crawled - currently not indexed' pages:")
-    print("1. Log in to Google Search Console.")
-    print("2. Navigate to 'Sitemaps' on the left menu.")
-    print("3. Submit your URL: https://hentaivault.me/sitemap.xml (even if it's already there, submit it again to force a refresh).")
-    print("4. Go to the 'Pages' report, click 'Crawled - currently not indexed'.")
-    print("5. Click 'VALIDATE FIX'. This will put your URLs into Google's priority crawling queue.")
+def submit_indexnow(urls):
+    print(f"Submitting {len(urls)} URLs to Bing via IndexNow REST API...")
+    payload = {
+        "host": HOST,
+        "key": INDEXNOW_KEY,
+        "keyLocation": KEY_LOCATION,
+        "urlList": urls
+    }
+    
+    data = json.dumps(payload).encode('utf-8')
+    req = urllib.request.Request(
+        "https://api.indexnow.org/indexnow",
+        data=data,
+        headers={"Content-Type": "application/json; charset=utf-8", "User-Agent": "HentaiVault-Indexer/1.0"}
+    )
+    
+    try:
+        with urllib.request.urlopen(req) as res:
+            if res.status in (200, 202):
+                print(f"[SUCCESS] Successfully submitted {len(urls)} URLs to IndexNow (Bing / Yandex). Status: {res.status}")
+            else:
+                print(f"[WARNING] IndexNow returned status code: {res.status}")
+    except Exception as e:
+        print(f"[ERROR] Error submitting to IndexNow: {e}")
+
+def fetch_sitemap_urls(sitemap_url):
+    print(f"Fetching sitemap from: {sitemap_url}")
+    req = urllib.request.Request(sitemap_url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req) as res:
+            xml_data = res.read()
+            root = ET.fromstring(xml_data)
+            # Handle XML namespace
+            namespaces = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+            urls = [elem.text for elem in root.findall('.//ns:loc', namespaces)]
+            if not urls:
+                urls = [elem.text for elem in root.findall('.//loc')]
+            return urls
+    except Exception as e:
+        print(f"❌ Failed to fetch/parse sitemap: {e}")
+        return []
 
 if __name__ == '__main__':
-    sitemap = "https://hentaivault.me/sitemap.xml"
-    ping_search_engines(sitemap)
+    sitemap = f"https://{HOST}/sitemap.xml"
+    urls = fetch_sitemap_urls(sitemap)
+    if urls:
+        # IndexNow accepts up to 10,000 URLs per request
+        submit_indexnow(urls[:10000])
+    else:
+        print("No URLs found to submit.")

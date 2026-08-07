@@ -1,10 +1,38 @@
 User-agent: *
 Allow: /
-Disallow: /api/config
-Disallow: /api/click
-Disallow: /api/submit
-Disallow: /api/push-subscribe
-Disallow: /api/vault/
-Disallow: /api/subscribe-digest
+Disallow: /api/
+Disallow: /out
+Disallow: /out.html
+Disallow: /embed
+Disallow: /embed.html
+Disallow: /mylist
+Disallow: /mylist.html
+Disallow: /*?*q=
+Disallow: /*?*search=
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*tag=
+Disallow: /*?*ref=
+Disallow: /*?*lang=
+Disallow: /*?*utm_*
+
+# Bingbot specific crawl optimization
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+Disallow: /out
+Disallow: /out.html
+Disallow: /embed
+Disallow: /embed.html
+Disallow: /mylist
+Disallow: /mylist.html
+Disallow: /*?*q=
+Disallow: /*?*search=
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*tag=
+Disallow: /*?*ref=
+Disallow: /*?*lang=
+Disallow: /*?*utm_*
 
 Sitemap: https://hentaivault.me/sitemap.xml

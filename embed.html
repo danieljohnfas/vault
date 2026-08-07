@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="robots" content="noindex">
@@ -141,7 +141,7 @@
                         document.getElementById('embed-title').textContent = data.name;
                         document.getElementById('embed-rating').innerHTML = '★'.repeat(Math.round(data.rating || 0)) + '☆'.repeat(5 - Math.round(data.rating || 0));
                         document.getElementById('embed-icon').src = data.icon || 'assets/favicon.png';
-                        document.getElementById('embed-link').href = data.url;
+                        document.getElementById('embed-link').href = `https://hentaivault.me/site?id=${siteId}`;
                     }
                 } catch(e) {}
             }

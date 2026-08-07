@@ -413,6 +413,7 @@ class ReviewBodyHandler {
                         <span class="sidebar-stat-label">Domain</span>
                         <span class="sidebar-stat-value" style="font-size:0.8rem; word-break:break-all;">${domain}</span>
                     </div>
+                    <button onclick="copyEmbedBadge('${this.site.id}', '${safeName}')" id="btnEmbedBadge" class="btn-report" style="margin-top:8px; border-color:rgba(56,189,248,0.4); color:#38bdf8; font-weight:600;">🛡️ Embed Badge Code</button>
                     <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
 
@@ -447,6 +448,24 @@ class ReviewBodyHandler {
         </div><!-- /review-grid -->
 
         <script>
+            function copyEmbedBadge(siteId, name) {
+                const code = `<a href="https://hentaivault.me/site?id=${siteId}" target="_blank" title="${name} on HentaiVault"><img src="https://hentaivault.me/assets/favicon.png" width="16" height="16" alt="HentaiVault" /> Featured on HentaiVault</a>`;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        const btn = document.getElementById('btnEmbedBadge');
+                        if (btn) {
+                            const oldText = btn.innerHTML;
+                            btn.innerHTML = '✅ Badge Code Copied!';
+                            setTimeout(() => { btn.innerHTML = oldText; }, 2500);
+                        }
+                    }).catch(() => {
+                        prompt('Copy your site badge embed code:', code);
+                    });
+                } else {
+                    prompt('Copy your site badge embed code:', code);
+                }
+            }
+
             function reportDeadLink(id) {
                 const btn = document.getElementById('btnReportDead');
                 if(btn.innerText.includes('Reporting')) return;
@@ -754,6 +773,8 @@ async function handleRequest(request, env, ctx) {
         { loc: 'https://hentaivault.me/blog/nhentai-alternatives-2026', priority: '0.9', changefreq: 'weekly' },
         { loc: 'https://hentaivault.me/blog/best-streaming-2026', priority: '0.9', changefreq: 'weekly' },
         { loc: 'https://hentaivault.me/blog/best-doujin-sites-2026', priority: '0.9', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/hentai-apps-guide-2026', priority: '0.9', changefreq: 'weekly' },
+        { loc: 'https://hentaivault.me/blog/uncensored-streaming-guide-2026', priority: '0.9', changefreq: 'weekly' },
         { loc: 'https://hentaivault.me/blog/free-manga-guide', priority: '0.8', changefreq: 'weekly' },
         { loc: 'https://hentaivault.me/blog/hanime-alternatives-2026', priority: '0.8', changefreq: 'weekly' },
         { loc: 'https://hentaivault.me/blog/privacy-safety-guide', priority: '0.6', changefreq: 'monthly' },
