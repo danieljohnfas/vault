@@ -1,0 +1,73 @@
+name: 📊 Full Analytics Pull (GSC + Cloudflare + GA4)
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Run every Sunday at 08:00 UTC for a weekly full report
+    - cron: '0 8 * * 0'
+
+permissions:
+  contents: write
+
+jobs:
+  analytics-pull:
+    name: Pull All Analytics Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "HentaiVault Analytics Bot"
+          git config user.email "analytics-bot@hentaivault.me"
+
+      - name: Install dependencies
+        run: npm install googleapis --no-audit --no-fund
+
+      - name: Pull all analytics data
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/analytics-pull.js
+
+      - name: Display report summary
+        if: always()
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "📊 FULL ANALYTICS REPORT"
+          echo "════════════════════════════════════════════════════════════"
+          if [ -f "reports/full-analytics-report.md" ]; then
+            cat reports/full-analytics-report.md
+          else
+            echo "No report generated — check logs above"
+          fi
+          echo "════════════════════════════════════════════════════════════"
+
+      - name: Commit report to repository
+        run: |
+          git add reports/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "📊 analytics: full multi-source report [$DATE]"
+            git push
+            echo "✅ Report committed and pushed"
+          fi
+
+      - name: Report link
+        if: always()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📄 Full report: https://github.com/${{ github.repository }}/blob/main/reports/full-analytics-report.md"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
