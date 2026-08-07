@@ -449,16 +449,16 @@ class ReviewBodyHandler {
 
         <script>
             function copyEmbedBadge(siteId, name) {
-                const code = `<a href="https://hentaivault.me/site?id=${siteId}" target="_blank" title="${name} on HentaiVault"><img src="https://hentaivault.me/assets/favicon.png" width="16" height="16" alt="HentaiVault" /> Featured on HentaiVault</a>`;
+                var code = '<a href="https://hentaivault.me/site?id=' + siteId + '" target="_blank" title="' + (name || 'Site') + ' on HentaiVault"><img src="https://hentaivault.me/assets/favicon.png" width="16" height="16" alt="HentaiVault" /> Featured on HentaiVault</a>';
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(code).then(() => {
-                        const btn = document.getElementById('btnEmbedBadge');
+                    navigator.clipboard.writeText(code).then(function() {
+                        var btn = document.getElementById('btnEmbedBadge');
                         if (btn) {
-                            const oldText = btn.innerHTML;
+                            var oldText = btn.innerHTML;
                             btn.innerHTML = '✅ Badge Code Copied!';
-                            setTimeout(() => { btn.innerHTML = oldText; }, 2500);
+                            setTimeout(function() { btn.innerHTML = oldText; }, 2500);
                         }
-                    }).catch(() => {
+                    }).catch(function() {
                         prompt('Copy your site badge embed code:', code);
                     });
                 } else {
