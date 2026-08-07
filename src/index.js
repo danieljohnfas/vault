@@ -1710,7 +1710,18 @@ async function handleRequest(request, env, ctx) {
       return addSecurityHeaders(rewriter.transform(response));
     }
 
-    // Non-HTML assets (robots.txt, CSS, JS, images, etc.) — return as-is
+    // Custom 404 fallback for HTML navigation
+    if (response.status === 404 && (request.headers.get('accept')?.includes('text/html') || !url.pathname.includes('.'))) {
+      const errorPage = await env.ASSETS.fetch(new Request(url.origin + '/404.html', request));
+      if (errorPage.ok) {
+        return addSecurityHeaders(new Response(errorPage.body, {
+          status: 404,
+          headers: errorPage.headers
+        }));
+      }
+    }
+
+    // Non-HTML assets (robots.txt, llms.txt, CSS, JS, images, etc.) — return as-is
     return response;
 }
 

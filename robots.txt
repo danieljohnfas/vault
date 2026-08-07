@@ -44,5 +44,17 @@ Disallow: /*?*tag=
 Disallow: /*?*ref=
 Disallow: /*?*lang=
 Disallow: /*?*utm_*
+# AI Search & LLM Crawlers (ChatGPT, Claude, Perplexity, Gemini)
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /api/sites
+Disallow: /out
+Disallow: /embed
+Disallow: /*?*
 
 Sitemap: https://hentaivault.me/sitemap.xml

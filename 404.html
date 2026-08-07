@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | HentaiVault</title>
+    <meta name="description" content="The page you are looking for does not exist or has been moved. Explore curated anime, doujinshi, and gaming resources on HentaiVault.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+    <!-- CSS & Fonts -->
+    <link rel="stylesheet" href="/css/style.css?v=5">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            text-align: center;
+        }
+        .error-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 50px 36px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 42, 95, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .error-code {
+            font-size: 5.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ff2a5f, #7928ca);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .error-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .error-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .search-box-404 {
+            display: flex;
+            gap: 10px;
+            max-width: 480px;
+            margin: 0 auto 30px;
+        }
+        .search-input-404 {
+            flex: 1;
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input-404:focus {
+            border-color: #ff2a5f;
+        }
+        .search-btn-404 {
+            background: linear-gradient(135deg, #ff2a5f, #e0184b);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .search-btn-404:hover {
+            opacity: 0.9;
+        }
+        .popular-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .pill-link {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .pill-link:hover {
+            border-color: #ff2a5f;
+            color: #ff2a5f;
+            transform: translateY(-2px);
+        }
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ff2a5f, #7928ca);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 42, 95, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <img src="/assets/favicon.png" alt="HentaiVault Logo" class="brand-logo" width="36" height="36">
+                <span class="brand-text">Hentai<span class="highlight">Vault</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/category/manga-doujin">Doujinshi</a>
+                <a href="/category/hentai-streaming">Streaming</a>
+                <a href="/category/images-boorus">Boorus</a>
+                <a href="/category/games">Games</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/" class="btn-primary" style="padding:8px 18px;font-size:0.88rem;">Explore Directory</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="error-container">
+        <div class="error-card">
+            <div class="error-code">404</div>
+            <h1 class="error-title">Destination Lost in the Vault</h1>
+            <p class="error-desc">The page, link, or site review you requested doesn't exist, was moved, or was removed during our automated link hygiene sweeps.</p>
+
+            <form class="search-box-404" action="/" method="GET">
+                <input type="text" name="q" class="search-input-404" placeholder="Search 1,900+ verified sites..." autocomplete="off">
+                <button type="submit" class="search-btn-404">Search</button>
+            </form>
+
+            <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px; font-weight:600;">POPULAR DIRECTORIES:</div>
+            <div class="popular-links">
+                <a href="/category/manga-doujin" class="pill-link">📚 Doujinshi Readers</a>
+                <a href="/category/hentai-streaming" class="pill-link">📺 Anime Streaming</a>
+                <a href="/category/images-boorus" class="pill-link">🖼️ Image Boards</a>
+                <a href="/category/games" class="pill-link">🎮 Adult Games</a>
+                <a href="/category/visual-novels" class="pill-link">📖 Visual Novels</a>
+                <a href="/category/downloads" class="pill-link">📦 Torrents</a>
+            </div>
+
+            <a href="/" class="btn-home">
+                <span>🏠</span> Return to Homepage
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background:var(--bg-surface);border-top:1px solid var(--border);padding:30px 24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+        <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:12px;align-items:center;">
+            <p>© 2026 HentaiVault.me — The Internet's #1 Curated Adult Entertainment Directory.</p>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
+                <a href="/" style="color:var(--text-muted);">Home</a>
+                <a href="/about" style="color:var(--text-muted);">About</a>
+                <a href="/terms" style="color:var(--text-muted);">Terms</a>
+                <a href="/privacy" style="color:var(--text-muted);">Privacy</a>
+                <a href="/dmca" style="color:var(--text-muted);">DMCA</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
