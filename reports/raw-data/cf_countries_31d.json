@@ -1,0 +1,19 @@
+{
+  "data": null,
+  "errors": [
+    {
+      "message": "zone \"f36dfe3d2b2b061960f945e262b72c65\" cannot request a time range wider than 1d, but your query time range spans 4w2d13h28m44s36ms873us290ns",
+      "path": [
+        "viewer",
+        "zones",
+        "0",
+        "httpRequestsAdaptiveGroups"
+      ],
+      "extensions": {
+        "code": "quota",
+        "timestamp": "2026-08-07T13:28:44.037113812Z",
+        "ray_id": "a276a04aed30c9bb-SEA"
+      }
+    }
+  ]
+}

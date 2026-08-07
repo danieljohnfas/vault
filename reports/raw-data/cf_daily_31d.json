@@ -1,0 +1,478 @@
+{
+  "data": {
+    "viewer": {
+      "zones": [
+        {
+          "httpRequests1dGroups": [
+            {
+              "dimensions": {
+                "date": "2026-07-07"
+              },
+              "sum": {
+                "bytes": 87891852,
+                "cachedRequests": 1875,
+                "pageViews": 914,
+                "requests": 4000,
+                "threats": 8
+              },
+              "uniq": {
+                "uniques": 403
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-08"
+              },
+              "sum": {
+                "bytes": 99831186,
+                "cachedRequests": 1779,
+                "pageViews": 675,
+                "requests": 4116,
+                "threats": 12
+              },
+              "uniq": {
+                "uniques": 407
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-09"
+              },
+              "sum": {
+                "bytes": 292035824,
+                "cachedRequests": 3880,
+                "pageViews": 931,
+                "requests": 5860,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 819
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-10"
+              },
+              "sum": {
+                "bytes": 135540917,
+                "cachedRequests": 1983,
+                "pageViews": 532,
+                "requests": 4302,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 486
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-11"
+              },
+              "sum": {
+                "bytes": 275303834,
+                "cachedRequests": 2624,
+                "pageViews": 1084,
+                "requests": 5456,
+                "threats": 2
+              },
+              "uniq": {
+                "uniques": 813
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-12"
+              },
+              "sum": {
+                "bytes": 293261633,
+                "cachedRequests": 3345,
+                "pageViews": 961,
+                "requests": 6679,
+                "threats": 1
+              },
+              "uniq": {
+                "uniques": 859
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-13"
+              },
+              "sum": {
+                "bytes": 219747103,
+                "cachedRequests": 7779,
+                "pageViews": 6438,
+                "requests": 9516,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 883
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-14"
+              },
+              "sum": {
+                "bytes": 259956924,
+                "cachedRequests": 1900,
+                "pageViews": 877,
+                "requests": 3994,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 820
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-15"
+              },
+              "sum": {
+                "bytes": 661623093,
+                "cachedRequests": 3802,
+                "pageViews": 1815,
+                "requests": 8824,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 1816
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-16"
+              },
+              "sum": {
+                "bytes": 360734855,
+                "cachedRequests": 2375,
+                "pageViews": 1168,
+                "requests": 4513,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 1097
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-17"
+              },
+              "sum": {
+                "bytes": 136534627,
+                "cachedRequests": 1302,
+                "pageViews": 577,
+                "requests": 2402,
+                "threats": 6
+              },
+              "uniq": {
+                "uniques": 522
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-18"
+              },
+              "sum": {
+                "bytes": 127187127,
+                "cachedRequests": 1249,
+                "pageViews": 627,
+                "requests": 2310,
+                "threats": 50
+              },
+              "uniq": {
+                "uniques": 522
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-19"
+              },
+              "sum": {
+                "bytes": 139638274,
+                "cachedRequests": 1631,
+                "pageViews": 601,
+                "requests": 2638,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 513
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-20"
+              },
+              "sum": {
+                "bytes": 98761948,
+                "cachedRequests": 1941,
+                "pageViews": 1220,
+                "requests": 2680,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 399
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-21"
+              },
+              "sum": {
+                "bytes": 91029313,
+                "cachedRequests": 7920,
+                "pageViews": 7478,
+                "requests": 9746,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 306
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-22"
+              },
+              "sum": {
+                "bytes": 56867040,
+                "cachedRequests": 1530,
+                "pageViews": 1076,
+                "requests": 2147,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 305
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-23"
+              },
+              "sum": {
+                "bytes": 29833517,
+                "cachedRequests": 1095,
+                "pageViews": 813,
+                "requests": 1547,
+                "threats": 2
+              },
+              "uniq": {
+                "uniques": 498
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-24"
+              },
+              "sum": {
+                "bytes": 21227675,
+                "cachedRequests": 2035,
+                "pageViews": 1878,
+                "requests": 2399,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 398
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-25"
+              },
+              "sum": {
+                "bytes": 210492789,
+                "cachedRequests": 4758,
+                "pageViews": 3362,
+                "requests": 8774,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 814
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-26"
+              },
+              "sum": {
+                "bytes": 854036041,
+                "cachedRequests": 17944,
+                "pageViews": 12722,
+                "requests": 34137,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 2207
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-27"
+              },
+              "sum": {
+                "bytes": 51654516,
+                "cachedRequests": 2639,
+                "pageViews": 2035,
+                "requests": 4228,
+                "threats": 3
+              },
+              "uniq": {
+                "uniques": 690
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-28"
+              },
+              "sum": {
+                "bytes": 64174588,
+                "cachedRequests": 2875,
+                "pageViews": 1806,
+                "requests": 5081,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 631
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-29"
+              },
+              "sum": {
+                "bytes": 35246133,
+                "cachedRequests": 2304,
+                "pageViews": 1881,
+                "requests": 2618,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 352
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-30"
+              },
+              "sum": {
+                "bytes": 31539187,
+                "cachedRequests": 2129,
+                "pageViews": 1596,
+                "requests": 2622,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 336
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-07-31"
+              },
+              "sum": {
+                "bytes": 24195167,
+                "cachedRequests": 1086,
+                "pageViews": 685,
+                "requests": 1474,
+                "threats": 2
+              },
+              "uniq": {
+                "uniques": 280
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-01"
+              },
+              "sum": {
+                "bytes": 32665523,
+                "cachedRequests": 1212,
+                "pageViews": 682,
+                "requests": 4233,
+                "threats": 6
+              },
+              "uniq": {
+                "uniques": 275
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-02"
+              },
+              "sum": {
+                "bytes": 38306379,
+                "cachedRequests": 2695,
+                "pageViews": 1790,
+                "requests": 4803,
+                "threats": 8
+              },
+              "uniq": {
+                "uniques": 293
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-03"
+              },
+              "sum": {
+                "bytes": 29870791,
+                "cachedRequests": 1087,
+                "pageViews": 531,
+                "requests": 1900,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 434
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-04"
+              },
+              "sum": {
+                "bytes": 42306865,
+                "cachedRequests": 3314,
+                "pageViews": 2210,
+                "requests": 5479,
+                "threats": 3
+              },
+              "uniq": {
+                "uniques": 613
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-05"
+              },
+              "sum": {
+                "bytes": 31616097,
+                "cachedRequests": 1503,
+                "pageViews": 879,
+                "requests": 2160,
+                "threats": 0
+              },
+              "uniq": {
+                "uniques": 380
+              }
+            },
+            {
+              "dimensions": {
+                "date": "2026-08-06"
+              },
+              "sum": {
+                "bytes": 34145359,
+                "cachedRequests": 1690,
+                "pageViews": 1044,
+                "requests": 2518,
+                "threats": 2
+              },
+              "uniq": {
+                "uniques": 291
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "errors": null
+}
