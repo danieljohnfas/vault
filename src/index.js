@@ -59,18 +59,7 @@ class HeadHandler {
     const desc = (this.site.description || '').replace(/"/g, '&quot;');
     const title = `${this.site.name} Review | HentaiVault`;
     
-    const selfCanonicalUrl = this.lang && this.lang !== 'en' ? `${this.canonicalUrl}&lang=${this.lang}` : this.canonicalUrl;
-    
-    element.append(`<link rel="canonical" href="${selfCanonicalUrl}">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="x-default" href="${this.canonicalUrl}">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="en" href="${this.canonicalUrl}">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="es" href="${this.canonicalUrl}&lang=es">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="ja" href="${this.canonicalUrl}&lang=jp">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="fr" href="${this.canonicalUrl}&lang=fr">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="pt" href="${this.canonicalUrl}&lang=pt">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="hi" href="${this.canonicalUrl}&lang=hi">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="ar" href="${this.canonicalUrl}&lang=ar">`, { html: true });
-    element.append(`<link rel="alternate" hreflang="de" href="${this.canonicalUrl}&lang=de">`, { html: true });
+    element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
     // CTR-optimised meta description: specific, keyword-rich, includes rating and category
     const ratingText = this.site.rating ? `${this.site.rating}/5 stars.` : '';
     const catText = this.site.category ? `${this.site.category} site.` : '';
@@ -633,19 +622,7 @@ class CanonicalInjector {
     this.lang = lang;
   }
   element(element) {
-    const sep = this.canonicalUrl.includes('?') ? '&' : '?';
-    const selfCanonicalUrl = this.lang && this.lang !== 'en' ? `${this.canonicalUrl}${sep}lang=${this.lang}` : this.canonicalUrl;
-    
-    element.prepend(`<link rel="canonical" href="${selfCanonicalUrl}">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="x-default" href="${this.canonicalUrl}">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="en" href="${this.canonicalUrl}">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="es" href="${this.canonicalUrl}${sep}lang=es">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="ja" href="${this.canonicalUrl}${sep}lang=jp">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="fr" href="${this.canonicalUrl}${sep}lang=fr">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="pt" href="${this.canonicalUrl}${sep}lang=pt">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="hi" href="${this.canonicalUrl}${sep}lang=hi">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="ar" href="${this.canonicalUrl}${sep}lang=ar">`, { html: true });
-    element.prepend(`<link rel="alternate" hreflang="de" href="${this.canonicalUrl}${sep}lang=de">`, { html: true });
+    element.prepend(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
   }
 }
 
@@ -675,6 +652,7 @@ class CompareHeadHandler {
     const desc = `Compare ${this.site1.name} and ${this.site2.name}. See which ${this.site1.category} site is better based on features, pros, cons, and ratings.`;
     
     element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+    element.append(`<meta name="robots" content="noindex, follow">`, { html: true });
     element.append(`<meta name="description" content="${desc}">`, { html: true });
     element.append(`<meta property="og:title" content="${title}">`, { html: true });
     element.append(`<meta property="og:description" content="${desc}">`, { html: true });
