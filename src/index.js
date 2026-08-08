@@ -1648,7 +1648,7 @@ async function handleRequest(request, env, ctx) {
 
       let id = url.searchParams.get('id');
       if (!id) {
-        return new Response('Not Found', { status: 404 });
+        return Response.redirect(`${url.origin}/`, 301);
       }
 
       // Typo-Squatting / Redirects
@@ -1730,7 +1730,7 @@ async function handleRequest(request, env, ctx) {
     if (url.pathname === '/compare') {
       const site1Id = url.searchParams.get('site1');
       const site2Id = url.searchParams.get('site2');
-      if (!site1Id || !site2Id) return new Response('Not Found', { status: 404 });
+      if (!site1Id || !site2Id) return Response.redirect(`${url.origin}/`, 301);
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/compare.html'));
       if (!response.ok) return response;
@@ -1746,7 +1746,12 @@ async function handleRequest(request, env, ctx) {
           }
         } catch (e) {}
       }
-      if (!site1 || !site2) return new Response('Not Found', { status: 404 });
+      if (!site1 || !site2) {
+        return new Response(response.body, {
+          status: 410,
+          headers: response.headers
+        });
+      }
 
       const canonicalUrl = `https://hentaivault.me/compare?site1=${site1Id}&site2=${site2Id}`;
       const rewriter = new HTMLRewriter()
@@ -1761,7 +1766,7 @@ async function handleRequest(request, env, ctx) {
     // ── Route: /out (Interstitial Redirect) ─────────────────────────────────
     if (url.pathname === '/out') {
       const id = url.searchParams.get('id');
-      if (!id) return new Response('Not Found', { status: 404 });
+      if (!id) return Response.redirect(`${url.origin}/`, 301);
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/out.html'));
       if (!response.ok) return response;
@@ -1773,7 +1778,7 @@ async function handleRequest(request, env, ctx) {
           if (row) site = { url: row.url };
         } catch (e) {}
       }
-      if (!site) return new Response('Not Found', { status: 404 });
+      if (!site) return new Response('Gone', { status: 410 });
 
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
@@ -1785,7 +1790,7 @@ async function handleRequest(request, env, ctx) {
     // ── Route: /embed (Ego-Bait Widget) ─────────────────────────────────────
     if (url.pathname === '/embed') {
       const id = url.searchParams.get('id');
-      if (!id) return new Response('Missing ID', { status: 400 });
+      if (!id) return Response.redirect(`${url.origin}/`, 301);
 
       const response = await env.ASSETS.fetch(new Request(url.origin + '/embed.html'));
       if (!response.ok) return response;
@@ -1797,7 +1802,7 @@ async function handleRequest(request, env, ctx) {
           if (row) site = JSON.parse(row.data_json);
         } catch (e) {}
       }
-      if (!site) return new Response('Site not found', { status: 404 });
+      if (!site) return new Response('Gone', { status: 410 });
 
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
