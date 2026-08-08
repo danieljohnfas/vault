@@ -151,14 +151,21 @@ function enrich(site) {
     `in our directory. Our editorial team gave it a score of ${rating.toFixed(1)}/5 based on ` +
     `content variety, load speed, design quality, and community trust signals.`;
 
+  const fallbackDesc = `${name} is a high-authority platform specializing in ${d.adj}. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.`;
+  
+  let finalDesc = fallbackDesc;
+  if (site.scoreSignals && site.scoreSignals.metaDesc && site.scoreSignals.metaDesc.length > 10) {
+    finalDesc = site.scoreSignals.metaDesc;
+  } else if (site.description && site.description !== fallbackDesc) {
+    finalDesc = site.description;
+  }
+
   return {
     id,
     name,
     url: site.url,
     category: cat,
-    description:
-      `${name} is a high-authority platform specializing in ${d.adj}. ` +
-      `Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.`,
+    description: finalDesc,
     addedAt: dt,
     longReview,
     description_es:

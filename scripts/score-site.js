@@ -68,6 +68,7 @@ async function analyzePageContent(url) {
     hasNavLinks: false,
     isParked: false,
     hasAdultSignals: false,
+    metaDesc: '',
   };
 
   try {
@@ -103,6 +104,10 @@ async function analyzePageContent(url) {
     signals.hasNavLinks = (text.match(/href="https?:\/\//g) || []).length >= 5;
     signals.isParked = PARKING_PHRASES.some(p => lower.includes(p));
     signals.hasAdultSignals = ADULT_KEYWORDS.some(k => lower.includes(k));
+
+    let desc = (text.match(/<meta[^>]*name="description"[^>]*content="([^"]+)"/i) || [])[1] || '';
+    if (!desc) desc = (text.match(/<meta[^>]*property="og:description"[^>]*content="([^"]+)"/i) || [])[1] || '';
+    signals.metaDesc = desc.trim();
   } catch {
     // timeout or network error — site might be live but blocking bots
     signals.alive = true; // be generous for network errors
@@ -222,6 +227,7 @@ async function scoreSite(url, category, title = '', skipWayback = false) {
     bodySize: content.bodySize,
     hasAdultSignals: content.hasAdultSignals,
     isParked: content.isParked,
+    metaDesc: content.metaDesc,
   };
 
   return result;

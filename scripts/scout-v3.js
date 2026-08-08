@@ -321,7 +321,7 @@ async function aiEnrich(siteData) {
     URL: ${siteData.url}
     Meta Description: ${siteData.description}
     Return ONLY a JSON object with this exact format, nothing else:
-    {"description": "A 1-2 sentence snappy intro", "longReview": "A detailed 3-4 sentence review mentioning features, speed, and library."}`;
+    {"longReview": "A detailed 3-4 sentence review mentioning features, speed, and library."}`;
 
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
@@ -333,7 +333,7 @@ async function aiEnrich(siteData) {
     const textResp = json.candidates[0].content.parts[0].text;
     const parsed = JSON.parse(textResp.replace(/```json/g, '').replace(/```/g, '').trim());
     
-    siteData.description = parsed.description || siteData.description;
+    
     if (parsed.longReview) siteData.longReview = parsed.longReview;
     siteData.tags.push("AI-Enhanced");
   } catch (e) {
