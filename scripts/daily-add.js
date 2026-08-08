@@ -29,7 +29,7 @@ const QUEUE_FILE = path.join(ROOT, 'scripts', 'sites-queue.json');
 
 const args    = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
-const COUNT   = parseInt((args[args.findIndex(a => a === '--count') + 1]) || '100', 10) || 100;
+const COUNT   = parseInt((args[args.findIndex(a => a === '--count') + 1]) || '150', 10) || 150;
 
 const existingUrlsFlag = args.findIndex(a => a === '--existing-urls');
 const EXISTING_URLS_FILE = existingUrlsFlag !== -1 ? args[existingUrlsFlag + 1] : null;
@@ -304,7 +304,7 @@ async function run() {
   const scored = [];
   for (const s of batch) {
     const { score, signals } = await scoreSite(s.url, s.category, s.name);
-    if (score < 4.0) {
+    if (score < 3.5) {
       console.log(`   ⏭️  Dropped after scoring (${score}/5.0): ${s.url}`);
       continue;
     }

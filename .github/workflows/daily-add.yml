@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       count:
-        description: 'Number of sites to add'
+        description: 'Number of sites to add (target 150 to ensure 100+ pass quality gate)'
         required: false
-        default: '100'
+        default: '150'
       dry_run:
         description: 'Dry run (no commits)'
         required: false

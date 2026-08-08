@@ -2,8 +2,9 @@ name: 🕵️ Scout V3
 
 on:
   schedule:
-    # Runs every day at Midnight UTC
+    # Runs twice a day: midnight and noon UTC — ensures 500+ queued for daily-add at 06:00
     - cron: '0 0 * * *'
+    - cron: '0 12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -58,9 +59,28 @@ jobs:
         run: |
           node scripts/scout-v3.js --existing-urls /tmp/existing_urls_scout.json
 
+      - name: Auto-refill queue from blocklist if below 500
+        run: |
+          QUEUE_LEN=$(node -e "try { const q=require('./scripts/sites-queue.json'); console.log(q.length); } catch(e) { console.log(0); }")
+          echo "Queue size after scout: $QUEUE_LEN"
+          if [ "$QUEUE_LEN" -lt 500 ] 2>/dev/null; then
+            echo "⚠️  Queue below 500 — running blocklist refill to top up..."
+            node scripts/fetch-real-sites.js
+            QUEUE_LEN_AFTER=$(node -e "try { const q=require('./scripts/sites-queue.json'); console.log(q.length); } catch(e) { console.log(0); }")
+            echo "✅ Queue after refill: $QUEUE_LEN_AFTER"
+          else
+            echo "✅ Queue healthy at $QUEUE_LEN sites — no refill needed."
+          fi
+
+      - name: Report queue health
+        run: |
+          QUEUE_LEN=$(node -e "try { const q=require('./scripts/sites-queue.json'); console.log(q.length); } catch(e) { console.log(0); }")
+          echo "📊 Final queue size: $QUEUE_LEN"
+          echo "📅 Days of runway at 150/day: $((QUEUE_LEN / 150))"
+
       - name: Commit updated queue to GitHub
         run: |
           git add scripts/sites-queue.json
-          git diff --cached --quiet && echo "No new sites found." || \
-            git commit -m "feat(scout): append crazy new discoveries via Scout V3 [$(date -u +%Y-%m-%d)]"
+          git diff --cached --quiet && echo "No queue changes." || \
+            git commit -m "feat(scout): new discoveries + queue health check [$(date -u +%Y-%m-%d %H:%M UTC)]"
           git push

@@ -389,7 +389,7 @@ async function run() {
   let count = 0;
 
   for (const url of candidates) {
-    if (count >= 200) break; // Increased limit to 200 discoveries per run
+    if (count >= 500) break; // Raised from 200 — need a bigger buffer for the daily-add pipeline
 
     const extracted = await validateAndExtract(url);
     if (!extracted) continue; 
@@ -415,8 +415,8 @@ async function run() {
     // ── Real quality scoring (replaces random formula) ──
     const { score, signals } = await scoreSite(url, category, extracted.title);
 
-    if (score < 4.0) {
-      console.log(`   ⏭️  Skipped (score ${score} < 4.0 — age:${signals.ageYears}yr, content:${signals.contentPoints}, adult:${signals.hasAdultSignals}): ${url}`);
+    if (score < 3.5) {
+      console.log(`   ⏭️  Skipped (score ${score} < 3.5 — age:${signals.ageYears}yr, content:${signals.contentPoints}, adult:${signals.hasAdultSignals}): ${url}`);
       continue;
     }
 
