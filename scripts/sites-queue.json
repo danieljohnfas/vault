@@ -1645,5 +1645,973 @@
       "New"
     ],
     "addedAt": "2026-08-07"
+  },
+  {
+    "name": "Sugar Service by GeeSeki",
+    "url": "https://geeseki.itch.io/sugar-service",
+    "category": "Games & Visual Novels",
+    "description": "RPG, Card-game, Life-Dating-Sim VN",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.1,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 174681,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GeeSekiboda"
+  },
+  {
+    "name": "GeeSeki - itch.io",
+    "url": "https://geeseki.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "geeseki.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.1,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 21028,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GeeSekiboda"
+  },
+  {
+    "name": "Superhuman by WeirdWorld",
+    "url": "https://weirdworld.itch.io/superhuman",
+    "category": "Games & Visual Novels",
+    "description": "Game about shapeshifting",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 273208,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/cAAZguvB7y",
+    "twitter": "https://twitter.com/weirdworldzz"
+  },
+  {
+    "name": "My New Memories by Killer7",
+    "url": "https://killahseven.itch.io/my-new-memories",
+    "category": "Games & Visual Novels",
+    "description": "Memories...One of the most important things in our lives. But what happens if you forget who you are?",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 5.3,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 150861,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/3nj5AbJ"
+  },
+  {
+    "name": "Killer7 - itch.io",
+    "url": "https://killahseven.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "killahseven.itch.io is a great resource for games & visual novels.",
+    "rating": 4.3,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 5.3,
+      "agePoints": 1.5,
+      "contentPoints": 0.8,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 18966,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/killer7_games"
+  },
+  {
+    "name": "OnlyCans: Thirst Date by OxyOxspring",
+    "url": "https://oxyoxspring.itch.io/onlycans",
+    "category": "Games & Visual Novels",
+    "description": "The world&#039;s only candid can photography simulator. Feel the fizz inside you!",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 182631,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "http://www.twitter.com/onlycansgame"
+  },
+  {
+    "name": "OxyOxspring - itch.io",
+    "url": "https://oxyoxspring.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "oxyoxspring.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 20740,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/OxyOxspring"
+  },
+  {
+    "name": "A Town Uncovered by GeeSeki",
+    "url": "https://geeseki.itch.io/a-town-uncovered",
+    "category": "Games & Visual Novels",
+    "description": "Sleepy little town steeped in sexy secrets",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.1,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 129729,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GeeSekiboda"
+  },
+  {
+    "name": "That Lonesome Valley by Robert Yang",
+    "url": "https://radiatoryang.itch.io/that-lonesome-valley",
+    "category": "Games & Visual Novels",
+    "description": "short gay romance / sheepherding game inspired by Brokeback Mountain",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 46067,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Robert Yang - itch.io",
+    "url": "https://radiatoryang.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "radiatoryang.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 53422,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/radiatoryang"
+  },
+  {
+    "name": "Art Witch Studios - itch.io",
+    "url": "https://artwitch.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "artwitch.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.9,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 20880,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/ArtWitchStudios"
+  },
+  {
+    "name": "Sons of Jungle | 5a by Gabriel Homme",
+    "url": "https://sonsofsand.itch.io/sonsofjungle",
+    "category": "Games & Visual Novels",
+    "description": "sonsofsand.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.8,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 216561,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/sonsofsand"
+  },
+  {
+    "name": "Gabriel Homme - itch.io",
+    "url": "https://sonsofsand.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "sonsofsand.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.8,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 22251,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/sonsofsand"
+  },
+  {
+    "name": "Hurt Me Plenty by Robert Yang",
+    "url": "https://radiatoryang.itch.io/hurt-me-plenty",
+    "category": "Games & Visual Novels",
+    "description": "A short hunk spanking game / mildly educational BDSM primer with Leap Motion support,",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 42849,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/ellaguro"
+  },
+  {
+    "name": "Tyler Tomaseski - itch.io",
+    "url": "https://godjammit.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "godjammit.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.8,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 28867,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GodJammit"
+  },
+  {
+    "name": "FrostWorks - itch.io",
+    "url": "https://frostworks.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "frostworks.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 8.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 25535,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/frost_works"
+  },
+  {
+    "name": "Impy - itch.io",
+    "url": "https://impy.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "impy.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.8,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 29702,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "washa games - itch.io",
+    "url": "https://washagames.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "washagames.itch.io is a great resource for games & visual novels.",
+    "rating": 4.6,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 6.3,
+      "agePoints": 1.5,
+      "contentPoints": 0.8,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 18942,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/washazoo"
+  },
+  {
+    "name": "My Desktop Succubus 0.4 by 6morepigs",
+    "url": "https://6morepigs.itch.io/my-desktop-succubus-04",
+    "category": "Games & Visual Novels",
+    "description": "NSFW AI Companion",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 2.9,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 89567,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Carnal Voyages - Public Release Version by DaScoot",
+    "url": "https://dascoot.itch.io/carnal-voyages-public",
+    "category": "Games & Visual Novels",
+    "description": "18+ Text-Based Sci-Fi Smut!",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 8.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 155714,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/DASPc65"
+  },
+  {
+    "name": "DaScoot - itch.io",
+    "url": "https://dascoot.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "dascoot.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 8.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 20305,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "TeamTailnut - itch.io",
+    "url": "https://teamtailnut.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "teamtailnut.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 39648,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/dezue_peninja"
+  },
+  {
+    "name": "Nirvana Pilot Yume Demo by Dev9k",
+    "url": "https://dev9k.itch.io/nirvana-pilot-yume",
+    "category": "Games & Visual Novels",
+    "description": "A Visual Novel / Space Races mix, telling a tale of dreams and redemption. Inspired by the early &#039;90s classic Skyroads.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 49791,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/dev9k"
+  },
+  {
+    "name": "Dev9k - itch.io",
+    "url": "https://dev9k.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "dev9k.itch.io is a great resource for games & visual novels.",
+    "rating": 4.3,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.4,
+      "agePoints": 1.5,
+      "contentPoints": 0.8,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 19294,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/XrwG3UDG6j",
+    "twitter": "https://twitter.com/dev9k"
+  },
+  {
+    "name": "Private Academy: Supercharged! by Eddie Monotone",
+    "url": "https://eddiemonotone.itch.io/private-academy-supercharged",
+    "category": "Games & Visual Novels",
+    "description": "A warmly adult superhero RPG",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 5.8,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 102661,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Eddie Monotone - itch.io",
+    "url": "https://eddiemonotone.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "eddiemonotone.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 5.8,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 22573,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/eddiemonotone"
+  },
+  {
+    "name": "Scramble Hunt: Halloween Edition by schwarzeralptr",
+    "url": "https://schwarzeralptraum.itch.io/scramble-hunt-halloween-edition",
+    "category": "Games & Visual Novels",
+    "description": "Word scramble meets adventure gaming, Halloween Edition",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.8,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 136773,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "schwarzeralptraum - itch.io",
+    "url": "https://schwarzeralptraum.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "schwarzeralptraum.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.8,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 21808,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Saugzwang by Robert Yang",
+    "url": "https://radiatoryang.itch.io/saugzwang",
+    "category": "Games & Visual Novels",
+    "description": "tactical gay cruising roguelike / broughlike sex simulation",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 38015,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Happy New Yeah! &#039;22 by Dezue",
+    "url": "https://dezue.itch.io/yeah22",
+    "category": "Games & Visual Novels",
+    "description": "Say &#039;Yeah!&#039; 22 times with your balls!",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 6.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 44831,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/dezue_peninja"
+  },
+  {
+    "name": "Dezue - itch.io",
+    "url": "https://dezue.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "dezue.itch.io is a great resource for games & visual novels.",
+    "rating": 4.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 6.9,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 41540,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/dezue_peninja"
+  },
+  {
+    "name": "Tentacle Mart by Strange Girl Studios",
+    "url": "https://strange-girl-studios.itch.io/tentacle-mart",
+    "category": "Games & Visual Novels",
+    "description": "Grab girls using your horny tentacles!",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.2,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 132040,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/BNBw4weSsp",
+    "twitter": "https://twitter.com/strange_girl75"
+  },
+  {
+    "name": "Strange Girl Studios - itch.io",
+    "url": "https://strange-girl-studios.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "strange-girl-studios.itch.io is a great resource for games & visual novels.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.2,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 57764,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "discord": "https://discord.gg/BNBw4weSsp",
+    "twitter": "https://twitter.com/strange_girl75"
+  },
+  {
+    "name": "Still Alive by Graven Visual Novels",
+    "url": "https://graven-visual-novels.itch.io/still-alive",
+    "category": "Games & Visual Novels",
+    "description": "horror visual novel",
+    "rating": 5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 42857,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GravenVN"
+  },
+  {
+    "name": "Graven Visual Novels - itch.io",
+    "url": "https://graven-visual-novels.itch.io",
+    "category": "Games & Visual Novels",
+    "description": "graven-visual-novels.itch.io is a great resource for games & visual novels.",
+    "rating": 5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 7.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 20946,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://twitter.com/GravenVN"
+  },
+  {
+    "name": "Babe Breaker by GGames",
+    "url": "https://ggamesdev2021.itch.io/babe-breaker-free",
+    "category": "Games & Visual Novels",
+    "description": "Shoot your load at the sexy girls to tear away their clothing",
+    "rating": 4.3,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 111271,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Video Game News, Reviews, and Walkthroughs - IGN",
+    "url": "https://www.ign.com",
+    "category": "Games & Visual Novels",
+    "description": "IGN is your #1 destination for all video game news, expert reviews, and walkthroughs.",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.7,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 280346,
+      "hasAdultSignals": true,
+      "isParked": false
+    },
+    "twitter": "https://x.com/IGN"
+  },
+  {
+    "name": "GOLD Porn Maker Top Rankings (straight) - XNXX.COM",
+    "url": "https://www.xnxx-arabic.com/gold/videos?sxcaf=8kvunhu4pg&xsc=hmct",
+    "category": "Adult Tubes & Studios",
+    "description": "GOLD Porn Maker Top Rankings (straight) على XNXX",
+    "rating": 4.3,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 2.2,
+      "agePoints": 1,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0,
+      "bodySize": 150108,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
+  },
+  {
+    "name": "Free Sex Stories &amp; Erotic Stories @ XNXX.COM",
+    "url": "https://www.sexstories.com",
+    "category": "Adult Tubes & Studios",
+    "description": "Free Sex Stories Collection",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-08",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.6,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 114807,
+      "hasAdultSignals": true,
+      "isParked": false
+    }
   }
 ]
