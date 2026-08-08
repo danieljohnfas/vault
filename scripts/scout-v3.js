@@ -18,11 +18,16 @@ const { scoreSite } = require('./score-site');
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
-// Subreddits to mine for new URLs (Expanded for V3)
+// Subreddits to mine for new URLs — hentai & anime focused only
 const SUBREDDITS = [
-  'animepiracy', 'hentai', 'nsfwgaming', 
-  'NSFW411', 'AdultGames', 'doujinshi', 
-  'porn_sites', 'HentaiGames'
+  'animepiracy',       // main anime/hentai piracy hub
+  'hentai',            // hentai content & site recommendations
+  'doujinshi',         // doujin & manga community
+  'HentaiGames',       // hentai & eroge games
+  'animedubs',         // anime streaming/dub discussions
+  'manga',             // manga readers
+  'visualnovels',      // visual novel & eroge community
+  'animesuggest'       // anime recommendations, surfaces streaming sites
 ];
 // Directories to scrape
 const DIRECTORIES = [
@@ -152,18 +157,55 @@ async function discoverFromSpidering(existingUrlSet) {
 
 // --- 2. Reddit Mining (Subreddits & Global Search) ---
 const REDDIT_QUERIES_POOL = [
-  'hentai streaming', 'hentai site', 'watch hentai', 'best hentai tube', 'uncensored hentai',
-  'porn site', 'adult tube', 'hd porn', 'free porn streaming', 'premium adult video',
-  'jav streaming', 'jav site', 'watch jav',
-  'doujinshi site', 'read hentai manga', 'doujin reader', 'nhentai alternative', 'fakku alternative',
-  'adult webtoon', 'nsfw comic site', 'hentai manga english', 'read doujin',
-  'adult game', 'eroge download', 'hentai game site', 'nsfw visual novel', 'nutaku alternative',
-  'f95zone alternative', 'itch.io adult', 'patreon adult games', 'play hentai games',
-  'hentai booru', 'rule34 site', 'gelbooru alternative', 'nsfw image board', 'hentai gallery',
-  'vr porn', 'vr hentai', 'interactive porn', '3d porn site', 'vr adult video',
-  'onlyfans alternative', 'fansly alternative', 'patreon alternative nsfw', 'adult creator platform',
-  'cam site', 'free cam show',
-  'hentai torrents', 'adult torrent site', 'porn download site', 'jav torrents', 'nsfw piracy'
+  // ── Hentai Streaming & Watching ────────────────────────────────────────────
+  'watch hentai online', 'best hentai streaming site', 'hentai site recommendation',
+  'uncensored hentai stream', 'hentai subbed site', 'hentai dubbed online',
+  'free hentai streaming', 'hentai OVA online', 'hentai series watch',
+  'hentai tube site', 'hentai video site', 'best hentai site 2024', 'best hentai site 2025',
+
+  // ── Anime Streaming ────────────────────────────────────────────────────────
+  'best anime streaming site', 'free anime streaming', 'watch anime online free',
+  'crunchyroll alternative', 'funimation alternative', 'anime site recommendation',
+  'legal anime streaming', 'anime streaming with subtitles', 'new anime site',
+  'watch ecchi anime online', 'ecchi anime streaming site', 'anime piracy site',
+  'fansub site', 'anime streaming alternative reddit',
+
+  // ── Manga & Doujinshi ──────────────────────────────────────────────────────
+  'read hentai manga online', 'doujinshi site recommendation', 'hentai manga english',
+  'best doujin reader', 'nhentai alternative', 'fakku alternative',
+  'read doujin free', 'hentai manga download', 'doujinshi download site',
+  'best manga reader site', 'read manga online free', 'manga site recommendation',
+  'manga reader alternative', 'free webtoon reader', 'hentai comic site',
+  'comiket online', 'japanese adult comics english',
+
+  // ── Hentai & Eroge Games ───────────────────────────────────────────────────
+  'hentai game site', 'eroge download site', 'visual novel hentai',
+  'best hentai games site', 'nutaku alternative', 'f95zone alternative',
+  'hentai visual novel download', 'eroge site recommendation',
+  'anime adult game', 'hentai RPG site', 'hentai game review site',
+  'hentai doujin game download', 'ren\'py adult game site',
+
+  // ── Image Boards & Art ─────────────────────────────────────────────────────
+  'hentai booru site', 'rule34 anime site', 'gelbooru alternative',
+  'danbooru alternative', 'pixiv alternative', 'hentai image board',
+  'hentai gallery site', 'anime fanart booru', 'hentai artist site',
+  'nsfw anime art site', 'hentai wallpaper site', 'konachan alternative',
+
+  // ── JAV (anime-adjacent) ───────────────────────────────────────────────────
+  'jav streaming site', 'best jav site', 'jav site recommendation',
+
+  // ── Downloads & Torrents ───────────────────────────────────────────────────
+  'hentai torrent site', 'anime torrent site', 'nyaa alternative',
+  'hentai download site', 'anime download site', 'doujin torrent',
+  'anime archive site', 'hentai archive download',
+
+  // ── Communities & Databases ────────────────────────────────────────────────
+  'anime database site', 'myanimelist alternative', 'anilist alternative',
+  'hentai review site', 'hentai directory', 'anime community site',
+  'anime forum recommendation', 'anime news site',
+
+  // ── VR & Interactive Hentai ────────────────────────────────────────────────
+  'vr hentai site', 'interactive hentai site', '3d hentai site',
 ];
 
 async function discoverFromReddit() {
