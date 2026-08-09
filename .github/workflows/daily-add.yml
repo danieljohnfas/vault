@@ -109,6 +109,7 @@ jobs:
           git add scripts/sites-queue.json
           git diff --cached --quiet && echo "No queue changes to commit." || \
             git commit -m "chore(queue): remove processed/dead sites [$(date -u +%Y-%m-%d)]"
+          git pull --rebase origin main
           git push
 
 

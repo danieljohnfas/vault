@@ -50,7 +50,15 @@ const DOMAIN_BLACKLIST = [
   'apps.apple.com', 'play.google.com', 'chrome.google.com',
   // Tracking / redirect links that are not real sites
   'zline0.com',
+  // Game distribution platforms — individual game pages are not directory sites
+  'itch.io',
+  // Ad networks and brokers
+  'adultadbroker.com',
 ];
+
+// Maximum number of entries from the same base domain allowed in the queue at once.
+// Prevents Scout from flooding the queue with many pages from a single site.
+const MAX_ENTRIES_PER_DOMAIN = 2;
 
 // URL path patterns that indicate an individual content page, not a site homepage
 const JUNK_PATH_PATTERNS = [
@@ -445,9 +453,36 @@ async function run() {
   if (validSites.length > 0) {
     let queue = [];
     if (fs.existsSync(QUEUE_FILE)) queue = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8'));
-    queue.push(...validSites);
+
+    // Count how many entries per base domain already exist in the queue
+    const queueDomainCount = {};
+    for (const s of queue) {
+      try {
+        const base = new URL(s.url).hostname.toLowerCase().replace(/^www\./, '').split('.').slice(-2).join('.');
+        queueDomainCount[base] = (queueDomainCount[base] || 0) + 1;
+      } catch {}
+    }
+
+    // Only append sites that don't push a domain over the per-domain cap
+    let skippedDomainCap = 0;
+    for (const s of validSites) {
+      try {
+        const base = new URL(s.url).hostname.toLowerCase().replace(/^www\./, '').split('.').slice(-2).join('.');
+        if ((queueDomainCount[base] || 0) >= MAX_ENTRIES_PER_DOMAIN) {
+          console.log(`   🚫 Domain cap (${MAX_ENTRIES_PER_DOMAIN}) reached for ${base} — skipping ${s.url}`);
+          skippedDomainCap++;
+          continue;
+        }
+        queueDomainCount[base] = (queueDomainCount[base] || 0) + 1;
+        queue.push(s);
+      } catch {
+        queue.push(s); // URL parse error — let it through, downstream junk filter will catch it
+      }
+    }
+
     fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2), 'utf8');
-    console.log(`\n💾 Saved ${validSites.length} crazy new sites to queue! Queue size: ${queue.length}`);
+    const added = validSites.length - skippedDomainCap;
+    console.log(`\n💾 Saved ${added} new sites to queue (${skippedDomainCap} skipped by domain cap). Queue size: ${queue.length}`);
   } else {
     console.log(`\n⚠️ No new valid sites found today.`);
   }
