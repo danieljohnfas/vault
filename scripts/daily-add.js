@@ -130,7 +130,7 @@ function enrich(site) {
   const cat  = site.category;
   const id   = makeId(name) + '_' + Date.now().toString(36);
   const dt   = today();
-  const rating = site.rating && site.rating >= 4.0 ? site.rating : null; // will be set by scoreSite below
+  const rating = site.rating || 0;
 
   const pros = site.pros || [
     `High quality ${d.niche} content`,
@@ -320,7 +320,7 @@ async function run() {
   }
 
   if (scored.length === 0) {
-    console.log('⚠️ No sites passed the 4.0 quality gate after scoring.');
+    console.log('⚠️ No sites passed the 3.5 quality gate after scoring.');
     if (!DRY_RUN) {
       const remaining = queue.filter(s => {
         const norm = String(s.url).replace(/\/$/, '').toLowerCase();
