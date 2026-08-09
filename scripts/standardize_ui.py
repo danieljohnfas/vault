@@ -180,18 +180,8 @@ def extract_qr(c):
 
 
 def inject_hreflang(content):
+    # Strip existing hreflang tags
     content = re.sub(r'\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+">', '', content)
-    m = re.search(r'<link rel="canonical" href="([^"]+)">', content)
-    if m:
-        url = m.group(1).rstrip('/')
-        hl = (
-            '\n    <link rel="alternate" hreflang="x-default" href="' + url + '">'
-            '\n    <link rel="alternate" hreflang="en" href="' + url + '?lang=en">'
-            '\n    <link rel="alternate" hreflang="es" href="' + url + '?lang=es">'
-            '\n    <link rel="alternate" hreflang="ja" href="' + url + '?lang=jp">'
-            '\n    <link rel="alternate" hreflang="fr" href="' + url + '?lang=fr">'
-        )
-        content = re.sub(r'(<link rel="canonical" href="[^"]+">)', r'\1' + hl, content)
     return content
 
 
