@@ -26913,5 +26913,56 @@
       "isParked": false,
       "metaDesc": ""
     }
+  },
+  {
+    "name": "cdn.jsdelivr.net",
+    "url": "https://cdn.jsdelivr.net",
+    "category": "Immersive & Interactive",
+    "description": "Optimized for JS and ESM delivery from npm and GitHub. Works with all web formats. Serving more than 150 billion requests per month.",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-10",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 13.5,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 48828,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "Optimized for JS and ESM delivery from npm and GitHub. Works with all web formats. Serving more than 150 billion requests per month."
+    },
+    "twitter": "https://twitter.com/jsdelivr"
+  },
+  {
+    "name": "Nubile Films New Videos, Page 2",
+    "url": "https://www.wowgirls.xxx/page/2/",
+    "category": "Adult Tubes & Studios",
+    "description": "Nubile Films is a new vision of love and lust! Nubiles Hardcore and Nubiles Lesbian videos, pure passion, women friedly and ultra explicite sex scenes, totally free!",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-10",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 14,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0,
+      "bodySize": 31687,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "Nubile Films is a new vision of love and lust! Nubiles Hardcore and Nubiles Lesbian videos, pure passion, women friedly and ultra explicite sex scenes, totally free!"
+    }
   }
 ]
