@@ -22436,5 +22436,105 @@
       "isParked": false,
       "metaDesc": "Watch free JAV HD videos online with full-length Japanese releases, daily updates, and popular categories including censored, amateur, MILF, and big tits on HDJAV."
     }
+  },
+  {
+    "name": "AnimeStream: Your #1 Anime Streaming Source",
+    "url": "https://anime.uniquestream.net/bm",
+    "category": "Anime Streaming",
+    "description": "Your #1 Anime Streaming Source",
+    "rating": 4.1,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-19",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.3,
+      "agePoints": 1,
+      "contentPoints": 0.6000000000000001,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 9505,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "Your #1 Anime Streaming Source"
+    }
+  },
+  {
+    "name": "AnimeStream: Your #1 Anime Streaming Source",
+    "url": "https://anime.uniquestream.net/id",
+    "category": "Anime Streaming",
+    "description": "Your #1 Anime Streaming Source",
+    "rating": 4.1,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-19",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 4.3,
+      "agePoints": 1,
+      "contentPoints": 0.6000000000000001,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 9505,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "Your #1 Anime Streaming Source"
+    }
+  },
+  {
+    "name": "YTDownloader.com is for sale | HugeDomains",
+    "url": "https://www.HugeDomains.com/domain_profile.cfm?d=YTDownloader.com",
+    "category": "Downloads & Torrents",
+    "description": "This domain is for sale! Fast and easy shopping. Trusted and secure since 2005.",
+    "rating": 3.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-19",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.6,
+      "agePoints": 1.5,
+      "contentPoints": 0,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 8942,
+      "hasAdultSignals": true,
+      "isParked": true,
+      "metaDesc": ""
+    }
+  },
+  {
+    "name": "YTDownloader.com is for sale | HugeDomains",
+    "url": "https://www.HugeDomains.com/shopping_cart.cfm?d=YTDownloader&e=com",
+    "category": "Downloads & Torrents",
+    "description": "This domain is for sale! Fast and easy shopping. Trusted and secure since 2005.",
+    "rating": 3.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-19",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.6,
+      "agePoints": 1.5,
+      "contentPoints": 0,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 8942,
+      "hasAdultSignals": true,
+      "isParked": true,
+      "metaDesc": ""
+    }
   }
 ]
