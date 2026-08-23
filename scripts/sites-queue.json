@@ -18971,5 +18971,80 @@
       "isParked": false,
       "metaDesc": ""
     }
+  },
+  {
+    "name": "latanime.org",
+    "url": "https://latanime.org/favicon.ico",
+    "category": "Anime Streaming",
+    "description": "latanime.org is a great resource for anime streaming.",
+    "rating": 3.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-23",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 3.9,
+      "agePoints": 1,
+      "contentPoints": 0.2,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 1084,
+      "hasAdultSignals": false,
+      "isParked": false,
+      "metaDesc": ""
+    }
+  },
+  {
+    "name": "latanime.org",
+    "url": "https://latanime.org/css/style.css?v=3.2",
+    "category": "Anime Streaming",
+    "description": "latanime.org is a great resource for anime streaming.",
+    "rating": 3.5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-23",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 3.9,
+      "agePoints": 1,
+      "contentPoints": 0.4,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0,
+      "bodySize": 20226,
+      "hasAdultSignals": false,
+      "isParked": false,
+      "metaDesc": ""
+    }
+  },
+  {
+    "name": "MangaDex - Authentication Home",
+    "url": "https://auth.mangadex.org",
+    "category": "Manga & Doujinshi",
+    "description": "auth.mangadex.org is a great resource for manga & doujinshi.",
+    "rating": 3.9,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-23",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 3.7,
+      "agePoints": 1,
+      "contentPoints": 0.6000000000000001,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 10651,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": ""
+    }
   }
 ]
