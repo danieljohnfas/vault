@@ -16523,5 +16523,81 @@
       "metaDesc": "Xem phim sex vlxx.xxx, Tuyển chọn phim sex vlxx.xxx nội dung hay, chất lượng Full HD mới nhất"
     },
     "twitter": "https://twitter.com/sexzz_cc"
+  },
+  {
+    "name": "Porn Stars | AVN",
+    "url": "https://avn.com/profiles?page=2",
+    "category": "Adult Tubes & Studios",
+    "description": "avn.com is a great resource for adult tubes & studios.",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-28",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.8,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 71050,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": ""
+    },
+    "twitter": "https://x.com/avnmedianetwork"
+  },
+  {
+    "name": "DLsite Play",
+    "url": "https://play.dlsite.com/",
+    "category": "Games & Visual Novels",
+    "description": "「同人をもっと手軽に、もっと楽しく。」DLsite Playを利用すると、同人誌、電子書籍、音声作品がブラウザだけで楽しめます",
+    "rating": 4.1,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-28",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 11.4,
+      "agePoints": 1.5,
+      "contentPoints": 0.6000000000000001,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 12304,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "「同人をもっと手軽に、もっと楽しく。」DLsite Playを利用すると、同人誌、電子書籍、音声作品がブラウザだけで楽しめます"
+    }
+  },
+  {
+    "name": "にじGAME R18（旧にじよめ）- オンラインゲーム",
+    "url": "https://www.nijiyome.jp?en=dlsite&em=text&et=sp_globalheader_protouch",
+    "category": "Games & Visual Novels",
+    "description": "国内最大級のアダルトゲームプラットフォーム！PCはもちろん、スマホで遊べるエロゲーが盛りだくさん！",
+    "rating": 4.8,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-28",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 13.4,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 55466,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "国内最大級のアダルトゲームプラットフォーム！PCはもちろん、スマホで遊べるエロゲーが盛りだくさん！"
+    }
   }
 ]
