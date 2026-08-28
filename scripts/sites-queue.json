@@ -15400,5 +15400,30 @@
       "isParked": false,
       "metaDesc": "国内最大級のアダルトゲームプラットフォーム！PCはもちろん、スマホで遊べるエロゲーが盛りだくさん！"
     }
+  },
+  {
+    "name": "www.celebritytube.com",
+    "url": "https://www.celebritytube.com/favicon.ico",
+    "category": "Adult Tubes & Studios",
+    "description": "www.celebritytube.com is a great resource for adult tubes & studios.",
+    "rating": 4,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-08-28",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.7,
+      "agePoints": 1.5,
+      "contentPoints": 0.2,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 198,
+      "hasAdultSignals": false,
+      "isParked": false,
+      "metaDesc": ""
+    }
   }
 ]
