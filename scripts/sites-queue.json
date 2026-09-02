@@ -13064,5 +13064,132 @@
       "isParked": false,
       "metaDesc": ""
     }
+  },
+  {
+    "name": "MangaNato | NatoManga – HOME",
+    "url": "https://www.manganato.gg/official",
+    "category": "Manga & Doujinshi",
+    "description": "Read manga online for free on MangaNato! Explore a vast selection of manga and manhwa with easy access to top free manga websites. Enjoy popular genres like yaoi and more on MangaNato’s seamless, user-friendly platform.",
+    "rating": 3.9,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-09-02",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 1.7,
+      "agePoints": 0.6,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 31954,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "Read manga online for free on MangaNato! Explore a vast selection of manga and manhwa with easy access to top free manga websites. Enjoy popular genres like yaoi and more on MangaNato’s seamless, user-friendly platform."
+    },
+    "discord": "https://discord.gg/Qhz84GGvE9"
+  },
+  {
+    "name": "Privacy Policy of MangaNato",
+    "url": "https://www.manganato.gg/privacy-policy",
+    "category": "Manga & Doujinshi",
+    "description": "MangaNato's privacy policy ensures your personal data is protected and your privacy respected while using our manga reading platform.",
+    "rating": 3.9,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-09-02",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 1.7,
+      "agePoints": 0.6,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 25753,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": "MangaNato's privacy policy ensures your personal data is protected and your privacy respected while using our manga reading platform."
+    },
+    "discord": "https://discord.gg/Qhz84GGvE9"
+  },
+  {
+    "name": "www.cam-content.com",
+    "url": "https://www.cam-content.com/Default.aspx?Language=en&SystemID=brotobro-com",
+    "category": "Creator Platforms",
+    "description": "www.cam-content.com is a great resource for creator platforms.",
+    "rating": 4.6,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-09-02",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 16.7,
+      "agePoints": 1.5,
+      "contentPoints": 0.8,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.25,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 22826,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": ""
+    }
+  },
+  {
+    "name": "Cable Television: Unraveling the Wonders of Coaxia",
+    "url": "https://www.mangaread.org/cdn-cgi/content?id=XQBZqEmeLd1pRPUvMatQY86ay6JStOAnGh3zsyiP7Os-1788312651.4322472-1.2.1.1-akIqQhAidcc3kGVINNHspeLQCEDoyevg5bk1VD_YlhK5D.FIS.mvBUXdT4d2oJE0",
+    "category": "Manga & Doujinshi",
+    "description": "www.mangaread.org is a great resource for manga & doujinshi.",
+    "rating": 4.2,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-09-02",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 8.1,
+      "agePoints": 1.5,
+      "contentPoints": 0.4,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0,
+      "bodySize": 3689,
+      "hasAdultSignals": false,
+      "isParked": false,
+      "metaDesc": ""
+    }
+  },
+  {
+    "name": "Manga Archive - Read manga",
+    "url": "https://www.mangaread.org/manga/?m_orderby=views",
+    "category": "Manga & Doujinshi",
+    "description": "www.mangaread.org is a great resource for manga & doujinshi.",
+    "rating": 5,
+    "tags": [
+      "ScoutV3",
+      "New"
+    ],
+    "addedAt": "2026-09-02",
+    "scoreSignals": {
+      "alive": true,
+      "ageYears": 8.1,
+      "agePoints": 1.5,
+      "contentPoints": 1,
+      "httpsPoints": 0.3,
+      "categoryPoints": 0.5,
+      "cleanUrlPoints": 0.2,
+      "bodySize": 241674,
+      "hasAdultSignals": true,
+      "isParked": false,
+      "metaDesc": ""
+    }
   }
 ]
