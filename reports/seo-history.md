@@ -1,18 +1,18 @@
 # 📚 HentaiVault SEO Historical Analysis
-_Generated: 2026-08-31 14:45:23 UTC | Data range: 2025-04-29 → 2026-08-29 (up to 16 months via GSC API)_
+_Generated: 2026-09-07 13:13:16 UTC | Data range: 2025-05-05 → 2026-09-05 (up to 16 months via GSC API)_
 
 ---
 
 ## 1. All-Time Snapshot (Full Available History)
 | Metric | Value |
 | --- | --- |
-| Total Clicks | **1,274** |
-| Total Impressions | **96,955** |
-| Overall CTR | **1.31%** |
-| Average Position | **6.8** |
-| Unique Queries | **2,013** |
+| Total Clicks | **1,290** |
+| Total Impressions | **97,044** |
+| Overall CTR | **1.33%** |
+| Average Position | **6.9** |
+| Unique Queries | **2,015** |
 | Unique Pages | **999** |
-| Overall Trend | 📉 Declining (-356 clicks since 2026-05) |
+| Overall Trend | 📉 Declining (-441 clicks since 2026-05) |
 
 ## 2. Monthly Performance Breakdown
 | Month | Clicks | Impressions | CTR | Avg Position |
@@ -20,15 +20,16 @@ _Generated: 2026-08-31 14:45:23 UTC | Data range: 2025-04-29 → 2026-08-29 (up 
 | 2026-05 | 450 | 35,008 | 1.29% | 6.4 |
 | 2026-06 | 641 (+191) | 61,125 | 1.05% | 7.3 |
 | 2026-07 | 89 (-552) | 453 | 19.65% | 8.4 |
-| 2026-08 | 94 (+5) | 369 | 25.47% | 5.0 |
+| 2026-08 | 101 (+12) | 404 | 25.00% | 4.9 |
+| 2026-09 | 9 (-92) | 54 | 16.67% | 8.9 |
 
 ## 3. Peak & Trough Months
 | | Month | Value |
 |---|---|---|
 | 🏆 Best clicks     | **2026-06**  | 641 clicks |
-| 📉 Worst clicks    | **2026-07** | 89 clicks |
+| 📉 Worst clicks    | **2026-09** | 9 clicks |
 | 🏆 Best impressions | **2026-06**  | 61,125 |
-| 📉 Worst impressions| **2026-08** | 369 |
+| 📉 Worst impressions| **2026-09** | 54 |
 
 ## 4. Biggest Single-Month Drops (Algorithm Update / Penalty Detection)
 > [!WARNING]
@@ -37,22 +38,22 @@ _Generated: 2026-08-31 14:45:23 UTC | Data range: 2025-04-29 → 2026-08-29 (up 
 ## 5. Branded vs Non-Branded Traffic Split
 | Segment | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- |
-| 🏷 Branded | 391 | 3,284 | 11.91% | 23.5 |
-| 🔍 Non-Branded | 403 | 66,846 | 0.60% | 11.6 |
+| 🏷 Branded | 406 | 3,346 | 12.13% | 23.6 |
+| 🔍 Non-Branded | 403 | 66,857 | 0.60% | 11.7 |
 
-_Traffic split: 31% branded / 32% non-branded_
+_Traffic split: 31% branded / 31% non-branded_
 
 ## 6. Device Breakdown
 | Device | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- |
-| MOBILE | 1033 | 43567 | 2.4% | 6.0 |
-| DESKTOP | 198 | 51484 | 0.4% | 8.1 |
-| TABLET | 43 | 1904 | 2.3% | 6.3 |
+| MOBILE | 1049 | 43638 | 2.4% | 5.9 |
+| DESKTOP | 198 | 51501 | 0.4% | 8.1 |
+| TABLET | 43 | 1905 | 2.3% | 6.3 |
 
 ## 7. Top 20 Queries by Clicks (All Time)
 | # | Query | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `hentaivault` | 261 | 743 | 35.13% | 1.7 |
+| 1 | `hentaivault` | 276 | 803 | 34.37% | 1.7 |
 | 2 | `hentai vault` | 130 | 2,510 | 5.18% | 3.3 |
 | 3 | `nhentai alternative` | 48 | 893 | 5.38% | 5.5 |
 | 4 | `hentaimama` | 30 | 14,492 | 0.21% | 6.7 |
@@ -76,7 +77,7 @@ _Traffic split: 31% branded / 32% non-branded_
 ## 8. Top 20 Pages by Clicks (All Time)
 | # | Page | Clicks | Impressions | CTR |
 | --- | --- | --- | --- | --- |
-| 1 | / | 522 | 5,274 | 9.90% |
+| 1 | / | 538 | 5,363 | 10.03% |
 | 2 | /blog/nhentai-alternatives-2026 | 232 | 14,065 | 1.65% |
 | 3 | /category/manga-doujin | 57 | 15,661 | 0.36% |
 | 4 | http://hentaivault.me/ | 49 | 394 | 12.44% |
@@ -121,7 +122,7 @@ _These queries already rank on page 1-2 but aren't being clicked. Fixing titles/
 ## 10. 🧠 Key Insights & Recommendations
 - 🟢 **Healthy branded/non-branded split** (31% branded). Diversified traffic sources.
 
-- 🟢 **Average position is 6.8** — strong page 1 visibility.
+- 🟢 **Average position is 6.9** — strong page 1 visibility.
 
 - 🔴 **Biggest traffic drop detected**: 552 clicks lost in 2026-07 vs 2026-06. Check for [Google Core Update](https://developers.google.com/search/updates/ranking) history for this date.
 
