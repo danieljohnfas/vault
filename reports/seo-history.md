@@ -1,18 +1,18 @@
 # 📚 HentaiVault SEO Historical Analysis
-_Generated: 2026-09-07 13:13:16 UTC | Data range: 2025-05-05 → 2026-09-05 (up to 16 months via GSC API)_
+_Generated: 2026-09-14 13:34:04 UTC | Data range: 2025-05-12 → 2026-09-12 (up to 16 months via GSC API)_
 
 ---
 
 ## 1. All-Time Snapshot (Full Available History)
 | Metric | Value |
 | --- | --- |
-| Total Clicks | **1,290** |
-| Total Impressions | **97,044** |
-| Overall CTR | **1.33%** |
-| Average Position | **6.9** |
-| Unique Queries | **2,015** |
+| Total Clicks | **1,300** |
+| Total Impressions | **97,096** |
+| Overall CTR | **1.34%** |
+| Average Position | **6.8** |
+| Unique Queries | **2,016** |
 | Unique Pages | **999** |
-| Overall Trend | 📉 Declining (-441 clicks since 2026-05) |
+| Overall Trend | 📉 Declining (-431 clicks since 2026-05) |
 
 ## 2. Monthly Performance Breakdown
 | Month | Clicks | Impressions | CTR | Avg Position |
@@ -21,15 +21,15 @@ _Generated: 2026-09-07 13:13:16 UTC | Data range: 2025-05-05 → 2026-09-05 (up 
 | 2026-06 | 641 (+191) | 61,125 | 1.05% | 7.3 |
 | 2026-07 | 89 (-552) | 453 | 19.65% | 8.4 |
 | 2026-08 | 101 (+12) | 404 | 25.00% | 4.9 |
-| 2026-09 | 9 (-92) | 54 | 16.67% | 8.9 |
+| 2026-09 | 19 (-82) | 106 | 17.92% | 6.9 |
 
 ## 3. Peak & Trough Months
 | | Month | Value |
 |---|---|---|
 | 🏆 Best clicks     | **2026-06**  | 641 clicks |
-| 📉 Worst clicks    | **2026-09** | 9 clicks |
+| 📉 Worst clicks    | **2026-09** | 19 clicks |
 | 🏆 Best impressions | **2026-06**  | 61,125 |
-| 📉 Worst impressions| **2026-09** | 54 |
+| 📉 Worst impressions| **2026-09** | 106 |
 
 ## 4. Biggest Single-Month Drops (Algorithm Update / Penalty Detection)
 > [!WARNING]
@@ -38,23 +38,23 @@ _Generated: 2026-09-07 13:13:16 UTC | Data range: 2025-05-05 → 2026-09-05 (up 
 ## 5. Branded vs Non-Branded Traffic Split
 | Segment | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- |
-| 🏷 Branded | 406 | 3,346 | 12.13% | 23.6 |
-| 🔍 Non-Branded | 403 | 66,857 | 0.60% | 11.7 |
+| 🏷 Branded | 415 | 3,382 | 12.27% | 23.7 |
+| 🔍 Non-Branded | 403 | 66,871 | 0.60% | 11.7 |
 
-_Traffic split: 31% branded / 31% non-branded_
+_Traffic split: 32% branded / 31% non-branded_
 
 ## 6. Device Breakdown
 | Device | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- |
-| MOBILE | 1049 | 43638 | 2.4% | 5.9 |
-| DESKTOP | 198 | 51501 | 0.4% | 8.1 |
-| TABLET | 43 | 1905 | 2.3% | 6.3 |
+| MOBILE | 1057 | 43678 | 2.4% | 5.9 |
+| DESKTOP | 199 | 51512 | 0.4% | 8.1 |
+| TABLET | 44 | 1906 | 2.3% | 6.3 |
 
 ## 7. Top 20 Queries by Clicks (All Time)
 | # | Query | Clicks | Impressions | CTR | Avg Position |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `hentaivault` | 276 | 803 | 34.37% | 1.7 |
-| 2 | `hentai vault` | 130 | 2,510 | 5.18% | 3.3 |
+| 1 | `hentaivault` | 284 | 837 | 33.93% | 1.7 |
+| 2 | `hentai vault` | 131 | 2,511 | 5.22% | 3.3 |
 | 3 | `nhentai alternative` | 48 | 893 | 5.38% | 5.5 |
 | 4 | `hentaimama` | 30 | 14,492 | 0.21% | 6.7 |
 | 5 | `doujin sites` | 26 | 452 | 5.75% | 6.9 |
@@ -77,7 +77,7 @@ _Traffic split: 31% branded / 31% non-branded_
 ## 8. Top 20 Pages by Clicks (All Time)
 | # | Page | Clicks | Impressions | CTR |
 | --- | --- | --- | --- | --- |
-| 1 | / | 538 | 5,363 | 10.03% |
+| 1 | / | 548 | 5,415 | 10.12% |
 | 2 | /blog/nhentai-alternatives-2026 | 232 | 14,065 | 1.65% |
 | 3 | /category/manga-doujin | 57 | 15,661 | 0.36% |
 | 4 | http://hentaivault.me/ | 49 | 394 | 12.44% |
@@ -120,9 +120,9 @@ _These queries already rank on page 1-2 but aren't being clicked. Fixing titles/
 | `best hentai sites 2026` | 374 | 0.27% | 13.8 | 🟡 Improve content/description |
 
 ## 10. 🧠 Key Insights & Recommendations
-- 🟢 **Healthy branded/non-branded split** (31% branded). Diversified traffic sources.
+- 🟢 **Healthy branded/non-branded split** (32% branded). Diversified traffic sources.
 
-- 🟢 **Average position is 6.9** — strong page 1 visibility.
+- 🟢 **Average position is 6.8** — strong page 1 visibility.
 
 - 🔴 **Biggest traffic drop detected**: 552 clicks lost in 2026-07 vs 2026-06. Check for [Google Core Update](https://developers.google.com/search/updates/ranking) history for this date.
 
