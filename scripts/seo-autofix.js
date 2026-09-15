@@ -573,13 +573,14 @@ async function main() {
     issues.push(`${opportunities.length} non-branded keyword opportunities detected — top: "${opportunities[0].query}" (pos ${opportunities[0].position.toFixed(1)}, ${opportunities[0].impressions} impressions)`);
   }
 
-  // Regenerate sitemaps
-  if (!DRY_RUN) {
-    const sitemapUpdated = await regenerateSitemaps();
-    if (sitemapUpdated) {
-      fixes.push('Regenerated sitemap-index.xml, sitemap-blog.xml, sitemap-main.xml with fresh lastmod dates');
-    }
-  }
+  // Regenerate sitemaps - DISABLED
+  // We now rely on the Cloudflare Worker to dynamically generate sitemaps
+  // if (!DRY_RUN) {
+  //   const sitemapUpdated = await regenerateSitemaps();
+  //   if (sitemapUpdated) {
+  //     fixes.push('Regenerated sitemap-index.xml, sitemap-blog.xml, sitemap-main.xml with fresh lastmod dates');
+  //   }
+  // }
 
   // Gitignore check
   const gitignoreFixed = fixGitignore();
