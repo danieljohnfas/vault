@@ -25,7 +25,6 @@ const { scoreSite } = require('./score-site');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
-const QUEUE_FILE = path.join(ROOT, 'scripts', 'sites-queue.json');
 
 const args    = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -36,6 +35,12 @@ const EXISTING_URLS_FILE = existingUrlsFlag !== -1 ? args[existingUrlsFlag + 1] 
 
 const outputSqlFlag = args.findIndex(a => a === '--output-sql');
 const OUTPUT_SQL_FILE = outputSqlFlag !== -1 ? args[outputSqlFlag + 1] : null;
+
+const queueFileFlag = args.findIndex(a => a === '--queue-file');
+const QUEUE_FILE = queueFileFlag !== -1 ? args[queueFileFlag + 1] : null;
+
+const outputQueueSqlFlag = args.findIndex(a => a === '--output-queue-sql');
+const OUTPUT_QUEUE_SQL_FILE = outputQueueSqlFlag !== -1 ? args[outputQueueSqlFlag + 1] : null;
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 function today() {
@@ -211,6 +216,18 @@ function enrich(site) {
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
+function writeQueueUpdates(queue, addedUrls) {
+  if (!OUTPUT_QUEUE_SQL_FILE || DRY_RUN) return;
+  let sql = '';
+  for (const site of queue) {
+    if (!site.id) continue;
+    const status = addedUrls.has(site.url) ? 'done' : 'rejected';
+    sql += `UPDATE queue SET status = '${status}' WHERE id = '${site.id}';\n`;
+  }
+  fs.mkdirSync(require('path').dirname(OUTPUT_QUEUE_SQL_FILE), { recursive: true });
+  fs.writeFileSync(OUTPUT_QUEUE_SQL_FILE, sql, 'utf8');
+}
+
 async function run() {
   console.log(`\n🚀 HentaiVault Daily Add — ${today()}`);
   console.log(`   Count: ${COUNT}  |  Dry-run: ${DRY_RUN}\n`);
@@ -254,11 +271,7 @@ async function run() {
   if (fresh.length === 0) {
     console.log('⚠️  All queue items already exist in D1. Nothing to add.');
     
-    if (!DRY_RUN) {
-      const remaining = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()));
-      fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
-      console.log(`📋 Queue cleaned up: removed ${queue.length - remaining.length} existing items.`);
-    }
+    writeQueueUpdates(queue, new Set());
     process.exit(0);
   }
 
@@ -298,11 +311,7 @@ async function run() {
 
   if (batch.length === 0) {
     console.log('⚠️ No live sites found in the remaining queue!');
-    if (!DRY_RUN) {
-      const remaining = queue.filter(s => !existingUrls.has(String(s.url).replace(/\/$/, '').toLowerCase()) && !deadUrls.has(s.url));
-      fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
-      console.log(`📋 Queue cleaned up: removed ${queue.length - remaining.length} existing/dead items.`);
-    }
+    writeQueueUpdates(queue, new Set());
     process.exit(0);
   }
 
@@ -352,14 +361,9 @@ async function run() {
     console.log('--- END SQL ---');
   }
 
-  // 6. Remove processed and dead entries from queue
-  const addedUrls = new Set(batch.map(s => s.url));
-  const remaining = queue.filter(s => {
-    const norm = String(s.url).replace(/\/$/, '').toLowerCase();
-    return !existingUrls.has(norm) && !addedUrls.has(s.url) && !deadUrls.has(s.url);
-  });
-  fs.writeFileSync(QUEUE_FILE, JSON.stringify(remaining, null, 2), 'utf8');
-  console.log(`📋 Queue remaining: ${remaining.length} (removed ${queue.length - remaining.length} entries)`);
+  // 6. Write Queue Updates
+  const addedUrls = new Set(enriched.map(s => s.url));
+  writeQueueUpdates(queue, addedUrls);
 
   console.log(`\n✅ Done! Generated SQL for ${enriched.length} new sites.`);
 }

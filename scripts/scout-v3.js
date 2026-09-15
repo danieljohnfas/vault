@@ -451,38 +451,18 @@ async function run() {
   }
 
   if (validSites.length > 0) {
-    let queue = [];
-    if (fs.existsSync(QUEUE_FILE)) queue = JSON.parse(fs.readFileSync(QUEUE_FILE, 'utf8'));
-
-    // Count how many entries per base domain already exist in the queue
-    const queueDomainCount = {};
-    for (const s of queue) {
-      try {
-        const base = new URL(s.url).hostname.toLowerCase().replace(/^www\./, '').split('.').slice(-2).join('.');
-        queueDomainCount[base] = (queueDomainCount[base] || 0) + 1;
-      } catch {}
-    }
-
-    // Only append sites that don't push a domain over the per-domain cap
-    let skippedDomainCap = 0;
+    const crypto = require('crypto');
+    let sql = '';
     for (const s of validSites) {
-      try {
-        const base = new URL(s.url).hostname.toLowerCase().replace(/^www\./, '').split('.').slice(-2).join('.');
-        if ((queueDomainCount[base] || 0) >= MAX_ENTRIES_PER_DOMAIN) {
-          console.log(`   🚫 Domain cap (${MAX_ENTRIES_PER_DOMAIN}) reached for ${base} — skipping ${s.url}`);
-          skippedDomainCap++;
-          continue;
-        }
-        queueDomainCount[base] = (queueDomainCount[base] || 0) + 1;
-        queue.push(s);
-      } catch {
-        queue.push(s); // URL parse error — let it through, downstream junk filter will catch it
-      }
+      const id = crypto.randomUUID();
+      const url = String(s.url).replace(/'/g, "''");
+      const cat = String(s.category || '').replace(/'/g, "''");
+      const name = String(s.name || '').replace(/'/g, "''");
+      sql += `INSERT OR IGNORE INTO queue (id, url, category, name, status) VALUES ('${id}', '${url}', '${cat}', '${name}', 'pending');\n`;
     }
-
-    fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2), 'utf8');
-    const added = validSites.length - skippedDomainCap;
-    console.log(`\n💾 Saved ${added} new sites to queue (${skippedDomainCap} skipped by domain cap). Queue size: ${queue.length}`);
+    const sqlFile = path.resolve(__dirname, 'scout-inserts.sql');
+    fs.writeFileSync(sqlFile, sql, 'utf8');
+    console.log(`\n💾 Wrote ${validSites.length} new sites to scout-inserts.sql`);
   } else {
     console.log(`\n⚠️ No new valid sites found today.`);
   }
