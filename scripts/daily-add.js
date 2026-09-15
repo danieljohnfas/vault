@@ -279,12 +279,12 @@ async function run() {
   const batch = [];
   const deadUrls = new Set();
 
-  console.log(`\n🔍 Pinging sites (concurrency=10) to find ${COUNT} valid domains...`);
+  console.log(`\n🔍 Pinging sites (concurrency=40) to find ${COUNT} valid domains...`);
 
-  for (let i = 0; i < fresh.length; i += 10) {
+  for (let i = 0; i < fresh.length; i += 40) {
     if (batch.length >= COUNT) break;
 
-    const chunk = fresh.slice(i, i + 10);
+    const chunk = fresh.slice(i, i + 40);
     const results = await Promise.all(chunk.map(async s => {
       return { site: s, live: await isSiteLive(s.url) };
     }));
