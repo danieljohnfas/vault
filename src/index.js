@@ -896,7 +896,7 @@ async function handleRequest(request, env, ctx) {
               'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
             ).all();
             for (const row of rows.results) {
-              const lastmod = row.added_at ? row.added_at.split('T')[0] : today;
+              const lastmod = (row.added_at && row.added_at.length >= 10) ? row.added_at.slice(0, 10) : today;
               siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
             }
           } catch (err) {
