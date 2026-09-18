@@ -35,3 +35,5 @@ Disallow: /embed
 Disallow: /*?*
 
 Sitemap: https://hentaivault.me/sitemap-index.xml
+Sitemap: https://hentaivault.me/sitemap-pages.xml
+Sitemap: https://hentaivault.me/sitemap-sites.xml

@@ -424,12 +424,15 @@ async function main() {
 
   // ── 1. Auth
   const { google } = require('googleapis');
-  const keyJson = process.env.GSC_SERVICE_ACCOUNT_JSON;
-  if (!keyJson) {
-    console.error('ERROR: GSC_SERVICE_ACCOUNT_JSON env var not set.');
+  let credentials;
+  if (process.env.GSC_SERVICE_ACCOUNT_JSON) {
+    credentials = JSON.parse(process.env.GSC_SERVICE_ACCOUNT_JSON);
+  } else if (fs.existsSync(path.join(__dirname, '..', 'gsc-credentials.json'))) {
+    credentials = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'gsc-credentials.json'), 'utf8'));
+  } else {
+    console.error('ERROR: GSC_SERVICE_ACCOUNT_JSON env var not set and gsc-credentials.json not found.');
     process.exit(1);
   }
-  const credentials = JSON.parse(keyJson);
   const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
@@ -640,9 +643,9 @@ async function main() {
   }
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-  // Exit with error code if critical issues found (so GitHub Actions marks the run yellow)
+  // Emit GitHub Actions warning annotation if traffic dropped significantly
   if (issues.some(i => i.includes('dropped') && parseInt(i.match(/\d+/)?.[0]) > 30)) {
-    process.exit(2); // non-zero = GitHub will mark as failure/warning
+    console.log('::warning title=SEO Traffic Drop::Clicks or impressions dropped by >30% vs last week.');
   }
 }
 
