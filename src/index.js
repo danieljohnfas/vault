@@ -895,20 +895,9 @@ async function handleRequest(request, env, ctx) {
             const rows = await env.hv_directory.prepare(
               'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
             ).all();
-            const topSites = rows.results.slice(0, 10);
-            
             for (const row of rows.results) {
               const lastmod = row.added_at ? row.added_at.split('T')[0] : today;
               siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
-            }
-            
-            // Generate comparison URLs for top sites in same category
-            for (let i = 0; i < topSites.length; i++) {
-                for (let j = i + 1; j < topSites.length; j++) {
-                    if (topSites[i].category === topSites[j].category) {
-                        siteUrls += `  <url>\n    <loc>https://hentaivault.me/compare?site1=${topSites[i].id}&amp;site2=${topSites[j].id}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
-                    }
-                }
             }
           } catch (err) {
             console.error('Sitemap D1 error:', err);
