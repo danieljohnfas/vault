@@ -1,0 +1,6 @@
+[
+  { "task": "list-worker-secrets" },
+  { "task": "list-worker-domains" },
+  { "task": "report-prohibited" },
+  { "task": "gsc-sitemaps" }
+]
