@@ -1,4 +1,8 @@
 [
-  { "task": "report-prohibited" },
-  { "task": "list-triggers" }
+  { "task": "live-check", "paths": ["/", "/site?id=nhentai", "/site?id=hanime", "/compare?site1=nhentai&site2=hanime", "/about", "/blog/", "/category/manga-doujin", "/sitemap-index.xml", "/sitemap-pages.xml", "/sitemap-sites.xml", "/robots.txt", "/nope-404-check", "/reports/raw-data/gsc_all_queries_16mo.csv", "/bot/index.js", "/tmp/all_sites.json"] },
+  { "task": "add-worker-domain", "hostname": "www.hentaivault.me" },
+  { "task": "list-worker-domains" },
+  { "task": "gsc-submit-sitemap", "sitemaps": ["https://hentaivault.me/sitemap-index.xml", "https://hentaivault.me/sitemap-pages.xml", "https://hentaivault.me/sitemap-sites.xml"] },
+  { "task": "gsc-sitemaps" },
+  { "task": "indexnow" }
 ]
