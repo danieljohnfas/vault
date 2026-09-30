@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": ["Bash(git push *)"]
+  },
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Creating, rotating or deleting Cloudflare Worker secrets for the 'vault' worker (TURNSTILE_SECRET_KEY, GITHUB_TOKEN) through the repo's Ops workflow (scripts/ops/run.js, ops/tasks.json) is allowed."
+    ]
+  }
+}
