@@ -162,7 +162,8 @@ const tasks = {
         const u = new URL(r.url);
         return !isProhibited(r.url, r.name, r.description) && r.isUp !== 0 && r.dead !== 1 && Number(r.rating) >= 3.5
           && r.category !== 'Adult Tubes & Studios' && !String(r.tags || '').includes('Auto-Discovered')
-          && u.pathname.replace(/\/+$/, '') === '' && !u.search;
+          && u.pathname.replace(/\/+$/, '') === '' && !u.search
+          && !/checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i.test(String(r.name || '').trim());
       } catch { return false; }
     });
     const urls = [...staticPaths.map(p => `https://${ZONE_NAME}${p}`),
