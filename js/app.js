@@ -1266,12 +1266,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── Form Submission → /api/submit (Cloudflare Pages Function) ────────────
+    // Hidden field that humans never fill in; the Worker rejects posts where it is set.
+    function addHoneypot(form) {
+        if (!form || form.querySelector('input[name="website"]')) return;
+        form.insertAdjacentHTML('beforeend',
+            '<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+            'style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0;">');
+    }
+
+    // ── Form Submission → /api/submit ───────────────────────────────────────
     const submitForm   = document.getElementById('submitForm');
     const submitBtn    = document.getElementById('submitBtn');
     const submitStatus = document.getElementById('submitStatus');
 
     if (submitForm && submitBtn && submitStatus) {
+    addHoneypot(submitForm);
     submitForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -1290,7 +1299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/submit', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ name, url, category, description, turnstileToken }),
+                body:    JSON.stringify({ name, url, category, description, turnstileToken, website: submitForm.website.value }),
             });
 
             const data = await res.json();
@@ -1298,6 +1307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok && data.success) {
                 showStatus('success', `✅ ${data.message}`);
                 submitForm.reset();
+                if (window.turnstile) try { window.turnstile.reset(); } catch (_) {}
                 // Auto-close modal after 3 seconds
                 setTimeout(() => {
                     submitModal.classList.remove('active');
@@ -1313,6 +1323,79 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Submit to Vault';
         }
     });
+    }
+
+    // ── User reviews (/site pages) ───────────────────────────────────────────
+    const reviewForm   = document.getElementById('reviewForm');
+    const reviewsList  = document.getElementById('reviewsList');
+    const reviewStatus = document.getElementById('reviewStatus');
+    const reviewSiteId = new URLSearchParams(window.location.search).get('id');
+
+    if (reviewForm && reviewsList && reviewSiteId) {
+        addHoneypot(reviewForm);
+
+        const renderReviews = (reviews) => {
+            if (!reviews.length) {
+                reviewsList.innerHTML = '<p style="color:var(--text-muted);">No reviews yet — be the first to share your experience.</p>';
+                return;
+            }
+            reviewsList.innerHTML = reviews.map(r => {
+                const rating = Math.max(1, Math.min(5, parseInt(r.rating, 10) || 0));
+                const date = r.created_at ? new Date(r.created_at.replace(' ', 'T') + 'Z').toLocaleDateString() : '';
+                return `<div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 20px;">
+                    <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px;">
+                        <strong>${window.escapeHTML(r.user_name || 'Anonymous')}</strong>
+                        <span style="color:#ff9900;">${'★'.repeat(rating)}${'☆'.repeat(5 - rating)} <span style="color:var(--text-muted); font-size:0.8rem;">${window.escapeHTML(date)}</span></span>
+                    </div>
+                    <p style="margin:0; color:var(--text-muted); white-space:pre-line;">${window.escapeHTML(r.comment)}</p>
+                </div>`;
+            }).join('');
+        };
+
+        const loadReviews = () => fetch(`/api/reviews?id=${encodeURIComponent(reviewSiteId)}`)
+            .then(res => res.ok ? res.json() : { reviews: [] })
+            .then(data => renderReviews(data.reviews || []))
+            .catch(() => {});
+        loadReviews();
+
+        const setReviewStatus = (ok, message) => {
+            if (!reviewStatus) return;
+            reviewStatus.textContent = message;
+            reviewStatus.style.display = 'block';
+            reviewStatus.style.color = ok ? '#22c55e' : '#ff2a5f';
+        };
+
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const button = reviewForm.querySelector('button[type="submit"]');
+            if (button) button.disabled = true;
+            try {
+                const res = await fetch(`/api/reviews?id=${encodeURIComponent(reviewSiteId)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_name: document.getElementById('reviewName')?.value || '',
+                        rating: document.getElementById('reviewRating')?.value,
+                        comment: document.getElementById('reviewComment')?.value || '',
+                        turnstileToken: reviewForm.querySelector('[name="cf-turnstile-response"]')?.value || '',
+                        website: reviewForm.website.value,
+                    }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success) {
+                    setReviewStatus(true, '✅ Thanks! Your review has been posted.');
+                    reviewForm.reset();
+                    loadReviews();
+                } else {
+                    setReviewStatus(false, `❌ ${data.error || 'Could not post your review.'}`);
+                }
+            } catch (err) {
+                setReviewStatus(false, '❌ Network error. Please try again.');
+            } finally {
+                if (button) button.disabled = false;
+                if (window.turnstile) try { window.turnstile.reset(); } catch (_) {}
+            }
+        });
     }
 
     function showStatus(type, message) {
