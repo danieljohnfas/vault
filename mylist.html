@@ -52,56 +52,43 @@
 
 <body>
 
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <span class="logo-icon">🌐</span> HentaiVault
+            </a>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <label for="searchInput" class="sr-only">Search sites</label>
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+                    </form>
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
             </div>
-
-
 
     
-
-            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">­ƒöì</button>
-
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
             
-
             <div class="nav-actions">
-
-                <button id="themeToggle" class="btn-theme" title="Toggle Theme">­ƒîô</button>
-
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
-
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
-
-                        <option value="en">­ƒç║­ƒç© EN</option>
-
-                        <option value="es">­ƒç¬­ƒç© ES</option>
-
-                        <option value="jp">­ƒç»­ƒçÁ JP</option>
-
-                        <option value="fr">­ƒç½­ƒçÀ FR</option>
-
-                        <option value="pt">­ƒçº­ƒçÀ PT</option>
-
-                        <option value="hi">­ƒç«­ƒç│ HI</option>
-
-                        <option value="ar">­ƒç▓­ƒçª AR</option>
-
-                        <option value="de">­ƒç®­ƒç¬ DE</option>
-
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="ar">🇲🇦 AR</option>
+                        <option value="de">🇩🇪 DE</option>
                     </select>
-
                 </div>
 
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
-
-                </a>
-
                 <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
-
             </div>
-
         </div>
-
     </nav>
 <main style="max-width: 1200px; margin: 60px auto 60px; padding: 0 24px;">
 

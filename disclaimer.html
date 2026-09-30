@@ -80,27 +80,40 @@
         <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <span class="logo-icon">🌐</span> HentaiVault
+            </a>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <label for="searchInput" class="sr-only">Search sites</label>
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+                    </form>
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
             </div>
 
     
-            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">??</button>
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            
             <div class="nav-actions">
-                <button id="themeToggle" class="btn-theme" title="Toggle Theme">??</button>
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
-                        <option value="en">???? EN</option>
-                        <option value="es">???? ES</option>
-                        <option value="jp">???? JP</option>
-                        <option value="fr">???? FR</option>
-                        <option value="pt">???? PT</option>
-                        <option value="hi">???? HI</option>
-                        <option value="ar">???? AR</option>
-                        <option value="de">???? DE</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="ar">🇲🇦 AR</option>
+                        <option value="de">🇩🇪 DE</option>
                     </select>
                 </div>
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
-                </a>
+
                 <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
             </div>
         </div>
@@ -114,7 +127,7 @@
         <h2>External Links</h2>
         <p>HentaiVault contains links to external websites. We have no control over the content, privacy policies, or practices of those sites. We are not responsible for any content, damages, or losses caused by visiting linked third-party sites.</p>
         <h2>No Content Hosting</h2>
-        <p>We do not upload, store, host, or distribute any content � adult or otherwise. All content is hosted on third-party platforms that operate independently.</p>
+        <p>We do not upload, store, host, or distribute any content — adult or otherwise. All content is hosted on third-party platforms that operate independently.</p>
         <h2>Accuracy</h2>
         <p>While we make efforts to keep listings accurate and up to date, we make no guarantees regarding the availability, legality, or content of listed websites in any given jurisdiction.</p>
         <h2>Jurisdiction</h2>
