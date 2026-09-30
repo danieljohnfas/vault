@@ -149,15 +149,25 @@ const tasks = {
     }
   },
 
-  // IndexNow (Bing, Yandex, Seznam, Naver): submit the sitemap URLs directly.
-  async 'indexnow'() {
-    const urls = [];
-    for (const sm of ['sitemap-pages.xml', 'sitemap-sites.xml']) {
-      const xml = await (await fetch(`https://${ZONE_NAME}/${sm}`)).text();
-      urls.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].replace(/&amp;/g, '&')));
-    }
-    console.log(`  urls from sitemaps: ${urls.length}`);
-    if (!urls.length) return;
+  // IndexNow (Bing, Yandex, Seznam, Naver). Built from D1 with the same rules as
+  // sitemap-sites.xml, because Cloudflare challenges CI runners on HTML/XML paths.
+  async 'indexnow'({ staticPaths = [] }) {
+    const { isProhibited } = await import('../../src/prohibited.js');
+    const rows = (await d1(`SELECT id, url, category, rating,
+        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
+        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS dead,
+        json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
+    const indexable = rows.filter(r => {
+      try {
+        const u = new URL(r.url);
+        return !isProhibited(r.url, r.name, r.description) && r.isUp !== 0 && r.dead !== 1 && Number(r.rating) >= 3.5
+          && r.category !== 'Adult Tubes & Studios' && !String(r.tags || '').includes('Auto-Discovered')
+          && u.pathname.replace(/\/+$/, '') === '' && !u.search;
+      } catch { return false; }
+    });
+    const urls = [...staticPaths.map(p => `https://${ZONE_NAME}${p}`),
+      ...indexable.map(r => `https://${ZONE_NAME}/site?id=${encodeURIComponent(r.id)}`)];
+    console.log(`  urls: ${urls.length} (${indexable.length} listings)`);
     const res = await fetch('https://api.indexnow.org/indexnow', {
       method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({ host: ZONE_NAME, key: INDEXNOW_KEY, keyLocation: `https://${ZONE_NAME}/${INDEXNOW_KEY}.txt`, urlList: urls.slice(0, 10000) }),

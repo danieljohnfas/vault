@@ -1,8 +1,4 @@
 [
-  { "task": "live-check", "paths": ["/", "/site?id=nhentai", "/site?id=hanime", "/compare?site1=nhentai&site2=hanime", "/about", "/blog/", "/category/manga-doujin", "/sitemap-index.xml", "/sitemap-pages.xml", "/sitemap-sites.xml", "/robots.txt", "/nope-404-check", "/reports/raw-data/gsc_all_queries_16mo.csv", "/bot/index.js", "/tmp/all_sites.json"] },
-  { "task": "add-worker-domain", "hostname": "www.hentaivault.me" },
-  { "task": "list-worker-domains" },
-  { "task": "gsc-submit-sitemap", "sitemaps": ["https://hentaivault.me/sitemap-index.xml", "https://hentaivault.me/sitemap-pages.xml", "https://hentaivault.me/sitemap-sites.xml"] },
-  { "task": "gsc-sitemaps" },
-  { "task": "indexnow" }
+  { "task": "indexnow", "staticPaths": ["/", "/blog/", "/blog/nhentai-alternatives-2026", "/blog/best-streaming-2026", "/blog/best-doujin-sites-2026", "/blog/hentai-apps-guide-2026", "/blog/uncensored-streaming-guide-2026", "/blog/free-manga-guide", "/blog/hanime-alternatives-2026", "/blog/privacy-safety-guide", "/blog/top-10-sites-may-2026", "/category/anime-streaming", "/category/hentai-streaming", "/category/manga-doujin", "/category/images-boorus", "/category/games", "/category/communities", "/category/downloads", "/category/visual-novels", "/region-unblocked", "/about", "/contact", "/privacy", "/terms", "/disclaimer", "/dmca"] },
+  { "task": "list-worker-domains" }
 ]
