@@ -1,15 +1,4 @@
 [
-  { "task": "delete-sites", "ids": [
-    "jailbaits_mqasar1k",
-    "jbcam_mqdlv5i9",
-    "jbcam_cz_ms4emv9o",
-    "artbbs_jbcam_jailbait_girls_fo_ms4emv9o",
-    "artbbs_jbcam_jailbait_girls_fo_mto8aq8j",
-    "loli_hentai_anihentai_mue01dtr",
-    "shota_hentai_anihentai_mue01dtr",
-    "076728bb",
-    "1a842bd6",
-    "hentai_flash_games_mtr6yy1e"
-  ] },
-  { "task": "report-prohibited" }
+  { "task": "report-prohibited" },
+  { "task": "list-worker-domains" }
 ]
