@@ -103,6 +103,8 @@ function isJunkSite(site) {
     if (!isHomepagePath(u)) return true;
     // Name looks like a sentence/headline rather than a brand name
     const name = String(site.name || '');
+    // Scraping artefacts: challenge/error pages or bare subdomain labels as the name
+    if (/checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i.test(name.trim())) return true;
     if (name.length > 70 || name.trim().split(/\s+/).length > 8) return true;
     return false;
   } catch {

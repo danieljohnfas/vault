@@ -22,6 +22,10 @@ const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
 const NOINDEX_CATEGORIES = new Set(['Adult Tubes & Studios']);
 const MIN_INDEXABLE_RATING = 3.5;
 
+// Names that are scraping artefacts (challenge/error pages, bare subdomain
+// labels) rather than a real site name.
+const JUNK_NAME_RE = /checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i;
+
 // SQL guard appended to every listing query so prohibited entries are never served.
 // Terms are constants from prohibited.js (no quotes), so inlining them is safe.
 const NOT_PROHIBITED_SQL = '(' + PROHIBITED_TERMS
@@ -76,6 +80,7 @@ function isIndexable(site) {
   if (!(Number(site.rating) >= MIN_INDEXABLE_RATING)) return false;
   if (NOINDEX_CATEGORIES.has(site.category)) return false;
   if (parseTags(site.tags).includes('Auto-Discovered')) return false;
+  if (JUNK_NAME_RE.test(String(site.name || '').trim())) return false;
   const u = new URL(site.url);
   // A listing must be a site's homepage, not a performer/category/search page.
   if (u.pathname.replace(/\/+$/, '') !== '' || u.search) return false;
