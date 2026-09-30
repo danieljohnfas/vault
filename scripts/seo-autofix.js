@@ -116,7 +116,6 @@ function fixHomepageTitleTag(topQueries) {
 function fixBlogMetaDescriptions(blogFiles) {
   let fixed = 0;
   const blogDir = path.join(__dirname, '..', 'blog');
-  const ctaHooks = ['Working in', 'Updated', 'Best picks for', 'Ranked for'];
 
   for (const file of blogFiles) {
     const filePath = path.join(blogDir, file);
@@ -129,15 +128,10 @@ function fixBlogMetaDescriptions(blogFiles) {
     // Refresh if description doesn't mention current year
     if (desc.includes(String(YEAR))) continue;
 
-    const hook = ctaHooks[Math.floor(Math.random() * ctaHooks.length)];
-    let newDesc = desc
-      .replace(/\b202[0-9]\b/g, String(YEAR))
-      .replace(/\b\d+\+?\s+sites\b/i, `${1900 + Math.floor(Math.random() * 10)}+ sites`);
-
-    // Ensure it ends with year signal
-    if (!newDesc.includes(String(YEAR))) {
-      newDesc = newDesc.replace(/\.$/, '') + ` — ${hook} ${YEAR}.`;
-    }
+    // Only roll the year forward. (Randomised site counts and appended hooks made
+    // every run rewrite the same pages with different numbers.)
+    const newDesc = desc.replace(/\b202[0-9]\b/g, String(YEAR));
+    if (newDesc === desc) continue;
 
     const updated = content.replace(
       /<meta\s+name="description"\s+content="[^"]+"/i,
@@ -229,51 +223,6 @@ function fixBlogCanonicals(missingCanonicals) {
     } else if (DRY_RUN) fixed++;
   }
   return fixed;
-}
-
-// ─── Fix: Auto-Update Blog dateModified for Freshness ───────────────────────
-function autoFixBlogSchemaDate(pagePath) {
-  if (!pagePath.includes('/blog/')) return false;
-  const slug = pagePath.split('/blog/')[1].replace(/\/$/, '') + '.html';
-  const filePath = path.join(__dirname, '..', 'blog', slug);
-  if (!fs.existsSync(filePath)) return false;
-
-  const content = fs.readFileSync(filePath, 'utf8');
-  const today = new Date().toISOString().split('T')[0];
-  const updated = content.replace(/"dateModified":\s*"[^"]+"/g, `"dateModified": "${today}"`);
-  
-  if (updated !== content) {
-    if (!DRY_RUN) fs.writeFileSync(filePath, updated, 'utf8');
-    return true;
-  }
-  return false;
-}
-
-// ─── Fix: Auto-Tweak Blog Titles for Low CTR ────────────────────────────────
-function autoFixBlogTitle(pagePath) {
-  if (!pagePath.includes('/blog/')) return false;
-  const slug = pagePath.split('/blog/')[1].replace(/\/$/, '') + '.html';
-  const filePath = path.join(__dirname, '..', 'blog', slug);
-  if (!fs.existsSync(filePath)) return false;
-
-  let content = fs.readFileSync(filePath, 'utf8');
-  const currentTitleMatch = content.match(/<title>([^<]+)<\/title>/i);
-  if (!currentTitleMatch) return false;
-  
-  const currentTitle = currentTitleMatch[1];
-  // Prevent infinitely stacking modifiers
-  if (currentTitle.includes('Updated') || currentTitle.includes('Working')) return false;
-
-  const modifiers = ['[Updated]', '(Working)'];
-  const modifier = modifiers[Math.floor(Math.random() * modifiers.length)];
-  const newTitle = `${modifier} ${currentTitle}`;
-  
-  const updated = content.replace(/<title>[^<]+<\/title>/i, `<title>${newTitle}</title>`);
-  if (updated !== content) {
-    if (!DRY_RUN) fs.writeFileSync(filePath, updated, 'utf8');
-    return newTitle;
-  }
-  return false;
 }
 
 // ─── Ping IndexNow ──────────────────────────────────────────────────────────
@@ -511,18 +460,11 @@ async function main() {
   if (lowCtrHighImp.length > 0) {
     issues.push(`${lowCtrHighImp.length} queries have >50 impressions but <2% CTR — attempting automated title tweaks`);
     
-    // Auto-fix loop for low CTR pages
-    for (const r of lowCtrHighImp) {
-      const pageUrl = r.keys[1]; // dimension 1 is 'page'
-      if (pageUrl && pageUrl.includes('/blog/')) {
-        const tweakedTitle = autoFixBlogTitle(pageUrl);
-        if (tweakedTitle) {
-          fixes.push(`Tweaked title for ${pageUrl} to boost CTR (new title: "${tweakedTitle}")`);
-        }
-        if (autoFixBlogSchemaDate(pageUrl)) {
-          fixes.push(`Updated dateModified to today for ${pageUrl} to signal freshness`);
-        }
-      }
+    // Report only. Automatically prefixing titles with "[Updated]"/"(Working)" and
+    // bumping dateModified without changing content are fake-freshness signals that
+    // Google's spam policies call out; those auto-"fixes" have been retired.
+    for (const r of lowCtrHighImp.slice(0, 10)) {
+      issues.push(`Low CTR: "${r.keys[0]}" on ${r.keys[1]} (${r.impressions} impressions, ${(r.ctr * 100).toFixed(1)}% CTR) — rewrite title/description by hand`);
     }
   }
 

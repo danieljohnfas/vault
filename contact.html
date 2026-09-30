@@ -134,10 +134,25 @@
         <script src="https://www.highperformanceformat.com/13ca4044b4b6e65ef15f10d18752754e/invoke.js"></script>
     </div>
 
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <span class="logo-icon">🌐</span> HentaiVault
+            </a>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <label for="searchInput" class="sr-only">Search sites</label>
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+                    </form>
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
             </div>
 
     
             <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            
             <div class="nav-actions">
                 <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
@@ -152,9 +167,7 @@
                         <option value="de">🇩🇪 DE</option>
                     </select>
                 </div>
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
-                </a>
+
                 <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
             </div>
         </div>
@@ -261,9 +274,8 @@
                 <div id="digestStatus" style="font-size:0.9rem; width:100%; display:none;"></div>
             </div>
             <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
-                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">📋 My List</a>
+                <a href="/mylist" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">📋 My List</a>
                 <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('📋 List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">🔗 Share My List</button>
-                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">⚖️ Compare Sites</a>
             </div>
 <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
                     </div>

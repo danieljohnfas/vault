@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live ISP Block Scanner � Find Unblocked Sites | HentaiVault</title>
+    <title>Live ISP Block Scanner — Find Unblocked Sites | HentaiVault</title>
     <meta name="description" content="Find alternative domains and sites that bypass ISP blocks in your specific region or country. Real-time scanner powered by HentaiVault.">
     <meta name="google-site-verification" content="1a6fa8804679f9060c20d8c1b2c56706">
     <link rel="canonical" href="https://hentaivault.me/region-unblocked">
@@ -17,7 +17,7 @@
 
     <!-- Structured Data -->
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebSite","name":"HentaiVault","url":"https://hentaivault.me","description":"The ultimate anime and hentai site directory � curated, categorized and rated.","potentialAction":{"@type":"SearchAction","target":"https://hentaivault.me/?q={search_term_string}","query-input":"required name=search_term_string"}}
+    {"@context":"https://schema.org","@type":"WebSite","name":"HentaiVault","url":"https://hentaivault.me","description":"The ultimate anime and hentai site directory — curated, categorized and rated.","potentialAction":{"@type":"SearchAction","target":"https://hentaivault.me/?q={search_term_string}","query-input":"required name=search_term_string"}}
     </script>
 
     <!-- CSS -->
@@ -533,7 +533,7 @@
     <section class="scanner-hero">
         <div id="regionBadge" class="region-badge">
             <span class="dot"></span>
-            <span id="regionText">Detecting your region�</span>
+            <span id="regionText">Detecting your region…</span>
         </div>
         <h1>Live ISP Block Scanner</h1>
         <p>Real-time testing of 1,900+ anime &amp; hentai sites against your ISP's block list. Find working mirrors and alt domains instantly.</p>
@@ -541,15 +541,15 @@
         <!-- Live stats -->
         <div class="scanner-stats">
             <div class="stat-chip">
-                <span class="value" id="statTotal">�</span>
+                <span class="value" id="statTotal">—</span>
                 <span class="label">Sites Tested</span>
             </div>
             <div class="stat-chip">
-                <span class="value" id="statFound" style="background:linear-gradient(135deg,#00e676,#00b0ff);-webkit-background-clip:text;background-clip:text;">�</span>
+                <span class="value" id="statFound" style="background:linear-gradient(135deg,#00e676,#00b0ff);-webkit-background-clip:text;background-clip:text;">—</span>
                 <span class="label">Working Now</span>
             </div>
             <div class="stat-chip">
-                <span class="value" id="statAlt" style="background:linear-gradient(135deg,#b026ff,#00e5ff);-webkit-background-clip:text;background-clip:text;">�</span>
+                <span class="value" id="statAlt" style="background:linear-gradient(135deg,#b026ff,#00e5ff);-webkit-background-clip:text;background-clip:text;">—</span>
                 <span class="label">Alt Domains Found</span>
             </div>
         </div>
@@ -575,7 +575,7 @@
             <!-- Progress -->
             <div class="scan-progress-wrap">
                 <div class="scan-progress-header">
-                    <span class="scan-status-text scanning" id="scan-status">Initializing scanner�</span>
+                    <span class="scan-status-text scanning" id="scan-status">Initializing scanner…</span>
                     <span class="scan-pct" id="scan-percentage">0%</span>
                 </div>
                 <div class="progress-track">
@@ -650,7 +650,7 @@
                         <option value="Adult VR">Immersive &amp; Interactive</option>
                     </select>
                 </div>
-                <div class="form-group"><label for="siteDesc">Description</label><textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site�" required></textarea></div>
+                <div class="form-group"><label for="siteDesc">Description</label><textarea id="siteDesc" name="description" rows="3" placeholder="Briefly describe the site…" required></textarea></div>
                 <div class="cf-turnstile" data-sitekey="0x4AAAAAADUYfDUW8ArBr1-u" data-theme="dark" style="margin-bottom:15px;"></div>
                 <div id="submitStatus" class="submit-status hidden"></div>
                 <button type="submit" class="btn-submit" id="submitBtn">Submit to Vault</button>
@@ -769,7 +769,7 @@
 
         // -- Fetch Sites --------------------------------------
         let allSites = [];
-        scanStatus.textContent = "Fetching sites from vault�";
+        scanStatus.textContent = "Fetching sites from vault…";
         try {
             const countRes  = await fetch('/api/site-count');
             const countData = await countRes.json();
@@ -782,7 +782,7 @@
             console.error("Failed to fetch sites:", e);
         }
 
-        statTotal.textContent = allSites.length || '�';
+        statTotal.textContent = allSites.length || '—';
 
         if (allSites.length === 0) {
             skeletonGrid.style.display = 'none';
@@ -838,7 +838,7 @@
                 const pct = Math.round(i / sites.length * 100);
                 scanBar.style.width = pct + "%";
                 scanPct.textContent = pct + "%";
-                scanStatus.textContent = `Scanning ${i + 1}�${Math.min(i + BATCH, sites.length)} of ${sites.length}�`;
+                scanStatus.textContent = `Scanning ${i + 1}–${Math.min(i + BATCH, sites.length)} of ${sites.length}…`;
                 scanStatus.className = 'scan-status-text scanning';
 
                 // Hide skeletons once first results arrive
@@ -901,7 +901,7 @@
             if (currentScanId !== scanId) return;
             scanBar.style.width  = "100%";
             scanPct.textContent  = "100%";
-            scanStatus.textContent = `? Scan complete � ${foundWorking} working sites found!`;
+            scanStatus.textContent = `✅ Scan complete — ${foundWorking} working sites found!`;
             scanStatus.className = 'scan-status-text';
             skeletonGrid.style.display = 'none';
 

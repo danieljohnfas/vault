@@ -18,7 +18,7 @@ const ALL_TAGS = [
     'free', 'premium', 'english', 'japanese', 'subbed', 'dubbed',
     'HD', '4K', 'mobile-friendly', 'no-ads', 'download', 'streaming',
     'uncensored', 'censored', 'doujin', 'manga', 'hentai', 'vanilla',
-    'NTR', 'yaoi', 'yuri', 'futanari', 'loli', 'shota', 'dark',
+    'NTR', 'yaoi', 'yuri', 'futanari', 'dark',
     'SFW', 'community', 'forum', 'discord', 'VPN-needed', 'safe',
     'updated-daily', 'curated', 'request', 'games', 'visual-novel'
 ];
@@ -794,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function applyFiltersAndSort(append = false) {
-        if (isLoading) return;
+        if (!siteGrid || isLoading) return;
         isLoading = true;
 
         const loadingBar = document.getElementById('loadingBar');

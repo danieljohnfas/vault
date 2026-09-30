@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   extract:
@@ -22,15 +22,11 @@ jobs:
           CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node scripts/extract-all-data.js
-      - name: Commit Data
-        run: |
-          git config user.name "HentaiVault Analytics Bot"
-          git config user.email "analytics-bot@hentaivault.me"
-          git add reports/raw-data/
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            DATE=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "💾 data: full raw extraction [$DATE]"
-            git push
-          fi
+      # The repository is public: raw GSC/Cloudflare exports are kept as a
+      # short-lived workflow artifact instead of being committed.
+      - name: Upload raw data
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-analytics-data
+          path: reports/raw-data/
+          retention-days: 14

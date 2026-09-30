@@ -2,22 +2,122 @@
  * HentaiVault — Cloudflare Worker Entry Point
  *
  * Routes:
- *   POST /api/submit  → handles site submissions, commits to GitHub
- *   *                 → passes through to static assets
+ *   /site, /compare, /embed, /out → server-rendered pages backed by D1
+ *   /api/*                        → JSON API backed by D1 / KV
+ *   /sitemap-*.xml, /rss.xml      → generated from D1
+ *   *                             → static assets (see .assetsignore)
  *
- * Required Secret (set in Cloudflare dashboard → Worker → Settings → Variables and Secrets):
- *   GITHUB_TOKEN — GitHub Fine-Grained PAT with Contents read+write on danieljohnfas/vault
+ * Secrets (Cloudflare dashboard → Worker → Settings → Variables and Secrets):
+ *   TURNSTILE_SECRET_KEY — required for /api/submit and review submissions
+ *   INDEXNOW_KEY         — optional, enables IndexNow pings for new listings
+ *   AD_KEY_*             — optional, served by /api/config
  */
 
-const GITHUB_REPO = 'danieljohnfas/vault';
-const GITHUB_FILE = 'js/data.js';
-const GITHUB_API  = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+import { isProhibited, PROHIBITED_TERMS } from './prohibited.js';
 
-const ALLOWED_CATEGORIES = [
-  'Anime Streaming', 'Hentai Streaming', 'Manga/Doujin',
-  'Images/Boorus', 'Games', 'Communities', 'Downloads', 'Visual Novels',
-  'Adult Studios', 'Adult VR', 'Premium Creators',
+const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
+
+// Listings in these categories stay browsable but are not offered to search
+// engines: they are generic tube sites outside the directory's hentai/anime focus.
+const NOINDEX_CATEGORIES = new Set(['Adult Tubes & Studios']);
+const MIN_INDEXABLE_RATING = 3.5;
+
+// SQL guard appended to every listing query so prohibited entries are never served.
+// Terms are constants from prohibited.js (no quotes), so inlining them is safe.
+const NOT_PROHIBITED_SQL = '(' + PROHIBITED_TERMS
+  .map(t => `instr(lower(url || ' ' || COALESCE(json_extract(data_json, '$.name'), '') || ' ' || COALESCE(json_extract(data_json, '$.description'), '')), '${t}') = 0`)
+  .join(' AND ') + ')';
+
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>'"]/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[ch]));
+}
+
+function jsonLd(obj) {
+  return `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, '\\u003c')}</script>`;
+}
+
+function hostnameOf(url) {
+  try { return new URL(url).hostname; } catch { return ''; }
+}
+
+function faviconFor(url) {
+  const host = hostnameOf(url);
+  return host ? `https://icons.duckduckgo.com/ip3/${host}.ico` : '/assets/favicon.png';
+}
+
+function isSafeHttpUrl(url) {
+  try {
+    const u = new URL(url);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch { return false; }
+}
+
+function isSiteUp(site) {
+  return !(site.isUp === false || site.isUp === 0 || site.isDeadFlagged === true || site.isDeadFlagged === 1);
+}
+
+function parseTags(tags) {
+  if (Array.isArray(tags)) return tags;
+  try { const t = JSON.parse(tags || '[]'); return Array.isArray(t) ? t : []; } catch { return []; }
+}
+
+/**
+ * Whether a listing's review page should be indexed and included in the sitemap.
+ * Thin, dead, auto-discovered, off-topic or deep-link listings are still viewable
+ * but carry noindex so they don't dilute the site's quality signals.
+ */
+function isIndexable(site) {
+  if (!site || !isSafeHttpUrl(site.url)) return false;
+  if (isProhibited(site.url, site.name, site.description)) return false;
+  if (!isSiteUp(site)) return false;
+  if (!(Number(site.rating) >= MIN_INDEXABLE_RATING)) return false;
+  if (NOINDEX_CATEGORIES.has(site.category)) return false;
+  if (parseTags(site.tags).includes('Auto-Discovered')) return false;
+  const u = new URL(site.url);
+  // A listing must be a site's homepage, not a performer/category/search page.
+  if (u.pathname.replace(/\/+$/, '') !== '' || u.search) return false;
+  return true;
+}
+
+// Canonical category names (must match ALL_CATEGORIES in js/app.js).
+const CATEGORIES = [
+  'Manga & Doujinshi', 'Hentai Streaming', 'Anime Streaming', 'Image Boards (Boorus)',
+  'Games & Visual Novels', 'Communities & Forums', 'Downloads & Torrents',
+  'Adult Tubes & Studios', 'Creator Platforms', 'Immersive & Interactive',
 ];
+
+// Legacy names still used by the submit forms and some older D1 rows.
+const CATEGORY_ALIASES = {
+  'Manga/Doujin': 'Manga & Doujinshi', 'Manga': 'Manga & Doujinshi', 'Doujinshi': 'Manga & Doujinshi',
+  'Images/Boorus': 'Image Boards (Boorus)', 'Boorus': 'Image Boards (Boorus)',
+  'Games': 'Games & Visual Novels', 'Visual Novels': 'Games & Visual Novels', 'Adult Games': 'Games & Visual Novels',
+  'Communities': 'Communities & Forums', 'Downloads': 'Downloads & Torrents',
+  'Adult Studios': 'Adult Tubes & Studios', 'Adult VR': 'Immersive & Interactive',
+  'Premium Creators': 'Creator Platforms', 'Anime': 'Anime Streaming',
+};
+
+function normalizeCategory(cat) {
+  const c = String(cat || '').trim();
+  return CATEGORY_ALIASES[c] || c;
+}
+
+function categoryVariants(cat) {
+  const canonical = normalizeCategory(cat);
+  return [canonical, ...Object.keys(CATEGORY_ALIASES).filter(k => CATEGORY_ALIASES[k] === canonical)];
+}
+
+const CATEGORY_HUBS = {
+  'Manga & Doujinshi': '/category/manga-doujin',
+  'Hentai Streaming': '/category/hentai-streaming',
+  'Anime Streaming': '/category/anime-streaming',
+  'Image Boards (Boorus)': '/category/images-boorus',
+  'Games & Visual Novels': '/category/games',
+  'Communities & Forums': '/category/communities',
+  'Downloads & Torrents': '/category/downloads',
+};
 
 
 // Rate Limiter
@@ -50,86 +150,69 @@ const CORS = {
 // D1 handles all backend queries to respect the 10ms CPU limit.
 
 class HeadHandler {
-  constructor(site, canonicalUrl, lang) {
+  constructor(site, canonicalUrl, lang, indexable) {
     this.site = site;
     this.canonicalUrl = canonicalUrl;
     this.lang = lang;
+    this.indexable = indexable;
   }
   element(element) {
-    const desc = (this.site.description || '').replace(/"/g, '&quot;');
-    const title = `${this.site.name} Review | HentaiVault`;
-    
-    element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
-    // CTR-optimised meta description: specific, keyword-rich, includes rating and category
-    const ratingText = this.site.rating ? `${this.site.rating}/5 stars.` : '';
-    const catText = this.site.category ? `${this.site.category} site.` : '';
-    const shortDesc = (this.site.description || '').replace(/"/g, '&quot;').slice(0, 80);
-    const metaDesc = `Is ${this.site.name} safe & working in 2026? Our expert review covers content quality, safety, ads & alternatives. ${ratingText} ${catText} ${shortDesc}`.trim().slice(0, 160);
-    element.append(`<meta name="description" content="${metaDesc}">`, { html: true });
-    
-    // Open Graph
-    element.append(`<meta property="og:title" content="${title}">`, { html: true });
-    element.append(`<meta property="og:description" content="${desc}">`, { html: true });
-    element.append(`<meta property="og:url" content="${this.canonicalUrl}">`, { html: true });
-    element.append(`<meta property="og:type" content="article">`, { html: true });
-    
-    // Twitter Card
-    element.append(`<meta name="twitter:card" content="summary">`, { html: true });
-    element.append(`<meta name="twitter:title" content="${title}">`, { html: true });
-    element.append(`<meta name="twitter:description" content="${desc}">`, { html: true });
-    
-    // JSON-LD Knowledge Graph Entity Schema (Organization, WebSite, Review)
-    const reviewSchema = {
-      "@context": "https://schema.org/",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://hentaivault.me/#organization",
-          "name": "HentaiVault",
-          "url": "https://hentaivault.me",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://hentaivault.me/assets/favicon.png"
-          },
-          "sameAs": [
-            "https://github.com/danieljohnfas/vault",
-            "https://twitter.com/hentaivault"
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://hentaivault.me/#website",
-          "url": "https://hentaivault.me",
-          "name": "HentaiVault",
-          "publisher": { "@id": "https://hentaivault.me/#organization" },
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://hentaivault.me/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "Review",
-          "itemReviewed": {
-            "@type": "SoftwareApplication",
-            "name": this.site.name,
-            "applicationCategory": "MultimediaApplication",
-            "operatingSystem": "Web",
-            "url": this.site.url || this.canonicalUrl
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": this.site.rating || 4.5,
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "author": { "@id": "https://hentaivault.me/#organization" },
-          "reviewBody": desc,
-          "publisher": { "@id": "https://hentaivault.me/#organization" }
-        }
-      ]
-    };
-    element.append(`<script type="application/ld+json">${JSON.stringify(reviewSchema).replace(/</g, '\\u003c')}<\/script>`, { html: true });
+    const site = this.site;
+    const title = `${site.name} Review | HentaiVault`;
+    const rating = Number(site.rating) > 0 ? Number(site.rating) : null;
+    const category = normalizeCategory(site.category);
+    const metaDesc = [
+      `${site.name}: ${category || 'site'} review on HentaiVault.`,
+      rating ? `Rated ${rating}/5.` : '',
+      isSiteUp(site) ? '' : 'Currently offline.',
+      site.description || '',
+    ].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+    const desc = (site.description || metaDesc).slice(0, 300);
+
+    const tags = [
+      `<link rel="canonical" href="${escapeHTML(this.canonicalUrl)}">`,
+      `<meta name="description" content="${escapeHTML(metaDesc)}">`,
+      `<meta property="og:title" content="${escapeHTML(title)}">`,
+      `<meta property="og:description" content="${escapeHTML(desc)}">`,
+      `<meta property="og:url" content="${escapeHTML(this.canonicalUrl)}">`,
+      `<meta property="og:type" content="article">`,
+      `<meta name="twitter:card" content="summary">`,
+      `<meta name="twitter:title" content="${escapeHTML(title)}">`,
+      `<meta name="twitter:description" content="${escapeHTML(desc)}">`,
+    ];
+    if (!this.indexable) tags.push('<meta name="robots" content="noindex, follow">');
+
+    const graph = [
+      {
+        "@type": "Organization",
+        "@id": "https://hentaivault.me/#organization",
+        "name": "HentaiVault",
+        "url": "https://hentaivault.me",
+        "logo": { "@type": "ImageObject", "url": "https://hentaivault.me/assets/favicon.png" },
+        "sameAs": ["https://github.com/danieljohnfas/vault"]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "HentaiVault", "item": "https://hentaivault.me/" },
+          ...(CATEGORY_HUBS[category] ? [{ "@type": "ListItem", "position": 2, "name": category, "item": `https://hentaivault.me${CATEGORY_HUBS[category]}` }] : []),
+          { "@type": "ListItem", "position": CATEGORY_HUBS[category] ? 3 : 2, "name": site.name, "item": this.canonicalUrl }
+        ]
+      }
+    ];
+    // Only emit a Review when the listing actually has a score; never invent one.
+    if (rating) {
+      graph.push({
+        "@type": "Review",
+        "itemReviewed": { "@type": "WebSite", "name": site.name, "url": site.url },
+        "reviewRating": { "@type": "Rating", "ratingValue": rating, "bestRating": 5, "worstRating": 1 },
+        "author": { "@id": "https://hentaivault.me/#organization" },
+        "publisher": { "@id": "https://hentaivault.me/#organization" },
+        "reviewBody": desc
+      });
+    }
+    tags.push(jsonLd({ "@context": "https://schema.org", "@graph": graph }));
+    element.append(tags.join('\n'), { html: true });
   }
 }
 
@@ -149,90 +232,63 @@ class ReviewBodyHandler {
     this.sitesData = sitesData;
   }
   element(element) {
-    const escapeHTML = (str) => {
-        if (!str) return '';
-        return String(str).replace(/[&<>'"]/g, tag => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-        }[tag] || tag));
-    };
+    const site = this.site;
+    const domain = hostnameOf(site.url);
+    const faviconUrl = faviconFor(site.url);
+    const rating = Number(site.rating) > 0 ? Number(site.rating) : null;
+    const category = normalizeCategory(site.category);
 
-    const urlObj = new URL(this.site.url);
-    const domain = urlObj.hostname;
-    const faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+    const localName = escapeHTML(site[`name_${this.lang}`] || site.name);
+    const localCat  = escapeHTML(category);
+    const localDesc = escapeHTML(site[`description_${this.lang}`] || site.description);
+    const ratingSuffix = rating ? ` (${rating}/5)` : '';
 
     const labels = {
         en: {
-            expertReview: "Expert Review", pros: "Pros", cons: "Cons", conclusion: "Conclusion",
-            conclusionText: `If you are looking for a reliable source for ${this.site.category}, ${this.site.name} is a top-tier choice. It ranks highly in our directory for its ease of use and content variety.`,
-            ready: "Ready to explore?", visitBelow: "Visit the official site below.", visitSite: `Visit ${this.site.name} &rarr;`, similar: "Similar Sites You May Like", rating: "Rating: "
+            expertReview: "Overview", pros: "Pros", cons: "Cons", conclusion: "Summary",
+            conclusionText: `${localName} is listed in our ${localCat} directory${ratingSuffix}. Compare it with the similar sites below before visiting, and use an ad-blocker on adult sites.`,
+            visitSite: `Visit ${localName} &rarr;`, similar: "Similar Sites You May Like"
         },
         fr: {
-            expertReview: "Avis d'expert", pros: "Points forts", cons: "Points faibles", conclusion: "Conclusion",
-            conclusionText: `Si vous recherchez une source fiable pour ${this.site.category.toLowerCase()}, ${this.site.name} est un choix de premier ordre. Il se classe très bien dans notre annuaire pour sa facilité d'utilisation et sa variété de contenu.`,
-            ready: "Prêt à explorer ?", visitBelow: "Visitez le site officiel ci-dessous.", visitSite: `Visiter ${this.site.name} &rarr;`, similar: "Sites similaires que vous pourriez aimer", rating: "Note : "
+            expertReview: "Présentation", pros: "Points forts", cons: "Points faibles", conclusion: "Résumé",
+            conclusionText: `${localName} figure dans notre annuaire ${localCat}${ratingSuffix}. Comparez-le avec les sites similaires ci-dessous avant de le visiter et utilisez un bloqueur de publicités.`,
+            visitSite: `Visiter ${localName} &rarr;`, similar: "Sites similaires que vous pourriez aimer"
         },
         es: {
-            expertReview: "Reseña de expertos", pros: "Pros", cons: "Contras", conclusion: "Conclusión",
-            conclusionText: `Si está buscando una fuente confiable para ${this.site.category.toLowerCase()}, ${this.site.name} es una opción de primer nivel. Ocupa un lugar destacado en nuestro directorio por su facilidad de uso y variedad de contenido.`,
-            ready: "¿Listo para explorar?", visitBelow: "Visite el sitio oficial a continuación.", visitSite: `Visitar ${this.site.name} &rarr;`, similar: "Sitios similares que le pueden gustar", rating: "Calificación: "
+            expertReview: "Resumen", pros: "Pros", cons: "Contras", conclusion: "Conclusión",
+            conclusionText: `${localName} aparece en nuestro directorio de ${localCat}${ratingSuffix}. Compáralo con los sitios similares de abajo antes de visitarlo y usa un bloqueador de anuncios.`,
+            visitSite: `Visitar ${localName} &rarr;`, similar: "Sitios similares que le pueden gustar"
         },
         jp: {
-            expertReview: "専門家によるレビュー", pros: "メリット", cons: "デメリット", conclusion: "結論",
-            conclusionText: `${this.site.category}の信頼できるソースをお探しの場合は、${this.site.name}が最適です。使いやすさとコンテンツの多様性により、当ディレクトリで高い評価を得ています。`,
-            ready: "探索する準備はできましたか？", visitBelow: "以下の公式サイトをご覧ください。", visitSite: `${this.site.name}を訪問する &rarr;`, similar: "あなたにおすすめの類似サイト", rating: "評価: "
+            expertReview: "概要", pros: "メリット", cons: "デメリット", conclusion: "まとめ",
+            conclusionText: `${localName}は当ディレクトリの${localCat}カテゴリに掲載されています${ratingSuffix}。訪問前に下の類似サイトと比較し、広告ブロッカーの利用をおすすめします。`,
+            visitSite: `${localName}を訪問する &rarr;`, similar: "あなたにおすすめの類似サイト"
         },
         pt: {
-            expertReview: "Revisão de Especialista", pros: "Prós", cons: "Contras", conclusion: "Conclusão",
-            conclusionText: `Se você está procurando uma fonte confiável para ${this.site.category.toLowerCase()}, ${this.site.name} é uma escolha de primeira linha. Ele tem uma classificação alta em nosso diretório por sua facilidade de uso e variedade de conteúdo.`,
-            ready: "Pronto para explorar?", visitBelow: "Visite o site oficial abaixo.", visitSite: `Visitar ${this.site.name} &rarr;`, similar: "Sites semelhantes que você pode gostar", rating: "Avaliação: "
+            expertReview: "Visão geral", pros: "Prós", cons: "Contras", conclusion: "Resumo",
+            conclusionText: `${localName} está listado no nosso diretório de ${localCat}${ratingSuffix}. Compare-o com os sites semelhantes abaixo antes de visitar e use um bloqueador de anúncios.`,
+            visitSite: `Visitar ${localName} &rarr;`, similar: "Sites semelhantes que você pode gostar"
         },
         hi: {
-            expertReview: "विशेषज्ञ समीक्षा", pros: "खूबियां", cons: "खामियां", conclusion: "निष्कर्ष",
-            conclusionText: `यदि आप ${this.site.category.toLowerCase()} के लिए एक विश्वसनीय स्रोत की तलाश कर रहे हैं, तो ${this.site.name} एक शीर्ष विकल्प है। उपयोग में आसानी और सामग्री की विविधता के लिए यह हमारी निर्देशिका में उच्च स्थान पर है।`,
-            ready: "खोजने के लिए तैयार हैं?", visitBelow: "नीचे आधिकारिक साइट पर जाएं।", visitSite: `${this.site.name} पर जाएं &rarr;`, similar: "समान साइटें जो आपको पसंद आ सकती हैं", rating: "रेटिंग: "
+            expertReview: "अवलोकन", pros: "खूबियां", cons: "खामियां", conclusion: "सारांश",
+            conclusionText: `${localName} हमारी ${localCat} निर्देशिका में सूचीबद्ध है${ratingSuffix}। जाने से पहले नीचे दी गई समान साइटों से तुलना करें और विज्ञापन-अवरोधक का उपयोग करें।`,
+            visitSite: `${localName} पर जाएं &rarr;`, similar: "समान साइटें जो आपको पसंद आ सकती हैं"
         },
         ar: {
-            expertReview: "مراجعة الخبراء", pros: "الإيجابيات", cons: "السلبيات", conclusion: "استنتاج",
-            conclusionText: `إذا كنت تبحث عن مصدر موثوق لـ ${this.site.category.toLowerCase()} ، فإن ${this.site.name} يعد خيارًا من الدرجة الأولى. يحتل مرتبة عالية في دليلنا لسهولة استخدامه وتنوع محتواه.`,
-            ready: "هل أنت مستعد للاستكشاف؟", visitBelow: "قم بزيارة الموقع الرسمي أدناه.", visitSite: `زيارة ${this.site.name} &rarr;`, similar: "مواقع مشابهة قد تعجبك", rating: "التقييم: "
+            expertReview: "نظرة عامة", pros: "الإيجابيات", cons: "السلبيات", conclusion: "الخلاصة",
+            conclusionText: `${localName} مدرج في دليل ${localCat} لدينا${ratingSuffix}. قارنه بالمواقع المشابهة أدناه قبل الزيارة واستخدم مانع الإعلانات.`,
+            visitSite: `زيارة ${localName} &rarr;`, similar: "مواقع مشابهة قد تعجبك"
         },
         de: {
-            expertReview: "Expertenbewertung", pros: "Vorteile", cons: "Nachteile", conclusion: "Fazit",
-            conclusionText: `Wenn Sie nach einer zuverlässigen Quelle für ${this.site.category.toLowerCase()} suchen, ist ${this.site.name} eine erstklassige Wahl. Es rangiert in unserem Verzeichnis hoch wegen seiner Benutzerfreundlichkeit und Inhaltsvielfalt.`,
-            ready: "Bereit zum Erkunden?", visitBelow: "Besuchen Sie die offizielle Website unten.", visitSite: `${this.site.name} besuchen &rarr;`, similar: "Ähnliche Seiten, die Ihnen gefallen könnten", rating: "Bewertung: "
+            expertReview: "Überblick", pros: "Vorteile", cons: "Nachteile", conclusion: "Fazit",
+            conclusionText: `${localName} ist in unserem Verzeichnis ${localCat} gelistet${ratingSuffix}. Vergleichen Sie es vor dem Besuch mit den ähnlichen Seiten unten und nutzen Sie einen Werbeblocker.`,
+            visitSite: `${localName} besuchen &rarr;`, similar: "Ähnliche Seiten, die Ihnen gefallen könnten"
         }
     };
     const l = labels[this.lang] || labels.en;
-    const localName = escapeHTML(this.site[`name_${this.lang}`] || this.site.name);
-    const localCat  = escapeHTML(this.site.category);
-    const localDesc = escapeHTML(this.site[`description_${this.lang}`] || this.site.description);
-    let fallbackText = `${localName} has established itself as a premier destination for ${localCat.toLowerCase()} enthusiasts. In our 2026 audit, we found the site to be highly responsive and maintained with high-quality content.`;
-    if (this.lang === 'fr') fallbackText = `${localName} s'est imposé comme une destination de premier choix pour les passionnés de ${localCat.toLowerCase()}. Lors de notre audit de 2026, nous avons constaté que le site était très réactif et maintenu avec un contenu de haute qualité.`;
-    else if (this.lang === 'es') fallbackText = `${localName} se ha establecido como un destino de primer nivel para los entusiastas de ${localCat.toLowerCase()}. En nuestra auditoría de 2026, encontramos que el sitio es muy receptivo y se mantiene con contenido de alta calidad.`;
-    else if (this.lang === 'jp') fallbackText = `${localName}は、${localCat}ファンのための主要な目的地として定着しています。2026年の監査では、サイトの応答性が非常に高く、高品質なコンテンツが維持されていることが確認されました。`;
-    else if (this.lang === 'pt') fallbackText = `${localName} estabeleceu-se como um destino de primeira linha para entusiastas de ${localCat.toLowerCase()}. Em nossa auditoria de 2026, descobrimos que o site é altamente responsivo e mantido com conteúdo de alta qualidade.`;
-    else if (this.lang === 'hi') fallbackText = `${localName} ने ${localCat} के प्रति उत्साही लोगों के लिए खुद को एक प्रमुख गंतव्य के रूप में स्थापित किया है। हमारे 2026 के ऑडिट में, हमने पाया कि साइट अत्यधिक उत्तरदायी है और उच्च गुणवत्ता वाली सामग्री के साथ बनाए रखी गई है।`;
-    else if (this.lang === 'ar') fallbackText = `أثبتت ${localName} نفسها كوجهة رئيسية لعشاق ${localCat}. في مراجعتنا لعام 2026، وجدنا أن الموقع سريع الاستجابة ويتم الحفاظ عليه بمحتوى عالي الجودة.`;
-    else if (this.lang === 'de') fallbackText = `${localName} hat sich als erstklassiges Ziel für ${localCat}-Enthusiasten etabliert. Bei unserem Audit im Jahr 2026 stellten wir fest, dass die Seite sehr reaktionsschnell ist und mit hochwertigen Inhalten gepflegt wird.`;
-    const localReviewText = escapeHTML(this.site[`longReview_${this.lang}`] || this.site.longReview) || (localDesc ? (localDesc + ' ' + fallbackText) : fallbackText);
+    const localReviewText = escapeHTML(site[`longReview_${this.lang}`] || site.longReview) || localDesc;
 
-    // Map categories to high-intent Hub URLs
-    const categoryHubSlugs = {
-      'Manga': '/category/manga-doujin',
-      'Doujinshi': '/category/manga-doujin',
-      'Manga / Doujin': '/category/manga-doujin',
-      'Hentai Streaming': '/category/hentai-streaming',
-      'Anime Streaming': '/category/anime-streaming',
-      'Anime': '/category/anime-streaming',
-      'Images / Boorus': '/category/images-boorus',
-      'Boorus': '/category/images-boorus',
-      'Games': '/category/games',
-      'Adult Games': '/category/games',
-      'Visual Novels': '/category/visual-novels',
-      'Communities': '/category/communities',
-      'Downloads': '/category/downloads'
-    };
-    const hubUrl = categoryHubSlugs[this.site.category] || null;
+    const hubUrl = CATEGORY_HUBS[category] || null;
     // Jaccard tag similarity — score by tag overlap + category bonus
     const jaccardSimilarity = (tagsA, tagsB) => {
         if (!tagsA || !tagsB || tagsA.length === 0 || tagsB.length === 0) return 0;
@@ -243,26 +299,26 @@ class ReviewBodyHandler {
         return union === 0 ? 0 : intersection / union;
     };
     const related = this.sitesData
-        .filter(s => s.id !== this.site.id)
+        .filter(s => s.id !== site.id && isSafeHttpUrl(s.url))
         .map(s => ({
             site: s,
-            score: (s.category === this.site.category ? 0.5 : 0) +
-                   jaccardSimilarity(this.site.tags || [], s.tags || [])
+            score: (normalizeCategory(s.category) === category ? 0.5 : 0) +
+                   jaccardSimilarity(parseTags(site.tags), parseTags(s.tags))
         }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3)
         .map(r => r.site);
 
     const relatedHTML = related.map(s => {
-        const sUrl = new URL(s.url);
-        const sFavicon = `https://icons.duckduckgo.com/ip3/${sUrl.hostname}.ico`;
+        const sFavicon = faviconFor(s.url);
+        const sid = escapeHTML(encodeURIComponent(s.id));
         return `
-            <a href="/site?id=${s.id}" class="card btn-visit-tracked" data-id="${s.id}" style="display:block; text-decoration:none; color:inherit;">
+            <a href="/site?id=${sid}" class="card" style="display:block; text-decoration:none; color:inherit;">
                 <div class="card-header">
                     <img src="${sFavicon}" alt="${escapeHTML(s.name)} logo" class="card-icon" width="32" height="32" loading="lazy">
                     <div>
                         <div class="card-title">${escapeHTML(s.name)}</div>
-                        <div class="card-category">${escapeHTML(s.category)}</div>
+                        <div class="card-category">${escapeHTML(normalizeCategory(s.category))}</div>
                     </div>
                 </div>
                 <div class="card-desc" style="font-size:0.85rem; -webkit-line-clamp: 2;">${escapeHTML(s.description)}</div>
@@ -270,7 +326,12 @@ class ReviewBodyHandler {
         `;
     }).join('');
 
-    const isUp = this.site.isUp !== false;
+    const isUp = isSiteUp(site);
+    const siteId = escapeHTML(encodeURIComponent(site.id));
+    const siteUrl = escapeHTML(site.url);
+    const stars = rating ? '★'.repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? '½' : '') : '';
+    const pros = Array.isArray(site.pros) ? site.pros : [];
+    const cons = Array.isArray(site.cons) ? site.cons : [];
     const statusColor = isUp ? '#22c55e' : '#ef4444';
     const statusText = isUp ? 'Online' : 'Offline';
 
@@ -287,9 +348,7 @@ class ReviewBodyHandler {
                             <span class="status-dot" style="background:${statusColor}; box-shadow: 0 0 6px ${statusColor};"></span>
                             ${statusText}
                         </span>
-                        <span class="hero-badge hero-badge-rating">
-                            ${ '★'.repeat(Math.floor(this.site.rating)) }${ this.site.rating % 1 >= 0.5 ? '½' : '' } ${this.site.rating}/5
-                        </span>
+                        ${rating ? `<span class="hero-badge hero-badge-rating">${stars} ${rating}/5</span>` : ''}
                     </div>
                     <h1>${localName}</h1>
                     <p class="review-hero-desc">${localDesc || ''}</p>
@@ -348,7 +407,7 @@ class ReviewBodyHandler {
                 <div class="review-card" style="background: linear-gradient(135deg, rgba(255,42,95,0.08), rgba(121,40,202,0.06)); border-color: rgba(255,42,95,0.3);">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
                         <h2 style="font-size:1.15rem; margin:0;"><span class="card-icon">⚡</span> Vault Quick Verdict</h2>
-                        <span style="background:rgba(34,197,94,0.15); color:#22c55e; font-weight:700; font-size:0.8rem; padding:4px 10px; border-radius:999px; border:1px solid rgba(34,197,94,0.3);">🛡️ Verified Safe &amp; Tested</span>
+                        <span style="background:${isUp ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)'}; color:${statusColor}; font-weight:700; font-size:0.8rem; padding:4px 10px; border-radius:999px; border:1px solid ${statusColor}55;">${isUp ? '● Link online at last check' : '● Link offline at last check'}</span>
                     </div>
                     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:14px; font-size:0.88rem;">
                         <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
@@ -357,14 +416,14 @@ class ReviewBodyHandler {
                         </div>
                         <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
                             <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Overall Rating</div>
-                            <div style="color:#ffb703; font-weight:700; margin-top:2px;">⭐ ${this.site.rating || 4.5} / 5.0</div>
+                            <div style="color:#ffb703; font-weight:700; margin-top:2px;">${rating ? `⭐ ${rating} / 5.0` : 'Not rated yet'}</div>
                         </div>
                         <div style="background:var(--bg-surface-elevated); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
                             <div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:700;">Status &amp; Mirrors</div>
                             <div style="color:${statusColor}; font-weight:600; margin-top:2px;">● ${statusText}</div>
                         </div>
                     </div>
-                    ${hubUrl ? `<a href="${hubUrl}" style="display:inline-flex; align-items:center; gap:6px; color:#ff2a5f; font-weight:600; font-size:0.88rem; text-decoration:none; margin-top:4px;">📂 Explore Top-Ranked Sites in ${localCat} Hub &rarr;</a>` : ''}
+                    ${hubUrl ? `<a href="${hubUrl}" style="display:inline-flex; align-items:center; gap:6px; color:#ff2a5f; font-weight:600; font-size:0.88rem; text-decoration:none; margin-top:4px;">📂 More ${localCat} sites &rarr;</a>` : ''}
                 </div>
 
                 <!-- Expert Review Card -->
@@ -374,7 +433,7 @@ class ReviewBodyHandler {
                 </div>
 
                 <!-- Pros & Cons Card -->
-                <div class="review-card">
+                ${pros.length || cons.length ? `<div class="review-card">
                     <h2><span class="card-icon">⚖️</span> Pros &amp; Cons</h2>
                     <div class="pros-cons">
                         <div class="pc-box pros">
@@ -383,7 +442,7 @@ class ReviewBodyHandler {
                                 ${l.pros}
                             </h3>
                             <ul class="pc-list">
-                                ${ (this.site.pros || ['High quality content', 'Regular updates', 'Fast loading speeds']).map(p => `<li><span class="pc-mark" style="color:#4ade80;">✓</span>${escapeHTML(p)}</li>`).join('') }
+                                ${ pros.map(p => `<li><span class="pc-mark" style="color:#4ade80;">✓</span>${escapeHTML(p)}</li>`).join('') }
                             </ul>
                         </div>
                         <div class="pc-box cons">
@@ -392,11 +451,11 @@ class ReviewBodyHandler {
                                 ${l.cons}
                             </h3>
                             <ul class="pc-list">
-                                ${ (this.site.cons || ['Some intrusive ads', 'Requires high-speed connection']).map(c => `<li><span class="pc-mark" style="color:#f87171;">✕</span>${escapeHTML(c)}</li>`).join('') }
+                                ${ cons.map(c => `<li><span class="pc-mark" style="color:#f87171;">✕</span>${escapeHTML(c)}</li>`).join('') }
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>` : ''}
 
                 <!-- Conclusion Card -->
                 <div class="review-card">
@@ -429,7 +488,7 @@ class ReviewBodyHandler {
                 <div class="review-card">
                     <h2><span class="card-icon">⚔️</span> Compare ${localName}</h2>
                     <div class="compare-links">
-                        ${related.map(r => `<a href="/compare?site1=${this.site.id}&site2=${r.id}" class="compare-btn">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
+                        ${related.map(r => `<a href="/compare?site1=${siteId}&amp;site2=${escapeHTML(encodeURIComponent(r.id))}" class="compare-btn" rel="nofollow">${localName} vs ${escapeHTML(r.name)}</a>`).join('')}
                     </div>
                 </div>
 
@@ -437,9 +496,9 @@ class ReviewBodyHandler {
                 <div class="review-card">
                     <h2><span class="card-icon">🏷️</span> Are you the owner?</h2>
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">Show off your HentaiVault rating! Copy the embed code below.</p>
-                    <textarea readonly style="width: 100%; height: 56px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 11px; resize: none;"><iframe src="https://hentaivault.me/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget"></iframe></textarea>
+                    <textarea readonly style="width: 100%; height: 56px; background: #000; color: #0f0; padding: 10px; border-radius: var(--radius-md); border: 1px solid #333; font-family: monospace; font-size: 11px; resize: none;"><iframe src="https://hentaivault.me/embed?id=${siteId}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget"></iframe></textarea>
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin: 12px 0 8px;">Preview:</p>
-                    <iframe src="/embed?id=${this.site.id}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget for ${localName}"></iframe>
+                    <iframe src="/embed?id=${siteId}" width="280" height="76" style="border:none; overflow:hidden;" scrolling="no" frameborder="0" allowTransparency="true" title="HentaiVault Rating Widget for ${localName}"></iframe>
                 </div>
 
                 <!-- Related Sites -->
@@ -457,9 +516,9 @@ class ReviewBodyHandler {
 
                 <!-- Visit Card -->
                 <div class="sidebar-card">
-                    <a href="${this.site.url}" target="_blank" rel="nofollow noopener noreferrer"
+                    <a href="${siteUrl}" target="_blank" rel="nofollow noopener noreferrer"
                        class="sidebar-visit-btn btn-visit-tracked"
-                       data-id="${this.site.id}" data-outbound="${this.site.url}">
+                       data-id="${escapeHTML(site.id)}" data-outbound="${siteUrl}">
                         ${l.visitSite}
                     </a>
                     <div class="sidebar-stat">
@@ -472,14 +531,14 @@ class ReviewBodyHandler {
                     </div>
                     <div class="sidebar-stat">
                         <span class="sidebar-stat-label">Rating</span>
-                        <span class="sidebar-stat-value" style="color:#ff9900;">${ '★'.repeat(Math.floor(this.site.rating)) } ${this.site.rating}/5</span>
+                        <span class="sidebar-stat-value" style="color:#ff9900;">${rating ? `${stars} ${rating}/5` : 'Not rated'}</span>
                     </div>
                     <div class="sidebar-stat">
                         <span class="sidebar-stat-label">Domain</span>
-                        <span class="sidebar-stat-value" style="font-size:0.8rem; word-break:break-all;">${domain}</span>
+                        <span class="sidebar-stat-value" style="font-size:0.8rem; word-break:break-all;">${escapeHTML(domain)}</span>
                     </div>
-                    <button onclick="copyEmbedBadge('${this.site.id}', '${safeName}')" id="btnEmbedBadge" class="btn-report" style="margin-top:8px; border-color:rgba(56,189,248,0.4); color:#38bdf8; font-weight:600;">🛡️ Embed Badge Code</button>
-                    <button onclick="reportDeadLink('${this.site.id}')" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
+                    <button onclick="copyEmbedBadge(this.dataset.siteId, this.dataset.siteName)" data-site-id="${escapeHTML(site.id)}" data-site-name="${escapeHTML(site.name)}" id="btnEmbedBadge" class="btn-report" style="margin-top:8px; border-color:rgba(56,189,248,0.4); color:#38bdf8; font-weight:600;">🛡️ Embed Badge Code</button>
+                    <button onclick="reportDeadLink(this.dataset.siteId)" data-site-id="${escapeHTML(site.id)}" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
 
                 <!-- pCloud Affiliate Banners — upgraded with price anchors & deal hooks -->
@@ -516,7 +575,8 @@ class ReviewBodyHandler {
 
         <script>
             function copyEmbedBadge(siteId, name) {
-                var code = '<a href="https://hentaivault.me/site?id=' + siteId + '" target="_blank" title="' + (name || 'Site') + ' on HentaiVault"><img src="https://hentaivault.me/assets/favicon.png" width="16" height="16" alt="HentaiVault" /> Featured on HentaiVault</a>';
+                var esc = function (v) { return String(v).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); };
+                var code = '<a href="https://hentaivault.me/site?id=' + encodeURIComponent(siteId) + '" target="_blank" title="' + esc(name || 'Site') + ' on HentaiVault"><img src="https://hentaivault.me/assets/favicon.png" width="16" height="16" alt="HentaiVault" /> Featured on HentaiVault</a>';
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(code).then(function() {
                         var btn = document.getElementById('btnEmbedBadge');
@@ -537,10 +597,10 @@ class ReviewBodyHandler {
                 const btn = document.getElementById('btnReportDead');
                 if(btn.innerText.includes('Reporting')) return;
                 btn.innerText = 'Reporting...';
-                fetch('/api/report-link', { method: 'POST', body: JSON.stringify({id}) })
+                fetch('/api/report-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({id}) })
                   .then(r => r.json())
                   .then(d => {
-                    if (d.success) btn.innerText = '✅ Removed. Thanks!';
+                    if (d.success) btn.innerText = '✅ Reported. Thanks!';
                     else btn.innerText = '❌ Site is still alive';
                   })
                   .catch(() => btn.innerText = '⚠️ Error');
@@ -548,40 +608,9 @@ class ReviewBodyHandler {
         </script>
     `;
 
-    // FAQ Schema for Rich Results
-    const faqSchema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": `Is ${localName} free?`,
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `Yes, you can browse and access content on ${localName} for free.`
-                }
-            },
-            {
-                "@type": "Question",
-                "name": `Is ${localName} safe?`,
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `Yes, ${localName} has been reviewed and listed in our directory. However, we always recommend using an ad-blocker or VPN for adult websites.`
-                }
-            },
-            {
-                "@type": "Question",
-                "name": `What is the best alternative to ${localName}?`,
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": `There are several great alternatives to ${localName} in the ${localCat} category. Check our Similar Sites section below for top-rated recommendations.`
-                }
-            }
-        ]
-    };
-    const schemaScript = `\n<script type="application/ld+json">\n${JSON.stringify(faqSchema)}\n</script>\n`;
-
-    element.setInnerContent(html + schemaScript, { html: true });
+    // No FAQPage schema: identical boilerplate Q&A on thousands of pages is exactly
+    // the kind of templated markup Google ignores or treats as spam.
+    element.setInnerContent(html, { html: true });
   }
 }
 
@@ -596,24 +625,23 @@ class EmbedHandler {
     this.site = site;
   }
   element(element) {
-    const urlObj = new URL(this.site.url);
-    const domain = urlObj.hostname;
-    const faviconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
-    const fullStars = Math.floor(this.site.rating);
-    const halfStar = (this.site.rating % 1) >= 0.5;
-    let starsHtml = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
-    
-    // Quick script to inject the values safely
-    const safeName = String(this.site.name || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/</g, '\\u003c');
-    const script = `
-        <script>
-            document.getElementById('embed-icon').src = "${faviconUrl}";
-            document.getElementById('embed-title').innerText = "${safeName}";
-            document.getElementById('embed-rating').innerText = "${starsHtml}";
-            document.getElementById('embed-link').href = "https://hentaivault.me/site?id=${this.site.id}";
-        </script>
-    `;
-    element.append(script, { html: true });
+    const rating = Math.max(0, Math.min(5, Number(this.site.rating) || 0));
+    const fullStars = Math.floor(rating);
+    const halfStar = (rating % 1) >= 0.5;
+    const starsText = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - (halfStar ? 1 : 0));
+    const data = {
+      icon: faviconFor(this.site.url),
+      title: String(this.site.name || ''),
+      rating: starsText,
+      link: `https://hentaivault.me/site?id=${encodeURIComponent(this.site.id)}`,
+    };
+    // JSON.stringify + '<' escaping keeps site-controlled strings inert inside the script.
+    element.append(`<script>(function (d) {
+      document.getElementById('embed-icon').src = d.icon;
+      document.getElementById('embed-title').innerText = d.title;
+      document.getElementById('embed-rating').innerText = d.rating;
+      document.getElementById('embed-link').href = d.link;
+    })(${JSON.stringify(data).replace(/</g, '\\u003c')});</script>`, { html: true });
   }
 }
 class CanonicalInjector {
@@ -649,14 +677,15 @@ class CompareHeadHandler {
   }
   element(element) {
     const title = `${this.site1.name} vs ${this.site2.name} | HentaiVault`;
-    const desc = `Compare ${this.site1.name} and ${this.site2.name}. See which ${this.site1.category} site is better based on features, pros, cons, and ratings.`;
-    
-    element.append(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
-    element.append(`<meta name="robots" content="noindex, follow">`, { html: true });
-    element.append(`<meta name="description" content="${desc}">`, { html: true });
-    element.append(`<meta property="og:title" content="${title}">`, { html: true });
-    element.append(`<meta property="og:description" content="${desc}">`, { html: true });
-    element.append(`<meta property="og:url" content="${this.canonicalUrl}">`, { html: true });
+    const desc = `Compare ${this.site1.name} and ${this.site2.name}: ratings, pros and cons side by side on HentaiVault.`;
+    element.append([
+      `<link rel="canonical" href="${escapeHTML(this.canonicalUrl)}">`,
+      `<meta name="robots" content="noindex, follow">`,
+      `<meta name="description" content="${escapeHTML(desc)}">`,
+      `<meta property="og:title" content="${escapeHTML(title)}">`,
+      `<meta property="og:description" content="${escapeHTML(desc)}">`,
+      `<meta property="og:url" content="${escapeHTML(this.canonicalUrl)}">`,
+    ].join('\n'), { html: true });
   }
 }
 
@@ -665,72 +694,39 @@ class CompareBodyHandler {
     this.site1 = site1;
     this.site2 = site2;
   }
+  column(site) {
+    const rating = Number(site.rating) > 0 ? `${Number(site.rating)} / 5` : 'Not rated';
+    const id = escapeHTML(encodeURIComponent(site.id));
+    return `
+          <div class="review-content" style="text-align: center;">
+              <img src="${faviconFor(site.url)}" alt="${escapeHTML(site.name)}" class="review-icon" style="margin: 0 auto 20px;" width="64" height="64">
+              <h2>${escapeHTML(site.name)}</h2>
+              <div class="rating" style="margin-bottom: 20px;">Rating: ${rating}</div>
+              <p style="text-align: left;">${escapeHTML(site.description)}</p>
+              ${Array.isArray(site.pros) && site.pros.length ? `
+              <div class="pros-cons" style="grid-template-columns: 1fr; gap: 15px;">
+                  <div class="pc-box pros" style="text-align: left;">
+                      <h3>Pros</h3>
+                      <ul class="pc-list">${site.pros.map(p => `<li>${escapeHTML(p)}</li>`).join('')}</ul>
+                  </div>
+              </div>` : ''}
+              <div style="margin-top: 30px;">
+                  <a href="/site?id=${id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
+                  <a href="${escapeHTML(site.url)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${escapeHTML(site.id)}">Visit Site</a>
+              </div>
+          </div>`;
+  }
   element(element) {
-    const escapeHTML = (str) => {
-        if (!str) return '';
-        return String(str).replace(/[&<>'"]/g, tag => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-        }[tag] || tag));
-    };
-
-    let s1Favicon = '';
-    try { s1Favicon = `https://icons.duckduckgo.com/ip3/${new URL(this.site1.url).hostname}.ico`; } catch(e) {}
-    let s2Favicon = '';
-    try { s2Favicon = `https://icons.duckduckgo.com/ip3/${new URL(this.site2.url).hostname}.ico`; } catch(e) {}
-
     const html = `
       <div class="review-header" style="justify-content: center; text-align: center; flex-direction: column;">
           <h1 style="margin-bottom: 20px;">${escapeHTML(this.site1.name)} vs ${escapeHTML(this.site2.name)}</h1>
-          <div class="review-badge">${escapeHTML(this.site1.category)}</div>
+          <div class="review-badge">${escapeHTML(normalizeCategory(this.site1.category))}</div>
       </div>
-      <div class="compare-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
-          
-          <!-- Site 1 -->
-          <div class="review-content" style="text-align: center;">
-              <img src="${s1Favicon}" alt="${escapeHTML(this.site1.name)}" class="review-icon" style="margin: 0 auto 20px;">
-              <h2>${escapeHTML(this.site1.name)}</h2>
-              <div class="rating" style="margin-bottom: 20px;">Rating: ${this.site1.rating} / 5</div>
-              <p style="text-align: left;">${escapeHTML(this.site1.description)}</p>
-              
-              <div class="pros-cons" style="grid-template-columns: 1fr; gap: 15px;">
-                  <div class="pc-box pros" style="text-align: left;">
-                      <h3>Pros</h3>
-                      <ul class="pc-list">
-                          ${(this.site1.pros || []).map(p => `<li>${escapeHTML(p)}</li>`).join('')}
-                      </ul>
-                  </div>
-              </div>
-              
-              <div style="margin-top: 30px;">
-                  <a href="/site?id=${this.site1.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
-                  <a href="/out?url=${encodeURIComponent(this.site1.url)}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit">Visit Site</a>
-              </div>
-          </div>
-
-          <!-- Site 2 -->
-          <div class="review-content" style="text-align: center;">
-              <img src="${s2Favicon}" alt="${escapeHTML(this.site2.name)}" class="review-icon" style="margin: 0 auto 20px;">
-              <h2>${escapeHTML(this.site2.name)}</h2>
-              <div class="rating" style="margin-bottom: 20px;">Rating: ${this.site2.rating} / 5</div>
-              <p style="text-align: left;">${escapeHTML(this.site2.description)}</p>
-              
-              <div class="pros-cons" style="grid-template-columns: 1fr; gap: 15px;">
-                  <div class="pc-box pros" style="text-align: left;">
-                      <h3>Pros</h3>
-                      <ul class="pc-list">
-                          ${(this.site2.pros || []).map(p => `<li>${escapeHTML(p)}</li>`).join('')}
-                      </ul>
-                  </div>
-              </div>
-
-              <div style="margin-top: 30px;">
-                  <a href="/site?id=${this.site2.id}" class="btn-visit" style="background:var(--bg-elevated); color:var(--text-main); border:1px solid var(--border); margin-right: 10px;">Full Review</a>
-                  <a href="${this.site2.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit btn-visit-tracked" data-id="${this.site2.id}">Visit Site</a>
-              </div>
-          </div>
+      <div class="compare-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px;">
+          ${this.column(this.site1)}
+          ${this.column(this.site2)}
       </div>
     `;
-
     element.setInnerContent(html, { html: true });
   }
 }
@@ -753,40 +749,69 @@ export default {
   }
 };
 
-// Security headers added to all HTML responses
+// Security headers added to all first-party HTML responses (not /embed, which
+// must stay frameable by other sites).
+// Ads (Adsterra/HighPerformanceFormat rotate their script and frame hosts) and
+// GA4 need broad https: sources; a narrower list silently blocks them.
 const SECURITY_HEADERS = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
   'X-Frame-Options': 'SAMEORIGIN',
   'X-Content-Type-Options': 'nosniff',
-  'Cross-Origin-Opener-Policy': 'same-origin',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'interest-cohort=()',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://challenges.cloudflare.com https://api.qrserver.com https://cdnjs.cloudflare.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https: http:",
-    "frame-src 'self' https://challenges.cloudflare.com",
-    "connect-src 'self' https://www.google-analytics.com https://api.indexnow.org",
+    "script-src 'self' 'unsafe-inline' https:",
+    "style-src 'self' 'unsafe-inline' https:",
+    "font-src 'self' data: https:",
+    "img-src 'self' data: blob: https: http:",
+    "media-src 'self' https:",
+    "frame-src https:",
+    "connect-src 'self' https:",
+    "worker-src 'self' blob:",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
     "frame-ancestors 'self'",
   ].join('; '),
 };
 
-function addSecurityHeaders(response) {
-  const newHeaders = new Headers(response.headers);
-  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
-    newHeaders.set(key, value);
+function withHeaders(response, extra = {}) {
+  const headers = new Headers(response.headers);
+  for (const [key, value] of Object.entries({ ...SECURITY_HEADERS, ...extra })) {
+    headers.set(key, value);
   }
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: newHeaders
-  });
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
+function addSecurityHeaders(response) {
+  return withHeaders(response);
+}
+
+// Serves the static 404 page with the given status (404 or 410 for removed listings).
+async function notFoundPage(env, url, status = 404) {
+  // Assets use html_handling "auto-trailing-slash": /404 serves 404.html directly,
+  // while /404.html would answer with a 307 redirect.
+  const page = await env.ASSETS.fetch(new Request(url.origin + '/404'));
+  const body = page.ok ? page.body : 'Not found';
+  return withHeaders(new Response(body, {
+    status,
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=300', 'X-Robots-Tag': 'noindex' },
+  }));
 }
 
 async function handleRequest(request, env, ctx) {
     const url = new URL(request.url);
+
+    // ── Canonical host: www → apex (one indexable host) ─────────────────────────
+    if (url.hostname === 'www.hentaivault.me') {
+      url.hostname = 'hentaivault.me';
+      url.protocol = 'https:';
+      return new Response(null, {
+        status: 301,
+        headers: { 'Location': url.toString(), 'Cache-Control': 'public, max-age=86400' }
+      });
+    }
 
     // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC & Bing) ────────────
     if (url.protocol === 'http:') {
@@ -817,7 +842,8 @@ async function handleRequest(request, env, ctx) {
     else if (['ES', 'MX', 'AR', 'CO', 'CL', 'PE'].includes(country)) detectedLang = 'es';
     else if (country === 'JP') detectedLang = 'jp';
 
-    const effectiveLang = url.searchParams.get('lang') || cookieLang || detectedLang;
+    const requestedLang = url.searchParams.get('lang') || cookieLang;
+    const effectiveLang = SUPPORTED_LANGS.includes(requestedLang) ? requestedLang : detectedLang;
 
     // Geo-Routing/Redirect removed for SEO compliance.
     // The client-side i18n.js script handles language rendering client-side.
@@ -843,64 +869,51 @@ async function handleRequest(request, env, ctx) {
     }
 
     if (url.pathname === '/sitemap-index.xml' || url.pathname === '/sitemap-pages.xml' || url.pathname === '/sitemap-sites.xml') {
-      const today = new Date().toISOString().split('T')[0];
       let xml = '';
 
       if (url.pathname === '/sitemap-index.xml') {
         xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-pages.xml</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
-        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-sites.xml</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-pages.xml</loc>\n  </sitemap>\n`;
+        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-sites.xml</loc>\n  </sitemap>\n`;
         xml += `</sitemapindex>`;
       } else if (url.pathname === '/sitemap-pages.xml') {
+        // Only real, indexable documents. <lastmod> is omitted: stamping "today" on
+        // every URL on every request teaches Google to ignore the field entirely.
         const staticPages = [
-          { loc: 'https://hentaivault.me/', priority: '1.0', changefreq: 'daily' },
-          // Blog posts
-          { loc: 'https://hentaivault.me/blog', priority: '0.8', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/nhentai-alternatives-2026', priority: '0.9', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/best-streaming-2026', priority: '0.9', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/best-doujin-sites-2026', priority: '0.9', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/hentai-apps-guide-2026', priority: '0.9', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/uncensored-streaming-guide-2026', priority: '0.9', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/free-manga-guide', priority: '0.8', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/hanime-alternatives-2026', priority: '0.8', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/blog/privacy-safety-guide', priority: '0.6', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/blog/top-10-sites-may-2026', priority: '0.7', changefreq: 'monthly' },
-          // Core pages
-          { loc: 'https://hentaivault.me/about', priority: '0.5', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/contact', priority: '0.5', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/privacy', priority: '0.3', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/terms', priority: '0.3', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/disclaimer', priority: '0.3', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/dmca', priority: '0.3', changefreq: 'monthly' },
-          { loc: 'https://hentaivault.me/region-unblocked', priority: '0.5', changefreq: 'weekly' },
-          // Category pages
-          { loc: 'https://hentaivault.me/category/anime-streaming', priority: '0.8', changefreq: 'daily' },
-          { loc: 'https://hentaivault.me/category/hentai-streaming', priority: '0.8', changefreq: 'daily' },
-          { loc: 'https://hentaivault.me/category/manga-doujin', priority: '0.8', changefreq: 'daily' },
-          { loc: 'https://hentaivault.me/category/images-boorus', priority: '0.7', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/category/games', priority: '0.7', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/category/communities', priority: '0.7', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/category/downloads', priority: '0.7', changefreq: 'weekly' },
-          { loc: 'https://hentaivault.me/category/visual-novels', priority: '0.6', changefreq: 'weekly' },
+          '/', '/blog/',
+          '/blog/nhentai-alternatives-2026', '/blog/best-streaming-2026', '/blog/best-doujin-sites-2026',
+          '/blog/hentai-apps-guide-2026', '/blog/uncensored-streaming-guide-2026', '/blog/free-manga-guide',
+          '/blog/hanime-alternatives-2026', '/blog/privacy-safety-guide', '/blog/top-10-sites-may-2026',
+          '/category/anime-streaming', '/category/hentai-streaming', '/category/manga-doujin',
+          '/category/images-boorus', '/category/games', '/category/communities', '/category/downloads',
+          '/category/visual-novels', '/region-unblocked',
+          '/about', '/contact', '/privacy', '/terms', '/disclaimer', '/dmca',
         ];
         const staticXml = staticPages
-          .map(p => `  <url>\n    <loc>${p.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`)
+          .map(p => `  <url>\n    <loc>https://hentaivault.me${p}</loc>\n  </url>`)
           .join('\n');
         xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n</urlset>`;
       } else if (url.pathname === '/sitemap-sites.xml') {
         let siteUrls = '';
         if (env.hv_directory) {
           try {
-            // Fetch all site IDs and their added_at dates — only live, real entries
             const rows = await env.hv_directory.prepare(
-              'SELECT id, category, added_at FROM sites ORDER BY rating DESC, added_at DESC'
+              `SELECT id, url, category, rating, added_at,
+                      json_extract(data_json, '$.name') AS name,
+                      json_extract(data_json, '$.description') AS description,
+                      json_extract(data_json, '$.isUp') AS isUp,
+                      json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
+                      json_extract(data_json, '$.tags') AS tags
+               FROM sites ORDER BY rating DESC, added_at DESC`
             ).all();
             for (const row of rows.results) {
-              const lastmod = (row.added_at && row.added_at.length >= 10) ? row.added_at.slice(0, 10) : today;
-              siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${row.id}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+              if (!isIndexable(row)) continue;
+              const lastmod = (row.added_at && row.added_at.length >= 10) ? `\n    <lastmod>${row.added_at.slice(0, 10)}</lastmod>` : '';
+              siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${escapeHTML(encodeURIComponent(row.id))}</loc>${lastmod}\n  </url>\n`;
             }
           } catch (err) {
             console.error('Sitemap D1 error:', err);
+            return new Response('Sitemap temporarily unavailable', { status: 503, headers: { 'Retry-After': '600' } });
           }
         }
         xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${siteUrls}</urlset>`;
@@ -945,8 +958,10 @@ async function handleRequest(request, env, ctx) {
         if (targetUrlObj.protocol !== 'http:' && targetUrlObj.protocol !== 'https:') {
           return jsonError('Invalid protocol', 400);
         }
-        const hostname = targetUrlObj.hostname;
-        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.')) {
+        const hostname = targetUrlObj.hostname.toLowerCase();
+        // Only public DNS names: no IP literals, no single-label or internal hosts.
+        if (!hostname.includes('.') || /^[\d.]+$/.test(hostname) || hostname.includes(':') ||
+            /(^|\.)(localhost|local|internal|lan|home|corp)$/.test(hostname) || targetUrlObj.username || targetUrlObj.password) {
           return jsonError('Invalid host', 400);
         }
         const start = Date.now();
@@ -981,7 +996,7 @@ async function handleRequest(request, env, ctx) {
       const id = url.searchParams.get('id');
       if (!id) return jsonError('Missing site id', 400);
       try {
-        const result = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+        const result = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
         if (!result) return jsonError('Site not found', 404);
         return new Response(
           result.data_json,
@@ -1005,10 +1020,10 @@ async function handleRequest(request, env, ctx) {
         if (!target) return jsonError('Site not found', 404);
         
         const result = await env.hv_directory.prepare(`
-          SELECT data_json 
-          FROM sites 
-          WHERE category = ? AND id != ? 
-          ORDER BY rating DESC, added_at DESC 
+          SELECT data_json
+          FROM sites
+          WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL}
+          ORDER BY rating DESC, added_at DESC
           LIMIT 12
         `).bind(target.category, id).all();
         
@@ -1029,9 +1044,12 @@ async function handleRequest(request, env, ctx) {
       }
       if (request.method !== 'POST') return jsonError('Method not allowed', 405);
       try {
+        if (await checkRateLimit(request.headers.get('cf-connecting-ip'), env)) {
+          return jsonError('Too many requests. Please try again later.', 429);
+        }
         const body = await request.json();
-        const email = (body.email || '').trim().toLowerCase();
-        if (!email || !email.includes('@')) return jsonError('Invalid email', 400);
+        const email = String(body.email || '').trim().toLowerCase();
+        if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return jsonError('Invalid email', 400);
         // Store in KV using email as key, timestamped value
         if (env.PUSH_SUBSCRIBERS) {
           await env.PUSH_SUBSCRIBERS.put(`digest:${email}`, JSON.stringify({ email, subscribed_at: new Date().toISOString() }));
@@ -1102,9 +1120,16 @@ async function handleRequest(request, env, ctx) {
           }
 
           const body = await request.json();
-          if (!body.rating || !body.comment) return jsonError('Missing required fields', 400);
+          const rating = parseInt(body.rating, 10);
+          const comment = String(body.comment || '').trim();
+          const userName = String(body.user_name || '').trim().slice(0, 40) || 'Anonymous';
+          if (!(rating >= 1 && rating <= 5) || comment.length < 3) return jsonError('Missing required fields', 400);
+          if (comment.length > 2000) return jsonError('Review is too long (max 2000 characters).', 400);
 
           if (!body.turnstileToken) return jsonError('Please complete the CAPTCHA.', 400);
+          if (!env.TURNSTILE_SECRET_KEY) return jsonError('Reviews are temporarily unavailable.', 503);
+          const siteExists = await env.hv_directory.prepare('SELECT 1 FROM sites WHERE id = ?').bind(site_id).first();
+          if (!siteExists) return jsonError('Site not found', 404);
           
           const turnstileFormData = new FormData();
           turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
@@ -1119,7 +1144,7 @@ async function handleRequest(request, env, ctx) {
 
           await env.hv_directory.prepare(
             'INSERT INTO reviews (site_id, user_name, rating, comment) VALUES (?, ?, ?, ?)'
-          ).bind(site_id, body.user_name || 'Anonymous', body.rating, body.comment).run();
+          ).bind(site_id, userName, rating, comment).run();
 
           return new Response(
             JSON.stringify({ success: true }),
@@ -1143,9 +1168,11 @@ async function handleRequest(request, env, ctx) {
         const now = new Date();
         const dayStr = now.toISOString().split('T')[0];
         
-        const topSites = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY rating DESC LIMIT 50').all();
+        const topSites = await env.hv_directory.prepare(
+          `SELECT data_json FROM sites WHERE ${NOT_PROHIBITED_SQL} AND COALESCE(json_extract(data_json, '$.isUp'), 1) != 0 ORDER BY rating DESC LIMIT 50`
+        ).all();
         if (topSites.results.length === 0) return jsonError('No sites found', 404);
-        
+
         let hash = 0;
         for (let i = 0; i < dayStr.length; i++) hash += dayStr.charCodeAt(i);
         
@@ -1185,35 +1212,6 @@ async function handleRequest(request, env, ctx) {
       return new Response(stream, { headers: { 'Content-Type': 'application/json' } });
     }
 
-    // ── Route: /api/site-of-the-week ───────────────────────────────────────
-    if (url.pathname === '/api/site-of-the-week') {
-      if (request.method === 'OPTIONS') {
-        return new Response(null, { status: 204, headers: CORS });
-      }
-      if (!env.hv_directory) return jsonError('Database not configured', 500);
-
-      try {
-        const now = new Date();
-        const weekStr = now.getFullYear() + "-" + Math.floor(now.getTime() / (1000*60*60*24*7));
-        
-        const topSites = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY rating DESC LIMIT 50').all();
-        if (topSites.results.length === 0) return jsonError('No sites found', 404);
-        
-        let hash = 0;
-        for (let i = 0; i < weekStr.length; i++) hash += weekStr.charCodeAt(i);
-        const index = hash % topSites.results.length;
-        
-        const site = JSON.parse(topSites.results[index].data_json);
-        
-        return new Response(
-          JSON.stringify({ site }),
-          { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' } }
-        );
-      } catch (err) {
-        return jsonError('Database error', 500);
-      }
-    }
-
     // ── Route: /api/sites ────────────────────────────────────────────────────
     if (url.pathname === '/api/sites') {
       if (request.method === 'OPTIONS') {
@@ -1221,33 +1219,34 @@ async function handleRequest(request, env, ctx) {
       }
       if (!env.hv_directory) return jsonError('Database not configured', 500);
       try {
-        const page = parseInt(url.searchParams.get('page')) || 1;
-        const limit = parseInt(url.searchParams.get('limit')) || 24;
+        const page = Math.max(1, parseInt(url.searchParams.get('page'), 10) || 1);
+        const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit'), 10) || 24));
         const offset = (page - 1) * limit;
-        
+
         let query = 'SELECT data_json FROM sites';
         let params = [];
-        let conditions = [];
-        
+        let conditions = [NOT_PROHIBITED_SQL];
+
         const q = url.searchParams.get('q');
         if (q) {
           // Use FTS5 virtual table for lightning-fast full text search
           conditions.push('rowid IN (SELECT rowid FROM sites_fts WHERE sites_fts MATCH ?)');
           
           // Basic sanitize for FTS MATCH syntax to prevent syntax errors
-          const sanitizedQ = q.replace(/["*()]/g, ' ').trim();
+          const sanitizedQ = q.replace(/["*()]/g, ' ').trim().slice(0, 100);
           params.push(`"${sanitizedQ}"*`);
         }
         
         const category = url.searchParams.get('category');
         if (category) {
-          conditions.push('category = ?');
-          params.push(category);
+          const variants = categoryVariants(category);
+          conditions.push(`category IN (${variants.map(() => '?').join(',')})`);
+          params.push(...variants);
         }
 
         const tagsStr = url.searchParams.get('tags');
         if (tagsStr) {
-          const tagsArray = tagsStr.split(',');
+          const tagsArray = tagsStr.split(',').map(t => t.trim().replace(/[%_"]/g, '')).filter(Boolean).slice(0, 10);
           // Use AND for advanced filtering
           const tagConditions = tagsArray.map(tag => {
             params.push(`%"${tag}"%`);
@@ -1257,7 +1256,7 @@ async function handleRequest(request, env, ctx) {
         }
         
         // WHERE clause shared by count + data query (no exclude needed)
-        const whereClause = conditions.length > 0 ? ' WHERE ' + conditions.join(' AND ') : '';
+        const whereClause = ' WHERE ' + conditions.join(' AND ');
         const countResult = await env.hv_directory.prepare(
           'SELECT COUNT(*) as count FROM sites' + whereClause
         ).bind(...params).first();
@@ -1267,13 +1266,16 @@ async function handleRequest(request, env, ctx) {
 
         const sort = url.searchParams.get('sort') || 'random';
         if (q && sort === 'random') {
-          // If user searched, prioritize FTS5 relevance (no ORDER BY needed as IN subquery loses rank, wait we can't easily order by rank with IN. Actually, FTS5 rank is better, but since it's a subquery we just let it be default or sort by rating if they asked)
-        } else if (sort === 'rating' || sort === 'popular') {
+          // Searches keep FTS match order (the IN subquery can't expose FTS rank).
+        } else if (sort === 'rating') {
           query += ' ORDER BY rating DESC';
+        } else if (sort === 'popular') {
+          query += ' ORDER BY clicks DESC, rating DESC';
         } else if (sort === 'newest') {
           query += ' ORDER BY added_at DESC';
         } else if (sort === 'alphabetical' || sort === 'alpha') {
-          query += ' ORDER BY name ASC';
+          // There is no name column; the name lives in data_json.
+          query += " ORDER BY json_extract(data_json, '$.name') COLLATE NOCASE ASC";
         } else {
           // Seeded deterministic random: stable per-session shuffle, OFFSET-safe
           // seed is a positive integer passed by the client once per session
@@ -1302,19 +1304,21 @@ async function handleRequest(request, env, ctx) {
     if (url.pathname === '/rss.xml') {
       if (!env.hv_directory) return new Response('DB Error', { status: 500 });
       try {
-        const result = await env.hv_directory.prepare('SELECT id, data_json, added_at FROM sites ORDER BY added_at DESC LIMIT 50').all();
+        const result = await env.hv_directory.prepare(`SELECT id, data_json, added_at FROM sites WHERE ${NOT_PROHIBITED_SQL} ORDER BY added_at DESC LIMIT 50`).all();
+        const cdata = (v) => String(v || '').replace(/]]>/g, ']]]]><![CDATA[>');
         let items = '';
         for (const r of result.results) {
           const site = JSON.parse(r.data_json);
-          const desc = sanitize(site.description || '');
-          const pubDate = new Date(r.added_at).toUTCString();
+          const link = `https://hentaivault.me/site?id=${escapeHTML(encodeURIComponent(site.id))}`;
+          const added = new Date(r.added_at);
+          const pubDate = isNaN(added) ? '' : `<pubDate>${added.toUTCString()}</pubDate>`;
           items += `
             <item>
-              <title><![CDATA[${site.name} (${site.category})]]></title>
-              <link>https://hentaivault.me/site?id=${site.id}</link>
-              <guid>https://hentaivault.me/site?id=${site.id}</guid>
-              <pubDate>${pubDate}</pubDate>
-              <description><![CDATA[${desc}]]></description>
+              <title><![CDATA[${cdata(site.name)} (${cdata(normalizeCategory(site.category))})]]></title>
+              <link>${link}</link>
+              <guid>${link}</guid>
+              ${pubDate}
+              <description><![CDATA[${cdata(sanitize(site.description || ''))}]]></description>
             </item>
           `;
         }
@@ -1340,9 +1344,10 @@ async function handleRequest(request, env, ctx) {
       if (request.method !== 'POST') return jsonError('Method not allowed', 405);
       if (!env.hv_directory) return jsonError('DB not configured', 500);
       try {
+        if (await checkRateLimit(request.headers.get('cf-connecting-ip'), env)) return jsonError('Too many requests', 429);
         const body = await request.json();
-        if (!body.id) return jsonError('Missing ID', 400);
-        
+        if (!body.id || typeof body.id !== 'string') return jsonError('Missing ID', 400);
+
         const row = await env.hv_directory.prepare('SELECT url FROM sites WHERE id = ?').bind(body.id).first();
         if (!row) return jsonError('Not found', 404);
         
@@ -1377,8 +1382,8 @@ async function handleRequest(request, env, ctx) {
       if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
       if (!env.PUSH_SUBSCRIBERS) return jsonError('KV not configured', 500);
       
-      const code = url.searchParams.get('code');
-      if (!code || code.length < 8) return jsonError('Invalid code', 400);
+      const code = url.searchParams.get('code') || '';
+      if (!/^[A-Za-z0-9]{8,32}$/.test(code)) return jsonError('Invalid code', 400);
       const key = `vault_sync:${code}`;
 
       if (request.method === 'GET') {
@@ -1391,8 +1396,13 @@ async function handleRequest(request, env, ctx) {
         
         const body = await request.text();
         if (body.length > 20000) return jsonError('Payload too large', 413);
-        
-        await env.PUSH_SUBSCRIBERS.put(key, body);
+        let favorites;
+        try { favorites = JSON.parse(body); } catch { return jsonError('Invalid payload', 400); }
+        if (!Array.isArray(favorites) || favorites.some(f => typeof f !== 'string' || f.length > 100)) {
+          return jsonError('Invalid payload', 400);
+        }
+
+        await env.PUSH_SUBSCRIBERS.put(key, JSON.stringify(favorites), { expirationTtl: 60 * 60 * 24 * 365 });
         return new Response(JSON.stringify({ success: true }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
       return jsonError('Method not allowed', 405);
@@ -1405,14 +1415,10 @@ async function handleRequest(request, env, ctx) {
       if (!env.hv_directory) return jsonError('DB not configured', 500);
       try {
         const body = await request.json();
-        if (!body.id) return jsonError('Missing ID', 400);
-        
-        if (body.id.startsWith('amz_')) {
-            await env.hv_directory.prepare('UPDATE amazon_ads SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
-        } else {
-            await env.hv_directory.prepare('UPDATE sites SET clicks = clicks + 1 WHERE id = ?').bind(body.id).run();
-        }
-        
+        if (!body.id || typeof body.id !== 'string' || body.id.length > 100) return jsonError('Missing ID', 400);
+        // (the amazon_ads table referenced by older code does not exist in D1)
+        await env.hv_directory.prepare('UPDATE sites SET clicks = COALESCE(clicks, 0) + 1 WHERE id = ?').bind(body.id).run();
+
         return new Response(JSON.stringify({ success: true }), { headers: CORS });
       } catch (e) {
         return jsonError('Error updating click', 500);
@@ -1424,7 +1430,7 @@ async function handleRequest(request, env, ctx) {
       if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
       if (!env.hv_directory) return jsonError('DB not configured', 500);
       try {
-        const result = await env.hv_directory.prepare('SELECT data_json FROM sites ORDER BY clicks DESC LIMIT 3').all();
+        const result = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE ${NOT_PROHIBITED_SQL} ORDER BY clicks DESC LIMIT 3`).all();
         const sites = result.results.map(r => {
             const s = JSON.parse(r.data_json);
             s.isTrending = true;
@@ -1443,7 +1449,8 @@ async function handleRequest(request, env, ctx) {
       try {
         const likes = url.searchParams.get('likes');
         if (!likes) return new Response(JSON.stringify({ sites: [] }), { headers: CORS });
-        const likeIds = likes.split(',');
+        const likeIds = [...new Set(likes.split(',').map(s => s.trim()).filter(Boolean))].slice(0, 40);
+        if (likeIds.length === 0) return new Response(JSON.stringify({ sites: [] }), { headers: CORS });
         
         const placeholders = likeIds.map(() => '?').join(',');
         const queryLiked = `SELECT data_json FROM sites WHERE id IN (${placeholders})`;
@@ -1460,10 +1467,10 @@ async function handleRequest(request, env, ctx) {
         if (sortedTags.length === 0) return new Response(JSON.stringify({ sites: [] }), { headers: CORS });
         
         const tagConditions = sortedTags.map(tag => `data_json LIKE ?`).join(' AND ');
-        const params = sortedTags.map(t => `%"${t}"%`);
+        const params = sortedTags.map(t => `%"${String(t).replace(/[%_]/g, '')}"%`);
         params.push(...likeIds);
         
-        const queryRec = `SELECT data_json FROM sites WHERE (${tagConditions}) AND id NOT IN (${placeholders}) ORDER BY rating DESC LIMIT 5`;
+        const queryRec = `SELECT data_json FROM sites WHERE (${tagConditions}) AND id NOT IN (${placeholders}) AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 5`;
         const recRes = await env.hv_directory.prepare(queryRec).bind(...params).all();
         
         const sites = recRes.results.map(r => JSON.parse(r.data_json));
@@ -1476,84 +1483,15 @@ async function handleRequest(request, env, ctx) {
 
 
     // ── Route: /api/random ──────────────────────────────────────────────────
-    // ── Route: /api/audit-sites (temporary — edge-side batch ping + context check) ──
-    if (url.pathname === '/api/audit-sites') {
-      if (!env.hv_directory) return jsonError('Database not configured', 500);
-      const offset = parseInt(url.searchParams.get('offset')) || 0;
-      const limit = Math.min(parseInt(url.searchParams.get('limit')) || 50, 50);
-
-      const { results } = await env.hv_directory.prepare(
-        'SELECT id, url, category, data_json FROM sites ORDER BY id LIMIT ? OFFSET ?'
-      ).bind(limit, offset).all();
-
-      // Known hentai/anime context keywords
-      const CONTEXT_KEYWORDS = [
-        'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
-        'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
-        'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
-        'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio'
-      ];
-
-      const OFF_CONTEXT_CATEGORIES = ['Communities', 'Communities & Forums'];
-
-      const results_out = [];
-
-      await Promise.all(results.map(async (row) => {
-        let up = false;
-        let statusCode = 0;
-        let latency = 0;
-
-        try {
-          const start = Date.now();
-          const res = await fetch(row.url, {
-            method: 'HEAD',
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-            signal: AbortSignal.timeout(4000)
-          });
-          latency = Date.now() - start;
-          statusCode = res.status;
-          up = res.status >= 200 && res.status < 500 && res.status !== 404;
-        } catch (e) {
-          up = false;
-        }
-
-        // Context check — inspect name + description + category in data_json
-        let fitsContext = true;
-        let siteData = {};
-        try { siteData = JSON.parse(row.data_json); } catch(e) {}
-        const textToCheck = `${siteData.name || ''} ${siteData.description || ''} ${row.category || ''}`.toLowerCase();
-        const hasKeyword = CONTEXT_KEYWORDS.some(k => textToCheck.includes(k));
-        if (!hasKeyword) fitsContext = false;
-
-        results_out.push({
-          id: row.id,
-          url: row.url,
-          category: row.category,
-          name: siteData.name || row.id,
-          up,
-          statusCode,
-          latency,
-          fitsContext
-        });
-      }));
-
-      const total = await env.hv_directory.prepare('SELECT COUNT(*) as count FROM sites').first();
-
-      return new Response(JSON.stringify({
-        offset,
-        limit,
-        total: total ? total.count : 0,
-        results: results_out
-      }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
-    }
-
     if (url.pathname === '/api/random') {
       if (request.method === 'OPTIONS') {
         return new Response(null, { status: 204, headers: CORS });
       }
       if (!env.hv_directory) return jsonError('Database not configured', 500);
       try {
-        const result = await env.hv_directory.prepare('SELECT id, name, url, category FROM sites ORDER BY RANDOM() LIMIT 1').first();
+        const result = await env.hv_directory.prepare(
+          `SELECT id, json_extract(data_json, '$.name') AS name, url, category FROM sites WHERE ${NOT_PROHIBITED_SQL} ORDER BY RANDOM() LIMIT 1`
+        ).first();
         if (!result) return jsonError('No sites found', 404);
         return new Response(
           JSON.stringify(result),
@@ -1583,8 +1521,12 @@ async function handleRequest(request, env, ctx) {
       if (request.method === 'POST') {
         if (!env.PUSH_SUBSCRIBERS) return jsonError('Push KV namespace not configured.', 500);
         try {
-          const subscription = await request.json();
-          if (!subscription || !subscription.endpoint) return jsonError('Invalid subscription', 400);
+          const raw = await request.text();
+          if (raw.length > 4000) return jsonError('Payload too large', 413);
+          const subscription = JSON.parse(raw);
+          if (!subscription || typeof subscription.endpoint !== 'string' || !subscription.endpoint.startsWith('https://')) {
+            return jsonError('Invalid subscription', 400);
+          }
           
           // Use a hash or trailing part of endpoint as the key
           const key = `sub_${encodeB64(subscription.endpoint).slice(-30)}`;
@@ -1600,23 +1542,16 @@ async function handleRequest(request, env, ctx) {
 
     // ── Route: /site and /site.html ─────────────────────────────────────────
     if (url.pathname === '/site' || url.pathname === '/site.html') {
+      const rawId = url.searchParams.get('id');
       if (url.pathname === '/site.html') {
-        const id = url.searchParams.get('id');
-        const search = id ? `?id=${id}` : '';
-        // Use 301 (not 308) — 308 preserves HTTP method which confuses some crawlers
+        const search = rawId ? `?id=${encodeURIComponent(rawId)}` : '';
         return new Response(null, {
           status: 301,
-          headers: {
-            'Location': `${url.origin}/site${search}`,
-            'Cache-Control': 'public, max-age=604800'
-          }
+          headers: { 'Location': `${url.origin}/site${search}`, 'Cache-Control': 'public, max-age=604800' }
         });
       }
 
-      let id = url.searchParams.get('id');
-      if (!id) {
-        return Response.redirect(`${url.origin}/`, 301);
-      }
+      if (!rawId) return Response.redirect(`${url.origin}/`, 301);
 
       // Typo-Squatting / Redirects
       const typos = {
@@ -1630,66 +1565,52 @@ async function handleRequest(request, env, ctx) {
         'rule34': 'rule34xxx',
         'rule34.xxx': 'rule34xxx'
       };
-      if (typos[id.toLowerCase()]) {
-        return Response.redirect(`${url.origin}/site?id=${typos[id.toLowerCase()]}`, 301);
-      }
-
-      const response = await env.ASSETS.fetch(new Request(url.origin + '/site.html'));
-      if (!response.ok) {
-        return response;
+      if (typos[rawId.toLowerCase()]) {
+        return Response.redirect(`${url.origin}/site?id=${typos[rawId.toLowerCase()]}`, 301);
       }
 
       let site = null;
       let relatedSites = [];
-
       if (env.hv_directory) {
         try {
-          // ── Parallel D1 fetch: site row + asset fetch run concurrently ──────
-          const siteRow = await env.hv_directory.prepare(
-            'SELECT data_json FROM sites WHERE id = ?'
-          ).bind(id).first();
-
+          const siteRow = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(rawId).first();
           if (siteRow && siteRow.data_json) {
             site = JSON.parse(siteRow.data_json);
-            // Fetch related sites in parallel with the already-fetched asset above
-            const relatedRows = await env.hv_directory.prepare(
-              'SELECT data_json FROM sites WHERE category = ? AND id != ? ORDER BY rating DESC LIMIT 15'
-            ).bind(site.category, site.id).all();
-            relatedSites = relatedRows.results.map(r => JSON.parse(r.data_json));
-            relatedSites.push(site); // Ensure the site itself is in the array so the handler doesn't crash
+            site.id = site.id || rawId;
+            if (isProhibited(site.url, site.name, site.description) || !isSafeHttpUrl(site.url)) {
+              site = null;
+            } else {
+              const relatedRows = await env.hv_directory.prepare(
+                `SELECT data_json FROM sites WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 15`
+              ).bind(site.category, rawId).all();
+              relatedSites = relatedRows.results.map(r => JSON.parse(r.data_json));
+            }
           }
         } catch (err) {
           console.error("D1 lookup error:", err);
+          return new Response('Temporarily unavailable', { status: 503, headers: { 'Retry-After': '120' } });
         }
       }
 
-      if (!site) {
-        // Return 410 Gone (not 404) — tells Google the page is permanently removed,
-        // which causes it to drop the URL from its index much faster than a 404.
-        return new Response(response.body, {
-          status: 410,
-          headers: response.headers
-        });
-      }
+      // 410 Gone (not 404): the listing was removed, so Google drops it faster.
+      if (!site) return notFoundPage(env, url, 410);
 
-      const canonicalUrl = `https://hentaivault.me/site?id=${site.id}`;
-      const titleText = `${site.name} Review | HentaiVault`;
-      const lang = effectiveLang;
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/site'));
+      if (!response.ok) return response;
 
+      const canonicalUrl = `https://hentaivault.me/site?id=${encodeURIComponent(site.id)}`;
+      const indexable = isIndexable(site);
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
-        .on('title', new TitleHandler(titleText))
-        .on('head', new HeadHandler(site, canonicalUrl, lang))
-        .on('div#reviewContent', new ReviewBodyHandler(site, lang, relatedSites));
+        .on('meta[name="description"]', new CanonicalRemover())
+        .on('title', new TitleHandler(`${site.name} Review | HentaiVault`))
+        .on('head', new HeadHandler(site, canonicalUrl, effectiveLang, indexable))
+        .on('div#reviewContent', new ReviewBodyHandler(site, effectiveLang, relatedSites));
 
-      // Add Cache-Control so Cloudflare edge caches SSR HTML for 5 minutes
-      const transformed = rewriter.transform(response);
-      const cachedHeaders = new Headers(transformed.headers);
-      cachedHeaders.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60');
-      return new Response(transformed.body, {
-        status: transformed.status,
-        statusText: transformed.statusText,
-        headers: cachedHeaders
+      return withHeaders(rewriter.transform(response), {
+        'Cache-Control': 'public, max-age=0, s-maxage=300, stale-while-revalidate=60',
+        'Vary': 'Cookie, Accept-Language',
+        ...(indexable ? {} : { 'X-Robots-Tag': 'noindex, follow' }),
       });
     }
 
@@ -1699,35 +1620,34 @@ async function handleRequest(request, env, ctx) {
       const site2Id = url.searchParams.get('site2');
       if (!site1Id || !site2Id) return Response.redirect(`${url.origin}/`, 301);
 
-      const response = await env.ASSETS.fetch(new Request(url.origin + '/compare.html'));
-      if (!response.ok) return response;
-
       let site1 = null;
       let site2 = null;
       if (env.hv_directory) {
         try {
-          const rows = await env.hv_directory.prepare('SELECT id, data_json FROM sites WHERE id IN (?, ?)').bind(site1Id, site2Id).all();
+          const rows = await env.hv_directory.prepare(`SELECT id, data_json FROM sites WHERE id IN (?, ?) AND ${NOT_PROHIBITED_SQL}`).bind(site1Id, site2Id).all();
           for (const r of rows.results) {
             if (r.id === site1Id) site1 = JSON.parse(r.data_json);
             if (r.id === site2Id) site2 = JSON.parse(r.data_json);
           }
         } catch (e) {}
       }
-      if (!site1 || !site2) {
-        return new Response(response.body, {
-          status: 410,
-          headers: response.headers
-        });
-      }
+      if (!site1 || !site2) return notFoundPage(env, url, 410);
+      site1.id = site1.id || site1Id;
+      site2.id = site2.id || site2Id;
 
-      const canonicalUrl = `https://hentaivault.me/compare?site1=${site1Id}&site2=${site2Id}`;
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/compare'));
+      if (!response.ok) return response;
+
+      const canonicalUrl = `https://hentaivault.me/compare?site1=${encodeURIComponent(site1Id)}&site2=${encodeURIComponent(site2Id)}`;
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
+        .on('meta[name="description"]', new CanonicalRemover())
+        .on('meta[name="robots"]', new CanonicalRemover())
         .on('title', new TitleHandler(`${site1.name} vs ${site2.name} | HentaiVault`))
         .on('head', new CompareHeadHandler(site1, site2, canonicalUrl))
         .on('main#compareContent', new CompareBodyHandler(site1, site2));
 
-      return rewriter.transform(response);
+      return withHeaders(rewriter.transform(response), { 'X-Robots-Tag': 'noindex, follow' });
     }
 
     // ── Route: /out (Interstitial Redirect) ─────────────────────────────────
@@ -1735,47 +1655,53 @@ async function handleRequest(request, env, ctx) {
       const id = url.searchParams.get('id');
       if (!id) return Response.redirect(`${url.origin}/`, 301);
 
-      const response = await env.ASSETS.fetch(new Request(url.origin + '/out.html'));
-      if (!response.ok) return response;
-
       let site = null;
       if (env.hv_directory) {
         try {
-          const row = await env.hv_directory.prepare('SELECT url FROM sites WHERE id = ?').bind(id).first();
-          if (row) site = { url: row.url };
+          const row = await env.hv_directory.prepare(`SELECT url FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
+          if (row && isSafeHttpUrl(row.url)) site = { url: row.url };
         } catch (e) {}
       }
-      if (!site) return new Response('Gone', { status: 410 });
+      if (!site) return notFoundPage(env, url, 410);
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/out'));
+      if (!response.ok) return response;
 
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
         .on('div#target-url', new OutHandler(site));
 
-      return rewriter.transform(response);
+      return withHeaders(rewriter.transform(response), { 'X-Robots-Tag': 'noindex, nofollow' });
     }
 
     // ── Route: /embed (Ego-Bait Widget) ─────────────────────────────────────
+    // Deliberately without X-Frame-Options/frame-ancestors: other sites embed it.
     if (url.pathname === '/embed') {
       const id = url.searchParams.get('id');
       if (!id) return Response.redirect(`${url.origin}/`, 301);
 
-      const response = await env.ASSETS.fetch(new Request(url.origin + '/embed.html'));
-      if (!response.ok) return response;
-
       let site = null;
       if (env.hv_directory) {
         try {
-          const row = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(id).first();
+          const row = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
           if (row) site = JSON.parse(row.data_json);
         } catch (e) {}
       }
-      if (!site) return new Response('Gone', { status: 410 });
+      if (!site) return new Response('Gone', { status: 410, headers: { 'X-Robots-Tag': 'noindex' } });
+      site.id = site.id || id;
+
+      const response = await env.ASSETS.fetch(new Request(url.origin + '/embed'));
+      if (!response.ok) return response;
 
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
         .on('body', new EmbedHandler(site));
 
-      return rewriter.transform(response);
+      const out = rewriter.transform(response);
+      const headers = new Headers(out.headers);
+      headers.set('X-Robots-Tag', 'noindex');
+      headers.set('X-Content-Type-Options', 'nosniff');
+      return new Response(out.body, { status: out.status, headers });
     }
 
     // Native Cloudflare ASSETS handles clean URLs (e.g., /about -> about.html) automatically.
@@ -1785,22 +1711,15 @@ async function handleRequest(request, env, ctx) {
     const response = await env.ASSETS.fetch(request);
 
     if (response.ok && response.headers.get('content-type')?.includes('text/html')) {
-      const canonicalUrl = (() => {
-        const clean = new URL(url.toString());
-        // Keep only ?id= and ?q= query params — strip ?lang= and other UI state
-        const id = clean.searchParams.get('id');
-        const q = clean.searchParams.get('q');
-        clean.search = '';
-        if (id) clean.searchParams.set('id', id);
-        if (q) clean.searchParams.set('q', q);
-        // Always use https
-        clean.protocol = 'https:';
-        // Strip .html for canonicals
-        if (clean.pathname.endsWith('.html')) {
-          clean.pathname = clean.pathname === '/index.html' ? '/' : clean.pathname.slice(0, -5);
-        }
-        return clean.toString();
-      })();
+      // Canonical = clean https path without query string (?lang=, ?q=, ?ref= are UI state).
+      const clean = new URL(url.toString());
+      clean.search = '';
+      clean.hash = '';
+      clean.protocol = 'https:';
+      if (clean.pathname.endsWith('.html')) {
+        clean.pathname = clean.pathname === '/index.html' ? '/' : clean.pathname.slice(0, -5);
+      }
+      const canonicalUrl = clean.toString();
 
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
@@ -1809,15 +1728,9 @@ async function handleRequest(request, env, ctx) {
       return addSecurityHeaders(rewriter.transform(response));
     }
 
-    // Custom 404 fallback for HTML navigation
+    // Custom 404 page for page-like URLs (the assets layer itself returns an empty 404).
     if (response.status === 404 && (request.headers.get('accept')?.includes('text/html') || !url.pathname.includes('.'))) {
-      const errorPage = await env.ASSETS.fetch(new Request(url.origin + '/404.html', request));
-      if (errorPage.ok) {
-        return addSecurityHeaders(new Response(errorPage.body, {
-          status: 404,
-          headers: errorPage.headers
-        }));
-      }
+      return notFoundPage(env, url, 404);
     }
 
     // Non-HTML assets (robots.txt, llms.txt, CSS, JS, images, etc.) — return as-is
@@ -1832,7 +1745,7 @@ async function handleScheduled(event, env, ctx) {
   const SITE_CONTEXT_KEYWORDS = [
     'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
     'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
-    'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
+    'fanfic','cosplay','waifu','tentacle','yaoi','yuri','futanari',
     'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio','hd'
   ];
 
@@ -1904,11 +1817,14 @@ async function handleScheduled(event, env, ctx) {
       // ── Context check: keyword must appear in the HOSTNAME, not just path ──
       // Prevents: wikipedia.org/wiki/doujin_soft passing because "doujin" is in path
       const hostLower = hostname.toLowerCase();
+      if (isProhibited(siteUrl)) return false;
       const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => hostLower.includes(k));
       if (!fitsContext) return false;
 
-      // Duplicate check
-      const existing = await env.hv_directory.prepare('SELECT id FROM sites WHERE url = ?').bind(siteUrl).first();
+      // Duplicate check (live directory and review queue)
+      const existing = await env.hv_directory.prepare(
+        'SELECT 1 FROM sites WHERE url = ?1 UNION ALL SELECT 1 FROM queue WHERE url = ?1 LIMIT 1'
+      ).bind(siteUrl).first();
       if (existing) return false;
 
       // Live ping
@@ -1920,18 +1836,13 @@ async function handleScheduled(event, env, ctx) {
       const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
       if (!isUp) return false;
 
+      // Discoveries go to the review queue; the daily-add pipeline scores, filters
+      // and enriches them before anything is published to the live directory.
       const category = guessCategory(siteUrl);
-      const siteId = makeId(hostname);
-      const siteJson = JSON.stringify({
-        id: siteId, name: hostname, url: siteUrl,
-        description: `Discovered via ${discoveredBy}`,
-        category, rating: 0, tags: ['Auto-Discovered', discoveredBy]
-      });
-
-      await env.hv_directory.prepare(
-        'INSERT OR IGNORE INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, datetime("now"), ?)'
-      ).bind(siteId, category, siteUrl, 0, siteJson).run();
-      return true;
+      const result = await env.hv_directory.prepare(
+        "INSERT OR IGNORE INTO queue (id, url, category, name, status) VALUES (?, ?, ?, ?, 'pending')"
+      ).bind(makeId(hostname), siteUrl, category, hostname).run();
+      return (result.meta?.changes || 0) > 0;
     } catch(e) { return false; }
   }
 
@@ -2112,36 +2023,37 @@ async function handleScheduled(event, env, ctx) {
   try {
     // Grab a rolling batch of 30 sites to re-verify each cron run (cycles through the whole DB over time)
     const sweepSeed = Math.floor(Date.now() / (12 * 60 * 60 * 1000)); // changes every 12h
-    const sweepOffset = (sweepSeed * 30) % 831; // 831 = current live sites, keeps offset in range
+    const countRow = await env.hv_directory.prepare('SELECT COUNT(*) AS n FROM sites').first();
+    const sweepOffset = (sweepSeed * 30) % Math.max(1, countRow?.n || 1);
     const { results: sitesToSweep } = await env.hv_directory.prepare(
       'SELECT id, url FROM sites ORDER BY id LIMIT 30 OFFSET ?'
     ).bind(sweepOffset).all();
 
+    // Store real JSON booleans (the frontend checks `isUp === false`) and clear the
+    // flag again when a site recovers, so a single timeout isn't permanent.
+    const setStatus = (id, up) => env.hv_directory.prepare(
+      up
+        ? "UPDATE sites SET data_json = json_remove(json_set(data_json, '$.isUp', json('true')), '$.isDeadFlagged') WHERE id = ?"
+        : "UPDATE sites SET data_json = json_set(data_json, '$.isUp', json('false'), '$.isDeadFlagged', json('true')) WHERE id = ?"
+    ).bind(id).run();
+
     let sweptDead = 0;
     for (const site of sitesToSweep) {
+      let isUp = false;
       try {
         const ping = await fetch(site.url, {
           method: 'HEAD',
           headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
           signal: AbortSignal.timeout(4000)
         });
-        const isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
-        if (!isUp) {
-          // Flag as dead instead of deleting — preserves analytics and DB count integrity
-          await env.hv_directory.prepare(
-            "UPDATE sites SET data_json = json_set(data_json, '$.isUp', 0, '$.isDeadFlagged', 1) WHERE id = ?"
-          ).bind(site.id).run();
-          sweptDead++;
-        }
-      } catch(e) {
-        // Timeout = treat as dead — flag, don't delete
-        await env.hv_directory.prepare(
-          "UPDATE sites SET data_json = json_set(data_json, '$.isUp', 0, '$.isDeadFlagged', 1) WHERE id = ?"
-        ).bind(site.id).run();
-        sweptDead++;
+        isUp = ping.status >= 200 && ping.status < 500 && ping.status !== 404;
+      } catch (e) {
+        isUp = false;
       }
+      await setStatus(site.id, isUp);
+      if (!isUp) sweptDead++;
     }
-    console.log(`Health sweep: flagged ${sweptDead} dead sites (preserved in DB for analytics).`);
+    console.log(`Health sweep: ${sweptDead}/${sitesToSweep.length} sites flagged offline.`);
   } catch(err) {
     console.error('Health sweep error:', err);
   }
@@ -2190,8 +2102,8 @@ async function handleSubmit(request, env, ctx) {
     // ── 2. Validate Inputs ───────────────────────────────────────────────────
     const nameClean = sanitize(name);
     const descClean = sanitize(description);
-    const urlClean  = (url || '').trim();
-    const catClean  = (category || '').trim();
+    const urlClean  = String(url || '').trim().slice(0, 500);
+    const catClean  = normalizeCategory(category);
 
     if (!nameClean || nameClean.length < 2)
       return jsonError('Site name must be at least 2 characters.', 400);
@@ -2199,8 +2111,11 @@ async function handleSubmit(request, env, ctx) {
     if (!isValidURL(urlClean))
       return jsonError('Please provide a valid http:// or https:// URL.', 400);
 
-    if (!ALLOWED_CATEGORIES.includes(catClean))
+    if (!CATEGORIES.includes(catClean))
       return jsonError('Invalid category selected.', 400);
+
+    if (isProhibited(urlClean, nameClean, descClean))
+      return jsonError('This site cannot be listed on HentaiVault.', 422);
 
     if (!descClean || descClean.length < 20)
       return jsonError('Description must be at least 20 characters.', 400);
@@ -2212,6 +2127,10 @@ async function handleSubmit(request, env, ctx) {
     const existing = await env.hv_directory.prepare('SELECT id FROM sites WHERE url = ?').bind(urlClean).first();
     if (existing) {
       return jsonError('This site is already listed in the directory!', 409);
+    }
+    const queued = await env.hv_directory.prepare('SELECT status FROM queue WHERE url = ?').bind(urlClean).first();
+    if (queued) {
+      return jsonError('This site has already been submitted and is awaiting review.', 409);
     }
 
     // ── 3b. Live reachability check ──────────────────────────────────────────
@@ -2233,7 +2152,7 @@ async function handleSubmit(request, env, ctx) {
     const CONTEXT_KEYWORDS = [
       'hentai','ecchi','doujin','manga','anime','adult','nsfw','xxx','porn','erotic',
       'lewd','rule34','booru','nhentai','hanime','uncensored','streaming','visual novel',
-      'fanfic','cosplay','waifu','tentacle','yaoi','yuri','loli','shota','futanari',
+      'fanfic','cosplay','waifu','tentacle','yaoi','yuri','futanari',
       'ahegao','ntr','patreon','fanbox','creator','game','comic','tube','studio'
     ];
     const textToCheck = `${nameClean} ${descClean} ${catClean}`.toLowerCase();
@@ -2243,35 +2162,17 @@ async function handleSubmit(request, env, ctx) {
     }
 
 
-    const id    = makeId(nameClean);
-    const today = new Date().toISOString().split('T')[0];
-    const newEntry = {
-      id,
-      name: nameClean,
-      url: urlClean,
-      category: catClean,
-      description: descClean,
-      tags: ["Community Submitted"],
-      rating: 4.0,
-      addedAt: today
-    };
-
-    // ── 5. Insert directly into D1 ──────────────────────────────────────────
-    const dataJson = JSON.stringify(newEntry);
+    // ── 4. Queue for review ──────────────────────────────────────────────────
+    // Submissions are not published directly: the daily-add pipeline scores,
+    // filters and enriches queued sites before they reach the live directory.
     await env.hv_directory.prepare(
-      'INSERT INTO sites (id, category, url, rating, added_at, data_json) VALUES (?, ?, ?, ?, ?, ?)'
-    ).bind(id, catClean, urlClean, 4.0, today, dataJson).run();
-
-    // ── 6. Removed GitHub Commit ──────────────────────────────────────────────
-    // D1 is now the single source of truth.
-
-    // Ping Bing IndexNow in the background (non-blocking)
-    ctx.waitUntil(pingIndexNow(env, id));
+      "INSERT INTO queue (id, url, category, name, status) VALUES (?, ?, ?, ?, 'pending')"
+    ).bind(makeId(nameClean), urlClean, catClean, nameClean).run();
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: `"${nameClean}" has been added to the directory! It will appear live shortly.`,
+        message: `Thanks! "${nameClean}" has been submitted and will appear once it passes review.`,
       }),
       { status: 200, headers: CORS }
     );
@@ -2305,58 +2206,10 @@ function makeId(name) {
     + '_' + Date.now().toString(36);
 }
 
-function decodeB64(b64) {
-  try {
-    // Use TextDecoder instead of the deprecated escape() function
-    const bytes = Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0));
-    return new TextDecoder('utf-8').decode(bytes);
-  } catch (e) {
-    return atob(b64.replace(/\n/g, ''));
-  }
-}
-
 function encodeB64(str) {
   return btoa(unescape(encodeURIComponent(str)));
 }
 
 function jsonError(message, status) {
   return new Response(JSON.stringify({ error: message }), { status, headers: CORS });
-}
-
-async function pingIndexNow(env, newSiteId = null) {
-  if (!env.INDEXNOW_KEY) return;
-  try {
-    const url = 'https://api.indexnow.org/indexnow';
-    const urlList = [
-      'https://hentaivault.me/',
-      'https://hentaivault.me/category/anime-streaming',
-      'https://hentaivault.me/category/hentai-streaming',
-      'https://hentaivault.me/category/manga-doujin',
-      'https://hentaivault.me/category/images-boorus',
-      'https://hentaivault.me/category/games',
-      'https://hentaivault.me/category/communities',
-      'https://hentaivault.me/category/downloads',
-      'https://hentaivault.me/category/visual-novels'
-    ];
-    
-    if (newSiteId) {
-      urlList.push(`https://hentaivault.me/site?id=${newSiteId}`);
-    }
-
-    const payload = {
-      host: 'hentaivault.me',
-      key: env.INDEXNOW_KEY,
-      keyLocation: `https://hentaivault.me/${env.INDEXNOW_KEY}.txt`,
-      urlList: urlList
-    };
-
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-    console.log('Successfully pinged IndexNow API');
-  } catch (err) {
-    console.error('IndexNow ping failed:', err);
-  }
 }

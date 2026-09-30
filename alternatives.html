@@ -188,54 +188,43 @@
 
 <body>
 
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo" style="text-decoration:none;">
+                <span class="logo-icon">🌐</span> HentaiVault
+            </a>
+            
+            <div class="search-bar">
+                <div class="search-container">
+                    <form onsubmit="handleSearch(event)" style="display:flex; width:100%;">
+                        <label for="searchInput" class="sr-only">Search sites</label>
+                        <input type="text" id="searchInput" placeholder="Search 1,900+ sites..." autocomplete="off" style="width:100%;">
+                    </form>
+                    <div id="searchAutocomplete" class="search-autocomplete"></div>
+                </div>
             </div>
-
-
 
     
-
-            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">??</button>
-
+            <button class="btn-search-mobile" id="btnSearchMobile" aria-label="Search">🔍</button>
+            
             <div class="nav-actions">
-
-                <button id="themeToggle" class="btn-theme" title="Toggle Theme">??</button>
-
+                <button id="themeToggle" class="btn-theme" title="Toggle Theme">🌓</button>
                 <div class="lang-switcher">
-
                     <select onchange="setLanguage(this.value)" id="langSelect" title="Select Language">
-
-                        <option value="en">???? EN</option>
-
-                        <option value="es">???? ES</option>
-
-                        <option value="jp">???? JP</option>
-
-                        <option value="fr">???? FR</option>
-
-                        <option value="pt">???? PT</option>
-
-                        <option value="hi">???? HI</option>
-
-                        <option value="ar">???? AR</option>
-
-                        <option value="de">???? DE</option>
-
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="jp">🇯🇵 JP</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="ar">🇲🇦 AR</option>
+                        <option value="de">🇩🇪 DE</option>
                     </select>
-
                 </div>
 
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center;">
-
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;">
-
-                </a>
-
                 <a href="#" class="btn-submit" data-i18n="submit" id="btnSubmitSite">Submit</a>
-
             </div>
-
         </div>
-
     </nav>
 <main class="review-layout" id="reviewContainer">
 
@@ -339,7 +328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (currentLang === 'fr') {
 
-                titleText = `12 Meilleures Alternatives ´┐¢ ${localName} en 2026 | HentaiVault`;
+                titleText = `12 Meilleures Alternatives à ${localName} en 2026 | HentaiVault`;
 
                 descText = `Vous cherchez des sites comme ${localName} ? Voici les meilleures alternatives ${localCat} en 2026.`;
 
@@ -347,13 +336,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 titleText = `Las 12 Mejores Alternativas a ${localName} en 2026 | HentaiVault`;
 
-                descText = `´┐¢Buscas sitios como ${localName}? Aqu´┐¢ est´┐¢n las mejores alternativas de ${localCat} para 2026.`;
+                descText = `¿Buscas sitios como ${localName}? Aquí están las mejores alternativas de ${localCat} para 2026.`;
 
             } else if (currentLang === 'jp') {
 
-                titleText = `${localName}?????????12 (2026?) | HentaiVault`;
+                titleText = `${localName}の代替サイトトップ12 (2026年) | HentaiVault`;
 
-                descText = `${localName}??????????????2026?????${localCat}????????????`;
+                descText = `${localName}に似たサイトをお探しですか？2026年の最高の${localCat}代替サイトはこちらです。`;
 
             }
 
@@ -505,7 +494,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     "url": `https://hentaivault.me/site?id=${site.id}`,
 
-                    "description": `Expert review of ${site.name} ´┐¢ ratings, pros, cons, and alternatives.`,
+                    "description": `Expert review of ${site.name} — ratings, pros, cons, and alternatives.`,
 
                     "about": {
 
@@ -589,11 +578,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <div class="share-actions">
 
-                <button id="btnShareCopy" class="btn-share-action">?? Copy Link</button>
+                <button id="btnShareCopy" class="btn-share-action">📋 Copy Link</button>
 
-                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">?? Share on Twitter</a>
+                <a id="btnShareTwitter" href="#" target="_blank" class="btn-share-action">🐦 Share on Twitter</a>
 
-                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">?? Share on Reddit</a>
+                <a id="btnShareReddit" href="#" target="_blank" class="btn-share-action">🤖 Share on Reddit</a>
 
             </div>
 
