@@ -1,14 +1,9 @@
 name: 🔎 Production Audit (read-only)
 
-# Read-only snapshot of the live site, Search Console and Cloudflare config.
-# Nothing is committed or deployed.
+# Read-only aggregate D1 counts (indexable listings, deep links, prohibited
+# matches, queue size). Prints counts only: this repository's logs are public.
 on:
   workflow_dispatch: {}
-  push:
-    branches: ['claude/**']
-    paths:
-      - 'scripts/diagnostics/**'
-      - '.github/workflows/site-audit.yml'
 
 permissions:
   contents: read

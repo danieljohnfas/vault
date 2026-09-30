@@ -96,7 +96,7 @@
 
         <div>
 
-            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">­ƒôï My List</h1>
+            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">📋 My List</h1>
 
             <p style="color: var(--text-muted);" id="listCount">Loading your saved sites...</p>
 
@@ -104,9 +104,9 @@
 
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
 
-            <button onclick="copyShareLink()" class="btn-outline" style="padding: 10px 20px;">­ƒöù Share This List</button>
+            <button onclick="copyShareLink()" class="btn-outline" style="padding: 10px 20px;">🔗 Share This List</button>
 
-            <button onclick="clearList()" class="btn-outline" style="padding: 10px 20px; border-color: #ff2a5f; color: #ff2a5f;">­ƒùæ´©Å Clear All</button>
+            <button onclick="clearList()" class="btn-outline" style="padding: 10px 20px; border-color: #ff2a5f; color: #ff2a5f;">🗑️ Clear All</button>
 
         </div>
 
@@ -159,7 +159,7 @@
 
                 <a href="/contact">Contact Us</a>
 
-                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">Ôÿò Buy Me A Coffee</a>
+                <a href="https://buymeacoffee.com/codey" target="_blank" rel="noopener noreferrer" style="color: #ffdd00; font-weight: bold;">☕ Buy Me A Coffee</a>
 
             </div>
 
@@ -213,7 +213,7 @@
 
                 <div>
 
-                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">­ƒôº Weekly Digest</div>
+                    <div style="font-weight:800; font-size:1.1rem; color:white; margin-bottom:4px;">📧 Weekly Digest</div>
 
                     <div style="font-size:0.85rem; color: var(--text-muted);">Get the best new sites delivered to your inbox every week.</div>
 
@@ -223,7 +223,7 @@
 
                     <input type="email" id="digestEmail" placeholder="your@email.com" required style="flex:1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-surface); color: white; font-size:0.95rem;">
 
-                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe ÔåÆ</button>
+                    <button type="submit" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor:pointer; white-space:nowrap;">Subscribe →</button>
 
                 </form>
 
@@ -233,11 +233,10 @@
 
             <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; align-items:center;">
 
-                <a href="/mylist.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">­ƒôï My List</a>
+                <a href="/mylist" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">📋 My List</a>
 
-                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('­ƒôï List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">­ƒöù Share My List</button>
+                <button onclick="if(window.getMyListShareUrl){navigator.clipboard.writeText(window.getMyListShareUrl()); showToast('📋 List link copied!');}" class="btn-outline" style="font-size:0.85rem; padding:8px 16px;">🔗 Share My List</button>
 
-                <a href="/compare.html" class="btn-outline" style="font-size:0.85rem; padding:8px 16px; text-decoration:none;">ÔÜû´©Å Compare Sites</a>
 
             </div>
 
@@ -303,13 +302,13 @@
 
             grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:80px 20px;">
 
-                <div style="font-size:4rem; margin-bottom:20px;">­ƒôï</div>
+                <div style="font-size:4rem; margin-bottom:20px;">📋</div>
 
                 <h2 style="margin-bottom:12px; color: var(--text-main);">Your list is empty</h2>
 
-                <p style="color:var(--text-muted); margin-bottom:24px;">Browse the directory and click ­ƒôï on any card to add sites here.</p>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Browse the directory and click 📋 on any card to add sites here.</p>
 
-                <a href="/" class="btn-visit" style="text-decoration:none; padding:12px 28px;">Browse Directory ÔåÆ</a>
+                <a href="/" class="btn-visit" style="text-decoration:none; padding:12px 28px;">Browse Directory →</a>
 
             </div>`;
 
@@ -391,13 +390,13 @@
 
                 <div class="card-footer" style="margin-top:auto;">
 
-                    <div class="rating" style="color:#f59e0b;">Rating: ${'Ôÿà'.repeat(Math.floor(site.rating))}Ôÿå</div>
+                    <div class="rating" style="color:#f59e0b;">Rating: ${'★'.repeat(Math.floor(site.rating))}☆</div>
 
                     <div class="card-actions">
 
-                        <button onclick="removeFromList('${site.id}', this)" class="mylist-btn mylist-active" title="Remove from My List">­ƒôï Remove</button>
+                        <button onclick="removeFromList('${site.id}', this)" class="mylist-btn mylist-active" title="Remove from My List">📋 Remove</button>
 
-                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding:6px 16px;">Visit ÔåÆ</a>
+                        <a href="${site.url}" target="_blank" rel="nofollow noopener noreferrer" class="btn-visit" style="padding:6px 16px;">Visit →</a>
 
                     </div>
 
@@ -437,11 +436,11 @@
 
         try { myList = JSON.parse(localStorage.getItem('hv_mylist') || '[]'); } catch(e) {}
 
-        const url = `${window.location.origin}/mylist.html?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
+        const url = `${window.location.origin}/mylist?list=${btoa(JSON.stringify(myList)).replace(/=/g,'')}`;
 
         navigator.clipboard.writeText(url).then(() => {
 
-            window.showToast && showToast('­ƒöù Share link copied to clipboard!');
+            window.showToast && showToast('🔗 Share link copied to clipboard!');
 
         });
 
