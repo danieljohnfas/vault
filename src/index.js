@@ -803,6 +803,16 @@ async function notFoundPage(env, url, status = 404) {
 async function handleRequest(request, env, ctx) {
     const url = new URL(request.url);
 
+    // ── Canonical host: www → apex (one indexable host) ─────────────────────────
+    if (url.hostname === 'www.hentaivault.me') {
+      url.hostname = 'hentaivault.me';
+      url.protocol = 'https:';
+      return new Response(null, {
+        status: 301,
+        headers: { 'Location': url.toString(), 'Cache-Control': 'public, max-age=86400' }
+      });
+    }
+
     // ── Force HTTPS redirect (fixes HTTP duplicate pages in GSC & Bing) ────────────
     if (url.protocol === 'http:') {
       const httpsUrl = new URL(request.url);
