@@ -1,4 +1,6 @@
 [
   { "task": "report-prohibited" },
-  { "task": "list-worker-domains" }
+  { "task": "apply-sql", "file": "migrations/0006_block_prohibited_content.sql" },
+  { "task": "list-triggers" },
+  { "task": "test-prohibited-rule" }
 ]

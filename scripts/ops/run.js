@@ -73,6 +73,29 @@ const tasks = {
     }
   },
 
+  // Executes a SQL file statement by statement (split on "-- statement-break").
+  async 'apply-sql'({ file }) {
+    const sql = fs.readFileSync(path.join(__dirname, '..', '..', file), 'utf8');
+    const statements = sql.split('-- statement-break').map(x => x.replace(/^\s*--.*$/gm, '').trim()).filter(Boolean);
+    for (const st of statements) {
+      await d1(st);
+      console.log(`  ok: ${st.split('\n')[0].slice(0, 80)}`);
+    }
+  },
+
+  async 'list-triggers'() {
+    const r = await d1("SELECT name FROM sqlite_master WHERE type = 'trigger' ORDER BY name");
+    console.log(`  triggers: ${r.results.map(x => x.name).join(', ')}`);
+  },
+
+  // Proves the database rule works: a prohibited queue insert must be ignored.
+  async 'test-prohibited-rule'() {
+    await d1(`INSERT OR IGNORE INTO queue (id, url, name, status) VALUES ('rule_selftest', 'https://jailbait-rule-selftest.invalid', 'rule selftest', 'rejected')`);
+    const r = await d1(`SELECT COUNT(*) AS n FROM queue WHERE id = 'rule_selftest'`);
+    console.log(`  prohibited test row present after insert: ${r.results[0].n} (expected 0)`);
+    if (r.results[0].n !== 0) process.exitCode = 1;
+  },
+
   async 'list-worker-secrets'() {
     const r = await cf(`/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets`);
     console.log(`  secrets: ${r.ok ? r.result.map(s => s.name).join(', ') : r.errors.join('; ')}`);

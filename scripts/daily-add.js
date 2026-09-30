@@ -303,7 +303,12 @@ async function run() {
     process.exit(0);
   }
 
-  const enriched = scored.map(enrich);
+  // Re-check after enrichment: the scraped meta description only exists now.
+  const enriched = scored.map(enrich).filter(e => {
+    if (!isProhibited(e.url, e.name, e.description)) return true;
+    console.log(`   ⛔ Blocked (prohibited content): ${e.url}`);
+    return false;
+  });
   console.log(`\n➕ Enriched ${enriched.length} new sites`);
   enriched.forEach(s => console.log(`   · ${s.name} (${s.category})`));
 
