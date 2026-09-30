@@ -1,6 +1,13 @@
 [
+  { "task": "delete-sites", "ids": [
+    "teen_young_pussy_haven_nudism__ms4emv9o",
+    "teen_young_pussy_family_nudism_ms4emv9o",
+    "nudister_mu40a660",
+    "naturistcamp_mu40a660",
+    "nudistvid_mu40b0ij",
+    "freshteenporn_mu40b0ij",
+    "top_rated_young_teen_porn_vide_mu5g23fk"
+  ] },
   { "task": "report-prohibited" },
-  { "task": "apply-sql", "file": "migrations/0006_block_prohibited_content.sql" },
-  { "task": "list-triggers" },
   { "task": "test-prohibited-rule" }
 ]
