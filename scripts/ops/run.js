@@ -96,6 +96,25 @@ const tasks = {
     if (r.results[0].n !== 0) process.exitCode = 1;
   },
 
+  // Read-only: which Cloudflare capabilities the CI token has (yes/no only).
+  async 'token-capabilities'() {
+    const z = await zoneId();
+    const probes = {
+      'turnstile:read (list widgets)': `/accounts/${ACCOUNT}/challenges/widgets`,
+      'workers:read (list secrets)': `/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets`,
+      'd1:read': `/accounts/${ACCOUNT}/d1/database/${DB_ID}`,
+      'zone:read': `/zones/${z}`,
+      'zone settings:read': `/zones/${z}/settings/ssl`,
+      'dns:read': `/zones/${z}/dns_records?per_page=1`,
+      'waf/rulesets:read': `/zones/${z}/rulesets`,
+      'api tokens:read (self)': `/user/tokens/verify`,
+    };
+    for (const [label, p] of Object.entries(probes)) {
+      const r = await cf(p);
+      console.log(`  ${r.ok ? 'YES' : 'no '} ${label}${r.ok ? '' : ` (HTTP ${r.status})`}`);
+    }
+  },
+
   async 'list-worker-secrets'() {
     const r = await cf(`/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets`);
     console.log(`  secrets: ${r.ok ? r.result.map(s => s.name).join(', ') : r.errors.join('; ')}`);
