@@ -115,6 +115,33 @@ const tasks = {
     }
   },
 
+  // Read-only: fingerprints the CI token (yes/no + counts) so it can be matched
+  // to a row in the dashboard's API Tokens list.
+  async 'token-fingerprint'() {
+    const v = await cf('/user/tokens/verify');
+    console.log(`  token id starts: ${v.ok ? String(v.result.id).slice(0, 8) : 'n/a'} | expires: ${v.ok ? v.result.expires_on || 'never' : 'n/a'}`);
+    const accounts = await cf('/accounts?per_page=50');
+    console.log(`  accounts visible: ${accounts.ok ? accounts.result.length : `no (HTTP ${accounts.status})`}`);
+    const zones = await cf('/zones?per_page=50');
+    console.log(`  zones visible: ${zones.ok ? zones.result.length : `no (HTTP ${zones.status})`}`);
+    const z = await zoneId();
+    const probes = {
+      'Pages': `/accounts/${ACCOUNT}/pages/projects`,
+      'Containers': `/accounts/${ACCOUNT}/containers/applications`,
+      'Workers KV': `/accounts/${ACCOUNT}/storage/kv/namespaces?per_page=1`,
+      'R2': `/accounts/${ACCOUNT}/r2/buckets`,
+      'AI Search': `/accounts/${ACCOUNT}/autorag/rags`,
+      'Security Center': `/accounts/${ACCOUNT}/intel/attack-surface-report/issues?per_page=1`,
+      'Workers Routes (zone)': `/zones/${z}/workers/routes`,
+      'User Details': `/user`,
+      'Memberships': `/memberships`,
+    };
+    for (const [label, p] of Object.entries(probes)) {
+      const r = await cf(p);
+      console.log(`  ${r.ok ? 'YES' : 'no '} ${label}${r.ok ? '' : ` (HTTP ${r.status})`}`);
+    }
+  },
+
   async 'list-worker-secrets'() {
     const r = await cf(`/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets`);
     console.log(`  secrets: ${r.ok ? r.result.map(s => s.name).join(', ') : r.errors.join('; ')}`);
