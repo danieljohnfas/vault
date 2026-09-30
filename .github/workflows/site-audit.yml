@@ -1,0 +1,39 @@
+name: 🔎 Production Audit (read-only)
+
+# Read-only snapshot of the live site, Search Console and Cloudflare config.
+# Nothing is committed or deployed.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'scripts/diagnostics/**'
+      - '.github/workflows/site-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install googleapis
+        run: npm install --no-save --no-audit --no-fund googleapis
+      - name: Run audit
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/diagnostics/site-audit.js
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: site-audit
+          path: reports/site-audit.json
+          retention-days: 7
