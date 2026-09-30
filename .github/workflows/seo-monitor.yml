@@ -63,10 +63,10 @@ jobs:
           node scripts/seo-autofix.js $DRY_RUN_FLAG
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
-          # Check if any files changed (fixes were applied)
-          CHANGED=$(git status --porcelain | wc -l)
+          # Only website files trigger a deploy; report-only changes are just committed.
+          CHANGED=$(git status --porcelain -- index.html blog/ | wc -l)
           echo "files_changed=$CHANGED" >> $GITHUB_OUTPUT
-          echo "::notice::SEO auto-fix complete. Files changed: $CHANGED"
+          echo "::notice::SEO auto-fix complete. Site files changed: $CHANGED"
 
       # ── 3. Show report in Actions log ───────────────────────────────────────
       - name: Display SEO Status Report
@@ -84,7 +84,9 @@ jobs:
       - name: Commit fixes & report to GitHub
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
-          git add -A
+          # Stage only what the bot is allowed to touch (never `git add -A`: that is
+          # how node_modules and scratch files ended up in this repository).
+          git add reports/ index.html blog/ .gitignore
 
           # Only commit if something changed
           if git diff --cached --quiet; then
@@ -99,32 +101,22 @@ jobs:
             echo "commit_pushed=true" >> $GITHUB_OUTPUT
           fi
 
-      # ── 5. Deploy to Cloudflare ──────────────────────────────────────────────
+      # ── 5. Validate & deploy to Cloudflare ─────────────────────────────────
+      - name: Validate worker bundle
+        if: ${{ github.event.inputs.dry_run != 'true' && (steps.seo_fix.outputs.files_changed != '0' || github.event.inputs.force_deploy == 'true') }}
+        run: |
+          node --check src/index.js
+          npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-dist
+
       - name: Deploy to Cloudflare Workers
         if: ${{ github.event.inputs.dry_run != 'true' && (steps.seo_fix.outputs.files_changed != '0' || github.event.inputs.force_deploy == 'true') }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          echo "🚀 Deploying updated worker to Cloudflare..."
-          npx wrangler@latest deploy --env "" 2>&1 | tee /tmp/deploy.log
-          if grep -q "Deployed" /tmp/deploy.log; then
-            echo "✅ Cloudflare deploy successful"
-          else
-            echo "⚠️ Cloudflare deploy may have had issues — check log above"
-          fi
+        run: npx --yes wrangler@4 deploy
 
-      # ── 6. Ping Google & Bing sitemaps ───────────────────────────────────────
-      - name: Ping search engine sitemaps
-        if: ${{ github.event.inputs.dry_run != 'true' && steps.seo_fix.outputs.files_changed != '0' }}
-        run: |
-          echo "📡 Pinging Google Search Console sitemap..."
-          curl -s "https://www.google.com/ping?sitemap=https://hentaivault.me/sitemap-index.xml" \
-            -o /dev/null -w "Google ping status: %{http_code}\n" || echo "Google ping failed (non-fatal)"
-
-          echo "📡 Pinging Bing sitemap..."
-          curl -s "https://www.bing.com/ping?sitemap=https://hentaivault.me/sitemap-index.xml" \
-            -o /dev/null -w "Bing ping status: %{http_code}\n" || echo "Bing ping failed (non-fatal)"
+      # (Google and Bing retired their sitemap "ping" endpoints; sitemaps are
+      #  discovered from robots.txt and Search Console instead.)
 
       # ── 7. Summary ───────────────────────────────────────────────────────────
       - name: Final summary

@@ -22,6 +22,7 @@ const fs   = require('fs');
 const path = require('path');
 const isSiteLive = require('./ping-site');
 const { scoreSite } = require('./score-site');
+const { isProhibited } = require('../src/prohibited.js');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -80,6 +81,14 @@ const JUNK_PATH_PATTERNS = [
   /\/performance\/?$/i,
 ];
 
+// Accepts "/", "/en", "/en/", "/home" and "/index.html"; anything deeper is a sub-page.
+function isHomepagePath(u) {
+  if (u.search) return false;
+  const segments = u.pathname.split('/').filter(Boolean);
+  if (segments.length === 0) return true;
+  return segments.length === 1 && /^([a-z]{2}(-[a-z]{2})?|home|index\.(html?|php))$/i.test(segments[0]);
+}
+
 function isJunkSite(site) {
   try {
     const u = new URL(site.url);
@@ -88,9 +97,10 @@ function isJunkSite(site) {
     if (JUNK_DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
     // Junk path patterns
     if (JUNK_PATH_PATTERNS.some(p => p.test(site.url))) return true;
-    // Deep sub-paths = individual content, not a site
-    const segments = u.pathname.split('/').filter(Boolean);
-    if (segments.length > 2) return true;
+    // Never publish anything matching the prohibited-content blocklist.
+    if (isProhibited(site.url, site.name, site.description)) return true;
+    // Only site homepages: performer, category, search and article pages are not "sites".
+    if (!isHomepagePath(u)) return true;
     // Name looks like a sentence/headline rather than a brand name
     const name = String(site.name || '');
     if (name.length > 70 || name.trim().split(/\s+/).length > 8) return true;
@@ -137,35 +147,22 @@ function enrich(site) {
   const dt   = today();
   const rating = site.rating || 0;
 
-  const pros = site.pros || [
-    `High quality ${d.niche} content`,
-    'Regularly updated library',
-    'User-friendly interface',
-    'Fast page load speeds',
-  ];
-  const cons = site.cons || [
-    'May contain intrusive ads',
-    'Some regions may require a VPN',
-  ];
-
+  // Only state what the pipeline actually measured. No invented "editorial
+  // audits", superlatives or boilerplate pros/cons: thousands of identical
+  // claims across listings is what Google classifies as scaled low-value content.
   const longReview =
-    `In our comprehensive 2026 audit, ${name} emerged as a top-tier destination for ` +
-    `${d.adj} enthusiasts. The platform offers a seamless user experience with high-quality ` +
-    `content that is updated frequently. Whether you are a long-time fan or new to ${d.niche}, ` +
-    `${name} provides a robust set of features and a massive library that makes it a must-visit ` +
-    `in our directory. Our editorial team gave it a score of ${rating.toFixed(1)}/5 based on ` +
-    `content variety, load speed, design quality, and community trust signals.`;
+    `${name} is a ${d.adj} site listed on HentaiVault since ${dt}. ` +
+    `Our automated checks (availability, HTTPS, response time and on-page signals) scored it ` +
+    `${rating.toFixed(1)}/5. Scores are refreshed as the site is re-checked.`;
 
-  const fallbackDesc = `${name} is a high-authority platform specializing in ${d.adj}. Our 2026 review found it to be a reliable and high-quality resource for enthusiasts.`;
-  
-  let finalDesc = fallbackDesc;
+  let finalDesc = `${name} — ${d.adj} site.`;
   if (site.scoreSignals && site.scoreSignals.metaDesc && site.scoreSignals.metaDesc.length > 10) {
     finalDesc = site.scoreSignals.metaDesc;
-  } else if (site.description && site.description !== fallbackDesc) {
+  } else if (site.description) {
     finalDesc = site.description;
   }
 
-  return {
+  const entry = {
     id,
     name,
     url: site.url,
@@ -173,46 +170,12 @@ function enrich(site) {
     description: finalDesc,
     addedAt: dt,
     longReview,
-    description_es:
-      `${name} es una plataforma de alta autoridad especializada en ${d.adj}.`,
-    description_jp:
-      `${name}は、${d.adj}を専門とする高品質なプラットフォームです。`,
-    description_fr:
-      `${name} est une plateforme de haute autorité spécialisée en ${d.adj}.`,
-    description_pt:
-      `${name} é uma plataforma de alta autoridade especializada em ${d.adj}.`,
-    description_hi:
-      `${name} ${d.adj} में विशेषज्ञता वाला एक उच्च-प्राधिकरण मंच है।`,
-    description_ar:
-      `${name} منصة ذات سلطة عالية متخصصة في ${d.adj}.`,
-    description_de:
-      `${name} ist eine renommierte Plattform, die sich auf ${d.adj} spezialisiert hat.`,
-    longReview_es:
-      `En nuestra auditoría completa de 2026, ${name} emergió como un destino de primer nivel para ${d.adj}. ` +
-      `La plataforma ofrece una experiencia de usuario perfecta con contenido de alta calidad actualizado con frecuencia.`,
-    longReview_jp:
-      `2026年の包括的な監査で、${name}は${d.adj}ファンのための最高レベルの目的地として浮上しました。` +
-      `プラットフォームは高品質なコンテンツで優れたユーザー体験を提供しています。`,
-    longReview_fr:
-      `Dans notre audit complet de 2026, ${name} est apparu comme une destination de premier ordre pour ${d.adj}. ` +
-      `La plateforme offre une expérience utilisateur fluide avec un contenu de haute qualité mis à jour fréquemment.`,
-    longReview_pt:
-      `Em nossa auditoria abrangente de 2026, ${name} emergiu como um destino de primeira linha para ${d.adj}. ` +
-      `A plataforma oferece uma experiência de usuário perfeita com conteúdo de alta qualidade atualizado com frequência.`,
-    longReview_hi:
-      `हमारे व्यापक 2026 ऑडिट में, ${name} ${d.adj} के लिए एक शीर्ष स्तरीय गंतव्य के रूप में उभरा। ` +
-      `प्लेटफ़ॉर्म उच्च गुणवत्ता वाली सामग्री के साथ एक सहज उपयोगकर्ता अनुभव प्रदान करता है।`,
-    longReview_ar:
-      `في تدقيقنا الشامل لعام 2026، برزت ${name} كوجهة من الدرجة الأولى لـ ${d.adj}. ` +
-      `توفر المنصة تجربة مستخدم سلسة مع محتوى عالي الجودة يتم تحديثه بشكل متكرر.`,
-    longReview_de:
-      `Bei unserem umfassenden Audit 2026 erwies sich ${name} als Top-Reiseziel für ${d.adj}. ` +
-      `Die Plattform bietet ein nahtloses Benutzererlebnis mit hochwertigen Inhalten, die regelmäßig aktualisiert werden.`,
     rating,
-    tags: site.tags || [cat.split(' ')[0], 'Free'],
-    pros,
-    cons,
+    tags: site.tags || [cat.split(' ')[0]],
   };
+  if (Array.isArray(site.pros) && site.pros.length) entry.pros = site.pros;
+  if (Array.isArray(site.cons) && site.cons.length) entry.cons = site.cons;
+  return entry;
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────

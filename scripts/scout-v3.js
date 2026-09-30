@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
+const { isProhibited } = require('../src/prohibited.js');
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -75,6 +76,14 @@ const JUNK_PATH_PATTERNS = [
   /itch\.io\/[^/]+\//i,   // itch.io individual game subpages
 ];
 
+// Accepts "/", "/en", "/en/", "/home" and "/index.html"; anything deeper is a sub-page.
+function isHomepagePath(u) {
+  if (u.search) return false;
+  const segments = u.pathname.split('/').filter(Boolean);
+  if (segments.length === 0) return true;
+  return segments.length === 1 && /^([a-z]{2}(-[a-z]{2})?|home|index\.(html?|php))$/i.test(segments[0]);
+}
+
 function isJunkUrl(url) {
   try {
     const u = new URL(url);
@@ -83,9 +92,10 @@ function isJunkUrl(url) {
     if (DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
     // Block junk path patterns
     if (JUNK_PATH_PATTERNS.some(p => p.test(url))) return true;
-    // Block deep sub-paths (more than 2 path segments = individual content, not a site)
-    const segments = u.pathname.split('/').filter(Boolean);
-    if (segments.length > 2) return true;
+    // Never queue anything matching the prohibited-content blocklist.
+    if (isProhibited(url)) return true;
+    // Only site homepages: performer, category, search and article pages are not "sites".
+    if (!isHomepagePath(u)) return true;
     return false;
   } catch {
     return true;
@@ -454,6 +464,8 @@ async function run() {
     const crypto = require('crypto');
     let sql = '';
     for (const s of validSites) {
+      // Final gate for every discovery source, not just spidered links.
+      if (isJunkUrl(s.url) || isProhibited(s.url, s.name, s.description)) continue;
       const id = crypto.randomUUID();
       const url = String(s.url).replace(/'/g, "''");
       const cat = String(s.category || '').replace(/'/g, "''");
