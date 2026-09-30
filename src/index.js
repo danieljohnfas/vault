@@ -8,7 +8,8 @@
  *   *                             → static assets (see .assetsignore)
  *
  * Secrets (Cloudflare dashboard → Worker → Settings → Variables and Secrets):
- *   TURNSTILE_SECRET_KEY — required for /api/submit and review submissions
+ *   TURNSTILE_SECRET_KEY — optional; when set, /api/submit and reviews verify
+ *                          Cloudflare Turnstile tokens (see verifyHuman)
  *   INDEXNOW_KEY         — optional, enables IndexNow pings for new listings
  *   AD_KEY_*             — optional, served by /api/config
  */
@@ -1107,7 +1108,7 @@ async function handleRequest(request, env, ctx) {
 
       if (request.method === 'GET') {
         try {
-          const result = await env.hv_directory.prepare('SELECT user_name, rating, comment, created_at FROM reviews WHERE site_id = ? ORDER BY created_at DESC').bind(site_id).all();
+          const result = await env.hv_directory.prepare('SELECT user_name, rating, comment, created_at FROM reviews WHERE site_id = ? ORDER BY created_at DESC LIMIT 50').bind(site_id).all();
           return new Response(
             JSON.stringify({ reviews: result.results }),
             { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } }
@@ -1131,21 +1132,17 @@ async function handleRequest(request, env, ctx) {
           if (!(rating >= 1 && rating <= 5) || comment.length < 3) return jsonError('Missing required fields', 400);
           if (comment.length > 2000) return jsonError('Review is too long (max 2000 characters).', 400);
 
-          if (!body.turnstileToken) return jsonError('Please complete the CAPTCHA.', 400);
-          if (!env.TURNSTILE_SECRET_KEY) return jsonError('Reviews are temporarily unavailable.', 503);
+          // Reviews are published immediately, so no links and nothing on the blocklist.
+          if (/https?:\/\/|www\.|\.(com|net|org|xxx|io|me|to)\b/i.test(comment + ' ' + userName)) {
+            return jsonError('Links are not allowed in reviews.', 400);
+          }
+          if (isProhibited(comment, userName)) return jsonError('Review rejected.', 400);
+
+          const human = await verifyHuman(body, ip, env);
+          if (!human.ok) return jsonError(human.error, 400);
+
           const siteExists = await env.hv_directory.prepare('SELECT 1 FROM sites WHERE id = ?').bind(site_id).first();
           if (!siteExists) return jsonError('Site not found', 404);
-          
-          const turnstileFormData = new FormData();
-          turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
-          turnstileFormData.append('response', body.turnstileToken);
-          if (ip) turnstileFormData.append('remoteip', ip);
-          
-          const turnstileRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-            method: 'POST', body: turnstileFormData
-          });
-          const turnstileData = await turnstileRes.json();
-          if (!turnstileData.success) return jsonError('CAPTCHA verification failed.', 400);
 
           await env.hv_directory.prepare(
             'INSERT INTO reviews (site_id, user_name, rating, comment) VALUES (?, ?, ?, ?)'
@@ -2078,31 +2075,11 @@ async function handleSubmit(request, env, ctx) {
     const body = await request.json().catch(() => null);
     if (!body) return jsonError('Invalid request body.', 400);
 
-    const { name, url, category, description, turnstileToken } = body;
+    const { name, url, category, description } = body;
 
-    // ── 1. Validate CAPTCHA ──────────────────────────────────────────────────
-    if (!turnstileToken) {
-      return jsonError('Please complete the CAPTCHA.', 400);
-    }
-
-    if (!env.TURNSTILE_SECRET_KEY) {
-      return jsonError('Server misconfiguration: missing Turnstile key.', 500);
-    }
-
-    const turnstileFormData = new FormData();
-    turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
-    turnstileFormData.append('response', turnstileToken);
-    if (ip) turnstileFormData.append('remoteip', ip);
-
-    const turnstileRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      body: turnstileFormData
-    });
-
-    const turnstileData = await turnstileRes.json();
-    if (!turnstileData.success) {
-      return jsonError('CAPTCHA verification failed. Please try again.', 400);
-    }
+    // ── 1. Bot check ─────────────────────────────────────────────────────────
+    const human = await verifyHuman(body, ip, env);
+    if (!human.ok) return jsonError(human.error, 400);
 
     // ── 2. Validate Inputs ───────────────────────────────────────────────────
     const nameClean = sanitize(name);
@@ -2213,6 +2190,31 @@ function makeId(name) {
 
 function encodeB64(str) {
   return btoa(unescape(encodeURIComponent(str)));
+}
+
+/**
+ * Bot protection for the public write endpoints (submissions, reviews), on top of
+ * the per-IP rate limit each caller applies first.
+ * - A hidden "website" honeypot field must be empty (bots fill every field).
+ * - When TURNSTILE_SECRET_KEY is configured, the Turnstile token is verified too.
+ */
+async function verifyHuman(body, ip, env) {
+  if (body && typeof body.website === 'string' && body.website.trim() !== '') {
+    return { ok: false, error: 'Submission rejected.' };
+  }
+  if (!env.TURNSTILE_SECRET_KEY) return { ok: true };
+  if (!body || !body.turnstileToken) return { ok: false, error: 'Please complete the CAPTCHA.' };
+  const form = new FormData();
+  form.append('secret', env.TURNSTILE_SECRET_KEY);
+  form.append('response', body.turnstileToken);
+  if (ip) form.append('remoteip', ip);
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form });
+    const data = await res.json();
+    return data.success ? { ok: true } : { ok: false, error: 'CAPTCHA verification failed. Please try again.' };
+  } catch {
+    return { ok: false, error: 'CAPTCHA verification is unavailable. Please try again later.' };
+  }
 }
 
 function jsonError(message, status) {
