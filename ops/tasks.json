@@ -1,4 +1,5 @@
 [
-  { "task": "token-capabilities" },
+  { "task": "set-turnstile-secret", "sitekey": "0x4AAAAAADUYfDUW8ArBr1-u", "name": "TURNSTILE_SECRET_KEY" },
+  { "task": "delete-worker-secret", "name": "GITHUB_TOKEN" },
   { "task": "list-worker-secrets" }
 ]
