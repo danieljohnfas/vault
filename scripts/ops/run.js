@@ -354,7 +354,8 @@ const tasks = {
       for (const r of sites) {
         let fields = [];
         try { fields = Object.entries(JSON.parse(r.data_json)).filter(([, v]) => JSON.stringify(v).toLowerCase().includes(term.toLowerCase())).map(([k]) => k); } catch {}
-        console.log(`    ${r.id} | ${new URL(r.url).hostname} | fields: ${fields.join(', ') || '(url only)'}`);
+        let d = {}; try { d = JSON.parse(r.data_json); } catch {}
+        console.log(`    ${r.id} | ${r.url} | name "${d.name}" | ${d.category} | rating ${d.rating} | released ${d.releasedAt || '-'} | fields: ${fields.join(', ') || '(url only)'}`);
       }
       const queue = (await d1(`SELECT id, status FROM queue WHERE instr(lower(url || ' ' || COALESCE(name, '')), '${t}') > 0`)).results;
       console.log(`  "${term}": ${queue.length} queue entr(ies) ${queue.map(q => `${q.id}:${q.status}`).join(' ')}`);

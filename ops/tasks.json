@@ -1,4 +1,3 @@
 [
-  { "task": "find-text", "terms": ["pcloud", "purevpn"] },
-  { "task": "pipeline-stats" }
+  { "task": "find-text", "terms": ["pcloud", "nutaku"] }
 ]
