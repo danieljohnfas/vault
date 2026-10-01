@@ -35,6 +35,18 @@ CREATE TRIGGER block_prohibited_sites_insert BEFORE INSERT ON sites
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen-young') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young teen') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young-teen') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candydoll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candy-doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candy doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'nymphet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ls-models') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'lsmodels') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ls-island') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'hussyfan') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ptsc') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'qqaazz') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinderporn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinder porn') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -74,6 +86,18 @@ CREATE TRIGGER block_prohibited_sites_update BEFORE UPDATE OF url, data_json ON 
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen-young') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young teen') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young-teen') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candydoll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candy-doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'candy doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'nymphet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ls-models') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'lsmodels') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ls-island') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'hussyfan') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ptsc') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'qqaazz') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinderporn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinder porn') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -113,6 +137,18 @@ CREATE TRIGGER block_prohibited_queue_insert BEFORE INSERT ON queue
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen-young') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young teen') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young-teen') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candydoll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candy-doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candy doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'nymphet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ls-models') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'lsmodels') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ls-island') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'hussyfan') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ptsc') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'qqaazz') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinderporn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinder porn') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -152,6 +188,18 @@ CREATE TRIGGER block_prohibited_queue_update BEFORE UPDATE OF url, name ON queue
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen-young') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young teen') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young-teen') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candydoll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candy-doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'candy doll') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'nymphet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ls-models') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'lsmodels') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ls-island') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'hussyfan') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ptsc') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'qqaazz') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinderporn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinder porn') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;

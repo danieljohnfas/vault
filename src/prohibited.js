@@ -20,6 +20,9 @@ export const PROHIBITED_TERMS = [
   'pedophil', 'paedophil', 'pedobear', 'child sex', 'kids porn', 'kid porn',
   // "family/teen nudism" galleries are a well-known CSAM front in adult directories
   'nudism', 'nudist', 'naturist', 'teen young', 'teen-young', 'young teen', 'young-teen',
+  // child "model" studios and long-standing CSAM search keywords
+  'candydoll', 'candy-doll', 'candy doll', 'nymphet', 'ls-models', 'lsmodels', 'ls-island',
+  'hussyfan', 'ptsc', 'qqaazz', 'kinderporn', 'kinder porn',
 ];
 
 export function isProhibited(...parts) {
