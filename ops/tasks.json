@@ -1,4 +1,3 @@
 [
-  { "task": "list-indexable", "verbose": false },
-  { "task": "pipeline-stats" }
+  { "task": "list-indexable", "verbose": false }
 ]

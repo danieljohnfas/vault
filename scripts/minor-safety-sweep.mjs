@@ -16,12 +16,11 @@
  * Logs are public: listing IDs and rule names only.
  */
 import { checkMinorSafety } from '../src/prohibited.js';
+import { d1 as d1FromEnv, sqlString, chunks } from './lib/d1.mjs';
 
 const MAX_SHARE = Number(process.env.MINOR_SAFETY_MAX_SHARE || 0.25);
-const DB_ID = '3dc06028-c9b1-4e4a-a3c3-11f92209baab';
 
-const sqlList = ids => ids.map(id => `'${String(id).replace(/'/g, "''")}'`).join(', ');
-const chunks = (arr, n) => Array.from({ length: Math.ceil(arr.length / n) }, (_, i) => arr.slice(i * n, i * n + n));
+const sqlList = ids => ids.map(sqlString).join(', ');
 
 export async function runSweep({ d1, dryRun = false, log = console.log }) {
   const sites = (await d1(`SELECT id, url,
@@ -53,17 +52,6 @@ export async function runSweep({ d1, dryRun = false, log = console.log }) {
   for (const ids of chunks(queueRemove, 100)) await d1(`DELETE FROM queue WHERE id IN (${sqlList(ids)})`);
   log('sweep applied');
   return { remove, queueRemove };
-}
-
-async function d1FromEnv(sql, params = []) {
-  const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/d1/database/${DB_ID}/query`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sql, params }),
-  });
-  const json = await res.json().catch(() => ({}));
-  if (!json.success) throw new Error(`D1 HTTP ${res.status} ${(json.errors || []).map(e => e.message).join('; ')}`);
-  return json.result[0];
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

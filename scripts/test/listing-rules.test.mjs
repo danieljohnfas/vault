@@ -2,12 +2,12 @@
 // Every condition that decides whether a listing is in the sitemap.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isIndexable, isJunkName, isSiteUp, normalizeCategory } from '../../src/listing-rules.js';
+import { isIndexable, isIndexCandidate, isJunkName, isSiteUp, normalizeCategory } from '../../src/listing-rules.js';
 
 // A listing that meets every condition; each test changes one thing.
 const good = (over = {}) => ({
   id: 'nhentai', url: 'https://nhentai.net', name: 'nHentai', category: 'Manga & Doujinshi',
-  rating: 4.6, description: 'Doujinshi archive', tags: ['doujin'], isUp: true, ...over,
+  rating: 4.6, description: 'Doujinshi archive', tags: ['doujin'], isUp: true, releasedAt: '2026-10-01', ...over,
 });
 
 test('baseline listing is indexable', () => {
@@ -83,6 +83,12 @@ test('passes the minor-safety rules', () => {
   assert.equal(isIndexable(good({ description: 'schoolgirl uploads' })), false);
   assert.equal(isIndexable(good({ tags: ['loli'] })), false);
   assert.equal(isIndexable(good({ url: 'https://l0li-archive.example' })), false);
+});
+
+test('released to search engines (drip-feed)', () => {
+  assert.equal(isIndexable(good({ releasedAt: undefined })), false, 'waiting for release');
+  assert.equal(isIndexCandidate(good({ releasedAt: undefined })), true, 'but it is a release candidate');
+  assert.equal(isIndexCandidate(good({ releasedAt: undefined, rating: 2 })), false, 'only qualifying listings are candidates');
 });
 
 test('a missing listing is never indexable', () => {

@@ -23,6 +23,14 @@ const path = require('path');
 const isSiteLive = require('./ping-site');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
+const { isJunkName } = require('../src/listing-rules.js');
+
+// Runs fn over items with at most `limit` in flight (no batch waits on its slowest item).
+async function pool(items, limit, fn) {
+  let next = 0;
+  const worker = async () => { while (next < items.length) { const i = next++; await fn(items[i], i); } };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+}
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -103,8 +111,8 @@ function isJunkSite(site) {
     if (!isHomepagePath(u)) return true;
     // Name looks like a sentence/headline rather than a brand name
     const name = String(site.name || '');
-    // Scraping artefacts: challenge/error pages or bare subdomain labels as the name
-    if (/checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i.test(name.trim())) return true;
+    // Scraping artefacts: challenge/error pages or subdomain labels as the name
+    if (isJunkName(name, site.url)) return true;
     if (name.length > 70 || name.trim().split(/\s+/).length > 8) return true;
     return false;
   } catch {
@@ -246,33 +254,18 @@ async function run() {
 
   console.log(`\n🔍 Pinging sites (concurrency=40) to find ${COUNT} valid domains...`);
 
-  for (let i = 0; i < fresh.length; i += 40) {
-    if (batch.length >= COUNT) break;
-
-    const chunk = fresh.slice(i, i + 40);
-    const results = await Promise.all(chunk.map(async s => {
-      return { site: s, live: await isSiteLive(s.url) };
-    }));
-
-    for (const r of results) {
-      if (r.live === 'live') {
-        if (batch.length < COUNT) {
-          console.log(`   ✅ ${r.site.url}`);
-          batch.push(r.site);
-        }
-      } else if (r.live === 'dead') {
-        console.log(`   ❌ ${r.site.url} (Dead/Parked)`);
-        deadUrls.add(r.site.url);
-      } else {
-        // r.live === 'error'
-        // Site timed out, blocked bot, or returned 5xx. Assume it is alive since it was manually scouted.
-        if (batch.length < COUNT) {
-          console.log(`   ⚠️ ${r.site.url} (Ping Error / Cloudflare Blocked - Assuming Live)`);
-          batch.push(r.site);
-        }
-      }
+  await pool(fresh, 40, async s => {
+    if (batch.length >= COUNT) return;
+    const live = await isSiteLive(s.url);
+    if (live === 'dead') {
+      console.log(`   ❌ ${s.url} (Dead/Parked)`);
+      deadUrls.add(s.url);
+    } else if (batch.length < COUNT) {
+      // 'error' = timed out, blocked the bot or returned 5xx: kept, since it was scouted live.
+      console.log(live === 'live' ? `   ✅ ${s.url}` : `   ⚠️ ${s.url} (Ping Error / Cloudflare Blocked - Assuming Live)`);
+      batch.push(s);
     }
-  }
+  });
 
   if (batch.length === 0) {
     console.log('⚠️ No live sites found in the remaining queue!');
@@ -283,15 +276,15 @@ async function run() {
   // 5. Score each site with real signals and filter < 4.0
   console.log(`\n🔬 Scoring ${batch.length} sites with real quality signals...`);
   const scored = [];
-  for (const s of batch) {
+  await pool(batch, 10, async s => {
     const { score, signals } = await scoreSite(s.url, s.category, s.name);
     if (score < 3.5) {
       console.log(`   ⏭️  Dropped after scoring (${score}/5.0): ${s.url}`);
-      continue;
+      return;
     }
     console.log(`   ⭐ ${score}/5.0 — ${s.url}`);
     scored.push({ ...s, rating: score, scoreSignals: signals });
-  }
+  });
 
   if (scored.length === 0) {
     console.log('⚠️ No sites passed the 3.5 quality gate after scoring.');
