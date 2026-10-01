@@ -24,13 +24,7 @@ const isSiteLive = require('./ping-site');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
 const { isJunkName } = require('../src/listing-rules.js');
-
-// Runs fn over items with at most `limit` in flight (no batch waits on its slowest item).
-async function pool(items, limit, fn) {
-  let next = 0;
-  const worker = async () => { while (next < items.length) { const i = next++; await fn(items[i], i); } };
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
-}
+const { isTopical, pool } = require('./lib/discovery.js');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -280,6 +274,12 @@ async function run() {
     const { score, signals } = await scoreSite(s.url, s.category, s.name);
     if (score < 3.5) {
       console.log(`   ⏭️  Dropped after scoring (${score}/5.0): ${s.url}`);
+      return;
+    }
+    // Off-topic sites (gaming news, CDNs, local businesses) score well on technical
+    // signals alone; the page or its name must actually be adult/hentai/anime.
+    if (!signals.hasAdultSignals && !isTopical(s.url, s.name, signals.metaDesc)) {
+      console.log(`   ⏭️  Dropped (off-topic): ${s.url}`);
       return;
     }
     console.log(`   ⭐ ${score}/5.0 — ${s.url}`);

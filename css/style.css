@@ -1790,61 +1790,6 @@ html[lang]:not([lang='de']) .i18n-de {
 @media (min-width: 729px) { .ad-top-banner .ad-728 { display: block !important; } }
 @media (max-width: 728px) { .ad-top-banner .ad-320 { display: block !important; } }
 
-/* =========================================================================
-   pCloud Affiliate Banner Enhancements
-   ========================================================================= */
-
-/* Base transitions for all injected affiliate banners */
-.pcloud-banner-interactive {
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease !important;
-    margin-top: 32px !important;
-    margin-bottom: 32px !important;
-}
-
-.pcloud-banner-interactive:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.4) !important;
-}
-
-.pcloud-banner-interactive a {
-    transition: opacity 0.2s ease;
-}
-
-.pcloud-banner-interactive a:hover {
-    opacity: 0.9;
-}
-
-/* 1. Top Banner Glow Animation */
-@keyframes pulseGlow {
-    0% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 136, 204, 0.2); }
-    50% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 136, 204, 0.8); }
-    100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 136, 204, 0.2); }
-}
-.pcloud-banner-top {
-    animation: pulseGlow 4s infinite alternate;
-}
-
-/* 2. Native Banner Pulse SVG Animation */
-@keyframes pulseScale {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-.pcloud-banner-native:hover svg {
-    animation: pulseScale 1s infinite alternate;
-}
-
-/* 3. Sticky Bottom Slide-up Animation */
-@keyframes slideUpFade {
-    0% { transform: translate(-50%, 100%); opacity: 0; }
-    100% { transform: translate(-50%, 0); opacity: 1; }
-}
-#pcloud-sticky-bottom {
-    animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    animation-delay: 0.5s;
-    opacity: 0;
-}
-
 /* Visually hidden but available to screen readers (used by search labels). */
 .sr-only {
     position: absolute !important;
@@ -1857,3 +1802,20 @@ html[lang]:not([lang='de']) .i18n-de {
     white-space: nowrap;
     border: 0;
 }
+
+/* Server-rendered listing links: homepage "Top-Rated Sites by Category" and guide boxes */
+.top-sites { max-width: 1100px; margin: 48px auto 0; padding: 24px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); }
+.top-sites h2 { font-size: 1.5rem; margin: 0 0 20px; color: var(--text-main); }
+.top-sites-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+.top-sites-group h3 { font-size: 1.05rem; margin: 0 0 10px; }
+.top-sites-group h3 a { color: var(--text-main); text-decoration: none; }
+.top-sites-group ol { margin: 0 0 10px; padding-left: 1.4em; }
+.top-sites-group li { margin: 4px 0; font-size: 0.92rem; }
+.top-sites-group li a, .guide-listings li a { color: var(--secondary); text-decoration: none; }
+.top-sites-group li a:hover, .guide-listings li a:hover { text-decoration: underline; }
+.top-sites-rating, .guide-listings li span { color: var(--text-muted); font-size: 0.8rem; }
+.top-sites-more { font-size: 0.85rem; color: var(--primary); text-decoration: none; }
+.guide-listings { margin: 32px 0 0; padding: 20px 24px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg, 12px); }
+.guide-listings h2 { font-size: 1.2rem; margin: 0 0 12px; }
+.guide-listings ul { margin: 0; padding-left: 1.2em; columns: 2 220px; }
+.guide-listings li { margin: 4px 0; break-inside: avoid; }

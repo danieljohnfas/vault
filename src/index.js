@@ -19,6 +19,10 @@ import {
   CATEGORIES, normalizeCategory, categoryVariants,
   isSafeHttpUrl, isSiteUp, parseTags, isIndexable, SITEMAP_STATIC_PAGES,
 } from './listing-rules.js';
+import {
+  LINK_COLUMNS, HUB_PAGES, HUB_LINKS, topForHub, renderHubCards, renderHomeSection,
+  buildNameIndex, renderGuideLinks,
+} from './internal-links.js';
 
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
 
@@ -301,49 +305,8 @@ class ReviewBodyHandler {
             </div>
         </div>
 
-        <!-- Three-column layout -->
+        <!-- Two-column layout -->
         <div class="review-grid">
-
-            <!-- LEFT RAIL: PureVPN Ads (visible on screens > 1100px) -->
-            <aside class="review-left-rail">
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
-                    <div class="sky-sponsored">Sponsored</div>
-                    <div class="sky-body">
-                        <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
-                            <span class="sky-brand">PureVPN</span>
-                        </div>
-                        <p class="sky-headline">Site Blocked?</p>
-                        <p class="sky-desc">Unblock nhentai, Hitomi.la & every other site in seconds. 6,500+ servers worldwide.</p>
-                        <div style="background:#02cf8e; color:#000; font-weight:800; font-size:0.8rem; padding:8px 14px; border-radius:50px; text-align:center; margin-top:10px;">Unblock Now — $2.14/mo →</div>
-                    </div>
-                </a>
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
-                    <div class="sky-sponsored">Sponsored</div>
-                    <div class="sky-body">
-                        <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
-                            <span class="sky-brand">PureVPN</span>
-                        </div>
-                        <p class="sky-headline">Browse Privately</p>
-                        <p class="sky-desc">Zero logs, military-grade AES-256 encryption. Your ISP sees nothing.</p>
-                        <div style="font-size:0.78rem; color:#02cf8e; font-weight:600; margin-top:8px;">✓ 31-day money-back guarantee</div>
-                        <div class="sky-cta" style="color:#02cf8e; margin-top:6px;">Try Risk-Free →</div>
-                    </div>
-                </a>
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(2,207,142,0.15), rgba(1,154,105,0.08)); border-color:rgba(2,207,142,0.4);">
-                    <div class="sky-sponsored">Sponsored</div>
-                    <div class="sky-body">
-                        <div class="sky-logo-row">
-                            <img src="/assets/partners/purevpn-64.png" alt="PureVPN" class="sky-logo" onerror="this.style.display='none'">
-                            <span class="sky-brand">PureVPN</span>
-                        </div>
-                        <p class="sky-headline">Torrent Freely</p>
-                        <p class="sky-desc">No speed throttling, P2P optimised servers. Download manga packs without ISP interference.</p>
-                        <div class="sky-cta" style="color:#02cf8e;">Get Started →</div>
-                    </div>
-                </a>
-            </aside>
 
             <!-- CENTER: Main review content -->
             <div class="review-main">
@@ -408,27 +371,6 @@ class ReviewBodyHandler {
                     <p>${l.conclusionText}</p>
                 </div>
 
-                <!-- PureVPN Inline Native CTA — visible to 100% of users across all devices -->
-                <a href="https://billing.purevpn.com/aff.php?aff=49387845" target="_blank" rel="nofollow noopener sponsored"
-                   style="display:block; text-decoration:none; background:linear-gradient(135deg, rgba(2,207,142,0.12), rgba(1,154,105,0.08)); border:1px solid rgba(2,207,142,0.35); border-radius:14px; padding:20px 22px; margin-bottom:20px; transition:border-color 0.2s, transform 0.2s;"
-                   onmouseover="this.style.borderColor='rgba(2,207,142,0.7)';this.style.transform='translateY(-2px)'"
-                   onmouseout="this.style.borderColor='rgba(2,207,142,0.35)';this.style.transform='none'">
-                    <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#02cf8e; margin-bottom:10px;">🛡️ Sponsored — Reader Deal</div>
-                    <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-                        <img src="/assets/partners/purevpn-64.png" alt="PureVPN" width="44" height="44" style="border-radius:10px; flex-shrink:0;" onerror="this.style.display='none'">
-                        <div style="flex:1; min-width:0;">
-                            <div style="font-size:1.05rem; font-weight:800; color:#fff; margin-bottom:3px;">Is ${localName} blocked in your country?</div>
-                            <div style="font-size:0.88rem; color:#a1a1aa; line-height:1.4;">PureVPN unblocks every hentai & anime site. No logs, 6,500+ servers, works on all devices.</div>
-                        </div>
-                        <div style="background:#02cf8e; color:#000; font-weight:800; font-size:0.88rem; padding:10px 18px; border-radius:50px; white-space:nowrap; flex-shrink:0;">Unblock Now →</div>
-                    </div>
-                    <div style="display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;">
-                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ Works on Netflix, Crunchyroll, nhentai</span>
-                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ 31-day money-back guarantee</span>
-                        <span style="font-size:0.8rem; color:#02cf8e; font-weight:600;">✓ From $2.14/mo</span>
-                    </div>
-                </a>
-
                 <!-- Compare Card -->
                 <div class="review-card">
                     <h2><span class="card-icon">⚔️</span> Compare ${localName}</h2>
@@ -485,34 +427,6 @@ class ReviewBodyHandler {
                     <button onclick="copyEmbedBadge(this.dataset.siteId, this.dataset.siteName)" data-site-id="${escapeHTML(site.id)}" data-site-name="${escapeHTML(site.name)}" id="btnEmbedBadge" class="btn-report" style="margin-top:8px; border-color:rgba(56,189,248,0.4); color:#38bdf8; font-weight:600;">🛡️ Embed Badge Code</button>
                     <button onclick="reportDeadLink(this.dataset.siteId)" data-site-id="${escapeHTML(site.id)}" id="btnReportDead" class="btn-report">⚠️ Report Dead Link</button>
                 </div>
-
-                <!-- pCloud Affiliate Banners — upgraded with price anchors & deal hooks -->
-                <a href="https://partner.pcloud.com/r/156786" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(0,126,229,0.15), rgba(0,86,179,0.08)); border-color:rgba(0,126,229,0.45); margin-top:20px;">
-                    <div class="sky-sponsored">Sponsored</div>
-                    <div class="sky-body">
-                        <div class="sky-logo-row">
-                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo" onerror="this.style.display='none'">
-                            <span class="sky-brand">pCloud</span>
-                        </div>
-                        <p class="sky-headline">10TB — Pay Once</p>
-                        <p class="sky-desc">Store your entire manga & doujin collection forever. One-time payment, no subscriptions, no monthly bill.</p>
-                        <div style="font-size:0.75rem; color:#60a5fa; margin:8px 0;">⚡ Limited offer: <strong style="color:#fff;">$399 once</strong> vs ~$1,800 over 5 years with competitors</div>
-                        <div style="background:#007EE5; color:#fff; font-weight:800; font-size:0.8rem; padding:8px 14px; border-radius:50px; text-align:center; margin-top:6px;">Claim Lifetime Deal →</div>
-                    </div>
-                </a>
-                <a href="https://partner.pcloud.com/r/156784" target="_blank" rel="nofollow noopener sponsored" class="skyscraper-card" style="background:linear-gradient(135deg, rgba(0,126,229,0.15), rgba(0,86,179,0.08)); border-color:rgba(0,126,229,0.45); margin-top:16px;">
-                    <div class="sky-sponsored">Sponsored</div>
-                    <div class="sky-body">
-                        <div class="sky-logo-row">
-                            <img src="/assets/partners/pcloud-64.png" alt="pCloud" class="sky-logo" onerror="this.style.display='none'">
-                            <span class="sky-brand">pCloud Pass</span>
-                        </div>
-                        <p class="sky-headline">1 Password for Every Site</p>
-                        <p class="sky-desc">Stop reusing passwords across sites. pCloud Pass stores them all with zero-knowledge encryption — even pCloud can't read them.</p>
-                        <div style="font-size:0.75rem; color:#60a5fa; margin:8px 0;">✓ Free plan available &nbsp;✓ Works on all devices</div>
-                        <div class="sky-cta" style="color:#60a5fa;">Try Free →</div>
-                    </div>
-                </a>
 
             </aside>
 
@@ -596,6 +510,65 @@ class CanonicalInjector {
   }
   element(element) {
     element.prepend(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+  }
+}
+
+// Listings for server-rendered internal links (homepage, category hubs, guides),
+// cached per isolate so a page view costs no D1 query most of the time.
+const LINK_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
+let linkSnapshot = { at: 0, sites: null, nameIndex: null };
+
+async function getLinkSnapshot(env) {
+  if (linkSnapshot.sites && Date.now() - linkSnapshot.at < LINK_SNAPSHOT_TTL_MS) return linkSnapshot;
+  const { results } = await env.hv_directory.prepare(`SELECT ${LINK_COLUMNS} FROM sites WHERE ${NOT_PROHIBITED_SQL}`).all();
+  const sites = results.filter(s => isListingVisible(s) && isSafeHttpUrl(s.url));
+  linkSnapshot = { at: Date.now(), sites, nameIndex: buildNameIndex(sites) };
+  return linkSnapshot;
+}
+
+// Category hub: keeps the hand-written cards that still point at a live listing,
+// drops the rest, then appends the best-rated indexable listings up to HUB_LINKS.
+class HubCardFilter {
+  constructor(visibleIds, kept) { this.visibleIds = visibleIds; this.kept = kept; }
+  element(el) {
+    const id = new URL(el.getAttribute('href') || '', 'https://hentaivault.me').searchParams.get('id');
+    if (id && this.visibleIds.has(id)) this.kept.add(id);
+    else el.remove();
+  }
+}
+
+class HubGridAppender {
+  constructor(snapshot, hub, kept) { this.snapshot = snapshot; this.hub = hub; this.kept = kept; }
+  element(el) {
+    el.onEndTag(end => {
+      const extra = topForHub(this.snapshot.sites, this.hub, Math.max(HUB_LINKS - this.kept.size, 0), this.kept);
+      end.before(renderHubCards(extra), { html: true });
+    });
+  }
+}
+
+class HomeTopSites {
+  constructor(html) { this.html = html; }
+  element(el) {
+    if (this.html) el.setInnerContent(this.html, { html: true });
+    else el.remove();
+  }
+}
+
+// Guide: collects the article's headings, then lists the reviewed sites they name.
+class GuideHeadingCollector {
+  constructor(headings) { this.headings = headings; }
+  element() { this.headings.push(''); }
+  text(t) { if (this.headings.length) this.headings[this.headings.length - 1] += t.text; }
+}
+
+class GuideLinksAppender {
+  constructor(snapshot, headings) { this.snapshot = snapshot; this.headings = headings; }
+  element(el) {
+    el.onEndTag(end => {
+      const html = renderGuideLinks(this.headings, this.snapshot.nameIndex);
+      if (html) end.before(html, { html: true });
+    });
   }
 }
 
@@ -1485,10 +1458,11 @@ async function handleRequest(request, env, ctx) {
       let relatedSites = [];
       if (env.hv_directory) {
         try {
-          const siteRow = await env.hv_directory.prepare('SELECT data_json FROM sites WHERE id = ?').bind(rawId).first();
+          const siteRow = await env.hv_directory.prepare('SELECT category, data_json FROM sites WHERE id = ?').bind(rawId).first();
           if (siteRow && siteRow.data_json) {
             site = JSON.parse(siteRow.data_json);
             site.id = site.id || rawId;
+            site.category = site.category || siteRow.category;
             if (!isListingVisible(site) || !isSafeHttpUrl(site.url)) {
               site = null;
             } else {
@@ -1637,6 +1611,33 @@ async function handleRequest(request, env, ctx) {
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
         .on('head', new CanonicalInjector(canonicalUrl, effectiveLang));
+
+      // Crawlable links to listings (the browsing UI renders its cards with JS).
+      const page = clean.pathname.replace(/\/+$/, '') || '/';
+      const hub = HUB_PAGES[page];
+      const isGuide = page.startsWith('/blog/');
+      if (env.hv_directory && (page === '/' || hub || isGuide)) {
+        try {
+          const snapshot = await getLinkSnapshot(env);
+          if (page === '/') {
+            rewriter.on('section#topSitesByCategory', new HomeTopSites(renderHomeSection(snapshot.sites)));
+          } else if (hub) {
+            const kept = new Set();
+            const visibleIds = new Set(snapshot.sites.map(s => s.id));
+            rewriter
+              .on('div#sitesGrid > a.site-card', new HubCardFilter(visibleIds, kept))
+              .on('div#sitesGrid', new HubGridAppender(snapshot, hub, kept));
+          } else {
+            const headings = [];
+            rewriter
+              .on('article h2', new GuideHeadingCollector(headings))
+              .on('article h3', new GuideHeadingCollector(headings))
+              .on('article', new GuideLinksAppender(snapshot, headings));
+          }
+        } catch (err) {
+          console.error('internal links unavailable:', err); // the page still renders without them
+        }
+      }
 
       return addSecurityHeaders(rewriter.transform(response));
     }

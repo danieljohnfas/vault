@@ -9,13 +9,24 @@
  * 3. Directory Scraping
  * 4. Deep Social Extraction (Discord/Twitter from HTML)
  * 5. Wayback Machine Trust Scoring
- * 6. Gemini AI Enrichment (if GEMINI_API_KEY is present)
+ *
+ * Every link is reduced to its site's homepage and de-duplicated per site (language
+ * subdomains such as de.example.com count as example.com) against the directory and
+ * the whole queue. Candidates must look on-topic (adult/hentai/anime) before they
+ * are scored. Validation runs in parallel, up to MAX_CANDIDATES per run.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
+const { hostKey, siteKey, brandKey, toHomepage, isTopical, siteName, pool } = require('./lib/discovery.js');
+
+const SPIDER_TARGETS = 150;      // existing listings crawled for outbound links per run
+const MAX_CANDIDATES = 3000;     // new homepages validated per run
+const VALIDATE_CONCURRENCY = 12;
+const RUN_BUDGET_MS = 45 * 60 * 1000;
+
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -144,32 +155,25 @@ function isValidUrl(url) {
 async function discoverFromSpidering(existingUrlSet) {
   const discovered = [];
   console.log('🕸️ Spidering existing database links to find related networks...');
-  
+
   const allExisting = Array.from(existingUrlSet).filter(u => u.startsWith('http'));
   if (allExisting.length === 0) return discovered;
-  
-  // Pick 20 random URLs to crawl
-  const targets = allExisting.sort(() => 0.5 - Math.random()).slice(0, 20);
 
-  for (const t of targets) {
+  const targets = allExisting.sort(() => 0.5 - Math.random()).slice(0, SPIDER_TARGETS);
+  await pool(targets, 20, async t => {
     try {
-      const res = await fetch(t, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
-      if (!res.ok) continue;
+      const res = await fetch(t, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(8000) });
+      if (!res.ok) return;
       const html = await res.text();
-      const urls = html.match(/href="https?:\/\/[^"]+"/g) || [];
-      
-      let found = 0;
-      urls.map(u => u.replace('href="', '').replace('"', ''))
-          .filter(isValidUrl)
-          .forEach(u => {
-            discovered.push({ url: u, source: 'spider' });
-            found++;
-          });
-      console.log(`   - Spidered ${t} -> found ${found} outbound valid links`);
-    } catch (err) {
+      const links = (html.match(/href="https?:\/\/[^"]+"/g) || [])
+        .map(u => u.slice(6, -1))
+        .filter(isValidUrl);
+      for (const u of links) discovered.push({ url: u, source: 'spider' });
+      console.log(`   - Spidered ${t} -> found ${links.length} outbound valid links`);
+    } catch {
       // Silently ignore timeout or network errors on crawled sites
     }
-  }
+  });
   return discovered;
 }
 
@@ -327,39 +331,6 @@ async function fetchWaybackAge(url) {
   return 0;
 }
 
-// --- AI Enrichment (Gemini API) ---
-async function aiEnrich(siteData) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return siteData; 
-
-  console.log(`   🤖 Enhancing with Gemini AI for ${siteData.name}...`);
-  try {
-    const prompt = `You are an SEO expert. Write an engaging English description and a 'longReview' for an adult entertainment directory site.
-    Site Name: ${siteData.name}
-    URL: ${siteData.url}
-    Meta Description: ${siteData.description}
-    Return ONLY a JSON object with this exact format, nothing else:
-    {"longReview": "A detailed 3-4 sentence review mentioning features, speed, and library."}`;
-
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-
-    const json = await res.json();
-    const textResp = json.candidates[0].content.parts[0].text;
-    const parsed = JSON.parse(textResp.replace(/```json/g, '').replace(/```/g, '').trim());
-    
-    
-    if (parsed.longReview) siteData.longReview = parsed.longReview;
-    siteData.tags.push("AI-Enhanced");
-  } catch (e) {
-    console.log(`   ⚠️ AI Enrichment failed: ${e.message}`);
-  }
-  return siteData;
-}
-
 function guessCategory(domain, title) {
   const d = (domain + ' ' + title).toLowerCase();
   if (d.includes('hentai')) return 'Hentai Streaming';
@@ -381,67 +352,70 @@ function guessCategory(domain, title) {
 // --- Main Pipeline ---
 async function run() {
   console.log(`\n🚀 HentaiVault Scout V3 — ${new Date().toISOString().split('T')[0]}`);
-  
+  const started = Date.now();
+
   const existingUrls = getExistingUrls();
-  console.log(`📦 Loaded ${existingUrls.size} existing URLs to deduplicate against.`);
+  const existingHosts = new Set([...existingUrls].flatMap(u => [hostKey(u), siteKey(u), brandKey(u)]).filter(Boolean));
+  console.log(`📦 Loaded ${existingUrls.size} existing URLs (${existingHosts.size} sites) to deduplicate against.`);
+  // Without the existing set there is nothing to spider and nothing to de-duplicate
+  // against, so a run would only re-queue listed sites.
+  if (!existingUrls.size) throw new Error('no existing URLs loaded (pass --existing-urls); refusing to run');
 
-  const spiderLinks = await discoverFromSpidering(existingUrls);
-  const redditLinks = await discoverFromReddit();
-  const dirLinks = await discoverFromDirectories();
-  
-  const rawLinks = [...spiderLinks, ...redditLinks, ...dirLinks];
-  const uniqueUrls = new Set();
+  const sources = {
+    spider: await discoverFromSpidering(existingUrls),
+    reddit: await discoverFromReddit(),
+    directories: await discoverFromDirectories(),
+  };
+
+  // Every link becomes its site's homepage; one candidate per site.
+  const seenHosts = new Set();
   const candidates = [];
-  
-  for (const link of rawLinks) {
-    const norm = String(link.url).toLowerCase().replace(/\/$/, '');
-    if (!existingUrls.has(norm) && !uniqueUrls.has(norm) && !isJunkUrl(link.url)) {
-      uniqueUrls.add(norm);
-      candidates.push(link.url);
+  for (const [source, links] of Object.entries(sources)) {
+    let fresh = 0;
+    for (const link of links) {
+      let home = toHomepage(link.url);
+      const key = home && siteKey(home);
+      const brand = home && brandKey(home);
+      if (!key || [key, brand].some(k => k && (existingHosts.has(k) || seenHosts.has(k)))) continue;
+      // de.example.com → https://example.com/ (the site itself, not one edition)
+      if (key !== hostKey(home)) home = `${new URL(home).protocol}//${key}/`;
+      if (isJunkUrl(home)) continue;
+      seenHosts.add(key);
+      if (brand) seenHosts.add(brand);
+      candidates.push(home);
+      fresh++;
     }
+    console.log(`   ${source}: ${links.length} links -> ${fresh} new sites`);
   }
-
-  console.log(`\n🎯 Found ${candidates.length} unique, brand-new URLs to validate.`);
+  console.log(`\n🎯 Found ${candidates.length} unique, brand-new sites to validate (checking up to ${MAX_CANDIDATES}).`);
 
   const validSites = [];
-  let count = 0;
+  const skipped = { unreachable: 0, offTopic: 0, uncategorised: 0, lowScore: 0 };
 
-  for (const url of candidates) {
-    if (count >= 500) break; // Raised from 200 — need a bigger buffer for the daily-add pipeline
+  await pool(candidates.slice(0, MAX_CANDIDATES), VALIDATE_CONCURRENCY, async url => {
+    if (Date.now() - started > RUN_BUDGET_MS) return;
 
     const extracted = await validateAndExtract(url);
-    if (!extracted) continue; 
+    if (!extracted) { skipped.unreachable++; return; }
 
-    console.log(`\n✅ Validated: ${url}`);
-    
     const domain = new URL(url).hostname;
+    // Must look on-topic before spending a scoring pass on it.
+    if (!isTopical(domain, extracted.title, extracted.desc)) { skipped.offTopic++; return; }
+
     const category = guessCategory(domain, extracted.title);
-
     // Skip entries we cannot reliably categorise — better to miss than to pollute
-    if (!category) {
-      console.log(`   ⏭️  Skipped (unknown category): ${url}`);
-      continue;
-    }
+    if (!category) { skipped.uncategorised++; return; }
 
-    // Skip entries whose title looks like an article/video headline rather than a site name
-    const titleWordCount = extracted.title.trim().split(/\s+/).length;
-    if (titleWordCount > 8 || extracted.title.length > 70) {
-      console.log(`   ⏭️  Skipped (title looks like content, not a site): "${extracted.title.substring(0, 60)}..."`);
-      continue;
-    }
+    // Homepage titles are SEO strings ("Free Porn Videos | Brand"): use the brand.
+    const name = siteName(extracted.title, url);
 
-    // ── Real quality scoring (replaces random formula) ──
     const { score, signals } = await scoreSite(url, category, extracted.title);
-
-    if (score < 3.5) {
-      console.log(`   ⏭️  Skipped (score ${score} < 3.5 — age:${signals.ageYears}yr, content:${signals.contentPoints}, adult:${signals.hasAdultSignals}): ${url}`);
-      continue;
-    }
+    if (score < 3.5) { skipped.lowScore++; return; }
 
     console.log(`   ⭐ Score ${score}/5.0 — adding to queue: ${url}`);
 
     let siteData = {
-      name: extracted.title.substring(0, 50),
+      name,
       url: url,
       category: category,
       description: extracted.desc || `${domain} is a great resource for ${category.toLowerCase()}.`,
@@ -454,11 +428,11 @@ async function run() {
     if (extracted.discord) siteData.discord = extracted.discord;
     if (extracted.twitter) siteData.twitter = extracted.twitter;
 
-    siteData = await aiEnrich(siteData);
-
     validSites.push(siteData);
-    count++;
-  }
+  });
+
+  console.log(`\n📊 Queued ${validSites.length} | skipped: ${Object.entries(skipped).map(([k, v]) => `${k}=${v}`).join(', ')}` +
+    ` | ${Math.round((Date.now() - started) / 60000)} min`);
 
   if (validSites.length > 0) {
     const crypto = require('crypto');
@@ -480,7 +454,11 @@ async function run() {
   }
 }
 
-run().catch(err => {
-  console.error('❌ Fatal error in Scout V3:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  run().catch(err => {
+    console.error('❌ Fatal error in Scout V3:', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { discoverFromSpidering };

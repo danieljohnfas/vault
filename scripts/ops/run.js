@@ -267,6 +267,124 @@ const tasks = {
     console.log(`  reviews scanned: ${reviews.length} | matches: ${rHits.length}`);
   },
 
+  // Read-only Search Console audit: sitemap status, index status of a page sample
+  // (static pages, random indexable listings, removed listings) and 90-day performance.
+  async 'gsc-audit'({ listingSample = 25, removedIds = [] } = {}) {
+    const { google, auth } = await gscAuth(['https://www.googleapis.com/auth/webmasters.readonly']);
+    const siteUrl = `sc-domain:${ZONE_NAME}`;
+    const wm = google.webmasters({ version: 'v3', auth });
+    const sc = google.searchconsole({ version: 'v1', auth });
+
+    const sm = await wm.sitemaps.list({ siteUrl });
+    console.log('  -- sitemaps');
+    for (const s of sm.data.sitemap || []) {
+      console.log(`  ${s.path} | submitted ${s.lastSubmitted || '-'} | read ${s.lastDownloaded || '-'} | pending ${s.isPending} | errors ${s.errors} | warnings ${s.warnings} | ${(s.contents || []).map(c => `${c.submitted} submitted`).join(', ')}`);
+    }
+
+    const { isIndexable } = await import('../../src/listing-rules.js');
+    const rows = (await d1(`SELECT id, url, category, rating,
+        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
+        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
+        json_extract(data_json, '$.tags') AS tags, json_extract(data_json, '$.releasedAt') AS releasedAt FROM sites`)).results;
+    const listings = rows.filter(isIndexable).sort(() => Math.random() - 0.5).slice(0, listingSample);
+    const urls = [
+      '/', '/blog/', '/blog/nhentai-alternatives-2026', '/blog/best-doujin-sites-2026',
+      '/category/hentai-streaming', '/category/manga-doujin', '/category/images-boorus', '/about',
+      ...listings.map(r => `/site?id=${encodeURIComponent(r.id)}`),
+      ...removedIds.map(id => `/site?id=${encodeURIComponent(id)}`),
+    ];
+    console.log(`  -- index status (${urls.length} URLs)`);
+    const tally = {};
+    for (const u of urls) {
+      try {
+        const r = await sc.urlInspection.index.inspect({ requestBody: { inspectionUrl: `https://${ZONE_NAME}${u}`, siteUrl } });
+        const i = r.data.inspectionResult.indexStatusResult || {};
+        tally[i.coverageState] = (tally[i.coverageState] || 0) + 1;
+        const canon = i.googleCanonical && i.userCanonical && i.googleCanonical !== i.userCanonical ? ` | google canonical: ${i.googleCanonical}` : '';
+        console.log(`  ${u} | ${i.verdict} | ${i.coverageState} | fetch ${i.pageFetchState || '-'} | robots ${i.robotsTxtState || '-'} | indexing ${i.indexingState || '-'} | crawled ${i.lastCrawlTime || 'never'}${canon}`);
+      } catch (e) { console.log(`  ${u} | error ${e.message}`); }
+    }
+    console.log(`  -- tally: ${Object.entries(tally).map(([k, v]) => `${k}=${v}`).join(' | ')}`);
+
+    const today = new Date();
+    const fmt = d => d.toISOString().slice(0, 10);
+    const start = fmt(new Date(today - 90 * 86400000)), end = fmt(today);
+    const q = async (dimensions, rowLimit = 25) => (await sc.searchanalytics.query({
+      siteUrl, requestBody: { startDate: start, endDate: end, dimensions, rowLimit, dataState: 'all' },
+    })).data.rows || [];
+    const byMonthDay = await q(['date'], 120);
+    const weeks = {};
+    for (const r of byMonthDay) { const w = r.keys[0].slice(0, 8) + (r.keys[0].slice(8) < '16' ? 'a' : 'b'); weeks[w] = weeks[w] || [0, 0]; weeks[w][0] += r.clicks; weeks[w][1] += r.impressions; }
+    console.log(`  -- clicks/impressions by half-month (${start}..${end}): ${Object.entries(weeks).map(([k, v]) => `${k}:${v[0]}/${v[1]}`).join(' ')}`);
+    console.log('  -- top pages by impressions');
+    for (const r of (await q(['page'], 20))) console.log(`  ${r.keys[0].replace(`https://${ZONE_NAME}`, '')} | clicks ${r.clicks} | impr ${r.impressions} | pos ${r.position.toFixed(1)}`);
+    console.log('  -- top queries by impressions');
+    for (const r of (await q(['query'], 25))) console.log(`  "${r.keys[0]}" | clicks ${r.clicks} | impr ${r.impressions} | pos ${r.position.toFixed(1)}`);
+    console.log('  -- countries');
+    console.log('  ' + (await q(['country'], 10)).map(r => `${r.keys[0]}:${r.impressions}`).join(' '));
+  },
+
+  // Pending queue entries that duplicate a listed site or each other (language
+  // editions such as de.example.com, mirrors on other TLDs) are marked rejected;
+  // one per site is kept.
+  async 'dedupe-queue'({ dryRun = true } = {}) {
+    const { siteKey, hostKey, brandKey } = require('../lib/discovery.js');
+    const keys = url => [siteKey(url), brandKey(url)].filter(Boolean);
+    const listed = new Set((await d1('SELECT url FROM sites')).results.flatMap(r => keys(r.url)));
+    const pending = (await d1("SELECT id, url FROM queue WHERE status = 'pending'")).results
+      .sort((a, b) => (hostKey(a.url) === siteKey(a.url) ? 0 : 1) - (hostKey(b.url) === siteKey(b.url) ? 0 : 1));
+    const seen = new Set(), reject = [];
+    for (const q of pending) {
+      const k = keys(q.url);
+      if (!siteKey(q.url) || k.some(x => listed.has(x) || seen.has(x))) reject.push(q.id); else k.forEach(x => seen.add(x));
+    }
+    console.log(`  pending: ${pending.length} | duplicates to reject: ${reject.length}${dryRun ? ' (dry run)' : ''}`);
+    if (dryRun) return;
+    for (let i = 0; i < reject.length; i += 100) {
+      const part = reject.slice(i, i + 100).map(id => `'${String(id).replace(/'/g, "''")}'`).join(', ');
+      await d1(`UPDATE queue SET status = 'rejected' WHERE id IN (${part})`);
+    }
+  },
+
+  // Read-only: listings and queue entries mentioning any of `terms`, with the
+  // listing fields that contain them.
+  async 'find-text'({ terms }) {
+    for (const term of terms) {
+      const t = String(term).toLowerCase().replace(/'/g, "''");
+      const sites = (await d1(`SELECT id, url, data_json FROM sites WHERE instr(lower(url || ' ' || data_json), '${t}') > 0`)).results;
+      console.log(`  "${term}": ${sites.length} listing(s)`);
+      for (const r of sites) {
+        let fields = [];
+        try { fields = Object.entries(JSON.parse(r.data_json)).filter(([, v]) => JSON.stringify(v).toLowerCase().includes(term.toLowerCase())).map(([k]) => k); } catch {}
+        let d = {}; try { d = JSON.parse(r.data_json); } catch {}
+        console.log(`    ${r.id} | ${r.url} | name "${d.name}" | ${d.category} | rating ${d.rating} | released ${d.releasedAt || '-'} | fields: ${fields.join(', ') || '(url only)'}`);
+      }
+      const queue = (await d1(`SELECT id, status FROM queue WHERE instr(lower(url || ' ' || COALESCE(name, '')), '${t}') > 0`)).results;
+      console.log(`  "${term}": ${queue.length} queue entr(ies) ${queue.map(q => `${q.id}:${q.status}`).join(' ')}`);
+    }
+  },
+
+  // Listings whose stored link (data_json.url, what the Visit button uses) was
+  // swapped for one containing any of `terms` get the listing's own URL back.
+  async 'restore-listing-urls'({ terms }) {
+    for (const term of terms) {
+      const t = String(term).toLowerCase().replace(/'/g, "''");
+      const where = `instr(lower(COALESCE(json_extract(data_json, '$.url'), '')), '${t}') > 0 AND instr(lower(url), '${t}') = 0`;
+      const rows = (await d1(`SELECT id FROM sites WHERE ${where}`)).results;
+      await d1(`UPDATE sites SET data_json = json_set(data_json, '$.url', url) WHERE ${where}`);
+      console.log(`  "${term}": restored ${rows.length} link(s) ${rows.map(r => r.id).join(' ')}`);
+    }
+  },
+
+  // Read-only: listings whose stored link differs from the listing URL.
+  async 'url-mismatch'() {
+    const rows = (await d1(`SELECT id, url, json_extract(data_json, '$.url') AS link FROM sites
+      WHERE json_extract(data_json, '$.url') IS NOT NULL AND rtrim(json_extract(data_json, '$.url'), '/') != rtrim(url, '/')`)).results;
+    console.log(`  ${rows.length} listing(s) link somewhere other than their URL`);
+    const host = u => { try { return new URL(u).hostname; } catch { return String(u).slice(0, 40); } };
+    for (const r of rows.slice(0, 40)) console.log(`    ${r.id} | ${host(r.url)} -> ${host(r.link)}`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
