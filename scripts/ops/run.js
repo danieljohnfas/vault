@@ -217,23 +217,20 @@ const tasks = {
     }
   },
 
-  // IndexNow (Bing, Yandex, Seznam, Naver). Built from D1 with the same rules as
-  // sitemap.xml, because Cloudflare challenges CI runners on HTML/XML paths.
-  async 'indexnow'({ staticPaths = [] }) {
-    const { isIndexable } = await import('../../src/listing-rules.js');
-    const rows = (await d1(`SELECT id, url, category, rating,
-        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
-        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
-        json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
-    const indexable = rows.filter(isIndexable);
-    const urls = [...staticPaths.map(p => `https://${ZONE_NAME}${p}`),
-      ...indexable.map(r => `https://${ZONE_NAME}/site?id=${encodeURIComponent(r.id)}`)];
-    console.log(`  urls: ${urls.length} (${indexable.length} listings)`);
-    const res = await fetch('https://api.indexnow.org/indexnow', {
-      method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify({ host: ZONE_NAME, key: INDEXNOW_KEY, keyLocation: `https://${ZONE_NAME}/${INDEXNOW_KEY}.txt`, urlList: urls.slice(0, 10000) }),
-    });
-    console.log(`  IndexNow: HTTP ${res.status}`);
+  // Daily release + IndexNow (scripts/indexnow.mjs); dryRun only reports.
+  async 'indexnow'({ dryRun = true }) {
+    const { runIndexNow } = await import('../indexnow.mjs');
+    const post = async body => (await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' }, body: JSON.stringify(body),
+    })).status;
+    await runIndexNow({ d1, post, dryRun, log: m => console.log(`  ${m}`) });
+  },
+
+  // One-off for the drip-feed rollout: every existing listing counts as released.
+  async 'backfill-released'({ before }) {
+    const r = await d1(`UPDATE sites SET data_json = json_set(data_json, '$.releasedAt', substr(added_at, 1, 10))
+      WHERE json_extract(data_json, '$.releasedAt') IS NULL AND added_at < ?`, [before]);
+    console.log(`  released ${r.meta.changes} existing listings`);
   },
 
   // Read-only: every listing that passes the sitemap gate, for a quality review.
@@ -242,7 +239,7 @@ const tasks = {
     const rows = (await d1(`SELECT id, url, category, rating,
         json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
         json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
-        json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
+        json_extract(data_json, '$.tags') AS tags, json_extract(data_json, '$.releasedAt') AS releasedAt FROM sites`)).results;
     const ok = rows.filter(isIndexable);
     console.log(`  total sites: ${rows.length} | indexable: ${ok.length}`);
     if (verbose) for (const r of ok) console.log(`  ${r.id} | ${r.category} | ${r.rating} | ${new URL(r.url).host} | ${String(r.name || '').slice(0, 50)}`);

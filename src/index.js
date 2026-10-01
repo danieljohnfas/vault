@@ -17,7 +17,7 @@
 import { isMinorSafe, isListingVisible, PROHIBITED_TERMS } from './prohibited.js';
 import {
   CATEGORIES, normalizeCategory, categoryVariants,
-  isSafeHttpUrl, isSiteUp, parseTags, isIndexable,
+  isSafeHttpUrl, isSiteUp, parseTags, isIndexable, SITEMAP_STATIC_PAGES,
 } from './listing-rules.js';
 
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
@@ -810,19 +810,7 @@ async function handleRequest(request, env, ctx) {
     }
 
     if (url.pathname === '/sitemap.xml') {
-      // Only real, indexable documents. Static pages carry no <lastmod>: stamping
-      // "today" on every request teaches Google to ignore the field entirely.
-      const staticPages = [
-        '/', '/blog/',
-        '/blog/nhentai-alternatives-2026', '/blog/best-streaming-2026', '/blog/best-doujin-sites-2026',
-        '/blog/hentai-apps-guide-2026', '/blog/uncensored-streaming-guide-2026', '/blog/free-manga-guide',
-        '/blog/hanime-alternatives-2026', '/blog/privacy-safety-guide', '/blog/top-10-sites-may-2026',
-        '/category/anime-streaming', '/category/hentai-streaming', '/category/manga-doujin',
-        '/category/images-boorus', '/category/games', '/category/communities', '/category/downloads',
-        '/category/visual-novels', '/region-unblocked',
-        '/about', '/contact', '/privacy', '/terms', '/disclaimer', '/dmca',
-      ];
-      let urls = staticPages.map(p => `  <url>\n    <loc>https://hentaivault.me${p}</loc>\n  </url>\n`).join('');
+      let urls = SITEMAP_STATIC_PAGES.map(p => `  <url>\n    <loc>https://hentaivault.me${p}</loc>\n  </url>\n`).join('');
       if (env.hv_directory) {
         try {
           const rows = await env.hv_directory.prepare(
@@ -831,7 +819,8 @@ async function handleRequest(request, env, ctx) {
                     json_extract(data_json, '$.description') AS description,
                     json_extract(data_json, '$.isUp') AS isUp,
                     json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
-                    json_extract(data_json, '$.tags') AS tags
+                    json_extract(data_json, '$.tags') AS tags,
+                    json_extract(data_json, '$.releasedAt') AS releasedAt
              FROM sites ORDER BY rating DESC, added_at DESC`
           ).all();
           for (const row of rows.results) {

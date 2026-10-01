@@ -11,6 +11,10 @@
  *   - it is not tagged Auto-Discovered (unreviewed)
  *   - its name is a real name, not a scraping artefact
  *   - it passes the minor-safety rules (src/prohibited.js)
+ *   - it has been released (data_json.releasedAt): new listings go live on the site
+ *     at once but are offered to search engines gradually, at most
+ *     DAILY_RELEASE_LIMIT a day, best-rated first (scripts/indexnow.mjs), so a large
+ *     intake never reaches Google as a sudden flood of new templated pages
  */
 import { isListingVisible } from './prohibited.js';
 
@@ -96,8 +100,24 @@ export function isHomepageUrl(url) {
   } catch { return false; }
 }
 
-/** Whether a listing's review page should be indexed and included in the sitemap. */
-export function isIndexable(site) {
+export const DAILY_RELEASE_LIMIT = 100;
+
+// Static pages listed in the sitemap ahead of the listings. Only real, indexable
+// documents; they carry no <lastmod> (stamping "today" on every request teaches
+// Google to ignore the field).
+export const SITEMAP_STATIC_PAGES = [
+  '/', '/blog/',
+  '/blog/nhentai-alternatives-2026', '/blog/best-streaming-2026', '/blog/best-doujin-sites-2026',
+  '/blog/hentai-apps-guide-2026', '/blog/uncensored-streaming-guide-2026', '/blog/free-manga-guide',
+  '/blog/hanime-alternatives-2026', '/blog/privacy-safety-guide', '/blog/top-10-sites-may-2026',
+  '/category/anime-streaming', '/category/hentai-streaming', '/category/manga-doujin',
+  '/category/images-boorus', '/category/games', '/category/communities', '/category/downloads',
+  '/category/visual-novels', '/region-unblocked',
+  '/about', '/contact', '/privacy', '/terms', '/disclaimer', '/dmca',
+];
+
+/** Meets every sitemap condition except release (what the daily release picks from). */
+export function isIndexCandidate(site) {
   if (!site || !isSafeHttpUrl(site.url)) return false;
   if (!isHomepageUrl(site.url)) return false;
   if (!isListingVisible(site)) return false;
@@ -107,4 +127,9 @@ export function isIndexable(site) {
   if (parseTags(site.tags).includes('Auto-Discovered')) return false;
   if (isJunkName(site.name, site.url)) return false;
   return true;
+}
+
+/** Whether a listing's review page should be indexed and included in the sitemap. */
+export function isIndexable(site) {
+  return isIndexCandidate(site) && Boolean(site.releasedAt);
 }

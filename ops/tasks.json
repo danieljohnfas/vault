@@ -1,4 +1,5 @@
 [
+  { "task": "backfill-released", "before": "2026-10-02" },
   { "task": "list-indexable", "verbose": false },
-  { "task": "pipeline-stats" }
+  { "task": "indexnow", "dryRun": true }
 ]
