@@ -17,7 +17,7 @@
 import { isMinorSafe, isListingVisible, PROHIBITED_TERMS } from './prohibited.js';
 import {
   CATEGORIES, normalizeCategory, categoryVariants,
-  isSafeHttpUrl, isSiteUp, parseTags, isIndexable, SITEMAP_STATIC_PAGES,
+  isSafeHttpUrl, isSiteUp, parseTags, isIndexable, SITEMAP_STATIC_PAGES, MIN_INDEXABLE_RATING,
 } from './listing-rules.js';
 import {
   LINK_COLUMNS, HUB_PAGES, HUB_LINKS, topForHub, renderHubCards, renderHomeSection,
@@ -513,15 +513,63 @@ class CanonicalInjector {
   }
 }
 
-// Listings for server-rendered internal links (homepage, category hubs, guides),
-// cached per isolate so a page view costs no D1 query most of the time.
+// ── Edge cache ───────────────────────────────────────────────────────────────
+// D1 bills (and on the free plan caps, at 5M a day) every row a query reads, and
+// the read-heavy routes scan the whole sites table. Their results are kept in
+// Cloudflare's cache (per data centre), so a crawl or a traffic spike does not
+// turn every request into full-table reads.
+const EDGE_CACHE_SECONDS = {
+  '/api/sites': 300, '/api/site-count': 600, '/api/site': 600, '/api/alternatives': 900,
+  '/api/site-of-the-day': 3600, '/api/site-of-the-week': 3600, '/api/trending': 600,
+  '/sitemap.xml': 3600, '/rss.xml': 1800,
+};
+// The shuffled homepage order comes in this many variants (picked by the session's
+// seed) instead of one per session, so shuffled pages are cacheable too.
+const SHUFFLE_VARIANTS = 16;
+const shuffleBucket = raw => Math.abs(parseInt(raw || '0', 10) || 0) % SHUFFLE_VARIANTS;
+
+function edgeCacheKey(url) {
+  const key = new URL(url);
+  key.hash = '';
+  if (key.searchParams.has('seed')) key.searchParams.set('seed', String(shuffleBucket(key.searchParams.get('seed'))));
+  key.searchParams.sort();
+  return new Request(key.toString(), { method: 'GET' });
+}
+
+const edgeCache = () => (typeof caches !== 'undefined' ? caches.default : null);
+
+/** A JSON value computed at most once per ttl seconds per data centre. */
+async function edgeCachedJson(ctx, name, ttl, compute) {
+  const cache = edgeCache();
+  const key = new Request(`https://hentaivault.me/__edge-cache/${name}`);
+  if (cache) {
+    const hit = await cache.match(key);
+    if (hit) return hit.json();
+  }
+  const value = await compute();
+  if (cache) {
+    const res = new Response(JSON.stringify(value), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${ttl}` },
+    });
+    ctx.waitUntil(cache.put(key, res).catch(() => {}));
+  }
+  return value;
+}
+
+// Listings for server-rendered internal links (homepage, category hubs, guides).
+// Only rows rated MIN_INDEXABLE_RATING or higher can be linked, so the query reads
+// just those (idx_rating); the result is cached at the edge for an hour and in
+// the isolate for ten minutes.
 const LINK_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
 let linkSnapshot = { at: 0, sites: null, nameIndex: null };
 
-async function getLinkSnapshot(env) {
+async function getLinkSnapshot(env, ctx) {
   if (linkSnapshot.sites && Date.now() - linkSnapshot.at < LINK_SNAPSHOT_TTL_MS) return linkSnapshot;
-  const { results } = await env.hv_directory.prepare(`SELECT ${LINK_COLUMNS} FROM sites WHERE ${NOT_PROHIBITED_SQL}`).all();
-  const sites = results.filter(s => isListingVisible(s) && isSafeHttpUrl(s.url));
+  const rows = await edgeCachedJson(ctx, 'link-snapshot-v1', 3600, async () =>
+    (await env.hv_directory.prepare(
+      `SELECT ${LINK_COLUMNS} FROM sites WHERE rating >= ${MIN_INDEXABLE_RATING} AND ${NOT_PROHIBITED_SQL}`
+    ).all()).results);
+  const sites = rows.filter(s => isListingVisible(s) && isSafeHttpUrl(s.url));
   linkSnapshot = { at: Date.now(), sites, nameIndex: buildNameIndex(sites) };
   return linkSnapshot;
 }
@@ -652,7 +700,21 @@ class CompareBodyHandler {
 export default {
   async fetch(request, env, ctx) {
     try {
-      return await handleRequest(request, env, ctx);
+      const url = new URL(request.url);
+      const ttl = request.method === 'GET' ? EDGE_CACHE_SECONDS[url.pathname] : undefined;
+      const cache = ttl && edgeCache();
+      if (!cache) return await handleRequest(request, env, ctx);
+
+      const key = edgeCacheKey(url);
+      const hit = await cache.match(key);
+      if (hit) return hit;
+      const res = await handleRequest(request, env, ctx);
+      if (res.status === 200 && !res.headers.has('Set-Cookie')) {
+        const copy = new Response(res.clone().body, res);
+        copy.headers.set('Cache-Control', `public, max-age=${ttl}`);
+        ctx.waitUntil(cache.put(key, copy).catch(() => {}));
+      }
+      return res;
     } catch (err) {
       console.error('Unhandled worker error:', err);
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
@@ -1164,8 +1226,7 @@ async function handleRequest(request, env, ctx) {
         } else {
           // Seeded deterministic random: stable per-session shuffle, OFFSET-safe
           // seed is a positive integer passed by the client once per session
-          const rawSeed = parseInt(url.searchParams.get('seed') || '0', 10);
-          const seed = (rawSeed > 0 && rawSeed < 2147483647) ? rawSeed : 1337;
+          const seed = Math.floor(2147483629 / (shuffleBucket(url.searchParams.get('seed')) + 2));
           query += ` ORDER BY (rowid * ${seed}) % 1000000007`;
         }
         
@@ -1458,19 +1519,27 @@ async function handleRequest(request, env, ctx) {
       let relatedSites = [];
       if (env.hv_directory) {
         try {
-          const siteRow = await env.hv_directory.prepare('SELECT category, data_json FROM sites WHERE id = ?').bind(rawId).first();
-          if (siteRow && siteRow.data_json) {
-            site = JSON.parse(siteRow.data_json);
-            site.id = site.id || rawId;
-            site.category = site.category || siteRow.category;
-            if (!isListingVisible(site) || !isSafeHttpUrl(site.url)) {
-              site = null;
-            } else {
-              const relatedRows = await env.hv_directory.prepare(
-                `SELECT data_json FROM sites WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 15`
-              ).bind(site.category, rawId).all();
-              relatedSites = visibleSites(relatedRows.results);
-            }
+          // The rows are cached at the edge for an hour; the visibility rules below
+          // run on every render, so a rule change applies at once.
+          const parse = row => {
+            const s = JSON.parse(row.data_json);
+            s.id = s.id || rawId;
+            s.category = s.category || row.category;
+            return s;
+          };
+          const data = await edgeCachedJson(ctx, `site-data-v1?id=${encodeURIComponent(rawId)}`, 3600, async () => {
+            const siteRow = await env.hv_directory.prepare('SELECT category, data_json FROM sites WHERE id = ?').bind(rawId).first();
+            if (!siteRow || !siteRow.data_json) return { siteRow: null, related: [] };
+            const related = (await env.hv_directory.prepare(
+              `SELECT data_json FROM sites WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 15`
+            ).bind(parse(siteRow).category, rawId).all()).results;
+            return { siteRow, related };
+          });
+          if (data.siteRow) {
+            site = parse(data.siteRow);
+            // The whole stored record, as the minor-safety sweep checks it.
+            if (!isListingVisible(site) || !isMinorSafe(site.url, data.siteRow.data_json) || !isSafeHttpUrl(site.url)) site = null;
+            else relatedSites = visibleSites(data.related);
           }
         } catch (err) {
           console.error("D1 lookup error:", err);
@@ -1618,7 +1687,7 @@ async function handleRequest(request, env, ctx) {
       const isGuide = page.startsWith('/blog/');
       if (env.hv_directory && (page === '/' || hub || isGuide)) {
         try {
-          const snapshot = await getLinkSnapshot(env);
+          const snapshot = await getLinkSnapshot(env, ctx);
           if (page === '/') {
             rewriter.on('section#topSitesByCategory', new HomeTopSites(renderHomeSection(snapshot.sites)));
           } else if (hub) {
