@@ -2,9 +2,8 @@ name: 🕵️ Scout V3
 
 on:
   schedule:
-    # Runs twice a day: midnight and noon UTC
-    - cron: '0 0 * * *'
-    - cron: '0 12 * * *'
+    # Four times a day; each run validates up to 3,000 new candidate sites.
+    - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ jobs:
   scout:
     name: Advanced Spider, Social & AI Scout
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository

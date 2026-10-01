@@ -10,12 +10,29 @@
  * 4. Deep Social Extraction (Discord/Twitter from HTML)
  * 5. Wayback Machine Trust Scoring
  * 6. Gemini AI Enrichment (if GEMINI_API_KEY is present)
+ * 7. Certificate transparency: newly certified domains with topic words in the name
+ *
+ * Every link is reduced to its site's homepage, de-duplicated by host against the
+ * directory and the whole queue, and must look on-topic (adult/hentai/anime) before
+ * it is scored. Validation runs in parallel, up to MAX_CANDIDATES per run.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
+const { hostKey, toHomepage, isTopical, domainsFromCertificates, pool } = require('./lib/discovery.js');
+
+const SPIDER_TARGETS = 150;      // existing listings crawled for outbound links per run
+const MAX_CANDIDATES = 3000;     // new homepages validated per run
+const VALIDATE_CONCURRENCY = 12;
+const RUN_BUDGET_MS = 45 * 60 * 1000;
+// Certificate transparency: domains newly certified with these words in the name.
+const CT_KEYWORDS = [
+  'hentai', 'doujin', 'rule34', 'nhentai', 'hanime', 'eroge', 'booru', 'manhwa', 'ecchi',
+  'yaoi', 'futanari', 'waifu', 'ahegao', 'hmanga', 'animeporn', 'animesex', 'lewd',
+];
+const CT_SINCE_DAYS = 14;
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -144,31 +161,45 @@ function isValidUrl(url) {
 async function discoverFromSpidering(existingUrlSet) {
   const discovered = [];
   console.log('🕸️ Spidering existing database links to find related networks...');
-  
+
   const allExisting = Array.from(existingUrlSet).filter(u => u.startsWith('http'));
   if (allExisting.length === 0) return discovered;
-  
-  // Pick 20 random URLs to crawl
-  const targets = allExisting.sort(() => 0.5 - Math.random()).slice(0, 20);
 
-  for (const t of targets) {
+  const targets = allExisting.sort(() => 0.5 - Math.random()).slice(0, SPIDER_TARGETS);
+  await pool(targets, 20, async t => {
     try {
-      const res = await fetch(t, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
-      if (!res.ok) continue;
+      const res = await fetch(t, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(8000) });
+      if (!res.ok) return;
       const html = await res.text();
-      const urls = html.match(/href="https?:\/\/[^"]+"/g) || [];
-      
-      let found = 0;
-      urls.map(u => u.replace('href="', '').replace('"', ''))
-          .filter(isValidUrl)
-          .forEach(u => {
-            discovered.push({ url: u, source: 'spider' });
-            found++;
-          });
-      console.log(`   - Spidered ${t} -> found ${found} outbound valid links`);
-    } catch (err) {
+      const links = (html.match(/href="https?:\/\/[^"]+"/g) || [])
+        .map(u => u.slice(6, -1))
+        .filter(isValidUrl);
+      for (const u of links) discovered.push({ url: u, source: 'spider' });
+      console.log(`   - Spidered ${t} -> found ${links.length} outbound valid links`);
+    } catch {
       // Silently ignore timeout or network errors on crawled sites
     }
+  });
+  return discovered;
+}
+
+// --- Certificate transparency (crt.sh) ---
+async function discoverFromCertificates() {
+  const discovered = [];
+  console.log(`📜 Checking certificate transparency logs for ${CT_KEYWORDS.length} keywords...`);
+  for (const kw of CT_KEYWORDS) {
+    let entries = null;
+    for (let attempt = 1; attempt <= 2 && !entries; attempt++) {
+      try {
+        const res = await fetch(`https://crt.sh/?q=${encodeURIComponent(`%${kw}%`)}&output=json&exclude=expired`, {
+          headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }, signal: AbortSignal.timeout(120000),
+        });
+        if (res.ok) entries = await res.json();
+      } catch { /* crt.sh is often slow; retry once, then move on */ }
+    }
+    const domains = domainsFromCertificates(entries, { keywords: [kw], sinceDays: CT_SINCE_DAYS });
+    console.log(`   - "${kw}": ${entries ? entries.length : 'unavailable'} certificates -> ${domains.length} recent domains`);
+    for (const d of domains) discovered.push({ url: `https://${d}/`, source: 'certificates' });
   }
   return discovered;
 }
@@ -381,62 +412,59 @@ function guessCategory(domain, title) {
 // --- Main Pipeline ---
 async function run() {
   console.log(`\n🚀 HentaiVault Scout V3 — ${new Date().toISOString().split('T')[0]}`);
-  
+  const started = Date.now();
+
   const existingUrls = getExistingUrls();
-  console.log(`📦 Loaded ${existingUrls.size} existing URLs to deduplicate against.`);
+  const existingHosts = new Set([...existingUrls].map(hostKey).filter(Boolean));
+  console.log(`📦 Loaded ${existingUrls.size} existing URLs (${existingHosts.size} sites) to deduplicate against.`);
 
-  const spiderLinks = await discoverFromSpidering(existingUrls);
-  const redditLinks = await discoverFromReddit();
-  const dirLinks = await discoverFromDirectories();
-  
-  const rawLinks = [...spiderLinks, ...redditLinks, ...dirLinks];
-  const uniqueUrls = new Set();
+  const sources = {
+    spider: await discoverFromSpidering(existingUrls),
+    reddit: await discoverFromReddit(),
+    directories: await discoverFromDirectories(),
+    certificates: await discoverFromCertificates(),
+  };
+
+  // Every link becomes its site's homepage; one candidate per host.
+  const seenHosts = new Set();
   const candidates = [];
-  
-  for (const link of rawLinks) {
-    const norm = String(link.url).toLowerCase().replace(/\/$/, '');
-    if (!existingUrls.has(norm) && !uniqueUrls.has(norm) && !isJunkUrl(link.url)) {
-      uniqueUrls.add(norm);
-      candidates.push(link.url);
+  for (const [source, links] of Object.entries(sources)) {
+    let fresh = 0;
+    for (const link of links) {
+      const home = toHomepage(link.url);
+      const key = home && hostKey(home);
+      if (!key || existingHosts.has(key) || seenHosts.has(key) || isJunkUrl(home)) continue;
+      seenHosts.add(key);
+      candidates.push(home);
+      fresh++;
     }
+    console.log(`   ${source}: ${links.length} links -> ${fresh} new sites`);
   }
-
-  console.log(`\n🎯 Found ${candidates.length} unique, brand-new URLs to validate.`);
+  console.log(`\n🎯 Found ${candidates.length} unique, brand-new sites to validate (checking up to ${MAX_CANDIDATES}).`);
 
   const validSites = [];
-  let count = 0;
+  const skipped = { unreachable: 0, offTopic: 0, uncategorised: 0, headline: 0, lowScore: 0 };
 
-  for (const url of candidates) {
-    if (count >= 500) break; // Raised from 200 — need a bigger buffer for the daily-add pipeline
+  await pool(candidates.slice(0, MAX_CANDIDATES), VALIDATE_CONCURRENCY, async url => {
+    if (Date.now() - started > RUN_BUDGET_MS) return;
 
     const extracted = await validateAndExtract(url);
-    if (!extracted) continue; 
+    if (!extracted) { skipped.unreachable++; return; }
 
-    console.log(`\n✅ Validated: ${url}`);
-    
     const domain = new URL(url).hostname;
-    const category = guessCategory(domain, extracted.title);
+    // Must look on-topic before spending a scoring pass on it.
+    if (!isTopical(domain, extracted.title, extracted.desc)) { skipped.offTopic++; return; }
 
+    const category = guessCategory(domain, extracted.title);
     // Skip entries we cannot reliably categorise — better to miss than to pollute
-    if (!category) {
-      console.log(`   ⏭️  Skipped (unknown category): ${url}`);
-      continue;
-    }
+    if (!category) { skipped.uncategorised++; return; }
 
     // Skip entries whose title looks like an article/video headline rather than a site name
     const titleWordCount = extracted.title.trim().split(/\s+/).length;
-    if (titleWordCount > 8 || extracted.title.length > 70) {
-      console.log(`   ⏭️  Skipped (title looks like content, not a site): "${extracted.title.substring(0, 60)}..."`);
-      continue;
-    }
+    if (titleWordCount > 8 || extracted.title.length > 70) { skipped.headline++; return; }
 
-    // ── Real quality scoring (replaces random formula) ──
     const { score, signals } = await scoreSite(url, category, extracted.title);
-
-    if (score < 3.5) {
-      console.log(`   ⏭️  Skipped (score ${score} < 3.5 — age:${signals.ageYears}yr, content:${signals.contentPoints}, adult:${signals.hasAdultSignals}): ${url}`);
-      continue;
-    }
+    if (score < 3.5) { skipped.lowScore++; return; }
 
     console.log(`   ⭐ Score ${score}/5.0 — adding to queue: ${url}`);
 
@@ -455,10 +483,11 @@ async function run() {
     if (extracted.twitter) siteData.twitter = extracted.twitter;
 
     siteData = await aiEnrich(siteData);
-
     validSites.push(siteData);
-    count++;
-  }
+  });
+
+  console.log(`\n📊 Queued ${validSites.length} | skipped: ${Object.entries(skipped).map(([k, v]) => `${k}=${v}`).join(', ')}` +
+    ` | ${Math.round((Date.now() - started) / 60000)} min`);
 
   if (validSites.length > 0) {
     const crypto = require('crypto');
@@ -480,7 +509,11 @@ async function run() {
   }
 }
 
-run().catch(err => {
-  console.error('❌ Fatal error in Scout V3:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  run().catch(err => {
+    console.error('❌ Fatal error in Scout V3:', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { discoverFromCertificates, discoverFromSpidering };
