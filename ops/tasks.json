@@ -1,5 +1,3 @@
 [
-  { "task": "gsc-submit-sitemap", "sitemaps": ["https://hentaivault.me/sitemap.xml"] },
-  { "task": "gsc-sitemaps" },
-  { "task": "list-worker-secrets" }
+  { "task": "list-indexable" }
 ]

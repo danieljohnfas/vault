@@ -244,6 +244,24 @@ const tasks = {
     console.log(`  IndexNow: HTTP ${res.status}`);
   },
 
+  // Read-only: every listing that passes the sitemap gate, for a quality review.
+  async 'list-indexable'() {
+    const rows = (await d1(`SELECT id, url, category, rating,
+        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.isUp') AS isUp,
+        json_extract(data_json, '$.isDeadFlagged') AS dead, json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
+    const { isProhibited } = await import('../../src/prohibited.js');
+    const ok = rows.filter(r => {
+      try {
+        const u = new URL(r.url);
+        return !isProhibited(r.url, r.name) && r.isUp !== 0 && r.dead !== 1 && Number(r.rating) >= 3.5
+          && r.category !== 'Adult Tubes & Studios' && !String(r.tags || '').includes('Auto-Discovered')
+          && u.pathname.replace(/\/+$/, '') === '' && !u.search;
+      } catch { return false; }
+    });
+    console.log(`  total sites: ${rows.length} | indexable: ${ok.length}`);
+    for (const r of ok) console.log(`  ${r.id} | ${r.category} | ${r.rating} | ${new URL(r.url).host} | ${String(r.name || '').slice(0, 50)}`);
+  },
+
   // Live checks from the runner (Cloudflare may challenge CI IPs on some paths).
   async 'live-check'({ paths }) {
     for (const p of paths) {
