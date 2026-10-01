@@ -10,29 +10,24 @@
  * 4. Deep Social Extraction (Discord/Twitter from HTML)
  * 5. Wayback Machine Trust Scoring
  * 6. Gemini AI Enrichment (if GEMINI_API_KEY is present)
- * 7. Certificate transparency: newly certified domains with topic words in the name
  *
- * Every link is reduced to its site's homepage, de-duplicated by host against the
- * directory and the whole queue, and must look on-topic (adult/hentai/anime) before
- * it is scored. Validation runs in parallel, up to MAX_CANDIDATES per run.
+ * Every link is reduced to its site's homepage and de-duplicated per site (language
+ * subdomains such as de.example.com count as example.com) against the directory and
+ * the whole queue. Candidates must look on-topic (adult/hentai/anime) before they
+ * are scored. Validation runs in parallel, up to MAX_CANDIDATES per run.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
-const { hostKey, toHomepage, isTopical, domainsFromCertificates, pool } = require('./lib/discovery.js');
+const { hostKey, siteKey, toHomepage, isTopical, siteName, pool } = require('./lib/discovery.js');
 
 const SPIDER_TARGETS = 150;      // existing listings crawled for outbound links per run
 const MAX_CANDIDATES = 3000;     // new homepages validated per run
 const VALIDATE_CONCURRENCY = 12;
 const RUN_BUDGET_MS = 45 * 60 * 1000;
-// Certificate transparency: domains newly certified with these words in the name.
-const CT_KEYWORDS = [
-  'hentai', 'doujin', 'rule34', 'nhentai', 'hanime', 'eroge', 'booru', 'manhwa', 'ecchi',
-  'yaoi', 'futanari', 'waifu', 'ahegao', 'hmanga', 'animeporn', 'animesex', 'lewd',
-];
-const CT_SINCE_DAYS = 14;
+
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -180,27 +175,6 @@ async function discoverFromSpidering(existingUrlSet) {
       // Silently ignore timeout or network errors on crawled sites
     }
   });
-  return discovered;
-}
-
-// --- Certificate transparency (crt.sh) ---
-async function discoverFromCertificates() {
-  const discovered = [];
-  console.log(`📜 Checking certificate transparency logs for ${CT_KEYWORDS.length} keywords...`);
-  for (const kw of CT_KEYWORDS) {
-    let entries = null;
-    for (let attempt = 1; attempt <= 2 && !entries; attempt++) {
-      try {
-        const res = await fetch(`https://crt.sh/?q=${encodeURIComponent(`%${kw}%`)}&output=json&exclude=expired`, {
-          headers: { 'User-Agent': 'HV-Scout-Bot/3.0' }, signal: AbortSignal.timeout(120000),
-        });
-        if (res.ok) entries = await res.json();
-      } catch { /* crt.sh is often slow; retry once, then move on */ }
-    }
-    const domains = domainsFromCertificates(entries, { keywords: [kw], sinceDays: CT_SINCE_DAYS });
-    console.log(`   - "${kw}": ${entries ? entries.length : 'unavailable'} certificates -> ${domains.length} recent domains`);
-    for (const d of domains) discovered.push({ url: `https://${d}/`, source: 'certificates' });
-  }
   return discovered;
 }
 
@@ -415,25 +389,27 @@ async function run() {
   const started = Date.now();
 
   const existingUrls = getExistingUrls();
-  const existingHosts = new Set([...existingUrls].map(hostKey).filter(Boolean));
+  const existingHosts = new Set([...existingUrls].flatMap(u => [hostKey(u), siteKey(u)]).filter(Boolean));
   console.log(`📦 Loaded ${existingUrls.size} existing URLs (${existingHosts.size} sites) to deduplicate against.`);
 
   const sources = {
     spider: await discoverFromSpidering(existingUrls),
     reddit: await discoverFromReddit(),
     directories: await discoverFromDirectories(),
-    certificates: await discoverFromCertificates(),
   };
 
-  // Every link becomes its site's homepage; one candidate per host.
+  // Every link becomes its site's homepage; one candidate per site.
   const seenHosts = new Set();
   const candidates = [];
   for (const [source, links] of Object.entries(sources)) {
     let fresh = 0;
     for (const link of links) {
-      const home = toHomepage(link.url);
-      const key = home && hostKey(home);
-      if (!key || existingHosts.has(key) || seenHosts.has(key) || isJunkUrl(home)) continue;
+      let home = toHomepage(link.url);
+      const key = home && siteKey(home);
+      if (!key || existingHosts.has(key) || seenHosts.has(key)) continue;
+      // de.example.com → https://example.com/ (the site itself, not one edition)
+      if (key !== hostKey(home)) home = `${new URL(home).protocol}//${key}/`;
+      if (isJunkUrl(home)) continue;
       seenHosts.add(key);
       candidates.push(home);
       fresh++;
@@ -443,7 +419,7 @@ async function run() {
   console.log(`\n🎯 Found ${candidates.length} unique, brand-new sites to validate (checking up to ${MAX_CANDIDATES}).`);
 
   const validSites = [];
-  const skipped = { unreachable: 0, offTopic: 0, uncategorised: 0, headline: 0, lowScore: 0 };
+  const skipped = { unreachable: 0, offTopic: 0, uncategorised: 0, lowScore: 0 };
 
   await pool(candidates.slice(0, MAX_CANDIDATES), VALIDATE_CONCURRENCY, async url => {
     if (Date.now() - started > RUN_BUDGET_MS) return;
@@ -459,9 +435,8 @@ async function run() {
     // Skip entries we cannot reliably categorise — better to miss than to pollute
     if (!category) { skipped.uncategorised++; return; }
 
-    // Skip entries whose title looks like an article/video headline rather than a site name
-    const titleWordCount = extracted.title.trim().split(/\s+/).length;
-    if (titleWordCount > 8 || extracted.title.length > 70) { skipped.headline++; return; }
+    // Homepage titles are SEO strings ("Free Porn Videos | Brand"): use the brand.
+    const name = siteName(extracted.title, url);
 
     const { score, signals } = await scoreSite(url, category, extracted.title);
     if (score < 3.5) { skipped.lowScore++; return; }
@@ -469,7 +444,7 @@ async function run() {
     console.log(`   ⭐ Score ${score}/5.0 — adding to queue: ${url}`);
 
     let siteData = {
-      name: extracted.title.substring(0, 50),
+      name,
       url: url,
       category: category,
       description: extracted.desc || `${domain} is a great resource for ${category.toLowerCase()}.`,
@@ -516,4 +491,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { discoverFromCertificates, discoverFromSpidering };
+module.exports = { discoverFromSpidering };

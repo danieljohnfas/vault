@@ -1,3 +1,4 @@
 [
-  { "task": "gsc-audit", "listingSample": 25, "removedIds": ["teen_models_forum_ms4emv9o", "amateur_girls_forum_mto8aq8j", "cdn_jsdelivr_net_mtley4o6"] }
+  { "task": "dedupe-queue", "dryRun": false },
+  { "task": "pipeline-stats" }
 ]

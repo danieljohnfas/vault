@@ -19,6 +19,20 @@ function hostKey(url) {
   } catch { return null; }
 }
 
+// Language/edition subdomains (de.example.com, pt-br.example.com, m.example.com) are
+// the same site as example.com; anything else (sukebei.nyaa.si) may be its own site.
+const EDITION_LABEL_RE = /^([a-z]{2}(-[a-z]{2})?|www\d?|m|mobile|amp)$/;
+
+/** De-duplication key: the host, with language/edition subdomains folded into the domain. */
+function siteKey(url) {
+  const host = hostKey(url);
+  if (!host) return null;
+  const labels = host.split('.');
+  const domain = registrableDomain(host);
+  if (domain && labels.length > domain.split('.').length && EDITION_LABEL_RE.test(labels[0])) return domain;
+  return host;
+}
+
 /** The site's homepage for any link into it (https unless the link was plain http). */
 function toHomepage(url) {
   try {
@@ -54,24 +68,21 @@ function isTopical(...parts) {
 }
 
 /**
- * Domains from crt.sh JSON (certificate transparency) whose certificate was issued
- * within `sinceDays`, reduced to registrable domains that contain one of `keywords`.
+ * A short site name from an SEO-style homepage title ("Free Porn Videos | Brand",
+ * "Brand - Watch Hentai Online"), falling back to the domain's own label.
  */
-function domainsFromCertificates(entries, { keywords, sinceDays = 14, now = Date.now() } = {}) {
-  const cutoff = now - sinceDays * 86400000;
-  const out = new Set();
-  for (const e of Array.isArray(entries) ? entries : []) {
-    const issued = Date.parse(e.not_before || e.entry_timestamp || '');
-    if (!(issued >= cutoff)) continue;
-    for (const raw of String(e.name_value || e.common_name || '').split('\n')) {
-      const host = raw.trim().toLowerCase().replace(/^\*\./, '');
-      if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(host)) continue;
-      // mail.example.com, cdn.example.com... all reduce to the site itself.
-      const domain = registrableDomain(host);
-      if (domain && keywords.some(k => domain.includes(k))) out.add(domain);
-    }
-  }
-  return [...out];
+function siteName(title, url) {
+  const host = hostKey(url) || '';
+  const label = (registrableDomain(host) || host).split('.')[0];
+  const fromDomain = label ? label.charAt(0).toUpperCase() + label.slice(1) : '';
+  const parts = String(title || '').replace(/\s+/g, ' ').trim()
+    .split(/\s+[|–—•·:»]\s+|\s+-\s+/).map(p => p.trim()).filter(Boolean);
+  const short = parts.filter(p => p.length <= 40 && p.split(' ').length <= 5);
+  const squash = t => t.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const brand = short.find(p => label && (squash(p).includes(squash(label)) || squash(label).includes(squash(p))));
+  if (brand) return brand;
+  if (parts.length === 1 && short.length === 1) return short[0];
+  return fromDomain;
 }
 
 /** Runs fn over items with at most `limit` in flight. */
@@ -81,4 +92,4 @@ async function pool(items, limit, fn) {
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
 }
 
-module.exports = { hostKey, toHomepage, registrableDomain, isTopical, domainsFromCertificates, pool };
+module.exports = { hostKey, siteKey, toHomepage, registrableDomain, isTopical, siteName, pool };

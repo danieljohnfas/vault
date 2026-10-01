@@ -324,6 +324,26 @@ const tasks = {
     console.log('  ' + (await q(['country'], 10)).map(r => `${r.keys[0]}:${r.impressions}`).join(' '));
   },
 
+  // Pending queue entries that duplicate a listed site or each other (language
+  // editions such as de.example.com) are marked rejected; one per site is kept.
+  async 'dedupe-queue'({ dryRun = true } = {}) {
+    const { siteKey, hostKey } = require('../lib/discovery.js');
+    const listed = new Set((await d1('SELECT url FROM sites')).results.map(r => siteKey(r.url)));
+    const pending = (await d1("SELECT id, url FROM queue WHERE status = 'pending'")).results
+      .sort((a, b) => (hostKey(a.url) === siteKey(a.url) ? 0 : 1) - (hostKey(b.url) === siteKey(b.url) ? 0 : 1));
+    const seen = new Set(), reject = [];
+    for (const q of pending) {
+      const key = siteKey(q.url);
+      if (!key || listed.has(key) || seen.has(key)) reject.push(q.id); else seen.add(key);
+    }
+    console.log(`  pending: ${pending.length} | duplicates to reject: ${reject.length}${dryRun ? ' (dry run)' : ''}`);
+    if (dryRun) return;
+    for (let i = 0; i < reject.length; i += 100) {
+      const part = reject.slice(i, i + 100).map(id => `'${String(id).replace(/'/g, "''")}'`).join(', ');
+      await d1(`UPDATE queue SET status = 'rejected' WHERE id IN (${part})`);
+    }
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
