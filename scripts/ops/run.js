@@ -218,7 +218,7 @@ const tasks = {
   },
 
   // IndexNow (Bing, Yandex, Seznam, Naver). Built from D1 with the same rules as
-  // sitemap-sites.xml, because Cloudflare challenges CI runners on HTML/XML paths.
+  // sitemap.xml, because Cloudflare challenges CI runners on HTML/XML paths.
   async 'indexnow'({ staticPaths = [] }) {
     const { isProhibited } = await import('../../src/prohibited.js');
     const rows = (await d1(`SELECT id, url, category, rating,
