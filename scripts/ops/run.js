@@ -251,6 +251,22 @@ const tasks = {
     await runSweep({ d1, dryRun, log: m => console.log(`  ${m}`) });
   },
 
+  // Read-only: minor-safety check over every stored field of every listing and queue
+  // entry (the sweep checks url, name, description and tags). IDs and rules only.
+  async 'minor-safety-deep-scan'() {
+    const { checkMinorSafety } = await import('../../src/prohibited.js');
+    const sites = (await d1('SELECT id, url, data_json FROM sites')).results;
+    const hits = sites.map(s => ({ id: s.id, ...checkMinorSafety(s.url, s.data_json) })).filter(h => h.verdict !== 'ok');
+    console.log(`  listings scanned: ${sites.length} | matches in any field: ${hits.length}`);
+    for (const h of hits) console.log(`    ${h.id} (${h.verdict}: ${h.rule})`);
+    const queue = (await d1('SELECT id, url, name, category, status FROM queue')).results;
+    const qHits = queue.filter(q => checkMinorSafety(q.url, q.name).verdict !== 'ok');
+    console.log(`  queue scanned: ${queue.length} | matches: ${qHits.length} (${[...new Set(qHits.map(q => q.status))].join(', ') || '-'})`);
+    const reviews = (await d1('SELECT id, site_id, comment, user_name FROM reviews')).results;
+    const rHits = reviews.filter(r => checkMinorSafety(r.comment, r.user_name).verdict !== 'ok');
+    console.log(`  reviews scanned: ${reviews.length} | matches: ${rHits.length}`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
