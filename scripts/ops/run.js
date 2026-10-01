@@ -344,6 +344,23 @@ const tasks = {
     }
   },
 
+  // Read-only: listings and queue entries mentioning any of `terms`, with the
+  // listing fields that contain them.
+  async 'find-text'({ terms }) {
+    for (const term of terms) {
+      const t = String(term).toLowerCase().replace(/'/g, "''");
+      const sites = (await d1(`SELECT id, url, data_json FROM sites WHERE instr(lower(url || ' ' || data_json), '${t}') > 0`)).results;
+      console.log(`  "${term}": ${sites.length} listing(s)`);
+      for (const r of sites) {
+        let fields = [];
+        try { fields = Object.entries(JSON.parse(r.data_json)).filter(([, v]) => JSON.stringify(v).toLowerCase().includes(term.toLowerCase())).map(([k]) => k); } catch {}
+        console.log(`    ${r.id} | ${new URL(r.url).hostname} | fields: ${fields.join(', ') || '(url only)'}`);
+      }
+      const queue = (await d1(`SELECT id, status FROM queue WHERE instr(lower(url || ' ' || COALESCE(name, '')), '${t}') > 0`)).results;
+      console.log(`  "${term}": ${queue.length} queue entr(ies) ${queue.map(q => `${q.id}:${q.status}`).join(' ')}`);
+    }
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;

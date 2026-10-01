@@ -1,4 +1,4 @@
 [
-  { "task": "dedupe-queue", "dryRun": false },
+  { "task": "find-text", "terms": ["pcloud", "purevpn"] },
   { "task": "pipeline-stats" }
 ]
