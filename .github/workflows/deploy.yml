@@ -33,6 +33,7 @@ jobs:
         run: |
           node --check src/index.js
           node --check js/app.js
+          node --test 'scripts/test/*.test.mjs'
           npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-dist
 
       - name: Deploy

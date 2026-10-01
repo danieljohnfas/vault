@@ -47,6 +47,49 @@ CREATE TRIGGER block_prohibited_sites_insert BEFORE INSERT ON sites
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'qqaazz') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinderporn') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinder porn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'childlover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'boylover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'boy lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'girllover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'childmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teenmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'junior idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'junioridol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'jr idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'prepubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'pre-pubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'little girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'little boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minor sex') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'sex with minor') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ninfet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'pedofil') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'menor de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'menores de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minderjahrig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minderjährig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ロリ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ショタ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼女') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼児') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '小学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '中学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '児童') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ジュニアアイドル') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '未成年') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '萝莉') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼齿') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'малолет') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'лолит') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'педофил') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'детское порно') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -98,6 +141,49 @@ CREATE TRIGGER block_prohibited_sites_update BEFORE UPDATE OF url, data_json ON 
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'qqaazz') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinderporn') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'kinder porn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'childlover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'boylover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'boy lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'girllover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'child-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'childmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teen-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'teenmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'junior idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'junioridol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'jr idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'prepubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'pre-pubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'little girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'little boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'young boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minor sex') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'sex with minor') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ninfet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'pedofil') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'menor de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'menores de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minderjahrig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'minderjährig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ロリ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ショタ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼女') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼児') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '小学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '中学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '児童') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'ジュニアアイドル') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '未成年') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '萝莉') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), '幼齿') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'малолет') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'лолит') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'педофил') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(json_extract(NEW.data_json, '$.name'), '') || ' ' || COALESCE(json_extract(NEW.data_json, '$.description'), '')), 'детское порно') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -149,6 +235,49 @@ CREATE TRIGGER block_prohibited_queue_insert BEFORE INSERT ON queue
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'qqaazz') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinderporn') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinder porn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'childlover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'boylover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'boy lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'girllover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'childmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teenmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'junior idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'junioridol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'jr idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'prepubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'pre-pubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'little girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'little boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minor sex') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'sex with minor') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ninfet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'pedofil') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'menor de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'menores de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minderjahrig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minderjährig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ロリ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ショタ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼女') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼児') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '小学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '中学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '児童') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ジュニアアイドル') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '未成年') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '萝莉') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼齿') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'малолет') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'лолит') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'педофил') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'детское порно') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;
@@ -200,6 +329,49 @@ CREATE TRIGGER block_prohibited_queue_update BEFORE UPDATE OF url, name ON queue
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'qqaazz') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinderporn') > 0
     OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'kinder porn') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'childlover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'boylover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'boy lover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'girllover') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'child-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'childmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teen-model') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'teenmodel') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'junior idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'junioridol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'jr idol') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'prepubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'pre-pubescent') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'little girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'little boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young girl') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'young boy') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minor sex') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'sex with minor') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ninfet') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'pedofil') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'menor de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'menores de edad') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minderjahrig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'minderjährig') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ロリ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ショタ') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼女') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼児') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '小学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '中学生') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '児童') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'ジュニアアイドル') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '未成年') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '萝莉') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), '幼齿') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'малолет') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'лолит') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'педофил') > 0
+    OR instr(lower(NEW.url || ' ' || COALESCE(NEW.name, '')), 'детское порно') > 0
 BEGIN
   SELECT RAISE(IGNORE);
 END;

@@ -1,63 +1,6 @@
 [
-  {
-    "task": "report-prohibited"
-  },
-  {
-    "task": "delete-sites",
-    "ids": [
-      "amateur_girls_forum_mto8aq8j",
-      "teensex_mq9dvcl9",
-      "under_mu40ah9n",
-      "cdn_jsdelivr_net_mtley4o6",
-      "plausible_web_analytics_mtr6yy1e",
-      "video_platform_features_mtmuazd9",
-      "mybb_free_and_open_source_foru_mue01dtr",
-      "vnstat_mpzc2vrg",
-      "startpage_gamescom_dev_mtr6yy1e",
-      "eurogamer_de_mtpojcvi",
-      "eurogamer_es_mtpojcvi",
-      "eurogamer_pl_mtpojcvi",
-      "eurogamer_net_mto8aq8j",
-      "gamesindustry_biz_mtpojcvi",
-      "gamer_network_mtpojcvi",
-      "video_game_news_reviews_and_wa_msm7dgix",
-      "video_game_news_reviews_and_wa_msm9ssoo",
-      "vgc_video_games_chronicle_mtr6yy1e",
-      "steam_community_mtmuazd9",
-      "poki_let_the_world_play_mtpojcvi",
-      "cambodiatouristservice_mu40a8a2",
-      "oakcityheadlightrestoration_mq7x3q5w",
-      "predictiondisplay_mq0rj3hh",
-      "paylex_exchange_mqc5sx8n",
-      "domainplayersclub_msm9ssoo",
-      "trafficex_msm9ssoo",
-      "univevry_mu40ah9n",
-      "vratislavialex_mq6h3iji",
-      "qjdfdlsldxcnadpcstyfs_mq547jfa",
-      "vriecdsojxp_mq7x3q5w",
-      "mangaupdates_api_ms5ubf6q",
-      "mangadex_authentication_home_mto8aq8j",
-      "static13_mq6h3iji",
-      "members_mu40ah9o",
-      "partners_msyb8hw0",
-      "exchange_msm9ssoo",
-      "whalehunter_cash_teams_telegra_mtr6yy1e",
-      "go_cam_instant_age_verificatio_mtr6yy1e",
-      "checking_your_browser_mu6u9kwy",
-      "hentaikey_age_verification_war_mu5g23fl",
-      "sexlikereal_vr_webmaster_affil_mto8aq8j",
-      "unzipvr_affiliates_mto8aq8j",
-      "nutaku_game_affiliate_adultfor_mu5g23fk"
-    ]
-  },
-  {
-    "task": "apply-sql",
-    "file": "migrations/0006_block_prohibited_content.sql"
-  },
-  {
-    "task": "list-triggers"
-  },
-  {
-    "task": "test-prohibited-rule"
-  }
+  { "task": "minor-safety-sweep", "dryRun": true },
+  { "task": "apply-sql", "file": "migrations/0006_block_prohibited_content.sql" },
+  { "task": "list-triggers" },
+  { "task": "test-prohibited-rule" }
 ]

@@ -262,6 +262,12 @@ const tasks = {
     for (const r of ok) console.log(`  ${r.id} | ${r.category} | ${r.rating} | ${new URL(r.url).host} | ${String(r.name || '').slice(0, 50)}`);
   },
 
+  // Minor-safety sweep (scripts/minor-safety-sweep.mjs); dryRun lists what it would remove.
+  async 'minor-safety-sweep'({ dryRun = true }) {
+    const { runSweep } = await import('../minor-safety-sweep.mjs');
+    await runSweep({ d1, dryRun, log: m => console.log(`  ${m}`) });
+  },
+
   // Live checks from the runner (Cloudflare may challenge CI IPs on some paths).
   async 'live-check'({ paths }) {
     for (const p of paths) {

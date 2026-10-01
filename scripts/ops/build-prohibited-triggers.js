@@ -17,7 +17,7 @@ const path = require('path');
 const { PROHIBITED_TERMS } = require('../../src/prohibited.js');
 
 for (const t of PROHIBITED_TERMS) {
-  if (!/^[a-z0-9 -]+$/.test(t)) throw new Error(`Unsafe term for SQL inlining: ${t}`);
+  if (!/^[\p{Ll}\p{Lo}\p{N} -]+$/u.test(t)) throw new Error(`Unsafe term for SQL inlining: ${t}`);
 }
 
 const matches = (expr) => PROHIBITED_TERMS.map(t => `instr(${expr}, '${t}') > 0`).join('\n    OR ');
