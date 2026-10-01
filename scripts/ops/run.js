@@ -364,6 +364,27 @@ const tasks = {
     }
   },
 
+  // Listings whose stored link (data_json.url, what the Visit button uses) was
+  // swapped for one containing any of `terms` get the listing's own URL back.
+  async 'restore-listing-urls'({ terms }) {
+    for (const term of terms) {
+      const t = String(term).toLowerCase().replace(/'/g, "''");
+      const where = `instr(lower(COALESCE(json_extract(data_json, '$.url'), '')), '${t}') > 0 AND instr(lower(url), '${t}') = 0`;
+      const rows = (await d1(`SELECT id FROM sites WHERE ${where}`)).results;
+      await d1(`UPDATE sites SET data_json = json_set(data_json, '$.url', url) WHERE ${where}`);
+      console.log(`  "${term}": restored ${rows.length} link(s) ${rows.map(r => r.id).join(' ')}`);
+    }
+  },
+
+  // Read-only: listings whose stored link differs from the listing URL.
+  async 'url-mismatch'() {
+    const rows = (await d1(`SELECT id, url, json_extract(data_json, '$.url') AS link FROM sites
+      WHERE json_extract(data_json, '$.url') IS NOT NULL AND rtrim(json_extract(data_json, '$.url'), '/') != rtrim(url, '/')`)).results;
+    console.log(`  ${rows.length} listing(s) link somewhere other than their URL`);
+    const host = u => { try { return new URL(u).hostname; } catch { return String(u).slice(0, 40); } };
+    for (const r of rows.slice(0, 40)) console.log(`    ${r.id} | ${host(r.url)} -> ${host(r.link)}`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
