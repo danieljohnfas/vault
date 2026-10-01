@@ -267,6 +267,63 @@ const tasks = {
     console.log(`  reviews scanned: ${reviews.length} | matches: ${rHits.length}`);
   },
 
+  // Read-only Search Console audit: sitemap status, index status of a page sample
+  // (static pages, random indexable listings, removed listings) and 90-day performance.
+  async 'gsc-audit'({ listingSample = 25, removedIds = [] } = {}) {
+    const { google, auth } = await gscAuth(['https://www.googleapis.com/auth/webmasters.readonly']);
+    const siteUrl = `sc-domain:${ZONE_NAME}`;
+    const wm = google.webmasters({ version: 'v3', auth });
+    const sc = google.searchconsole({ version: 'v1', auth });
+
+    const sm = await wm.sitemaps.list({ siteUrl });
+    console.log('  -- sitemaps');
+    for (const s of sm.data.sitemap || []) {
+      console.log(`  ${s.path} | submitted ${s.lastSubmitted || '-'} | read ${s.lastDownloaded || '-'} | pending ${s.isPending} | errors ${s.errors} | warnings ${s.warnings} | ${(s.contents || []).map(c => `${c.submitted} submitted`).join(', ')}`);
+    }
+
+    const { isIndexable } = await import('../../src/listing-rules.js');
+    const rows = (await d1(`SELECT id, url, category, rating,
+        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
+        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
+        json_extract(data_json, '$.tags') AS tags, json_extract(data_json, '$.releasedAt') AS releasedAt FROM sites`)).results;
+    const listings = rows.filter(isIndexable).sort(() => Math.random() - 0.5).slice(0, listingSample);
+    const urls = [
+      '/', '/blog/', '/blog/nhentai-alternatives-2026', '/blog/best-doujin-sites-2026',
+      '/category/hentai-streaming', '/category/manga-doujin', '/category/images-boorus', '/about',
+      ...listings.map(r => `/site?id=${encodeURIComponent(r.id)}`),
+      ...removedIds.map(id => `/site?id=${encodeURIComponent(id)}`),
+    ];
+    console.log(`  -- index status (${urls.length} URLs)`);
+    const tally = {};
+    for (const u of urls) {
+      try {
+        const r = await sc.urlInspection.index.inspect({ requestBody: { inspectionUrl: `https://${ZONE_NAME}${u}`, siteUrl } });
+        const i = r.data.inspectionResult.indexStatusResult || {};
+        tally[i.coverageState] = (tally[i.coverageState] || 0) + 1;
+        const canon = i.googleCanonical && i.userCanonical && i.googleCanonical !== i.userCanonical ? ` | google canonical: ${i.googleCanonical}` : '';
+        console.log(`  ${u} | ${i.verdict} | ${i.coverageState} | fetch ${i.pageFetchState || '-'} | robots ${i.robotsTxtState || '-'} | indexing ${i.indexingState || '-'} | crawled ${i.lastCrawlTime || 'never'}${canon}`);
+      } catch (e) { console.log(`  ${u} | error ${e.message}`); }
+    }
+    console.log(`  -- tally: ${Object.entries(tally).map(([k, v]) => `${k}=${v}`).join(' | ')}`);
+
+    const today = new Date();
+    const fmt = d => d.toISOString().slice(0, 10);
+    const start = fmt(new Date(today - 90 * 86400000)), end = fmt(today);
+    const q = async (dimensions, rowLimit = 25) => (await sc.searchanalytics.query({
+      siteUrl, requestBody: { startDate: start, endDate: end, dimensions, rowLimit, dataState: 'all' },
+    })).data.rows || [];
+    const byMonthDay = await q(['date'], 120);
+    const weeks = {};
+    for (const r of byMonthDay) { const w = r.keys[0].slice(0, 8) + (r.keys[0].slice(8) < '16' ? 'a' : 'b'); weeks[w] = weeks[w] || [0, 0]; weeks[w][0] += r.clicks; weeks[w][1] += r.impressions; }
+    console.log(`  -- clicks/impressions by half-month (${start}..${end}): ${Object.entries(weeks).map(([k, v]) => `${k}:${v[0]}/${v[1]}`).join(' ')}`);
+    console.log('  -- top pages by impressions');
+    for (const r of (await q(['page'], 20))) console.log(`  ${r.keys[0].replace(`https://${ZONE_NAME}`, '')} | clicks ${r.clicks} | impr ${r.impressions} | pos ${r.position.toFixed(1)}`);
+    console.log('  -- top queries by impressions');
+    for (const r of (await q(['query'], 25))) console.log(`  "${r.keys[0]}" | clicks ${r.clicks} | impr ${r.impressions} | pos ${r.position.toFixed(1)}`);
+    console.log('  -- countries');
+    console.log('  ' + (await q(['country'], 10)).map(r => `${r.keys[0]}:${r.impressions}`).join(' '));
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
