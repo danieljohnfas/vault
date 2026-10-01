@@ -220,20 +220,12 @@ const tasks = {
   // IndexNow (Bing, Yandex, Seznam, Naver). Built from D1 with the same rules as
   // sitemap.xml, because Cloudflare challenges CI runners on HTML/XML paths.
   async 'indexnow'({ staticPaths = [] }) {
-    const { isProhibited } = await import('../../src/prohibited.js');
+    const { isIndexable } = await import('../../src/listing-rules.js');
     const rows = (await d1(`SELECT id, url, category, rating,
         json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
-        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS dead,
+        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
         json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
-    const indexable = rows.filter(r => {
-      try {
-        const u = new URL(r.url);
-        return !isProhibited(r.url, r.name, r.description) && r.isUp !== 0 && r.dead !== 1 && Number(r.rating) >= 3.5
-          && r.category !== 'Adult Tubes & Studios' && !String(r.tags || '').includes('Auto-Discovered')
-          && u.pathname.replace(/\/+$/, '') === '' && !u.search
-          && !/checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i.test(String(r.name || '').trim());
-      } catch { return false; }
-    });
+    const indexable = rows.filter(isIndexable);
     const urls = [...staticPaths.map(p => `https://${ZONE_NAME}${p}`),
       ...indexable.map(r => `https://${ZONE_NAME}/site?id=${encodeURIComponent(r.id)}`)];
     console.log(`  urls: ${urls.length} (${indexable.length} listings)`);
@@ -245,27 +237,32 @@ const tasks = {
   },
 
   // Read-only: every listing that passes the sitemap gate, for a quality review.
-  async 'list-indexable'() {
+  async 'list-indexable'({ verbose = true } = {}) {
+    const { isIndexable } = await import('../../src/listing-rules.js');
     const rows = (await d1(`SELECT id, url, category, rating,
-        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.isUp') AS isUp,
-        json_extract(data_json, '$.isDeadFlagged') AS dead, json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
-    const { isProhibited } = await import('../../src/prohibited.js');
-    const ok = rows.filter(r => {
-      try {
-        const u = new URL(r.url);
-        return !isProhibited(r.url, r.name) && r.isUp !== 0 && r.dead !== 1 && Number(r.rating) >= 3.5
-          && r.category !== 'Adult Tubes & Studios' && !String(r.tags || '').includes('Auto-Discovered')
-          && u.pathname.replace(/\/+$/, '') === '' && !u.search;
-      } catch { return false; }
-    });
+        json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
+        json_extract(data_json, '$.isUp') AS isUp, json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
+        json_extract(data_json, '$.tags') AS tags FROM sites`)).results;
+    const ok = rows.filter(isIndexable);
     console.log(`  total sites: ${rows.length} | indexable: ${ok.length}`);
-    for (const r of ok) console.log(`  ${r.id} | ${r.category} | ${r.rating} | ${new URL(r.url).host} | ${String(r.name || '').slice(0, 50)}`);
+    if (verbose) for (const r of ok) console.log(`  ${r.id} | ${r.category} | ${r.rating} | ${new URL(r.url).host} | ${String(r.name || '').slice(0, 50)}`);
   },
 
   // Minor-safety sweep (scripts/minor-safety-sweep.mjs); dryRun lists what it would remove.
   async 'minor-safety-sweep'({ dryRun = true }) {
     const { runSweep } = await import('../minor-safety-sweep.mjs');
     await runSweep({ d1, dryRun, log: m => console.log(`  ${m}`) });
+  },
+
+  // Read-only: queue size by status and how many listings were added per day.
+  async 'pipeline-stats'() {
+    const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
+    console.log(`  queue: ${q.map(r => `${r.status}=${r.n}`).join(', ')}`);
+    const added = (await d1(`SELECT substr(added_at, 1, 10) AS day, COUNT(*) AS n FROM sites
+      WHERE added_at >= date('now', '-30 days') GROUP BY day ORDER BY day`)).results;
+    console.log(`  listings added per day (30d): ${added.map(r => `${r.day}:${r.n}`).join(' ')}`);
+    const done = (await d1(`SELECT status, COUNT(*) AS n FROM queue WHERE claimed_at >= datetime('now', '-30 days') GROUP BY status`)).results;
+    console.log(`  queue outcomes (claimed in 30d): ${done.map(r => `${r.status}=${r.n}`).join(', ')}`);
   },
 
   // Live checks from the runner (Cloudflare may challenge CI IPs on some paths).

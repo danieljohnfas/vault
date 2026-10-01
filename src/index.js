@@ -15,17 +15,12 @@
  */
 
 import { isMinorSafe, isListingVisible, PROHIBITED_TERMS } from './prohibited.js';
+import {
+  CATEGORIES, normalizeCategory, categoryVariants,
+  isSafeHttpUrl, isSiteUp, parseTags, isIndexable,
+} from './listing-rules.js';
 
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
-
-// Listings in these categories stay browsable but are not offered to search
-// engines: they are generic tube sites outside the directory's hentai/anime focus.
-const NOINDEX_CATEGORIES = new Set(['Adult Tubes & Studios']);
-const MIN_INDEXABLE_RATING = 3.5;
-
-// Names that are scraping artefacts (challenge/error pages, bare subdomain
-// labels) rather than a real site name.
-const JUNK_NAME_RE = /checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i;
 
 // SQL guard appended to every listing query so prohibited entries are never served.
 // Terms are constants from prohibited.js (no quotes), so inlining them is safe.
@@ -58,68 +53,6 @@ function hostnameOf(url) {
 function faviconFor(url) {
   const host = hostnameOf(url);
   return host ? `https://icons.duckduckgo.com/ip3/${host}.ico` : '/assets/favicon.png';
-}
-
-function isSafeHttpUrl(url) {
-  try {
-    const u = new URL(url);
-    return u.protocol === 'http:' || u.protocol === 'https:';
-  } catch { return false; }
-}
-
-function isSiteUp(site) {
-  return !(site.isUp === false || site.isUp === 0 || site.isDeadFlagged === true || site.isDeadFlagged === 1);
-}
-
-function parseTags(tags) {
-  if (Array.isArray(tags)) return tags;
-  try { const t = JSON.parse(tags || '[]'); return Array.isArray(t) ? t : []; } catch { return []; }
-}
-
-/**
- * Whether a listing's review page should be indexed and included in the sitemap.
- * Thin, dead, auto-discovered, off-topic or deep-link listings are still viewable
- * but carry noindex so they don't dilute the site's quality signals.
- */
-function isIndexable(site) {
-  if (!site || !isSafeHttpUrl(site.url)) return false;
-  if (!isListingVisible(site)) return false;
-  if (!isSiteUp(site)) return false;
-  if (!(Number(site.rating) >= MIN_INDEXABLE_RATING)) return false;
-  if (NOINDEX_CATEGORIES.has(site.category)) return false;
-  if (parseTags(site.tags).includes('Auto-Discovered')) return false;
-  if (JUNK_NAME_RE.test(String(site.name || '').trim())) return false;
-  const u = new URL(site.url);
-  // A listing must be a site's homepage, not a performer/category/search page.
-  if (u.pathname.replace(/\/+$/, '') !== '' || u.search) return false;
-  return true;
-}
-
-// Canonical category names (must match ALL_CATEGORIES in js/app.js).
-const CATEGORIES = [
-  'Manga & Doujinshi', 'Hentai Streaming', 'Anime Streaming', 'Image Boards (Boorus)',
-  'Games & Visual Novels', 'Communities & Forums', 'Downloads & Torrents',
-  'Adult Tubes & Studios', 'Creator Platforms', 'Immersive & Interactive',
-];
-
-// Legacy names still used by the submit forms and some older D1 rows.
-const CATEGORY_ALIASES = {
-  'Manga/Doujin': 'Manga & Doujinshi', 'Manga': 'Manga & Doujinshi', 'Doujinshi': 'Manga & Doujinshi',
-  'Images/Boorus': 'Image Boards (Boorus)', 'Boorus': 'Image Boards (Boorus)',
-  'Games': 'Games & Visual Novels', 'Visual Novels': 'Games & Visual Novels', 'Adult Games': 'Games & Visual Novels',
-  'Communities': 'Communities & Forums', 'Downloads': 'Downloads & Torrents',
-  'Adult Studios': 'Adult Tubes & Studios', 'Adult VR': 'Immersive & Interactive',
-  'Premium Creators': 'Creator Platforms', 'Anime': 'Anime Streaming',
-};
-
-function normalizeCategory(cat) {
-  const c = String(cat || '').trim();
-  return CATEGORY_ALIASES[c] || c;
-}
-
-function categoryVariants(cat) {
-  const canonical = normalizeCategory(cat);
-  return [canonical, ...Object.keys(CATEGORY_ALIASES).filter(k => CATEGORY_ALIASES[k] === canonical)];
 }
 
 const CATEGORY_HUBS = {
