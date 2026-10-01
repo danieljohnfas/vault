@@ -1527,19 +1527,25 @@ async function handleRequest(request, env, ctx) {
             s.category = s.category || row.category;
             return s;
           };
-          const data = await edgeCachedJson(ctx, `site-data-v1?id=${encodeURIComponent(rawId)}`, 3600, async () => {
-            const siteRow = await env.hv_directory.prepare('SELECT category, data_json FROM sites WHERE id = ?').bind(rawId).first();
-            if (!siteRow || !siteRow.data_json) return { siteRow: null, related: [] };
-            const related = (await env.hv_directory.prepare(
-              `SELECT data_json FROM sites WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 15`
-            ).bind(parse(siteRow).category, rawId).all()).results;
-            return { siteRow, related };
-          });
-          if (data.siteRow) {
-            site = parse(data.siteRow);
+          const siteRow = await edgeCachedJson(ctx, `site-row-v1?id=${encodeURIComponent(rawId)}`, 3600, async () =>
+            (await env.hv_directory.prepare('SELECT category, data_json FROM sites WHERE id = ?').bind(rawId).first()) || null);
+          if (siteRow && siteRow.data_json) {
+            site = parse(siteRow);
             // The whole stored record, as the minor-safety sweep checks it.
-            if (!isListingVisible(site) || !isMinorSafe(site.url, data.siteRow.data_json) || !isSafeHttpUrl(site.url)) site = null;
-            else relatedSites = visibleSites(data.related);
+            if (!isListingVisible(site) || !isMinorSafe(site.url, siteRow.data_json) || !isSafeHttpUrl(site.url)) site = null;
+          }
+          if (site) {
+            // Related listings are the category's best-rated, cached once per category.
+            // They are optional: if the query fails the page renders without them.
+            try {
+              const rows = await edgeCachedJson(ctx, `category-top-v1?c=${encodeURIComponent(site.category)}`, 3600, async () =>
+                (await env.hv_directory.prepare(
+                  `SELECT id, data_json FROM sites WHERE category = ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 16`
+                ).bind(site.category).all()).results);
+              relatedSites = visibleSites(rows.filter(r => r.id !== rawId)).slice(0, 15);
+            } catch (err) {
+              console.error('related listings unavailable:', err);
+            }
           }
         } catch (err) {
           console.error("D1 lookup error:", err);
