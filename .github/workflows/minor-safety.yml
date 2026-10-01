@@ -1,0 +1,38 @@
+name: 🛡️ Minor-safety sweep
+
+# Re-checks every listing and queued submission against src/prohibited.js and
+# removes anything that matches, automatically (scripts/minor-safety-sweep.mjs).
+# Runs twice a day and whenever the rules change. Logs print IDs and rule names only.
+on:
+  schedule:
+    - cron: '23 */12 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'src/prohibited.js'
+      - 'scripts/minor-safety-sweep.mjs'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: minor-safety
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Test the rules
+        run: node --test 'scripts/test/*.test.mjs'
+      - name: Sweep
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/minor-safety-sweep.mjs

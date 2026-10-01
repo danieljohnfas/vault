@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
-const { isProhibited } = require('../src/prohibited.js');
+const { isMinorSafe } = require('../src/prohibited.js');
 
 const QUEUE_FILE = path.resolve(__dirname, 'sites-queue.json');
 
@@ -92,8 +92,8 @@ function isJunkUrl(url) {
     if (DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
     // Block junk path patterns
     if (JUNK_PATH_PATTERNS.some(p => p.test(url))) return true;
-    // Never queue anything matching the prohibited-content blocklist.
-    if (isProhibited(url)) return true;
+    // Minor safety: never queue anything blocked or needing manual review.
+    if (!isMinorSafe(url)) return true;
     // Only site homepages: performer, category, search and article pages are not "sites".
     if (!isHomepagePath(u)) return true;
     return false;
@@ -465,7 +465,7 @@ async function run() {
     let sql = '';
     for (const s of validSites) {
       // Final gate for every discovery source, not just spidered links.
-      if (isJunkUrl(s.url) || isProhibited(s.url, s.name, s.description)) continue;
+      if (isJunkUrl(s.url) || !isMinorSafe(s.url, s.name, s.description)) continue;
       const id = crypto.randomUUID();
       const url = String(s.url).replace(/'/g, "''");
       const cat = String(s.category || '').replace(/'/g, "''");

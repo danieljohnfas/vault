@@ -14,7 +14,7 @@
  *   AD_KEY_*             — optional, served by /api/config
  */
 
-import { isProhibited, PROHIBITED_TERMS } from './prohibited.js';
+import { isMinorSafe, isListingVisible, PROHIBITED_TERMS } from './prohibited.js';
 
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
 
@@ -29,9 +29,16 @@ const JUNK_NAME_RE = /checking your browser|just a moment|attention required|acc
 
 // SQL guard appended to every listing query so prohibited entries are never served.
 // Terms are constants from prohibited.js (no quotes), so inlining them is safe.
+// Pattern-based (restricted) matches are removed by the minor-safety sweep.
 const NOT_PROHIBITED_SQL = '(' + PROHIBITED_TERMS
   .map(t => `instr(lower(url || ' ' || COALESCE(json_extract(data_json, '$.name'), '') || ' ' || COALESCE(json_extract(data_json, '$.description'), '')), '${t}') = 0`)
   .join(' AND ') + ')';
+
+// Parses listing rows and drops any that fail the full minor-safety check (the SQL
+// guard above only knows the plain terms; the sweep removes the rest within hours).
+const visibleSites = rows => rows
+  .map(r => { try { return JSON.parse(r.data_json); } catch { return null; } })
+  .filter(isListingVisible);
 
 function escapeHTML(str) {
   if (str === null || str === undefined) return '';
@@ -76,7 +83,7 @@ function parseTags(tags) {
  */
 function isIndexable(site) {
   if (!site || !isSafeHttpUrl(site.url)) return false;
-  if (isProhibited(site.url, site.name, site.description)) return false;
+  if (!isListingVisible(site)) return false;
   if (!isSiteUp(site)) return false;
   if (!(Number(site.rating) >= MIN_INDEXABLE_RATING)) return false;
   if (NOINDEX_CATEGORIES.has(site.category)) return false;
@@ -1002,7 +1009,7 @@ async function handleRequest(request, env, ctx) {
       if (!id) return jsonError('Missing site id', 400);
       try {
         const result = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
-        if (!result) return jsonError('Site not found', 404);
+        if (!result || !visibleSites([result]).length) return jsonError('Site not found', 404);
         return new Response(
           result.data_json,
           { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
@@ -1032,7 +1039,7 @@ async function handleRequest(request, env, ctx) {
           LIMIT 12
         `).bind(target.category, id).all();
         
-        const sites = result.results.map(row => JSON.parse(row.data_json));
+        const sites = visibleSites(result.results);
         return new Response(
           JSON.stringify({ sites }),
           { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' } }
@@ -1135,7 +1142,7 @@ async function handleRequest(request, env, ctx) {
           if (/https?:\/\/|www\.|\.(com|net|org|xxx|io|me|to)\b/i.test(comment + ' ' + userName)) {
             return jsonError('Links are not allowed in reviews.', 400);
           }
-          if (isProhibited(comment, userName)) return jsonError('Review rejected.', 400);
+          if (!isMinorSafe(comment, userName)) return jsonError('Review rejected.', 400);
 
           const human = await verifyHuman(body, ip, env);
           if (!human.ok) return jsonError(human.error, 400);
@@ -1172,13 +1179,14 @@ async function handleRequest(request, env, ctx) {
         const topSites = await env.hv_directory.prepare(
           `SELECT data_json FROM sites WHERE ${NOT_PROHIBITED_SQL} AND COALESCE(json_extract(data_json, '$.isUp'), 1) != 0 ORDER BY rating DESC LIMIT 50`
         ).all();
-        if (topSites.results.length === 0) return jsonError('No sites found', 404);
+        const candidates = visibleSites(topSites.results);
+        if (candidates.length === 0) return jsonError('No sites found', 404);
 
         let hash = 0;
         for (let i = 0; i < dayStr.length; i++) hash += dayStr.charCodeAt(i);
         
-        const selectedIdx = hash % topSites.results.length;
-        const site = JSON.parse(topSites.results[selectedIdx].data_json);
+        const selectedIdx = hash % candidates.length;
+        const site = candidates[selectedIdx];
         
         return new Response(JSON.stringify({ site }), {
           headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' }
@@ -1289,7 +1297,7 @@ async function handleRequest(request, env, ctx) {
         params.push(limit, offset);
         
         const result = await env.hv_directory.prepare(query).bind(...params).all();
-        const sites = result.results.map(row => JSON.parse(row.data_json));
+        const sites = visibleSites(result.results);
         
         return new Response(
           JSON.stringify({ total, sites }),
@@ -1310,6 +1318,7 @@ async function handleRequest(request, env, ctx) {
         let items = '';
         for (const r of result.results) {
           const site = JSON.parse(r.data_json);
+          if (!isListingVisible(site)) continue;
           const link = `https://hentaivault.me/site?id=${escapeHTML(encodeURIComponent(site.id))}`;
           const added = new Date(r.added_at);
           const pubDate = isNaN(added) ? '' : `<pubDate>${added.toUTCString()}</pubDate>`;
@@ -1432,8 +1441,7 @@ async function handleRequest(request, env, ctx) {
       if (!env.hv_directory) return jsonError('DB not configured', 500);
       try {
         const result = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE ${NOT_PROHIBITED_SQL} ORDER BY clicks DESC LIMIT 3`).all();
-        const sites = result.results.map(r => {
-            const s = JSON.parse(r.data_json);
+        const sites = visibleSites(result.results).map(s => {
             s.isTrending = true;
             return s;
         });
@@ -1474,7 +1482,7 @@ async function handleRequest(request, env, ctx) {
         const queryRec = `SELECT data_json FROM sites WHERE (${tagConditions}) AND id NOT IN (${placeholders}) AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 5`;
         const recRes = await env.hv_directory.prepare(queryRec).bind(...params).all();
         
-        const sites = recRes.results.map(r => JSON.parse(r.data_json));
+        const sites = visibleSites(recRes.results);
         return new Response(JSON.stringify({ sites }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
       } catch (e) {
         return jsonError('Error fetching recommendations', 500);
@@ -1493,7 +1501,7 @@ async function handleRequest(request, env, ctx) {
         const result = await env.hv_directory.prepare(
           `SELECT id, json_extract(data_json, '$.name') AS name, url, category FROM sites WHERE ${NOT_PROHIBITED_SQL} ORDER BY RANDOM() LIMIT 1`
         ).first();
-        if (!result) return jsonError('No sites found', 404);
+        if (!result || !isMinorSafe(result.url, result.name)) return jsonError('No sites found', 404);
         return new Response(
           JSON.stringify(result),
           { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' } }
@@ -1578,13 +1586,13 @@ async function handleRequest(request, env, ctx) {
           if (siteRow && siteRow.data_json) {
             site = JSON.parse(siteRow.data_json);
             site.id = site.id || rawId;
-            if (isProhibited(site.url, site.name, site.description) || !isSafeHttpUrl(site.url)) {
+            if (!isListingVisible(site) || !isSafeHttpUrl(site.url)) {
               site = null;
             } else {
               const relatedRows = await env.hv_directory.prepare(
                 `SELECT data_json FROM sites WHERE category = ? AND id != ? AND ${NOT_PROHIBITED_SQL} ORDER BY rating DESC LIMIT 15`
               ).bind(site.category, rawId).all();
-              relatedSites = relatedRows.results.map(r => JSON.parse(r.data_json));
+              relatedSites = visibleSites(relatedRows.results);
             }
           }
         } catch (err) {
@@ -1627,8 +1635,9 @@ async function handleRequest(request, env, ctx) {
         try {
           const rows = await env.hv_directory.prepare(`SELECT id, data_json FROM sites WHERE id IN (?, ?) AND ${NOT_PROHIBITED_SQL}`).bind(site1Id, site2Id).all();
           for (const r of rows.results) {
-            if (r.id === site1Id) site1 = JSON.parse(r.data_json);
-            if (r.id === site2Id) site2 = JSON.parse(r.data_json);
+            const parsed = visibleSites([r])[0] || null;
+            if (r.id === site1Id) site1 = parsed;
+            if (r.id === site2Id) site2 = parsed;
           }
         } catch (e) {}
       }
@@ -1659,8 +1668,8 @@ async function handleRequest(request, env, ctx) {
       let site = null;
       if (env.hv_directory) {
         try {
-          const row = await env.hv_directory.prepare(`SELECT url FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
-          if (row && isSafeHttpUrl(row.url)) site = { url: row.url };
+          const row = await env.hv_directory.prepare(`SELECT url, data_json FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
+          if (row && isSafeHttpUrl(row.url) && visibleSites([row]).length) site = { url: row.url };
         } catch (e) {}
       }
       if (!site) return notFoundPage(env, url, 410);
@@ -1685,7 +1694,7 @@ async function handleRequest(request, env, ctx) {
       if (env.hv_directory) {
         try {
           const row = await env.hv_directory.prepare(`SELECT data_json FROM sites WHERE id = ? AND ${NOT_PROHIBITED_SQL}`).bind(id).first();
-          if (row) site = JSON.parse(row.data_json);
+          if (row) site = visibleSites([row])[0] || null;
         } catch (e) {}
       }
       if (!site) return new Response('Gone', { status: 410, headers: { 'X-Robots-Tag': 'noindex' } });
@@ -1818,7 +1827,7 @@ async function handleScheduled(event, env, ctx) {
       // ── Context check: keyword must appear in the HOSTNAME, not just path ──
       // Prevents: wikipedia.org/wiki/doujin_soft passing because "doujin" is in path
       const hostLower = hostname.toLowerCase();
-      if (isProhibited(siteUrl)) return false;
+      if (!isMinorSafe(siteUrl)) return false;
       const fitsContext = SITE_CONTEXT_KEYWORDS.some(k => hostLower.includes(k));
       if (!fitsContext) return false;
 
@@ -2095,7 +2104,8 @@ async function handleSubmit(request, env, ctx) {
     if (!CATEGORIES.includes(catClean))
       return jsonError('Invalid category selected.', 400);
 
-    if (isProhibited(urlClean, nameClean, descClean))
+    // Minor safety: anything blocked or restricted is refused automatically.
+    if (!isMinorSafe(urlClean, nameClean, descClean))
       return jsonError('This site cannot be listed on HentaiVault.', 422);
 
     if (!descClean || descClean.length < 20)

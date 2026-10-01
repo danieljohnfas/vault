@@ -22,7 +22,7 @@ const fs   = require('fs');
 const path = require('path');
 const isSiteLive = require('./ping-site');
 const { scoreSite } = require('./score-site');
-const { isProhibited } = require('../src/prohibited.js');
+const { isMinorSafe } = require('../src/prohibited.js');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -97,8 +97,8 @@ function isJunkSite(site) {
     if (JUNK_DOMAIN_BLACKLIST.some(d => domain === d || domain.endsWith('.' + d))) return true;
     // Junk path patterns
     if (JUNK_PATH_PATTERNS.some(p => p.test(site.url))) return true;
-    // Never publish anything matching the prohibited-content blocklist.
-    if (isProhibited(site.url, site.name, site.description)) return true;
+    // Minor safety: nothing blocked or needing manual review is published automatically.
+    if (!isMinorSafe(site.url, site.name, site.description, site.tags)) return true;
     // Only site homepages: performer, category, search and article pages are not "sites".
     if (!isHomepagePath(u)) return true;
     // Name looks like a sentence/headline rather than a brand name
@@ -307,8 +307,8 @@ async function run() {
 
   // Re-check after enrichment: the scraped meta description only exists now.
   const enriched = scored.map(enrich).filter(e => {
-    if (!isProhibited(e.url, e.name, e.description)) return true;
-    console.log(`   ⛔ Blocked (prohibited content): ${e.url}`);
+    if (isMinorSafe(e.url, e.name, e.description, e.tags)) return true;
+    console.log(`   ⛔ Blocked (minor safety): ${e.id || e.url}`);
     return false;
   });
   console.log(`\n➕ Enriched ${enriched.length} new sites`);
