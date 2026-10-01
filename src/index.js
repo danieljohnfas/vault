@@ -194,8 +194,7 @@ class HeadHandler {
         "@id": "https://hentaivault.me/#organization",
         "name": "HentaiVault",
         "url": "https://hentaivault.me",
-        "logo": { "@type": "ImageObject", "url": "https://hentaivault.me/assets/favicon.png" },
-        "sameAs": ["https://github.com/danieljohnfas/vault"]
+        "logo": { "@type": "ImageObject", "url": "https://hentaivault.me/assets/favicon.png" }
       },
       {
         "@type": "BreadcrumbList",
