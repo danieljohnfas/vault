@@ -38,27 +38,27 @@ async function run() {
   console.log(`📦 Loaded ${sites.length} sites from database.`);
 
   const deadSites = [];
-  const CONCURRENCY = 20;
+  const CONCURRENCY = 40;
 
   console.log(`\n🌐 Pinging sites to verify liveness (Concurrency: ${CONCURRENCY})...`);
 
-  for (let i = 0; i < sites.length; i += CONCURRENCY) {
-    const chunk = sites.slice(i, i + CONCURRENCY);
-    const results = await Promise.all(chunk.map(async s => {
-      const status = await isSiteLive(s.url);
-      return { site: s, status };
-    }));
-
-    for (const r of results) {
-      if (r.status === 'dead') {
-        console.log(`   ❌ DEAD: ${r.site.url} (ID: ${r.site.id})`);
-        deadSites.push(r.site);
-      } else if (r.status === 'error') {
+  // Worker pool: a slow or timing-out site only holds up its own slot,
+  // instead of stalling a whole fixed-size batch until it finishes.
+  let next = 0;
+  async function worker() {
+    while (next < sites.length) {
+      const site = sites[next++];
+      const status = await isSiteLive(site.url);
+      if (status === 'dead') {
+        console.log(`   ❌ DEAD: ${site.url} (ID: ${site.id})`);
+        deadSites.push(site);
+      } else if (status === 'error') {
         // We log errors, but DO NOT delete them, as they could be temporary issues.
-        console.log(`   ⚠️ ERROR/TIMEOUT: ${r.site.url} - Skipping to avoid false positive.`);
+        console.log(`   ⚠️ ERROR/TIMEOUT: ${site.url} - Skipping to avoid false positive.`);
       }
     }
   }
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, sites.length) }, worker));
 
   console.log(`\n✅ Scan complete. Found ${deadSites.length} definitively dead sites.`);
 
