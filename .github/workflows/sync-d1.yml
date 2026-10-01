@@ -39,10 +39,6 @@ jobs:
         if: steps.check_file.outputs.exists == 'true'
         run: node scripts/generate-sql.js
 
-      - name: Install Wrangler
-        if: steps.check_file.outputs.exists == 'true'
-        run: npm install -g wrangler
-
       - name: Execute SQL on Cloudflare D1
         if: steps.check_file.outputs.exists == 'true'
         env:
@@ -50,8 +46,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           # Loop through all generated insert files and execute them
-          for f in insert_*.sql; do
-            echo "Executing $f..."
-            npx wrangler d1 execute hv-directory --remote --file="$f"
-          done
+          node scripts/d1-exec-file.mjs insert_*.sql
           echo "✅ Successfully synced data.js to D1!"

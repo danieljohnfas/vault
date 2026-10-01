@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { hostKey, siteKey, toHomepage, registrableDomain, isTopical, siteName, pool } = require('../lib/discovery.js');
+const { hostKey, siteKey, brandKey, toHomepage, registrableDomain, isTopical, siteName, pool } = require('../lib/discovery.js');
 
 test('deep links reduce to the site homepage', () => {
   assert.equal(toHomepage('https://www.Example.com/gallery/123?x=1#y'), 'https://www.example.com/');
@@ -59,4 +59,13 @@ test('pool runs everything with bounded concurrency', async () => {
   });
   assert.equal(seen.length, 25);
   assert.ok(peak <= 4);
+});
+
+test('mirrors on other TLDs share a brand key; sites on a platform subdomain have none', () => {
+  assert.equal(brandKey('https://www.drtuber.desi/'), 'drtuber');
+  assert.equal(brandKey('https://drtuber.club/'), 'drtuber');
+  assert.equal(brandKey('https://de.example.co.uk/'), 'example');
+  assert.equal(brandKey('https://foo.blogspot.com/'), null);
+  assert.equal(brandKey('https://sukebei.nyaa.si/'), null);
+  assert.equal(brandKey('not a url'), null);
 });

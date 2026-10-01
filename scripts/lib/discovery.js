@@ -33,6 +33,18 @@ function siteKey(url) {
   return host;
 }
 
+/**
+ * Mirror key: a site on its own registrable domain is keyed by the domain's first
+ * label, so mirrors on other TLDs (drtuber.desi, drtuber.club) count as one site.
+ * Sites on a subdomain (foo.blogspot.com, sukebei.nyaa.si) have none: there the
+ * label names the host platform, not the site.
+ */
+function brandKey(url) {
+  const key = siteKey(url);
+  const domain = key && registrableDomain(key);
+  return domain && domain === key ? domain.split('.')[0] : null;
+}
+
 /** The site's homepage for any link into it (https unless the link was plain http). */
 function toHomepage(url) {
   try {
@@ -92,4 +104,4 @@ async function pool(items, limit, fn) {
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
 }
 
-module.exports = { hostKey, siteKey, toHomepage, registrableDomain, isTopical, siteName, pool };
+module.exports = { hostKey, siteKey, brandKey, toHomepage, registrableDomain, isTopical, siteName, pool };

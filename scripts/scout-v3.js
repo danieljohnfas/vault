@@ -9,7 +9,6 @@
  * 3. Directory Scraping
  * 4. Deep Social Extraction (Discord/Twitter from HTML)
  * 5. Wayback Machine Trust Scoring
- * 6. Gemini AI Enrichment (if GEMINI_API_KEY is present)
  *
  * Every link is reduced to its site's homepage and de-duplicated per site (language
  * subdomains such as de.example.com count as example.com) against the directory and
@@ -21,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
-const { hostKey, siteKey, toHomepage, isTopical, siteName, pool } = require('./lib/discovery.js');
+const { hostKey, siteKey, brandKey, toHomepage, isTopical, siteName, pool } = require('./lib/discovery.js');
 
 const SPIDER_TARGETS = 150;      // existing listings crawled for outbound links per run
 const MAX_CANDIDATES = 3000;     // new homepages validated per run
@@ -332,39 +331,6 @@ async function fetchWaybackAge(url) {
   return 0;
 }
 
-// --- AI Enrichment (Gemini API) ---
-async function aiEnrich(siteData) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return siteData; 
-
-  console.log(`   🤖 Enhancing with Gemini AI for ${siteData.name}...`);
-  try {
-    const prompt = `You are an SEO expert. Write an engaging English description and a 'longReview' for an adult entertainment directory site.
-    Site Name: ${siteData.name}
-    URL: ${siteData.url}
-    Meta Description: ${siteData.description}
-    Return ONLY a JSON object with this exact format, nothing else:
-    {"longReview": "A detailed 3-4 sentence review mentioning features, speed, and library."}`;
-
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-
-    const json = await res.json();
-    const textResp = json.candidates[0].content.parts[0].text;
-    const parsed = JSON.parse(textResp.replace(/```json/g, '').replace(/```/g, '').trim());
-    
-    
-    if (parsed.longReview) siteData.longReview = parsed.longReview;
-    siteData.tags.push("AI-Enhanced");
-  } catch (e) {
-    console.log(`   ⚠️ AI Enrichment failed: ${e.message}`);
-  }
-  return siteData;
-}
-
 function guessCategory(domain, title) {
   const d = (domain + ' ' + title).toLowerCase();
   if (d.includes('hentai')) return 'Hentai Streaming';
@@ -389,7 +355,7 @@ async function run() {
   const started = Date.now();
 
   const existingUrls = getExistingUrls();
-  const existingHosts = new Set([...existingUrls].flatMap(u => [hostKey(u), siteKey(u)]).filter(Boolean));
+  const existingHosts = new Set([...existingUrls].flatMap(u => [hostKey(u), siteKey(u), brandKey(u)]).filter(Boolean));
   console.log(`📦 Loaded ${existingUrls.size} existing URLs (${existingHosts.size} sites) to deduplicate against.`);
   // Without the existing set there is nothing to spider and nothing to de-duplicate
   // against, so a run would only re-queue listed sites.
@@ -409,11 +375,13 @@ async function run() {
     for (const link of links) {
       let home = toHomepage(link.url);
       const key = home && siteKey(home);
-      if (!key || existingHosts.has(key) || seenHosts.has(key)) continue;
+      const brand = home && brandKey(home);
+      if (!key || [key, brand].some(k => k && (existingHosts.has(k) || seenHosts.has(k)))) continue;
       // de.example.com → https://example.com/ (the site itself, not one edition)
       if (key !== hostKey(home)) home = `${new URL(home).protocol}//${key}/`;
       if (isJunkUrl(home)) continue;
       seenHosts.add(key);
+      if (brand) seenHosts.add(brand);
       candidates.push(home);
       fresh++;
     }
@@ -460,7 +428,6 @@ async function run() {
     if (extracted.discord) siteData.discord = extracted.discord;
     if (extracted.twitter) siteData.twitter = extracted.twitter;
 
-    siteData = await aiEnrich(siteData);
     validSites.push(siteData);
   });
 

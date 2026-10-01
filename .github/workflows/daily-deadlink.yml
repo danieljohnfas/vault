@@ -59,12 +59,7 @@ jobs:
         run: |
           if [ -f /tmp/deadlinks.sql ] && [ -s /tmp/deadlinks.sql ]; then
             echo "==== Deleting dead sites from D1 ===="
-            # Split into batches in case there are many deletions (reuse existing split-sql script)
-            node scripts/split-sql.js /tmp/deadlinks.sql /tmp/sql_batches
-            for f in /tmp/sql_batches/batch_*.sql; do
-              echo "  Executing $f..."
-              npx wrangler d1 execute hv-directory --remote --file="$f"
-            done
+            node scripts/d1-exec-file.mjs /tmp/deadlinks.sql
             echo "==== D1 cleanup complete ===="
           else
             echo "No dead links found to delete."

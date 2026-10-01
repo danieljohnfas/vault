@@ -325,16 +325,18 @@ const tasks = {
   },
 
   // Pending queue entries that duplicate a listed site or each other (language
-  // editions such as de.example.com) are marked rejected; one per site is kept.
+  // editions such as de.example.com, mirrors on other TLDs) are marked rejected;
+  // one per site is kept.
   async 'dedupe-queue'({ dryRun = true } = {}) {
-    const { siteKey, hostKey } = require('../lib/discovery.js');
-    const listed = new Set((await d1('SELECT url FROM sites')).results.map(r => siteKey(r.url)));
+    const { siteKey, hostKey, brandKey } = require('../lib/discovery.js');
+    const keys = url => [siteKey(url), brandKey(url)].filter(Boolean);
+    const listed = new Set((await d1('SELECT url FROM sites')).results.flatMap(r => keys(r.url)));
     const pending = (await d1("SELECT id, url FROM queue WHERE status = 'pending'")).results
       .sort((a, b) => (hostKey(a.url) === siteKey(a.url) ? 0 : 1) - (hostKey(b.url) === siteKey(b.url) ? 0 : 1));
     const seen = new Set(), reject = [];
     for (const q of pending) {
-      const key = siteKey(q.url);
-      if (!key || listed.has(key) || seen.has(key)) reject.push(q.id); else seen.add(key);
+      const k = keys(q.url);
+      if (!siteKey(q.url) || k.some(x => listed.has(x) || seen.has(x))) reject.push(q.id); else k.forEach(x => seen.add(x));
     }
     console.log(`  pending: ${pending.length} | duplicates to reject: ${reject.length}${dryRun ? ' (dry run)' : ''}`);
     if (dryRun) return;

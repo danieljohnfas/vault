@@ -112,11 +112,7 @@ jobs:
         run: |
           if [ -f /tmp/new_sites.sql ] && [ -s /tmp/new_sites.sql ]; then
             echo "==== Inserting new sites into D1 ===="
-            node scripts/split-sql.js /tmp/new_sites.sql /tmp/sql_batches
-            for f in /tmp/sql_batches/batch_*.sql; do
-              echo "  Executing $f..."
-              npx wrangler d1 execute hv-directory --remote --file="$f"
-            done
+            node scripts/d1-exec-file.mjs /tmp/new_sites.sql
             echo "==== D1 insert complete ===="
           else
             echo "No new SQL to insert."
@@ -130,6 +126,6 @@ jobs:
         run: |
           if [ -f /tmp/queue_updates.sql ] && [ -s /tmp/queue_updates.sql ]; then
             echo "==== Marking processed sites in D1 ===="
-            npx wrangler d1 execute hv-directory --remote --file="/tmp/queue_updates.sql"
+            node scripts/d1-exec-file.mjs /tmp/queue_updates.sql
             echo "==== Queue update complete ===="
           fi
