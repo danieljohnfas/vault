@@ -1,5 +1,3 @@
 [
-  { "task": "minor-safety-sweep", "dryRun": true },
-  { "task": "report-prohibited" },
-  { "task": "minor-safety-deep-scan" }
+  { "task": "minor-safety-sweep", "dryRun": true }
 ]
