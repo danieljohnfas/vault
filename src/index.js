@@ -19,6 +19,10 @@ import {
   CATEGORIES, normalizeCategory, categoryVariants,
   isSafeHttpUrl, isSiteUp, parseTags, isIndexable, SITEMAP_STATIC_PAGES,
 } from './listing-rules.js';
+import {
+  LINK_COLUMNS, HUB_PAGES, HUB_LINKS, topForHub, renderHubCards, renderHomeSection,
+  buildNameIndex, renderGuideLinks,
+} from './internal-links.js';
 
 const SUPPORTED_LANGS = ['en', 'fr', 'es', 'jp', 'pt', 'hi', 'ar', 'de'];
 
@@ -596,6 +600,65 @@ class CanonicalInjector {
   }
   element(element) {
     element.prepend(`<link rel="canonical" href="${this.canonicalUrl}">`, { html: true });
+  }
+}
+
+// Listings for server-rendered internal links (homepage, category hubs, guides),
+// cached per isolate so a page view costs no D1 query most of the time.
+const LINK_SNAPSHOT_TTL_MS = 10 * 60 * 1000;
+let linkSnapshot = { at: 0, sites: null, nameIndex: null };
+
+async function getLinkSnapshot(env) {
+  if (linkSnapshot.sites && Date.now() - linkSnapshot.at < LINK_SNAPSHOT_TTL_MS) return linkSnapshot;
+  const { results } = await env.hv_directory.prepare(`SELECT ${LINK_COLUMNS} FROM sites WHERE ${NOT_PROHIBITED_SQL}`).all();
+  const sites = results.filter(s => isListingVisible(s) && isSafeHttpUrl(s.url));
+  linkSnapshot = { at: Date.now(), sites, nameIndex: buildNameIndex(sites) };
+  return linkSnapshot;
+}
+
+// Category hub: keeps the hand-written cards that still point at a live listing,
+// drops the rest, then appends the best-rated indexable listings up to HUB_LINKS.
+class HubCardFilter {
+  constructor(visibleIds, kept) { this.visibleIds = visibleIds; this.kept = kept; }
+  element(el) {
+    const id = new URL(el.getAttribute('href') || '', 'https://hentaivault.me').searchParams.get('id');
+    if (id && this.visibleIds.has(id)) this.kept.add(id);
+    else el.remove();
+  }
+}
+
+class HubGridAppender {
+  constructor(snapshot, hub, kept) { this.snapshot = snapshot; this.hub = hub; this.kept = kept; }
+  element(el) {
+    el.onEndTag(end => {
+      const extra = topForHub(this.snapshot.sites, this.hub, Math.max(HUB_LINKS - this.kept.size, 0), this.kept);
+      end.before(renderHubCards(extra), { html: true });
+    });
+  }
+}
+
+class HomeTopSites {
+  constructor(html) { this.html = html; }
+  element(el) {
+    if (this.html) el.setInnerContent(this.html, { html: true });
+    else el.remove();
+  }
+}
+
+// Guide: collects the article's headings, then lists the reviewed sites they name.
+class GuideHeadingCollector {
+  constructor(headings) { this.headings = headings; }
+  element() { this.headings.push(''); }
+  text(t) { if (this.headings.length) this.headings[this.headings.length - 1] += t.text; }
+}
+
+class GuideLinksAppender {
+  constructor(snapshot, headings) { this.snapshot = snapshot; this.headings = headings; }
+  element(el) {
+    el.onEndTag(end => {
+      const html = renderGuideLinks(this.headings, this.snapshot.nameIndex);
+      if (html) end.before(html, { html: true });
+    });
   }
 }
 
@@ -1637,6 +1700,33 @@ async function handleRequest(request, env, ctx) {
       const rewriter = new HTMLRewriter()
         .on('link[rel="canonical"]', new CanonicalRemover())
         .on('head', new CanonicalInjector(canonicalUrl, effectiveLang));
+
+      // Crawlable links to listings (the browsing UI renders its cards with JS).
+      const page = clean.pathname.replace(/\/+$/, '') || '/';
+      const hub = HUB_PAGES[page];
+      const isGuide = page.startsWith('/blog/');
+      if (env.hv_directory && (page === '/' || hub || isGuide)) {
+        try {
+          const snapshot = await getLinkSnapshot(env);
+          if (page === '/') {
+            rewriter.on('section#topSitesByCategory', new HomeTopSites(renderHomeSection(snapshot.sites)));
+          } else if (hub) {
+            const kept = new Set();
+            const visibleIds = new Set(snapshot.sites.map(s => s.id));
+            rewriter
+              .on('div#sitesGrid > a.site-card', new HubCardFilter(visibleIds, kept))
+              .on('div#sitesGrid', new HubGridAppender(snapshot, hub, kept));
+          } else {
+            const headings = [];
+            rewriter
+              .on('article h2', new GuideHeadingCollector(headings))
+              .on('article h3', new GuideHeadingCollector(headings))
+              .on('article', new GuideLinksAppender(snapshot, headings));
+          }
+        } catch (err) {
+          console.error('internal links unavailable:', err); // the page still renders without them
+        }
+      }
 
       return addSecurityHeaders(rewriter.transform(response));
     }
