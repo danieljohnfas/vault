@@ -29,21 +29,46 @@ export const HUB_LINKS = 24;   // listings linked from each category hub
 export const HOME_LINKS = 10;  // listings linked per category on the homepage
 export const GUIDE_LINKS = 12; // listings linked from one guide
 
-const esc = s => String(s ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
+// Some stored names and descriptions still carry HTML entities from scraping
+// ("Hentai Pulse &raquo; …"); decode the common ones so they are not shown literally.
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", raquo: '»', laquo: '«', ndash: '–', mdash: '—', hellip: '…', nbsp: ' ' };
+const decode = s => String(s ?? '').replace(/&(#\d+|#x[0-9a-f]+|[a-z]+);/gi, (m, e) => {
+  if (e[0] === '#') { const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : Number(e.slice(1)); return n > 31 && n < 0x110000 ? String.fromCodePoint(n) : m; }
+  return ENTITIES[e.toLowerCase()] ?? m;
+});
+const esc = s => decode(s).replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
 const listingHref = id => `/site?id=${encodeURIComponent(id)}`;
 const byRating = (a, b) => Number(b.rating) - Number(a.rating) || String(a.name).localeCompare(String(b.name));
 const hostOf = url => { try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return ''; } };
 const squash = s => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// Mirrors on other TLDs (hentaihaven.com, hentaihaven.xxx) are one brand. Sites on
+// a subdomain (foo.blogspot.com) are their own brand; example.co.uk is "example".
+function brandOf(s) {
+  const labels = hostOf(s.url).split('.');
+  const suffix = labels.length >= 3 && labels.at(-1).length === 2 && labels.at(-2).length <= 3 ? 2 : 1;
+  return labels.length === suffix + 1 ? labels[0] : (labels.join('.') || s.id);
+}
 const ratingText = r => Number(r).toFixed(1);
 const shortDesc = d => { const t = String(d || '').replace(/\s+/g, ' ').trim(); return t.length > 150 ? `${t.slice(0, 147).replace(/\s+\S*$/, '')}…` : t; };
 
-/** The best-rated indexable listings for a hub, excluding ids already on the page. */
+/**
+ * The best-rated indexable listings for a hub, one per brand, leaving out ids
+ * already on the page and brands those ids belong to.
+ */
 export function topForHub(sites, hub, n, exclude = new Set()) {
   const prefer = s => (hub.prefer && hub.prefer.test(`${s.name} ${s.description} ${s.tags}`) ? 1 : 0);
-  return sites
+  const brands = new Set(sites.filter(s => exclude.has(s.id)).map(brandOf));
+  const out = [];
+  for (const s of sites
     .filter(s => normalizeCategory(s.category) === hub.category && isIndexable(s) && !exclude.has(s.id))
-    .sort((a, b) => prefer(b) - prefer(a) || byRating(a, b))
-    .slice(0, n);
+    .sort((a, b) => prefer(b) - prefer(a) || byRating(a, b))) {
+    if (out.length >= n) break;
+    const brand = brandOf(s);
+    if (brands.has(brand)) continue;
+    brands.add(brand);
+    out.push(s);
+  }
+  return out;
 }
 
 /** Cards in the category hubs' existing markup. */

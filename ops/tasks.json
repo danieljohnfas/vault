@@ -1,9 +1,3 @@
 [
-  { "task": "restore-listing-urls", "terms": ["pcloud", "purevpn"] },
-  { "task": "delete-sites", "ids": [
-    "360ee978", "1aa8e4be", "af051f1b", "4768f763", "2b9a5aed",
-    "play_free_hentai_games_online__mtmuazd9", "privacy_notice_nutaku_net_mu5g23fk", "top_free_adult_games_online_nu_mu5g23fk"
-  ] },
-  { "task": "find-text", "terms": ["pcloud", "purevpn", "nutaku"] },
-  { "task": "url-mismatch" }
+  { "task": "pipeline-stats" }
 ]

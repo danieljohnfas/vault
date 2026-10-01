@@ -66,3 +66,23 @@ test('guide box lists each matched listing once', () => {
   assert.equal(html.match(/href="\/site\?id=hitomila"/g).length, 1);
   assert.equal(renderGuideLinks(['Conclusion'], index), '');
 });
+
+test('one listing per brand: mirrors on other TLDs and brands already on the page are skipped', () => {
+  const sites = [
+    row('haven1', { url: 'https://hentaihaven.com/', rating: 4.6 }),
+    row('haven2', { url: 'https://hentaihaven.xxx/', rating: 4.7 }),
+    row('static', { url: 'https://hanime.tv/', rating: 4.9 }),
+    row('hanime2', { url: 'https://hanime.xxx/', rating: 4.5 }),
+    row('other', { rating: 4.0 }),
+    row('blog1', { url: 'https://aaa.blogspot.com/', rating: 3.9 }),
+    row('blog2', { url: 'https://bbb.blogspot.com/', rating: 3.8 }),
+    row('uk1', { url: 'https://one.co.uk/', rating: 3.7 }),
+    row('uk2', { url: 'https://two.co.uk/', rating: 3.6 }),
+  ];
+  assert.deepEqual(topForHub(sites, streaming, 10, new Set(['static'])).map(s => s.id), ['haven2', 'other', 'blog1', 'blog2', 'uk1', 'uk2']);
+});
+
+test('HTML entities stored in names are decoded once, then escaped', () => {
+  const html = renderHubCards([row('p', { name: 'Hentai Pulse &raquo; Best &amp; Free &#8211; <b>' })]);
+  assert.ok(html.includes('Hentai Pulse » Best &amp; Free – &lt;b&gt;'), html);
+});
