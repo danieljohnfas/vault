@@ -8,13 +8,15 @@ function fakeD1(sites, queue = []) {
   const d1 = async (sql, params = []) => {
     const flat = sql.replace(/\s+/g, ' ').trim();
     calls.push({ sql: flat, params });
-    if (flat.startsWith('SELECT id, url, json_extract')) return { results: sites };
+    if (flat.startsWith('SELECT id, url, data_json FROM sites')) return { results: sites.map(toRow) };
     if (flat.startsWith('SELECT id, url, name FROM queue')) return { results: queue };
     return { results: [], meta: { changes: 1 } };
   };
   return { d1, calls };
 }
-const ok = id => ({ id, url: `https://${id}.com`, name: id, description: 'hentai doujin archive', tags: '["doujin"]' });
+const ok = id => ({ id, url: `https://${id}.com`, name: id, description: 'hentai doujin archive', tags: ['doujin'] });
+// Shape of a D1 row: the whole listing is stored as JSON.
+const toRow = ({ id, url, ...rest }) => ({ id, url, data_json: JSON.stringify({ id, url, ...rest }) });
 
 test('removes blocked and restricted listings and queue entries, keeps the rest', async () => {
   const sites = [
@@ -37,6 +39,13 @@ test('removes blocked and restricted listings and queue entries, keeps the rest'
     "DELETE FROM sites WHERE id IN ('bad', 'teen')",
     "DELETE FROM queue WHERE id IN ('q1', 'q2')",
   ]);
+});
+
+test('checks every stored field, not only name and description', async () => {
+  const sites = [...Array.from({ length: 9 }, (_, i) => ok(`s${i}`)), { ...ok('jp'), translations: { ja: '女子高生 まとめ' } }];
+  const { d1 } = fakeD1(sites);
+  const r = await runSweep({ d1, dryRun: true, log: () => {} });
+  assert.deepEqual(r.remove.map(x => x.id), ['jp']);
 });
 
 test('dry run changes nothing', async () => {

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Minor-safety sweep: re-checks every listing and queued submission against
- * src/prohibited.js and removes anything blocked or restricted, automatically
- * (no manual approvals): the listing, its reviews, and matching queue entries.
+ * Minor-safety sweep: re-checks every listing (every stored field, not only the
+ * name and description) and every queued submission against src/prohibited.js and
+ * removes anything blocked or restricted, automatically (no manual approvals): the
+ * listing, its reviews, and matching queue entries.
  *
  * Runs twice a day and whenever the rules change (.github/workflows/minor-safety.yml),
  * so rows written by any path (including manual SQL) are removed within hours; the
@@ -23,13 +24,10 @@ const MAX_SHARE = Number(process.env.MINOR_SAFETY_MAX_SHARE || 0.25);
 const sqlList = ids => ids.map(sqlString).join(', ');
 
 export async function runSweep({ d1, dryRun = false, log = console.log }) {
-  const sites = (await d1(`SELECT id, url,
-      json_extract(data_json, '$.name') AS name, json_extract(data_json, '$.description') AS description,
-      json_extract(data_json, '$.tags') AS tags
-    FROM sites`)).results;
+  const sites = (await d1(`SELECT id, url, data_json FROM sites`)).results;
   const remove = [];
   for (const s of sites) {
-    const { verdict, rule } = checkMinorSafety(s.url, s.name, s.description, s.tags);
+    const { verdict, rule } = checkMinorSafety(s.url, s.data_json);
     if (verdict !== 'ok') remove.push({ id: s.id, verdict, rule });
   }
 
