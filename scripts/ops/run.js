@@ -147,6 +147,28 @@ const tasks = {
     console.log(`  secrets: ${r.ok ? r.result.map(s => s.name).join(', ') : r.errors.join('; ')}`);
   },
 
+  // Copies a Turnstile widget's secret onto the Worker, only if the widget covers
+  // the site's domain. The secret itself is never printed.
+  async 'set-turnstile-secret'({ sitekey, name = 'TURNSTILE_SECRET_KEY' }) {
+    const w = await cf(`/accounts/${ACCOUNT}/challenges/widgets/${sitekey}`);
+    if (!w.ok) throw new Error(`read widget: HTTP ${w.status} ${w.errors.join('; ')}`);
+    const domains = w.result.domains || [];
+    console.log(`  widget domains: ${domains.join(', ')}`);
+    if (!domains.includes(ZONE_NAME)) throw new Error(`widget does not include ${ZONE_NAME}; secret not set`);
+    if (!w.result.secret) throw new Error('widget response has no secret');
+    const r = await cf(`/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets`, {
+      method: 'PUT', body: { name, text: w.result.secret, type: 'secret_text' },
+    });
+    console.log(`  set ${name}: HTTP ${r.status} ${r.ok ? 'ok' : r.errors.join('; ')}`);
+    if (!r.ok) process.exitCode = 1;
+  },
+
+  async 'delete-worker-secret'({ name }) {
+    const r = await cf(`/accounts/${ACCOUNT}/workers/scripts/${WORKER}/secrets/${encodeURIComponent(name)}`, { method: 'DELETE' });
+    console.log(`  delete ${name}: HTTP ${r.status} ${r.ok ? 'ok' : r.errors.join('; ')}`);
+    if (!r.ok) process.exitCode = 1;
+  },
+
   // Attaches a hostname to the Worker as a Custom Domain (creates DNS + certificate).
   async 'add-worker-domain'({ hostname }) {
     const z = await zoneId();
