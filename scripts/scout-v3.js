@@ -391,6 +391,9 @@ async function run() {
   const existingUrls = getExistingUrls();
   const existingHosts = new Set([...existingUrls].flatMap(u => [hostKey(u), siteKey(u)]).filter(Boolean));
   console.log(`📦 Loaded ${existingUrls.size} existing URLs (${existingHosts.size} sites) to deduplicate against.`);
+  // Without the existing set there is nothing to spider and nothing to de-duplicate
+  // against, so a run would only re-queue listed sites.
+  if (!existingUrls.size) throw new Error('no existing URLs loaded (pass --existing-urls); refusing to run');
 
   const sources = {
     spider: await discoverFromSpidering(existingUrls),
