@@ -1,3 +1,4 @@
 [
-  { "task": "minor-safety-sweep", "dryRun": true }
+  { "task": "list-indexable", "verbose": false },
+  { "task": "pipeline-stats" }
 ]
