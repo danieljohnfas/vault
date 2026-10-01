@@ -46,7 +46,7 @@ jobs:
         run: |
           sleep 10
           fail=0
-          for path in "/" "/robots.txt" "/sitemap-index.xml" "/blog/"; do
+          for path in "/" "/robots.txt" "/sitemap.xml" "/blog/"; do
             code=$(curl -s -o /dev/null -w "%{http_code}" "https://hentaivault.me$path")
             echo "$path -> $code"
             case "$code" in 200|403) ;; *) fail=1 ;; esac   # 403 = Cloudflare bot challenge for CI IPs

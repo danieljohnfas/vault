@@ -4,7 +4,7 @@
  * Routes:
  *   /site, /compare, /embed, /out → server-rendered pages backed by D1
  *   /api/*                        → JSON API backed by D1 / KV
- *   /sitemap-*.xml, /rss.xml      → generated from D1
+ *   /sitemap.xml, /rss.xml        → generated from D1
  *   *                             → static assets (see .assetsignore)
  *
  * Secrets (Cloudflare dashboard → Worker → Settings → Variables and Secrets):
@@ -867,70 +867,51 @@ async function handleRequest(request, env, ctx) {
       });
     }
 
-    // ── Route: Sitemaps — Dynamic sitemaps generated from live D1 data ───
-    if (url.pathname === '/sitemap.xml') {
-      const httpsUrl = new URL(request.url);
-      httpsUrl.pathname = '/sitemap-index.xml';
+    // ── Route: Sitemap — one file generated from live D1 data ──────────────
+    // The old split sitemap URLs redirect here so existing references keep working.
+    if (url.pathname === '/sitemap-index.xml' || url.pathname === '/sitemap-pages.xml' || url.pathname === '/sitemap-sites.xml') {
       return new Response(null, {
         status: 301,
-        headers: {
-          'Location': httpsUrl.toString(),
-          'Cache-Control': 'public, max-age=86400'
-        }
+        headers: { 'Location': 'https://hentaivault.me/sitemap.xml', 'Cache-Control': 'public, max-age=86400' },
       });
     }
 
-    if (url.pathname === '/sitemap-index.xml' || url.pathname === '/sitemap-pages.xml' || url.pathname === '/sitemap-sites.xml') {
-      let xml = '';
-
-      if (url.pathname === '/sitemap-index.xml') {
-        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-pages.xml</loc>\n  </sitemap>\n`;
-        xml += `  <sitemap>\n    <loc>https://hentaivault.me/sitemap-sites.xml</loc>\n  </sitemap>\n`;
-        xml += `</sitemapindex>`;
-      } else if (url.pathname === '/sitemap-pages.xml') {
-        // Only real, indexable documents. <lastmod> is omitted: stamping "today" on
-        // every URL on every request teaches Google to ignore the field entirely.
-        const staticPages = [
-          '/', '/blog/',
-          '/blog/nhentai-alternatives-2026', '/blog/best-streaming-2026', '/blog/best-doujin-sites-2026',
-          '/blog/hentai-apps-guide-2026', '/blog/uncensored-streaming-guide-2026', '/blog/free-manga-guide',
-          '/blog/hanime-alternatives-2026', '/blog/privacy-safety-guide', '/blog/top-10-sites-may-2026',
-          '/category/anime-streaming', '/category/hentai-streaming', '/category/manga-doujin',
-          '/category/images-boorus', '/category/games', '/category/communities', '/category/downloads',
-          '/category/visual-novels', '/region-unblocked',
-          '/about', '/contact', '/privacy', '/terms', '/disclaimer', '/dmca',
-        ];
-        const staticXml = staticPages
-          .map(p => `  <url>\n    <loc>https://hentaivault.me${p}</loc>\n  </url>`)
-          .join('\n');
-        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n</urlset>`;
-      } else if (url.pathname === '/sitemap-sites.xml') {
-        let siteUrls = '';
-        if (env.hv_directory) {
-          try {
-            const rows = await env.hv_directory.prepare(
-              `SELECT id, url, category, rating, added_at,
-                      json_extract(data_json, '$.name') AS name,
-                      json_extract(data_json, '$.description') AS description,
-                      json_extract(data_json, '$.isUp') AS isUp,
-                      json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
-                      json_extract(data_json, '$.tags') AS tags
-               FROM sites ORDER BY rating DESC, added_at DESC`
-            ).all();
-            for (const row of rows.results) {
-              if (!isIndexable(row)) continue;
-              const lastmod = (row.added_at && row.added_at.length >= 10) ? `\n    <lastmod>${row.added_at.slice(0, 10)}</lastmod>` : '';
-              siteUrls += `  <url>\n    <loc>https://hentaivault.me/site?id=${escapeHTML(encodeURIComponent(row.id))}</loc>${lastmod}\n  </url>\n`;
-            }
-          } catch (err) {
-            console.error('Sitemap D1 error:', err);
-            return new Response('Sitemap temporarily unavailable', { status: 503, headers: { 'Retry-After': '600' } });
+    if (url.pathname === '/sitemap.xml') {
+      // Only real, indexable documents. Static pages carry no <lastmod>: stamping
+      // "today" on every request teaches Google to ignore the field entirely.
+      const staticPages = [
+        '/', '/blog/',
+        '/blog/nhentai-alternatives-2026', '/blog/best-streaming-2026', '/blog/best-doujin-sites-2026',
+        '/blog/hentai-apps-guide-2026', '/blog/uncensored-streaming-guide-2026', '/blog/free-manga-guide',
+        '/blog/hanime-alternatives-2026', '/blog/privacy-safety-guide', '/blog/top-10-sites-may-2026',
+        '/category/anime-streaming', '/category/hentai-streaming', '/category/manga-doujin',
+        '/category/images-boorus', '/category/games', '/category/communities', '/category/downloads',
+        '/category/visual-novels', '/region-unblocked',
+        '/about', '/contact', '/privacy', '/terms', '/disclaimer', '/dmca',
+      ];
+      let urls = staticPages.map(p => `  <url>\n    <loc>https://hentaivault.me${p}</loc>\n  </url>\n`).join('');
+      if (env.hv_directory) {
+        try {
+          const rows = await env.hv_directory.prepare(
+            `SELECT id, url, category, rating, added_at,
+                    json_extract(data_json, '$.name') AS name,
+                    json_extract(data_json, '$.description') AS description,
+                    json_extract(data_json, '$.isUp') AS isUp,
+                    json_extract(data_json, '$.isDeadFlagged') AS isDeadFlagged,
+                    json_extract(data_json, '$.tags') AS tags
+             FROM sites ORDER BY rating DESC, added_at DESC`
+          ).all();
+          for (const row of rows.results) {
+            if (!isIndexable(row)) continue;
+            const lastmod = (row.added_at && row.added_at.length >= 10) ? `\n    <lastmod>${row.added_at.slice(0, 10)}</lastmod>` : '';
+            urls += `  <url>\n    <loc>https://hentaivault.me/site?id=${escapeHTML(encodeURIComponent(row.id))}</loc>${lastmod}\n  </url>\n`;
           }
+        } catch (err) {
+          console.error('Sitemap D1 error:', err);
+          return new Response('Sitemap temporarily unavailable', { status: 503, headers: { 'Retry-After': '600' } });
         }
-        xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${siteUrls}</urlset>`;
       }
-
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}</urlset>`;
       return new Response(xml, {
         status: 200,
         headers: {

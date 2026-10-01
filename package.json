@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "audit": "npx unlighthouse-ci --site https://hentaivault.me --build-static --budget 90 --sitemaps https://hentaivault.me/sitemap-index.xml --exclude-urls \"/privacy,/terms,/disclaimer,/dmca,/about,/contact,/region-unblocked\"",
+    "audit": "npx unlighthouse-ci --site https://hentaivault.me --build-static --budget 90 --sitemaps https://hentaivault.me/sitemap.xml --exclude-urls \"/privacy,/terms,/disclaimer,/dmca,/about,/contact,/region-unblocked\"",
     "seo:status": "node scripts/seo-autofix.js --dry-run",
     "seo:fix": "node scripts/seo-autofix.js",
     "seo:history": "node scripts/seo-history.js"
