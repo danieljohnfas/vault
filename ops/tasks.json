@@ -1,3 +1,3 @@
 [
-  { "task": "cleanup-deep-links", "dryRun": false, "sample": 5 }
+  { "task": "pipeline-stats" }
 ]
