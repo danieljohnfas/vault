@@ -59,10 +59,13 @@ const BLOCK_PATTERNS = [
   { name: 'minor-sexual', re: /\bminors?\s*-?\s*(?:porn|sex|nude|naked|erotic|lewd|hentai|xxx)/ },
 ];
 
+// Domains and SEO names run words together ("sweetteentits", "hotschoolgirls"), so
+// these also match inside a word; the lookbehind spares eighteen, nineteen,
+// canteen, velveteen and sateen.
 const RESTRICT_PATTERNS = [
-  { name: 'teen', re: /\bteen/ },
-  { name: 'schoolgirl', re: /\bschool\s*-?\s*girls?|\bschoolgirl/ },
-  { name: 'young', re: /\byoung(?:er|est)?\b|\byouth/ },
+  { name: 'teen', re: /(?<!eigh|nine|can|velve|sa)teen/ },
+  { name: 'schoolgirl', re: /school\s*-?\s*girls?/ },
+  { name: 'young', re: /\byoung(?:er|est)?\b|\byouth|young(?:er|est)?\s*-?\s*(?:girls?|boys?|porn|sex|teens?|pussy|nudes?|xxx)/ },
   { name: 'child', re: /\bkids?\b|\bchild|\bminors?\b/ },
   { name: 'barely-legal', re: /\bbarely\s*-?\s*(?:legal|18)\b/ },
   { name: 'jk-jc', re: /\bj[kc]\b/ },
