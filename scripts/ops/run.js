@@ -385,6 +385,49 @@ const tasks = {
     for (const r of rows.slice(0, 40)) console.log(`    ${r.id} | ${host(r.url)} -> ${host(r.link)}`);
   },
 
+  // Listing names cut down from SEO page titles to the brand, and sites filed under
+  // Hentai Streaming moved to their real category when the signal is unambiguous
+  // (cleanName / specificCategory in scripts/lib/discovery.js). Refuses if more than
+  // maxShare of all listings would change: that points to a bad rule.
+  async 'clean-listings'({ dryRun = true, maxShare = 0.4, sample = 60 } = {}) {
+    const { cleanName, specificCategory, hostKey } = require('../lib/discovery.js');
+    const { execStatements } = await import('../d1-exec-file.mjs');
+    const q = v => `'${String(v).replace(/'/g, "''")}'`;
+    const rows = (await d1(`SELECT id, url, category, json_extract(data_json, '$.name') AS name,
+      json_extract(data_json, '$.description') AS description FROM sites`)).results;
+    const changes = [];
+    for (const r of rows) {
+      const name = cleanName(r.name, r.url);
+      const category = (r.category === 'Hentai Streaming' && specificCategory(r.name, r.description, r.url)) || r.category;
+      if (name === r.name && category === r.category) continue;
+      let description = r.description;
+      // Discovery's filler description names the category; keep it true.
+      if (category !== r.category && /is a great resource for [^.]*\.$/.test(description || '')) {
+        description = `${hostKey(r.url)} is a great resource for ${category.toLowerCase()}.`;
+      }
+      changes.push({ ...r, newName: name, newCategory: category, newDescription: description });
+    }
+    const renamed = changes.filter(c => c.newName !== c.name);
+    const moved = changes.filter(c => c.newCategory !== c.category);
+    const byTarget = {};
+    for (const c of moved) byTarget[c.newCategory] = (byTarget[c.newCategory] || 0) + 1;
+    console.log(`  listings: ${rows.length} | renamed: ${renamed.length} | recategorised: ${moved.length}${dryRun ? ' (dry run)' : ''}`);
+    console.log(`  moved out of Hentai Streaming: ${Object.entries(byTarget).map(([k, v]) => `${k}=${v}`).join(', ') || 'none'}`);
+    for (const c of renamed.slice(0, sample)) console.log(`    rename ${c.id}: "${c.name}" -> "${c.newName}"`);
+    for (const c of moved.slice(0, sample)) console.log(`    move ${c.id}: "${c.newName}" -> ${c.newCategory}`);
+    if (changes.length > rows.length * maxShare) {
+      throw new Error(`would change ${changes.length} of ${rows.length} listings (limit ${maxShare * 100}%); nothing changed`);
+    }
+    if (dryRun) return;
+    const statements = changes.map(c => {
+      const set = [`'$.name', ${q(c.newName)}`, `'$.category', ${q(c.newCategory)}`];
+      if (c.newDescription !== c.description) set.push(`'$.description', ${q(c.newDescription)}`);
+      return `UPDATE sites SET category = ${q(c.newCategory)}, data_json = json_set(data_json, ${set.join(', ')}) WHERE id = ${q(c.id)}`;
+    });
+    const r = await execStatements(statements);
+    console.log(`  applied: ${r.statements} updates in ${r.requests} requests`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;

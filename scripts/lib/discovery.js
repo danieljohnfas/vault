@@ -97,6 +97,81 @@ function siteName(title, url) {
   return fromDomain;
 }
 
+// ── Listing names and categories ─────────────────────────────────────────────
+
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", raquo: '»', laquo: '«', ndash: '–', mdash: '—', hellip: '…', nbsp: ' ' };
+function decodeEntities(s) {
+  return String(s ?? '').replace(/&(#\d+|#x[0-9a-f]+|[a-z]+);/gi, (m, e) => {
+    if (e[0] === '#') {
+      const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : Number(e.slice(1));
+      return n > 31 && n < 0x110000 ? String.fromCodePoint(n) : m;
+    }
+    return ENTITIES[e.toLowerCase()] ?? m;
+  });
+}
+
+const squash = t => String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// Separators of SEO titles: "Brand | Tagline", "Brand - Tagline", "Brand » Tagline", "Brand: Tagline".
+const TITLE_SEPARATORS = /\s+[|–—•·»«]\s+|\s+-\s+|:\s+/;
+// Subdomain labels that name a section, not the site (forum.kinkoid.com).
+const GENERIC_HOST_LABELS = new Set([
+  'www', 'm', 'mobile', 'en', 'forum', 'forums', 'community', 'blog', 'shop', 'store', 'app',
+  'members', 'member', 'wiki', 'go', 'my', 'web', 'home', 'portal', 'free', 'live', 'video', 'videos',
+]);
+// Longer than this with no recognisable brand, a stored name is a page title or a
+// fragment of one ("Free Manhwa Hentai & Hentai Manhwa Updated Liv").
+const MAX_PLAIN_NAME = 30;
+
+/**
+ * A listing's display name from what was scraped: HTML entities decoded, and an
+ * SEO page title cut down to the brand ("Hentai Pulse » The Best Hentai Streaming
+ * Sit" → "Hentai Pulse"). A long title with no brand in it becomes the host name.
+ * Short names without a separator are left as they are.
+ */
+function cleanName(name, url) {
+  const decoded = decodeEntities(name).replace(/\s+/g, ' ').trim();
+  const host = hostKey(url) || '';
+  if (!host) return decoded;
+  const first = host.split('.')[0];
+  const keys = [...new Set([(registrableDomain(host) || host).split('.')[0], GENERIC_HOST_LABELS.has(first) ? '' : first])]
+    .map(squash).filter(k => k.length >= 3);
+  const parts = decoded.split(TITLE_SEPARATORS).map(p => p.trim()).filter(Boolean);
+  if (parts.length > 1) {
+    const brand = parts.find(p => {
+      const s = squash(p);
+      // The part names the domain, or is most of it (not a cut-off fragment like "Free-Str").
+      return s.length >= 3 && p.length <= 40 && keys.some(k => s.includes(k) || (k.includes(s) && s.length >= 0.6 * k.length));
+    });
+    if (brand) return brand;
+  }
+  if (!decoded || decoded.length > MAX_PLAIN_NAME) return host;
+  return decoded;
+}
+
+// Signals for what a "hentai" site is. Discovery used to file every site with
+// "hentai" in it under Hentai Streaming, doujin readers and game portals included.
+const VIDEO_RE = /stream|watch|\bvideos?\b|episodes?|\bova\b|\bmovies?\b|\btube\b|\bjav\b/;
+const SPECIFIC_CATEGORIES = [
+  ['Manga & Doujinshi', /doujin|manga|manhwa|manhua|webtoon|\bcomics?\b|quadrinhos|\bhqs?\b|nhentai|hentaifox|hitomi|e-?hentai|\breader\b|read online/],
+  ['Games & Visual Novels', /\bgames?\b|eroge|visual novels?|nutaku|f95/],
+  ['Communities & Forums', /\bforums?\b|\bcommunit(?:y|ies)\b|discussion board|discord/],
+  ['Image Boards (Boorus)', /booru|image ?board|rule ?34/],
+  ['Downloads & Torrents', /torrents?|\bnyaa\b|direct downloads?|\bddl\b/],
+];
+
+/**
+ * The specific category a site's text points to when it is not a video site, or
+ * null. Only an unambiguous signal counts: no video words, and exactly one category.
+ */
+function specificCategory(...parts) {
+  const text = decodeEntities(parts.filter(Boolean).join(' ')).toLowerCase()
+    // Discovery's filler description names the old category; it is not a signal.
+    .replace(/is a great resource for [^.]*\./g, '');
+  if (VIDEO_RE.test(text)) return null;
+  const hits = SPECIFIC_CATEGORIES.filter(([, re]) => re.test(text)).map(([c]) => c);
+  return hits.length === 1 ? hits[0] : null;
+}
+
 /** Runs fn over items with at most `limit` in flight. */
 async function pool(items, limit, fn) {
   let next = 0;
@@ -104,4 +179,7 @@ async function pool(items, limit, fn) {
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
 }
 
-module.exports = { hostKey, siteKey, brandKey, toHomepage, registrableDomain, isTopical, siteName, pool };
+module.exports = {
+  hostKey, siteKey, brandKey, toHomepage, registrableDomain, isTopical, siteName, pool,
+  decodeEntities, cleanName, specificCategory,
+};
