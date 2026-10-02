@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
-const { hostKey, siteKey, brandKey, toHomepage, isTopical, siteName, pool } = require('./lib/discovery.js');
+const { hostKey, siteKey, brandKey, toHomepage, isTopical, siteName, pool, cleanName, specificCategory } = require('./lib/discovery.js');
 
 const SPIDER_TARGETS = 150;      // existing listings crawled for outbound links per run
 const MAX_CANDIDATES = 3000;     // new homepages validated per run
@@ -333,7 +333,8 @@ async function fetchWaybackAge(url) {
 
 function guessCategory(domain, title) {
   const d = (domain + ' ' + title).toLowerCase();
-  if (d.includes('hentai')) return 'Hentai Streaming';
+  // A doujin reader, game portal or forum with "hentai" in its name is not a streaming site.
+  if (d.includes('hentai')) return specificCategory(title, domain) || 'Hentai Streaming';
   if (d.includes('doujin') || d.includes('manga') || d.includes('nhentai') || d.includes('fakku')) return 'Manga & Doujinshi';
   if (d.includes('anime') && !d.includes('hentai')) return 'Anime Streaming';
   if (d.includes('booru') || d.includes('gelbooru') || d.includes('danbooru') || d.includes('rule34') || d.includes('safebooru')) return 'Image Boards (Boorus)';
@@ -407,7 +408,7 @@ async function run() {
     if (!category) { skipped.uncategorised++; return; }
 
     // Homepage titles are SEO strings ("Free Porn Videos | Brand"): use the brand.
-    const name = siteName(extracted.title, url);
+    const name = cleanName(siteName(extracted.title, url), url);
 
     const { score, signals } = await scoreSite(url, category, extracted.title);
     if (score < 3.5) { skipped.lowScore++; return; }

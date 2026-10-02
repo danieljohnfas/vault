@@ -24,7 +24,7 @@ const isSiteLive = require('./ping-site');
 const { scoreSite } = require('./score-site');
 const { isMinorSafe } = require('../src/prohibited.js');
 const { isJunkName } = require('../src/listing-rules.js');
-const { isTopical, pool } = require('./lib/discovery.js');
+const { isTopical, pool, cleanName, specificCategory } = require('./lib/discovery.js');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = path.resolve(__dirname, '..');
@@ -144,9 +144,12 @@ function getDesc(cat) {
 }
 
 function enrich(site) {
-  const d    = getDesc(site.category);
-  const name = site.name;
-  const cat  = site.category;
+  // Scraped names are often SEO page titles; anything with "hentai" in it used to
+  // be filed under Hentai Streaming whatever it was (scripts/lib/discovery.js).
+  const metaDesc = site.scoreSignals && site.scoreSignals.metaDesc;
+  const name = cleanName(site.name, site.url);
+  const cat  = (site.category === 'Hentai Streaming' && specificCategory(site.name, metaDesc || site.description, site.url)) || site.category;
+  const d    = getDesc(cat);
   const id   = makeId(name) + '_' + Date.now().toString(36);
   const dt   = today();
   const rating = site.rating || 0;
