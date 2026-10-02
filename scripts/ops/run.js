@@ -456,6 +456,61 @@ const tasks = {
     console.log(`  applied: ${r.statements} updates in ${r.requests} requests`);
   },
 
+  // The generated review text (longReview, longReview_xx) still names a listing by
+  // the page title it was scraped with and by the category it was first filed under.
+  // A title is replaced only when cleanName turns it into the current name, and the
+  // category only where the text says "Hentai Streaming" for a listing filed elsewhere.
+  async 'clean-listing-text'({ dryRun = true, sample = 20 } = {}) {
+    const { cleanName } = require('../lib/discovery.js');
+    const { execStatements } = await import('../d1-exec-file.mjs');
+    const q = v => `'${String(v).replace(/'/g, "''")}'`;
+    const NAME_RES = [
+      /^(.+?) (?:has quickly established|is a |is an |is one of|is listed|stands out|remains|has become)/,
+      /, but (.+?) makes it/,
+    ];
+    const rows = (await d1('SELECT id, url, category, data_json FROM sites')).results;
+    const updates = [];
+    let names = 0, categories = 0;
+    for (const r of rows) {
+      let d;
+      try { d = JSON.parse(r.data_json); } catch { continue; }
+      const name = String(d.name || '');
+      let oldName = null;
+      for (const re of NAME_RES) {
+        const m = re.exec(String(d.longReview || ''));
+        // A page title, not a lead-in sentence ("Whether you're new to …, x.com offers …").
+        const t = m && m[1];
+        if (t && t !== name && t.length > name.length && t.length <= 60 && !/[.!?]\s/.test(t) &&
+            !/^(?:if you|whether|our latest|when it comes|for fans|navigating|for those)/i.test(t) &&
+            cleanName(t, r.url) === name) { oldName = t; break; }
+      }
+      const fixCategory = r.category !== 'Hentai Streaming';
+      const set = {};
+      for (const [k, v] of Object.entries(d)) {
+        if (!/^longReview(_[a-z]{2})?$/.test(k) || typeof v !== 'string') continue;
+        let t = v;
+        if (oldName) t = t.split(oldName).join(name);
+        if (fixCategory) t = t.split('Hentai Streaming').join(r.category);
+        if (t !== v) set[k] = t;
+      }
+      if (!Object.keys(set).length) continue;
+      if (oldName) names++;
+      if (fixCategory && Object.values(set).some((t, i) => t.includes(r.category))) categories++;
+      updates.push({ id: r.id, oldName, name, category: r.category, set });
+    }
+    console.log(`  listings with review text to fix: ${updates.length} | old title replaced: ${names}${dryRun ? ' (dry run)' : ''}`);
+    for (const u of updates.slice(0, sample)) {
+      console.log(`    ${u.id}: ${u.oldName ? `"${u.oldName}" -> "${u.name}"` : 'category wording'} | ${Object.keys(u.set).join(',')}`);
+    }
+    const first = updates.find(u => u.set.longReview);
+    if (first) console.log(`  example after: ${first.set.longReview.slice(0, 220)}`);
+    if (dryRun) return;
+    const statements = updates.map(u => `UPDATE sites SET data_json = json_set(data_json, ${
+      Object.entries(u.set).map(([k, v]) => `'$.${k}', ${q(v)}`).join(', ')}) WHERE id = ${q(u.id)}`);
+    const res = await execStatements(statements);
+    console.log(`  applied: ${res.statements} updates in ${res.requests} requests`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
