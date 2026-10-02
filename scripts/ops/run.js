@@ -528,12 +528,18 @@ const tasks = {
     const queuedKeys = new Set((await d1('SELECT url FROM queue')).results.map(r => siteKey(r.url)).filter(Boolean));
     const homes = all.filter(r => isHomepageUrl(r.url));
     const homeKeys = new Set(homes.flatMap(r => [siteKey(r.url), brandKey(r.url)]).filter(Boolean));
-    const PLATFORMS = /(^|\.)(youtube\.com|youtu\.be|instagram\.com|facebook\.com|twitter\.com|x\.com|reddit\.com|github\.com|scribd\.com|goodreads\.com|buzzfeed\.com|rottentomatoes\.com|gamesradar\.com|billboard\.com|wikipedia\.org|fandom\.com|medium\.com|quora\.com|pinterest\.com|tiktok\.com|imdb\.com|google\.[a-z.]+|bing\.com|wordpress\.com|blogspot\.com|livejournal\.com|theporndude\.com|pornsites\.com|porngeek\.com)$/;
+    const PLATFORMS = /(^|\.)(youtube\.com|youtu\.be|instagram\.com|facebook\.com|twitter\.com|x\.com|reddit\.com|github\.com|scribd\.com|goodreads\.com|buzzfeed\.com|rottentomatoes\.com|gamesradar\.com|billboard\.com|wikipedia\.org|fandom\.com|medium\.com|quora\.com|pinterest\.com|tiktok\.com|imdb\.com|google\.[a-z.]+|bing\.com|wordpress\.com|blogspot\.com|livejournal\.com|theporndude\.com|pornsites\.com|porngeek\.com|tumblr\.com|9gag\.com|steamcommunity\.com|amazon\.[a-z.]+|similarsites\.com|hentaivault\.me)$/;
     const AUTO_ID = /^[0-9a-f]{8}$|_m[a-z0-9]{7}$/;
+    // Words the discovery topic check lacks but that mark a listing as belonging here:
+    // adult studios and cams, comic and manhwa readers, and the community's tools.
+    const MORE_TOPIC = /\bvr\b|vr$|vr\.|cams?\b|cam\d|comic|scans?\b|toon|novel|fap|milf|lesbian|tranny|\btrans|gay|girls?|boys\b|fetish|boob|tits|pussy|cuckold|gloryhole|swallow|domination|amateur|babes|\bclips?|model|twistys|meatspin|sick-r|8muses|fuskator|stoya|hysterical|candy\.ai|dream\.ai|noodle|freeones|j-?list|tenkafuma|chan\b|booru|pixiv|artstation|saucenao|iqdb|ascii2d|tineye|tachiyomi|mihon|aidoku|paperback|hakuneko|rawdevart|catbox|litterbox|gofile|pixeldrain|bunkr|rentry|pastebin|comiket|comifuro|toranoana|ulmf|akiba|lemma ?soft|renai/i;
+    const ALWAYS_REMOVE = /escort/i;
 
     const remove = [], reasons = { platform: 0, 'homepage listed': 0, 'homepage queued': 0, 'already in queue': 0, 'off-topic': 0 };
     const groups = new Map();
-    for (const r of all.filter(r => !isHomepageUrl(r.url))) {
+    // Hand-curated deep links (plain slug ids such as "Netflix Anime" or "4chan /h/")
+    // point at a section of a big site on purpose and stay.
+    for (const r of all.filter(r => !isHomepageUrl(r.url) && AUTO_ID.test(r.id))) {
       const host = hostKey(r.url) || '';
       const key = siteKey(r.url);
       if (!key || PLATFORMS.test(host)) { remove.push(r); reasons.platform++; continue; }
@@ -550,7 +556,8 @@ const tasks = {
       const url = `${new URL(best.url).protocol}//${key}/`;
       toQueue.push({ url, category: best.category, name: cleanName(best.name, url), from: rows.length });
     }
-    const offTopic = homes.filter(r => AUTO_ID.test(r.id) && !isTopical(hostKey(r.url), r.name, r.description));
+    const offTopic = homes.filter(r => AUTO_ID.test(r.id) && (ALWAYS_REMOVE.test(`${r.url} ${r.name}`) ||
+      !(isTopical(hostKey(r.url), r.name, r.description) || MORE_TOPIC.test(`${hostKey(r.url)} ${r.name} ${r.description || ''}`))));
     offTopic.forEach(r => remove.push(r));
     reasons['off-topic'] = offTopic.length;
 
