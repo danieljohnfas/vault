@@ -32,6 +32,13 @@ test('restricts ambiguous age signals', () => {
   ]) assert.equal(verdict(text), 'restrict', text);
 });
 
+test('restricts age signals run into other words (domain-style names)', () => {
+  for (const text of [
+    'https://sweetteentits.com', 'Sweetteentits', 'https://hotteens.xxx', 'xteenx', '18teens',
+    'thirteen', 'hotschoolgirls', 'freshyoungporn', 'https://youngsex.example',
+  ]) assert.equal(verdict(text), 'restrict', text);
+});
+
 test('leaves ordinary listings alone', () => {
   for (const text of [
     'https://nhentai.net nHentai The largest doujinshi archive',
@@ -40,6 +47,8 @@ test('leaves ordinary listings alone', () => {
     'Loads in under 5 seconds', 'Founded 2010, 12 categories', 'https://18comic.vip',
     'torpedo games', 'Ahegao and NTR doujins', 'FAKKU! licensed hentai manga',
     'https://www.ign.com', 'Live cams with mature models',
+    'Eighteen and over only', 'nineteen99 archive', 'Canteen recipes', 'Velveteen Rabbit',
+    'sateen sheets', 'Schoolhouse Rock', 'Youngblood comics',
   ]) assert.equal(verdict(text), 'ok', text);
 });
 
