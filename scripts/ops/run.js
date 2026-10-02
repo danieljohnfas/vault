@@ -511,6 +511,73 @@ const tasks = {
     console.log(`  applied: ${res.statements} updates in ${res.requests} requests`);
   },
 
+  // Deep-link listings (a search page, article or video rather than a site) and
+  // off-topic auto-discovered listings. A deep link is deleted; when its site has
+  // no homepage listing yet, the homepage is queued once so the daily intake adds
+  // it as a proper listing (its own name and description, the usual gates). Links
+  // on general platforms and other directories are not queued. Off-topic means an
+  // auto-discovered homepage listing with nothing adult/hentai/anime about it;
+  // hand-curated listings (plain slug ids) are never touched.
+  async 'cleanup-deep-links'({ dryRun = true, sample = 40, maxShare = 0.45 } = {}) {
+    const { siteKey, brandKey, hostKey, cleanName, isTopical } = require('../lib/discovery.js');
+    const { isHomepageUrl } = await import('../../src/listing-rules.js');
+    const { execStatements } = await import('../d1-exec-file.mjs');
+    const q = v => `'${String(v).replace(/'/g, "''")}'`;
+    const all = (await d1(`SELECT id, url, category, rating, json_extract(data_json, '$.name') AS name,
+      json_extract(data_json, '$.description') AS description FROM sites`)).results;
+    const queuedKeys = new Set((await d1('SELECT url FROM queue')).results.map(r => siteKey(r.url)).filter(Boolean));
+    const homes = all.filter(r => isHomepageUrl(r.url));
+    const homeKeys = new Set(homes.flatMap(r => [siteKey(r.url), brandKey(r.url)]).filter(Boolean));
+    const PLATFORMS = /(^|\.)(youtube\.com|youtu\.be|instagram\.com|facebook\.com|twitter\.com|x\.com|reddit\.com|github\.com|scribd\.com|goodreads\.com|buzzfeed\.com|rottentomatoes\.com|gamesradar\.com|billboard\.com|wikipedia\.org|fandom\.com|medium\.com|quora\.com|pinterest\.com|tiktok\.com|imdb\.com|google\.[a-z.]+|bing\.com|wordpress\.com|blogspot\.com|livejournal\.com|theporndude\.com|pornsites\.com|porngeek\.com)$/;
+    const AUTO_ID = /^[0-9a-f]{8}$|_m[a-z0-9]{7}$/;
+
+    const remove = [], reasons = { platform: 0, 'homepage listed': 0, 'homepage queued': 0, 'already in queue': 0, 'off-topic': 0 };
+    const groups = new Map();
+    for (const r of all.filter(r => !isHomepageUrl(r.url))) {
+      const host = hostKey(r.url) || '';
+      const key = siteKey(r.url);
+      if (!key || PLATFORMS.test(host)) { remove.push(r); reasons.platform++; continue; }
+      if (homeKeys.has(key) || homeKeys.has(brandKey(r.url))) { remove.push(r); reasons['homepage listed']++; continue; }
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(r);
+    }
+    const toQueue = [];
+    for (const [key, rows] of groups) {
+      rows.forEach(r => remove.push(r));
+      if (queuedKeys.has(key)) { reasons['already in queue'] += rows.length; continue; }
+      reasons['homepage queued'] += rows.length;
+      const best = [...rows].sort((a, b) => Number(b.rating) - Number(a.rating))[0];
+      const url = `${new URL(best.url).protocol}//${key}/`;
+      toQueue.push({ url, category: best.category, name: cleanName(best.name, url), from: rows.length });
+    }
+    const offTopic = homes.filter(r => AUTO_ID.test(r.id) && !isTopical(hostKey(r.url), r.name, r.description));
+    offTopic.forEach(r => remove.push(r));
+    reasons['off-topic'] = offTopic.length;
+
+    console.log(`  listings: ${all.length} | deep links: ${all.length - homes.length} | to delete: ${remove.length}` +
+      ` | homepages to queue: ${toQueue.length}${dryRun ? ' (dry run)' : ''}`);
+    console.log(`  by reason: ${Object.entries(reasons).map(([k, v]) => `${k}=${v}`).join(', ')}`);
+    for (const t of toQueue.slice(0, sample)) console.log(`    queue ${t.url} as "${t.name}" (${t.category}; replaces ${t.from})`);
+    console.log(`  off-topic listings (${offTopic.length}):`);
+    for (const r of offTopic) console.log(`    ${r.id}: "${r.name}" ${hostKey(r.url)}`);
+    if (remove.length > all.length * maxShare) {
+      throw new Error(`would delete ${remove.length} of ${all.length} listings (limit ${maxShare * 100}%); nothing changed`);
+    }
+    if (dryRun) return;
+
+    const ids = remove.map(r => q(r.id));
+    const statements = [];
+    for (let i = 0; i < ids.length; i += 100) {
+      const part = ids.slice(i, i + 100).join(', ');
+      statements.push(`DELETE FROM reviews WHERE site_id IN (${part})`, `DELETE FROM sites WHERE id IN (${part})`);
+    }
+    for (const t of toQueue) {
+      statements.push(`INSERT OR IGNORE INTO queue (id, url, category, name, status) VALUES (${q(require('crypto').randomUUID())}, ${q(t.url)}, ${q(t.category)}, ${q(t.name)}, 'pending')`);
+    }
+    const res = await execStatements(statements);
+    console.log(`  applied: ${remove.length} listings deleted, ${toQueue.length} homepages queued (${res.statements} statements)`);
+  },
+
   // Read-only: queue size by status and how many listings were added per day.
   async 'pipeline-stats'() {
     const q = (await d1(`SELECT status, COUNT(*) AS n FROM queue GROUP BY status ORDER BY n DESC`)).results;
