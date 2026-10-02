@@ -532,7 +532,7 @@ const tasks = {
     const AUTO_ID = /^[0-9a-f]{8}$|_m[a-z0-9]{7}$/;
     // Words the discovery topic check lacks but that mark a listing as belonging here:
     // adult studios and cams, comic and manhwa readers, and the community's tools.
-    const MORE_TOPIC = /\bvr\b|vr$|vr\.|cams?\b|cam\d|comic|scans?\b|toon|novel|fap|milf|lesbian|tranny|\btrans|gay|girls?|boys\b|fetish|boob|tits|pussy|cuckold|gloryhole|swallow|domination|amateur|babes|\bclips?|model|twistys|meatspin|sick-r|8muses|fuskator|stoya|hysterical|candy\.ai|dream\.ai|noodle|freeones|j-?list|tenkafuma|chan\b|booru|pixiv|artstation|saucenao|iqdb|ascii2d|tineye|tachiyomi|mihon|aidoku|paperback|hakuneko|rawdevart|catbox|litterbox|gofile|pixeldrain|bunkr|rentry|pastebin|comiket|comifuro|toranoana|ulmf|akiba|lemma ?soft|renai/i;
+    const MORE_TOPIC = /\bvr\b|vr$|vr\.|cams?\b|cam\d|comic|scans?\b|toon|novel|fap|milf|lesbian|tranny|\btrans|gay|girls?|boys\b|fetish|boob|tits|pussy|cuckold|gloryhole|swallow|domination|amateur|babes|\bclips?|model|twistys|meatspin|sick-r|8muses|fuskator|stoya|hysterical|candy\.ai|dream\.ai|noodle|freeones|j-?list|tenkafuma|chan\b|booru|pixiv|artstation|saucenao|iqdb|ascii2d|tineye|tachiyomi|mihon|aidoku|paperback|hakuneko|rawdevart|catbox|litterbox|gofile|pixeldrain|bunkr|rentry|pastebin|comiket|comifuro|toranoana|ulmf|akiba|lemma ?soft|renai|weeb|camcontacts/i;
     const ALWAYS_REMOVE = /escort/i;
 
     const remove = [], reasons = { platform: 0, 'homepage listed': 0, 'homepage queued': 0, 'already in queue': 0, 'off-topic': 0 };
