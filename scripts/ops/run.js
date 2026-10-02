@@ -478,7 +478,11 @@ const tasks = {
       let oldName = null;
       for (const re of NAME_RES) {
         const m = re.exec(String(d.longReview || ''));
-        if (m && m[1] !== name && m[1].length > name.length && cleanName(m[1], r.url) === name) { oldName = m[1]; break; }
+        // A page title, not a lead-in sentence ("Whether you're new to …, x.com offers …").
+        const t = m && m[1];
+        if (t && t !== name && t.length > name.length && t.length <= 60 && !/[.!?]\s/.test(t) &&
+            !/^(?:if you|whether|our latest|when it comes|for fans|navigating|for those)/i.test(t) &&
+            cleanName(t, r.url) === name) { oldName = t; break; }
       }
       const fixCategory = r.category !== 'Hentai Streaming';
       const set = {};
