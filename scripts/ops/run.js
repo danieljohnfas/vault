@@ -389,12 +389,21 @@ const tasks = {
   // Hentai Streaming moved to their real category when the signal is unambiguous
   // (cleanName / specificCategory in scripts/lib/discovery.js). Refuses if more than
   // maxShare of all listings would change: that points to a bad rule.
+  // Only listings of a site's homepage: deep links (search results, articles, other
+  // directories' pages) are reported for a separate decision, not renamed.
   async 'clean-listings'({ dryRun = true, maxShare = 0.4, sample = 60 } = {}) {
     const { cleanName, specificCategory, hostKey } = require('../lib/discovery.js');
+    const { isHomepageUrl } = await import('../../src/listing-rules.js');
     const { execStatements } = await import('../d1-exec-file.mjs');
     const q = v => `'${String(v).replace(/'/g, "''")}'`;
-    const rows = (await d1(`SELECT id, url, category, json_extract(data_json, '$.name') AS name,
+    const all = (await d1(`SELECT id, url, category, json_extract(data_json, '$.name') AS name,
       json_extract(data_json, '$.description') AS description FROM sites`)).results;
+    const rows = all.filter(r => isHomepageUrl(r.url));
+    const deep = all.filter(r => !isHomepageUrl(r.url));
+    const deepHosts = {};
+    for (const r of deep) { const h = hostKey(r.url) || '?'; deepHosts[h] = (deepHosts[h] || 0) + 1; }
+    console.log(`  deep-link listings (not a site homepage; left as they are): ${deep.length} of ${all.length}`);
+    console.log(`  top deep-link hosts: ${Object.entries(deepHosts).sort((a, b) => b[1] - a[1]).slice(0, 25).map(([h, n]) => `${h}=${n}`).join(' ')}`);
     const changes = [];
     for (const r of rows) {
       const name = cleanName(r.name, r.url);
@@ -408,12 +417,13 @@ const tasks = {
       changes.push({ ...r, newName: name, newCategory: category, newDescription: description });
     }
     const renamed = changes.filter(c => c.newName !== c.name);
+    const spacingOnly = renamed.filter(c => c.newName === String(c.name || '').replace(/\s+/g, ' ').trim());
     const moved = changes.filter(c => c.newCategory !== c.category);
     const byTarget = {};
     for (const c of moved) byTarget[c.newCategory] = (byTarget[c.newCategory] || 0) + 1;
-    console.log(`  listings: ${rows.length} | renamed: ${renamed.length} | recategorised: ${moved.length}${dryRun ? ' (dry run)' : ''}`);
+    console.log(`  homepage listings: ${rows.length} | renamed: ${renamed.length} (spacing only: ${spacingOnly.length}) | recategorised: ${moved.length}${dryRun ? ' (dry run)' : ''}`);
     console.log(`  moved out of Hentai Streaming: ${Object.entries(byTarget).map(([k, v]) => `${k}=${v}`).join(', ') || 'none'}`);
-    for (const c of renamed.slice(0, sample)) console.log(`    rename ${c.id}: "${c.name}" -> "${c.newName}"`);
+    for (const c of renamed.filter(c => !spacingOnly.includes(c)).slice(0, sample)) console.log(`    rename ${c.id}: "${c.name}" -> "${c.newName}"`);
     for (const c of moved.slice(0, sample)) console.log(`    move ${c.id}: "${c.newName}" -> ${c.newCategory}`);
     if (changes.length > rows.length * maxShare) {
       throw new Error(`would change ${changes.length} of ${rows.length} listings (limit ${maxShare * 100}%); nothing changed`);
