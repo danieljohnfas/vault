@@ -416,6 +416,24 @@ const tasks = {
       }
       changes.push({ ...r, newName: name, newCategory: category, newDescription: description });
     }
+    // A rename that would give two listings the same name (three "itch.io" entries
+    // collapsed to the platform homepage) is skipped; the rest of the change stays.
+    const taken = new Map();
+    for (const r of all) taken.set(String(r.name || '').toLowerCase(), (taken.get(String(r.name || '').toLowerCase()) || 0) + 1);
+    const proposed = new Map();
+    for (const c of changes) if (c.newName !== c.name) proposed.set(c.newName.toLowerCase(), (proposed.get(c.newName.toLowerCase()) || 0) + 1);
+    let skippedDuplicates = 0;
+    for (const c of changes) {
+      const key = c.newName.toLowerCase();
+      if (c.newName !== c.name && (proposed.get(key) > 1 || (taken.get(key) || 0) > (key === String(c.name || '').toLowerCase() ? 1 : 0))) {
+        c.newName = c.name;
+        skippedDuplicates++;
+      }
+    }
+    for (let i = changes.length - 1; i >= 0; i--) {
+      if (changes[i].newName === changes[i].name && changes[i].newCategory === changes[i].category) changes.splice(i, 1);
+    }
+    console.log(`  renames skipped because the name would be shared: ${skippedDuplicates}`);
     const renamed = changes.filter(c => c.newName !== c.name);
     const spacingOnly = renamed.filter(c => c.newName === String(c.name || '').replace(/\s+/g, ' ').trim());
     const moved = changes.filter(c => c.newCategory !== c.category);

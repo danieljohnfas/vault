@@ -137,12 +137,18 @@ function cleanName(name, url) {
     .map(squash).filter(k => k.length >= 3);
   const parts = decoded.split(TITLE_SEPARATORS).map(p => p.trim()).filter(Boolean);
   if (parts.length > 1) {
-    const brand = parts.find(p => {
-      const s = squash(p);
-      // The part names the domain, or is most of it (not a cut-off fragment like "Free-Str").
-      return s.length >= 3 && p.length <= 40 && keys.some(k => s.includes(k) || (k.includes(s) && s.length >= 0.6 * k.length));
-    });
-    if (brand) return brand;
+    // A part names the domain when it contains it without much else ("Ani.ME" for
+    // ani.me, not "Discover Anime Shows to Watch"), or is most of it (not a cut-off
+    // fragment like "Free-Str"). The closest match wins.
+    const distance = s => Math.min(...keys.map(k =>
+      (s.includes(k) && s.length <= 2 * k.length + 6) || (k.includes(s) && s.length >= 0.6 * k.length)
+        ? Math.abs(s.length - k.length) : Infinity));
+    const best = parts
+      .filter(p => p.length <= 40 && squash(p).length >= 3)
+      .map(p => ({ p, d: distance(squash(p)) }))
+      .filter(x => x.d < Infinity)
+      .sort((a, b) => a.d - b.d)[0];
+    if (best) return best.p;
   }
   if (!decoded || decoded.length > MAX_PLAIN_NAME) return host;
   return decoded;

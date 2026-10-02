@@ -91,6 +91,9 @@ test('SEO page titles are cut down to the brand; long brandless titles become th
     ['Literotica Discussion Board', 'https://forum.literotica.com/', 'Literotica Discussion Board'],
     ['Re:Zero Fan Wiki', 'https://rezero.fandom.com/', 'Re:Zero Fan Wiki'],
     ['nHentai', 'https://nhentai.net/', 'nHentai'],
+    // A short domain inside a longer word is not a match; the closest part wins.
+    ['Discover Anime Shows to Watch - Ani.ME', 'https://ani.me/', 'Ani.ME'],
+    ['Free Online Games on CrazyGames | Play Now!', 'https://www.crazygames.com/', 'crazygames.com'],
   ];
   for (const [name, url, want] of cases) assert.equal(cleanName(name, url), want, name);
 });
