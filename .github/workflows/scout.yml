@@ -3,7 +3,7 @@ name: 🕵️ Scout V3
 on:
   schedule:
     # Four times a day; each run validates up to 3,000 new candidate sites.
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '7 0,6,12,18 * * *'
   workflow_dispatch:
 
 permissions:
