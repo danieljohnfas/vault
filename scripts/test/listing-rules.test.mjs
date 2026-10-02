@@ -66,6 +66,7 @@ test('real name, not a scraping artefact', () => {
     '403 Forbidden', 'Page Not Found', 'Age Verification', 'WWW', 'M', 'DE', 'RT', 'rus', '', '   ', null,
   ]) assert.equal(isIndexable(good({ name })), false, `name=${name}`);
   // Generic subdomain labels scraped as the name
+  assert.equal(isJunkName('One moment, please...', 'https://example-tube.com'), true);
   assert.equal(isJunkName('Free', 'https://free.livecamzsex.com'), true);
   assert.equal(isJunkName('Live', 'https://live.camslurp.com'), true);
   assert.equal(isJunkName('Video', 'https://video.pornozavr.net'), true);

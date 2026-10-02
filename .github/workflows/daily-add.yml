@@ -3,7 +3,8 @@ name: 🗓️ Daily Site Addition
 on:
   schedule:
     # Runs every day at 06:00 UTC
-    - cron: '0 6 * * *'
+    # Off the hour: GitHub starts on-the-hour schedules hours late under load.
+    - cron: '17 6 * * *'
   workflow_dispatch:
     inputs:
       count:

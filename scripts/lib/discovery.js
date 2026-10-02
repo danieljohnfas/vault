@@ -128,10 +128,14 @@ const MAX_PLAIN_NAME = 30;
  * Sit" → "Hentai Pulse"). A long title with no brand in it becomes the host name.
  * Short names without a separator are left as they are.
  */
+// Titles of bot-check and error pages, scraped instead of the site's own title.
+const CHALLENGE_TITLE = /checking your browser|just a moment|one moment,? please|please wait|security check|ddos-guard|attention required|access denied/i;
+
 function cleanName(name, url) {
   const decoded = decodeEntities(name).replace(/\s+/g, ' ').trim();
   const host = hostKey(url) || '';
   if (!host) return decoded;
+  if (CHALLENGE_TITLE.test(decoded)) return host;
   const first = host.split('.')[0];
   const keys = [...new Set([(registrableDomain(host) || host).split('.')[0], GENERIC_HOST_LABELS.has(first) ? '' : first])]
     .map(squash).filter(k => k.length >= 3);

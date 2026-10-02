@@ -94,6 +94,9 @@ test('SEO page titles are cut down to the brand; long brandless titles become th
     // A short domain inside a longer word is not a match; the closest part wins.
     ['Discover Anime Shows to Watch - Ani.ME', 'https://ani.me/', 'Ani.ME'],
     ['Free Online Games on CrazyGames | Play Now!', 'https://www.crazygames.com/', 'crazygames.com'],
+    // A bot-check page's title is not the site's name.
+    ['One moment, please...', 'https://example-tube.com/', 'example-tube.com'],
+    ['Just a moment...', 'https://www.example.org/', 'example.org'],
   ];
   for (const [name, url, want] of cases) assert.equal(cleanName(name, url), want, name);
 });

@@ -52,7 +52,7 @@ export const MIN_INDEXABLE_RATING = 3.5;
 
 // Names that are scraping artefacts (challenge/error pages, bare subdomain labels)
 // rather than a real site name.
-export const JUNK_NAME_RE = /checking your browser|just a moment|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i;
+export const JUNK_NAME_RE = /checking your browser|just a moment|one moment,? please|please wait|security check|ddos-guard|attention required|access denied|forbidden|not found|age verification|^(www|m|[a-z]{2,3})$/i;
 
 // Generic subdomain labels that get scraped as a "name" (free.example.com → "Free").
 const GENERIC_LABELS = new Set([
