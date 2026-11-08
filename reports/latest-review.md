@@ -1,4 +1,4 @@
-# 🏥 HentaiVault Weekly Health Report — 2026-11-01
+# 🏥 HentaiVault Weekly Health Report — 2026-11-08
 
 _Generated automatically every Sunday. Review actions logged below._
 
@@ -8,20 +8,19 @@ _Generated automatically every Sunday. Review actions logged below._
 
 | Workflow | ✅ Pass | ❌ Fail | Last Run | Status |
 |---|---|---|---|---|
-| 🟢 📊 Weekly Health & Security Review | 0 | 0 | 2026-11-01 | in_progress |
-| 🟢 🩺 Daily Deadlink Checker | 5 | 0 | 2026-11-01 | success |
-| 🟢 🗓️ Daily Site Addition | 4 | 0 | 2026-11-01 | success |
-| 🟢 🤖 SEO Auto-Monitor & Auto-Fix | 12 | 0 | 2026-11-01 | success |
-| 🟢 🕵️ Scout V3 | 12 | 0 | 2026-11-01 | success |
-| 🔴 🛡️ Minor-safety sweep | 8 | 1 | 2026-11-01 | success |
-| 🔴 📣 Release listings & IndexNow | 4 | 1 | 2026-10-31 | success |
-| 🟢 🚀 Deploy Worker | 2 | 0 | 2026-10-29 | success |
+| 🟢 📊 Weekly Health & Security Review | 0 | 0 | 2026-11-08 | in_progress |
+| 🟢 🩺 Daily Deadlink Checker | 5 | 0 | 2026-11-08 | success |
+| 🟢 🗓️ Daily Site Addition | 5 | 0 | 2026-11-08 | success |
+| 🟢 🤖 SEO Auto-Monitor & Auto-Fix | 13 | 0 | 2026-11-08 | success |
+| 🟢 🕵️ Scout V3 | 13 | 0 | 2026-11-08 | success |
+| 🟢 🛡️ Minor-safety sweep | 9 | 0 | 2026-11-08 | success |
+| 🟢 📣 Release listings & IndexNow | 4 | 0 | 2026-11-07 | success |
 
 ## 🗄️ Cloudflare D1 Database
 
 | Metric | Value |
 |---|---|
-| Total sites | **4691** |
+| Total sites | **4683** |
 | New this week | **?** |
 
 **Category Breakdown:**
@@ -36,9 +35,9 @@ _sites-queue.json not found — daily-add pipeline may be broken._
 
 | Metric | Value |
 |---|---|
-| Total requests (7d) | **14,498** |
-| Total errors (7d) | **39** |
-| Error rate | 🟡 **0.27%** |
+| Total requests (7d) | **20,699** |
+| Total errors (7d) | **0** |
+| Error rate | 🟢 **0.00%** |
 
 ## 🔒 Security & Config Audit
 
@@ -60,27 +59,26 @@ _sites-queue.json not found — daily-add pipeline may be broken._
 ## 📝 Recent Commits (Last 7 Days)
 
 ```
-5853bf9 2026-11-01 🤖 seo-bot: auto-fixes & status report [2026-11-01 13:10 UTC] [skip ci]
-bd5e188 2026-11-01 🤖 seo-bot: auto-fixes & status report [2026-11-01 05:50 UTC] [skip ci]
-c710ec8 2026-10-31 🤖 seo-bot: auto-fixes & status report [2026-10-31 21:25 UTC] [skip ci]
-623ab55 2026-10-31 🤖 seo-bot: auto-fixes & status report [2026-10-31 12:12 UTC] [skip ci]
-378407b 2026-10-31 🤖 seo-bot: auto-fixes & status report [2026-10-31 05:24 UTC] [skip ci]
-5fb0bc6 2026-10-30 🤖 seo-bot: auto-fixes & status report [2026-10-30 22:13 UTC] [skip ci]
-95fd470 2026-10-30 🤖 seo-bot: auto-fixes & status report [2026-10-30 12:42 UTC] [skip ci]
-abf3a22 2026-10-30 🤖 seo-bot: auto-fixes & status report [2026-10-30 05:35 UTC] [skip ci]
-8982f69 2026-10-29 🤖 seo-bot: auto-fixes & status report [2026-10-29 22:41 UTC] [skip ci]
-dd33cc2 2026-10-29 fix(ci): handle Cloudflare D1 daily row read quota gracefully in minor-safety and indexnow
-c572980 2026-10-29 🤖 seo-bot: auto-fixes & status report [2026-10-29 12:50 UTC] [skip ci]
-3c9a96c 2026-10-29 SEO & GSC remediation: fix canonical links, schema, titles, operator hubs, and sync automation
-c812569 2026-10-29 fix(monetization/ux): remove all affiliate links, integrate buymeacoffee, add static fallback to eliminate 500 error
-40d550e 2026-10-29 🤖 seo-bot: auto-fixes & status report [2026-10-29 05:35 UTC] [skip ci]
-c1bf2f5 2026-10-28 🤖 seo-bot: auto-fixes & status report [2026-10-28 22:29 UTC] [skip ci]
-6aac2ca 2026-10-28 🤖 seo-bot: auto-fixes & status report [2026-10-28 12:41 UTC] [skip ci]
-7682db3 2026-10-28 🤖 seo-bot: auto-fixes & status report [2026-10-28 05:26 UTC] [skip ci]
-4b3816b 2026-10-27 🤖 seo-bot: auto-fixes & status report [2026-10-27 22:06 UTC] [skip ci]
-d293bd7 2026-10-27 🤖 seo-bot: auto-fixes & status report [2026-10-27 17:54 UTC] [skip ci]
-08091c2 2026-10-27 feat(seo): update sitemaps lastmod, add visual-novels to sitemap-categories, and register alternatives in static index
-
+c7fe06e 2026-11-08 🤖 seo-bot: auto-fixes & status report [2026-11-08 13:14 UTC] [skip ci]
+7f7d941 2026-11-08 🤖 seo-bot: auto-fixes & status report [2026-11-08 05:51 UTC] [skip ci]
+86706df 2026-11-07 🤖 seo-bot: auto-fixes & status report [2026-11-07 21:43 UTC] [skip ci]
+4cdff7b 2026-11-07 🤖 seo-bot: auto-fixes & status report [2026-11-07 12:51 UTC] [skip ci]
+bb4f5b8 2026-11-07 🤖 seo-bot: auto-fixes & status report [2026-11-07 05:48 UTC] [skip ci]
+c55f4cb 2026-11-06 🤖 seo-bot: auto-fixes & status report [2026-11-06 19:17 UTC] [skip ci]
+1188b56 2026-11-06 🤖 seo-bot: auto-fixes & status report [2026-11-06 06:24 UTC] [skip ci]
+2689f5a 2026-11-05 🤖 seo-bot: auto-fixes & status report [2026-11-05 19:51 UTC] [skip ci]
+0ab6a42 2026-11-05 🤖 seo-bot: auto-fixes & status report [2026-11-05 06:30 UTC] [skip ci]
+63136ce 2026-11-04 🤖 seo-bot: auto-fixes & status report [2026-11-04 23:34 UTC] [skip ci]
+697c9b4 2026-11-04 🤖 seo-bot: auto-fixes & status report [2026-11-04 14:22 UTC] [skip ci]
+1c35c1e 2026-11-04 🤖 seo-bot: auto-fixes & status report [2026-11-04 06:02 UTC] [skip ci]
+d8ca42d 2026-11-03 🤖 seo-bot: auto-fixes & status report [2026-11-03 23:14 UTC] [skip ci]
+72268ce 2026-11-03 🤖 seo-bot: auto-fixes & status report [2026-11-03 14:01 UTC] [skip ci]
+8405c81 2026-11-03 🤖 seo-bot: auto-fixes & status report [2026-11-03 00:53 UTC] [skip ci]
+e501b1b 2026-11-02 chore(seo): historical analysis report [2026-11-02]
+841ce6a 2026-11-02 🤖 seo-bot: auto-fixes & status report [2026-11-02 15:36 UTC] [skip ci]
+a35c798 2026-11-02 🤖 seo-bot: auto-fixes & status report [2026-11-02 05:50 UTC] [skip ci]
+90e5753 2026-11-01 🤖 seo-bot: auto-fixes & status report [2026-11-01 21:57 UTC] [skip ci]
+9fa13e7 2026-11-01 📊 analytics: full multi-source report [2026-11-01 15:54 UTC]
 ```
 
 ## 🔍 SEO Quick Checks
