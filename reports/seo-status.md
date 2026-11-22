@@ -1,30 +1,28 @@
 # 🤖 HentaiVault SEO Auto-Monitor Report
-_Last run: 2026-11-21 19:05:18 UTC • Live mode_
+_Last run: 2026-11-22 06:32:06 UTC • Live mode_
 
 ---
 
 ## 📊 GSC Snapshot (Last 7 Days)
 | Metric | Value |
 |---|---|
-| Total Clicks | **33** |
-| Total Impressions | **87** |
-| Average CTR | **37.93%** |
-| Average Position | **28.8** |
+| Total Clicks | **25** |
+| Total Impressions | **71** |
+| Average CTR | **35.21%** |
+| Average Position | **26.9** |
 
 ## 📅 Week-over-Week Trend
 | Metric | This Week | Last Week | Change |
 |---|---|---|---|
-| Clicks | 33 | 19 | 📈 +14 |
-| Impressions | 87 | 60 | 📈 +27 |
+| Clicks | 25 | 25 | 📈 0 |
+| Impressions | 71 | 66 | 📈 +5 |
 
 ## 🔍 Top 10 Queries by Clicks
 | Query | Clicks | Impressions | CTR | Position |
 |---|---|---|---|---|
-| `hentaivault` | 33 | 80 | 41.25% | 1.8 |
+| `hentaivault` | 25 | 66 | 37.88% | 1.9 |
 | `hent vault` | 0 | 1 | 0.00% | 4.0 |
 | `hentaisun` | 0 | 1 | 0.00% | 44.0 |
-| `hentaivm` | 0 | 1 | 0.00% | 57.0 |
-| `hentaivoqt` | 0 | 1 | 0.00% | 10.0 |
 | `hintaivault` | 0 | 2 | 0.00% | 6.5 |
 | `sejuai.com` | 0 | 1 | 0.00% | 78.0 |
 
@@ -40,7 +38,7 @@ _No non-branded queries detected in GSC data yet. Growth expected as blog posts 
 ## 🏥 Traffic Health
 | Signal | Value |
 |---|---|
-| Branded Clicks | 33 (100.0%) |
+| Branded Clicks | 25 (100.0%) |
 | Non-Branded Clicks | 0 (0.0%) |
 | Organic Diversity Score | 0 active non-branded opportunities |
 
